@@ -1,4 +1,4 @@
-package com.sgsg.dra.controller;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -294,16 +294,7 @@ public class MemberController {
 		public String noAuthorized(Model model) {
 			return ".member.noAuthorized";
 		}
-		*/
-		
-		
-		@GetMapping("checkLoginStatus")
-		@ResponseBody
-		public Map<String, Boolean> checkLoginStatus(HttpSession session) {
-		    Map<String, Boolean> response = new HashMap<>();
-		    response.put("loggedIn", session.getAttribute("member") != null);
-		    return response;
-		}
+	*/
 	
 	
 }

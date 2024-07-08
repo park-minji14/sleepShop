@@ -3,26 +3,24 @@ package com.sgsg.dra.domain;
 public class Member {
 	private long memberIdx;
 	private int membership;
-	
 	private String userId;
-	private String email;
 	private String userName;
 	private String userPwd;
-	private int enabled;
 	private String register_date;
 	private String modify_date;
 	private String last_login;
-	private int failure_cnt;
-	
-	
-	private String birth;
+	private String email;
+	private String email1;
+	private String email2;
 	private String tel;
 	private String tel1;
 	private String tel2;
 	private String tel3;
+	private String birth;
 	private String zip;
 	private String addr1;
 	private String addr2;
+	private int enabled;
 	
 	public long getMemberIdx() {
 		return memberIdx;
@@ -42,12 +40,6 @@ public class Member {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
 	public String getUserName() {
 		return userName;
 	}
@@ -59,12 +51,6 @@ public class Member {
 	}
 	public void setUserPwd(String userPwd) {
 		this.userPwd = userPwd;
-	}
-	public int getEnabled() {
-		return enabled;
-	}
-	public void setEnabled(int enabled) {
-		this.enabled = enabled;
 	}
 	public String getRegister_date() {
 		return register_date;
@@ -84,17 +70,23 @@ public class Member {
 	public void setLast_login(String last_login) {
 		this.last_login = last_login;
 	}
-	public int getFailure_cnt() {
-		return failure_cnt;
+	public String getEmail() {
+		return email;
 	}
-	public void setFailure_cnt(int failure_cnt) {
-		this.failure_cnt = failure_cnt;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	public String getBirth() {
-		return birth;
+	public String getEmail1() {
+		return email1;
 	}
-	public void setBirth(String birth) {
-		this.birth = birth;
+	public void setEmail1(String email1) {
+		this.email1 = email1;
+	}
+	public String getEmail2() {
+		return email2;
+	}
+	public void setEmail2(String email2) {
+		this.email2 = email2;
 	}
 	public String getTel() {
 		return tel;
@@ -120,6 +112,12 @@ public class Member {
 	public void setTel3(String tel3) {
 		this.tel3 = tel3;
 	}
+	public String getBirth() {
+		return birth;
+	}
+	public void setBirth(String birth) {
+		this.birth = birth;
+	}
 	public String getZip() {
 		return zip;
 	}
@@ -138,6 +136,10 @@ public class Member {
 	public void setAddr2(String addr2) {
 		this.addr2 = addr2;
 	}
-	
-	
+	public int getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(int enabled) {
+		this.enabled = enabled;
+	}
 }
