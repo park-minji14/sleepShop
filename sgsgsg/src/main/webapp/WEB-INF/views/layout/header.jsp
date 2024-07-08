@@ -124,19 +124,10 @@ function updateSubMenu(category) {
 			{text : '오늘의딜',url : '${pageContext.request.contextPath}/'}, 
 			{text : '빠른배송',url : '${pageContext.request.contextPath}/'}, 
 			{text : '기획전',url : '${pageContext.request.contextPath}/'}],
-		'커뮤니티' : [ {
-			text : '홈',
-			url : '${pageContext.request.contextPath}/'
-		}, {
-			text : '수면클리닉',
-			url : '${pageContext.request.contextPath}/'
-		}, {
-			text : '질문과답변',
-			url : '${pageContext.request.contextPath}/'
-		}, {
-			text : '이벤트',
-			url : '${pageContext.request.contextPath}/'
-		} ]
+		'커뮤니티' : [ {text : '홈',url : '${pageContext.request.contextPath}/'}, 
+			{text : '수면클리닉',url : '${pageContext.request.contextPath}/clinic/list'}, 
+			{text : '질문과답변',url : '${pageContext.request.contextPath}/'}, 
+			{text : '이벤트',url : '${pageContext.request.contextPath}/'} ]
 	};
 
 	const $subMenu = $('#subMenu');
