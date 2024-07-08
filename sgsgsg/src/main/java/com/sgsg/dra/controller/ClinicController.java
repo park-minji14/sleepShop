@@ -217,7 +217,7 @@ public class ClinicController {
 		
 		Clinic dto = service.findById(num);
 		if(dto==null || !info.getUserId().equals(dto.getUserId())) {
-			return "redirect:/bbs/list?page="+page;
+			return "redirect:/clinic/list?page="+page;
 		}
 		
 		model.addAttribute("dto", dto);
@@ -234,7 +234,7 @@ public class ClinicController {
 			HttpSession session) throws Exception {
 		
 		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "bbs";
+		String pathname = root + "uploads" + File.separator + "clinic";
 		
 		try {
 			service.updateClinic(dto, pathname);
@@ -254,7 +254,7 @@ public class ClinicController {
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		
 		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "bbs";
+		String pathname = root + "uploads" + File.separator + "clinic";
 		
 		Clinic dto = service.findById(num);
 		
@@ -297,7 +297,7 @@ public class ClinicController {
 		}
 		
 		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "bbs";
+		String pathname = root + "uploads" + File.separator + "clinic";
 
 		service.deleteClinic(num, pathname, info.getUserId(), 
 				info.getMembership());
@@ -314,7 +314,7 @@ public class ClinicController {
 			HttpSession session) throws Exception {
 
 		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "bbs";
+		String pathname = root + "uploads" + File.separator + "clinic";
 		
 		Clinic dto = service.findById(num);
 		
