@@ -76,9 +76,10 @@
 	<!-- 질문 보기 -->
 	<select id="findById" parameterType="Long" resultType="com.sgsg.dra.domain.Clinic">
 	    SELECT c.question_id, c.userId, c.title, c.content, c.is_public,
-	        c.created_date, c.saveFilename, c.originalFilename
+	        c.created_date, c.saveFilename, c.originalFilename, cc.category_name
 	    FROM sleep_clinic_question c
 	    JOIN member1 m ON c.userId = m.userId
+	    LEFT JOIN sleep_clinic_category cc ON c.category_id = cc.category_id
 	    WHERE c.question_id = #{question_id}
 	</select>
 	

@@ -38,7 +38,7 @@
             <a class="nav-link toggleSubMenu" href="#">전체 상품 관리 <span class="jArrow"></span></a>
             <ul class="nav flex-column submenu">
                 <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/productManage/productSubmit">상품 등록</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/productManage/productWrite">상품 등록</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">재고 관리</a>

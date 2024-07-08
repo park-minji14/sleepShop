@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgsg.dra.admin.mapper.ProductManageMapper">
+
+<!-- 시퀀스 보존용 -->
+<select id="productSeq" resultType="Long">
+	Select product_seq.NextVal From dual
+</select>
+
+<!-- 상품 등록 하기 -->
+<insert id="insertProduct" parameterType="com.sgsg.dra.admin.domain.ProductManage">
+	Insert Into product(productNum, CategoryNum, productName, classify, price, salePrice, discountRate, 
+						delivery, optionCount, content, thumbnail, productShow, reg_date, update_date, search_word)
+	Values(#{productNum}, #{categoryNum}, #{productName}, #{classify}, #{price}, #{discountRate}, 
+			#{savedMoney}, #{delivery}, #{optionCount}, #{content}, #{thumbnail}, #{productShow}, SYSDATE, SYSDATE)
+</insert>
+
+<!-- 추가 이미지 등록 -->
+<insert id="insertProductFile" parameterType="com.sgsg.dra.admin.domain.ProductManage">
+		INSERT INTO product_Image(fileNum, img_name, productNum)
+		VALUES(PRODUCT_IMAGE_SEQ.NEXTVAL, #{filename}, #{productNum} )
+</insert>
+
+</mapper>

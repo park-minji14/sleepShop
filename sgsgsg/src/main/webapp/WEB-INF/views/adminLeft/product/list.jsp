@@ -19,22 +19,33 @@
                     </select>
                 </div>
                 <div class="col">
+                    <label for="subCategory" class="form-label">하위카테고리</label>
+                    <select id="category" class="form-select">
+                        <option selected>하위카테고리</option>
+                        <!-- 카테고리 돌릴 곳 -->
+                    </select>
+                </div>
+				<!-- 기간검색 우선 주석처리       
+				<div class="col">
                     <label for="dateRange" class="form-label">기간검색</label>
                     <input type="text" id="dateRange" class="form-control" placeholder="최근수정일 ~">
-                </div>
+                </div> 
+                -->
             </div>
             <div class="row mb-3">
                 <div class="col">
                     <label for="stock" class="form-label">상품재고</label>
                     <input type="text" id="stock" class="form-control" placeholder="개 이상 ~ 개 이하">
                 </div>
+				<!-- 안씀        
                 <div class="col">
                     <label for="region" class="form-label">배송가능 지역</label>
                     <select id="region" class="form-select">
                         <option selected>전체</option>
-                        <!-- Add more options here -->
+                        Add more options here
                     </select>
                 </div>
+				-->                
                 <div class="col">
                     <label for="priceRange" class="form-label">상품가격</label>
                     <input type="text" id="priceRange" class="form-control" placeholder="원 이상 ~ 원 이하">

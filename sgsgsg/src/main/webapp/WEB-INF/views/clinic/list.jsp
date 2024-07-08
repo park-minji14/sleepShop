@@ -22,7 +22,7 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
     background-color: #fff;
     height: 130px; 
-    width: 1200px; 
+    width: 1100px; 
 }
 
 
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			<div class="swiper-wrapper">
 				<div class="slide-container swiper-slide">
 					<img src="${pageContext.request.contextPath}/uploads/etc/sleep.png"
-						alt="수면클리닉 배너 1">
+						alt="수면클리닉 배너 1"> 
 				</div> 
 				<div class="slide-container swiper-slide">
 					<img src="${pageContext.request.contextPath}/uploads/etc/doctor.png"
@@ -236,6 +236,9 @@ document.addEventListener('DOMContentLoaded', function () {
 		<br> 
 		<div class="body-title">
 			<h2 style="color: #35c5f0; font-weight: bold;">수면클리닉</h2>  
+		</div>
+		<div>
+			<h5 style="color: #35c5f0;">총 ${dataCount}개의 질문이 올라왔어요</h5>
 		</div>
 		
 		<div class="body-main">
@@ -278,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function () {
 							</select>
 						</div>
 						<div class="col-auto p-1">
-							<input type="text" name="kwd" value="${kwd}" class="form-control" style="width: 500px;" placeholder="원하는 키워드를 입력하실래요?">  
+							<input type="text" name="kwd" value="${kwd}" class="form-control" style="width: 600px;" placeholder="원하는 키워드를 입력하실래요?">  
 						</div>
 						<div class="col-auto p-1">
 							<button type="button" class="btn btn-light" onclick="searchList()" title="검색"> <i class="bi bi-search"></i> </button>
@@ -294,17 +297,16 @@ document.addEventListener('DOMContentLoaded', function () {
 						<table class="table">
 						<tr> 
 							<!-- <td width="60">${dataCount-(page-1)*size-status.index}</td> -->
-							<td width="55" style="color: white; background: #35c5f0; line-height: 30px; border-radius: 10px; font-size: 20px; padding-top: 30px;">${dto.category_name}</td>    
+							<td width="60" style="color: white; background: #35c5f0; line-height: 30px; border-radius: 10px; font-size: 20px; padding-top: 30px;">${dto.category_name}</td>    
 							<td class="left">
-							<span style="font-size: 30px; padding-left: 20px; padding-top: 10px;">${dto.title}<span style="color: orange; font-size: 20px;">&nbsp;&nbsp;[답변 0]</span></span>
-							</td>   
-							<td style="padding-top: 60px; padding-right: 650px; font-size: 18px;">질문자 : ${dto.userId}</td>  
-							<td>${dto.created_date}</td>  
-							<td>
+							<span style="font-size: 30px; padding-left: 20px; padding-top: 10px;">${dto.title}<span style="color: orange; font-size: 20px;">&nbsp;&nbsp;[답변 0]</span><br><span style="font-size: 18px; padding-left: 25px;">질문자 : ${dto.userId}</span></span>
+							</td>
+							<td style="text-align: right;">${dto.created_date}</td>  
+							<!-- <td>
 								<c:if test="${not empty dto.saveFilename}">
-									<a href="${pageContext.request.contextPath}/clinic/download?num=${dto.question_id}" class="text-reset"><i class="bi bi-file-arrow-down"></i></a>
+									<a href="${pageContext.request.contextPath}/clinic/download?question_id=${dto.question_id}" class="text-reset"><i class="bi bi-file-arrow-down"></i></a>
 								</c:if> 
-							</td> 
+							</td> -->
 						</tr>
 						</table>
 						</div>

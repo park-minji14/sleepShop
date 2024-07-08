@@ -70,7 +70,7 @@
                    <a class="nav-link" href="#" onclick="setActive(event)">고객센터</a>
                </li>
                <li class="nav-item">
-                   <a class="nav-link" href="#" onclick="setActive(event)">회원관리</a>
+                   <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/memberManage/list" onclick="setActive(event)">회원관리</a>
                </li>
                <li class="nav-item">
                    <a class="nav-link" href="#" onclick="setActive(event)">프로모션</a>
