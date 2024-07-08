@@ -40,265 +40,105 @@
 							</button>
 						</div>
 						<div>
-						<c:forEach var="dto" items="${list_X}">
+						<!--
 						cartNum=${dto.cartNum}, productNum=${dto.productNum}, PRODUCTNAME=${dto.productName}, stockNum=${dto.stockNum}, 
 						OPTIONNAME=${dto.optionName}, optionValue=${dto.optionValue}, OPTIONNUM=${dto.optionNum}, 
 						OPTIONNAME2=${dto.optionName2}, optionValue2=${dto.optionValue2}, OPTIONNUM2=${dto.optionNum2},
 						qty=${dto.qty}
 						<br/><br/>
 						
-						</c:forEach>
+						-->
 						</div>
-						<ul class="commerce-cart__content__group-list">
-							
-							<li class="commerce-cart__content__group-item">
-								<article class="commerce-cart__group">
-									<h1 class="commerce-cart__group__header">스타일링홈 배송</h1>
-									<ul class="commerce-cart__group__item-list">
-										<li class="commerce-cart__group__item">
-											<article class="commerce-cart__delivery-group">
-												<ul class="commerce-cart__delivery-group__product-list">
-												<!-- 여러 상품 시작 -->
-													<li class="commerce-cart__delivery-group__product-item">
-														<article class="carted-product">
-															<div class="carted-product__select">
-																<div class="checkbox-wrap">
-																	<input type="checkbox" class="checkbox" value="" checked>
-																</div>
-															</div>
-															<a class="product-small-item product-small-item--clickable" href="/productions/474367/selling">
-																<span class="product-small-item__image">
-																	<img alt="상품 이미지" src="https://prs.ohou.se/apne2/any/uploads/productions/v1-252867613126656.jpg">
-																</span>
-																<span class="product-small-item__content">
-																	<h1 class="product-small-item__title">[스타일링홈]
-																		[7일간!15%쿠폰](60수면) 고밀도 사각사각 컬러풀 호텔이불 먼지없는 여름 차렵이불세트</h1>
-																	<span class="delivery_info">무료배송&nbsp;|&nbsp;일반택배</span>
-																</span></a>
-															<button class="carted-product__delete" type="button" aria-label="삭제">
-																<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
-																	<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
-																</svg>
-															</button>
-															<ul class="carted-product__option-list">
-																<li class="carted-product__option-list__item">
-																	<article class="option_box">
-																		<h2 class="option_title">색상: 01.간절기용_브릭레드 / 사이즈: 01.SS 베개세트</h2>
-																		<button type="button" aria-label="삭제" class="option_delete">
-																			<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
-																				<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
-																			</svg>
-																		</button>
-																		<div class="option_subBox">
-																			<div class="option_qty">
-																				<span class="minus_qty bi bi-dash-lg"></span>
-																				<button class="chage_qty">2</button>
-																				<span class="plus_qty bi bi-plus-lg"></span>
-																			</div>
-																			<div class="option_price">
-																				65,900원
-																			</div>
-																		</div>
-																	</article>
-																</li>
-															</ul>
-															<div class="carted-product__footer">
-																<span class="carted-product__footer__left">
-																	<button class="carted-product__edit-btn" type="button">옵션변경</button>
-																	<button class="carted-product__order-btn" type="button">바로구매</button>
-																</span>
-																<span class="carted-product__subtotal">
-																	<span class="carted-product__subtotal__number">65,900</span>원
-																</span>
-															</div>
-														</article>
-													</li>
-													<!-- 여러 상품 중 하나 끝 -->
-													<li class="commerce-cart__delivery-group__product-item">
-														<article class="carted-product">
-															<div class="carted-product__select">
-																<div class="checkbox-wrap">
-																	<input type="checkbox" class="checkbox" value="" checked>
-																</div>
-															</div>
-															<span class="css-l46ngn elsmzm01">오늘출발 마감
-																<span class="afterDeadLine css-1xskdmv elsmzm00">7/8 (월) 발송 예정</span>
-															</span>
-															<a class="product-small-item product-small-item--clickable" href="/productions/169814/selling">
-																<span class="product-small-item__image">
-																	<img alt="상품 이미지" src="https://image.ohou.se/i/bucketplace-v2-development/uploads/productions/162546803477431867.jpg?w=256&amp;h=256&amp;c=c">
-																</span>
-																<span class="product-small-item__content">
-																	<h1 class="product-small-item__title">[스타일링홈]
-																		[5일간!10%쿠폰][1+1]100% 빛차단/자외선차단 온도조절 3중직 거실 창문 암막커튼</h1>
-																	<span class="delivery_info">70,000원 이상
-																		무료배송&nbsp;|&nbsp;일반택배
-																	</span>
-																</span>
-															</a>
-															<button class="carted-product__delete" type="button" aria-label="삭제">
-																<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
-																	<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
-																</svg>
-															</button>
-															<ul class="carted-product__option-list">
-															<!-- 1번째 옵션 -->
-																<li class="carted-product__option-list__item">
-																	<article class="option_box">
-																		<h2 class="option_title">품명: 01.메이든
-																			암막_커튼핀형 / 사이즈(가로x세로): 01.쿨그레이 소창형 (2장)</h2>
-																		<button type="button" aria-label="삭제" class="option_delete">
-																			<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
-																				<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
-																			</svg>
-																		</button>
-																		<div class="option_subBox">
-																			<div class="option_qty">
-																				<span class="minus_qty bi bi-dash-lg"></span>
-																				<button class="chage_qty">1</button>
-																				<span class="plus_qty bi bi-plus-lg"></span>
-																			</div>
-																			<div class="option_price">29,500원
-																			</div>
-																		</div>
-																	</article>
-																</li>
-																<!-- 2번째 옵션 -->
-																<li class="carted-product__option-list__item">
-																	<article class="option_box">
-																		<h2 class="option_title">조립/설치비 (1개)</h2>
-																		<button type="button" aria-label="삭제" class="option_delete">
-																			<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
-																				<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
-																			</svg>
-																		</button>
-																		<div class="option_subBox">
-																			<div class="option_price">0원</div>
-																		</div>
-																	</article>
-																</li>
-															</ul>
-															<div class="carted-product__footer">
-																<span class="carted-product__footer__left">
-																	<button class="carted-product__edit-btn" type="button">옵션변경</button>
-																	<button class="carted-product__order-btn" type="button">바로구매</button>
-																</span>
-																<span class="carted-product__subtotal">
-																	<span class="carted-product__subtotal__number">29,500</span>원
-																</span>
-															</div>
-														</article>
-													</li>
-												</ul>
-												<!-- 여러 상품 끝 -->
-												<footer class="commerce-cart__delivery-group__footer">
-													<p class="commerce-cart__delivery-group__total">2개 묶음배송비 3,000원</p>
-													<p class="commerce-cart__delivery-group__group-caption">묶음배송 상품 600원 추가시 무료배송</p>
-													<p class="commerce-cart__delivery-group__group-link">
-														<a class="commerce-cart__delivery-group__group-link__link" href="/productions/455128/groupable_productions">묶음배송 상품 추가하기
-															<svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
-																<path fill="currentColor" fill-rule="nonzero" d="M6 19.692L8.25 22 18 12 8.25 2 6 4.308 13.5 12z"></path>
-															</svg>
-														</a>
-													</p>
-												</footer>
-											</article>
-										</li>
-									</ul>
-								</article>
-							</li>
-							
-							<!-- 다음 여러 상품 -->
-							<li class="commerce-cart__content__group-item">
-								<article class="commerce-cart__group">
-									<h1 class="commerce-cart__group__header">hellowyellow 배송</h1>
-									<ul class="commerce-cart__group__item-list">
-										<li class="commerce-cart__group__item">
-											<article class="commerce-cart__delivery-group">
-												<ul class="commerce-cart__delivery-group__product-list">
-													<li class="commerce-cart__delivery-group__product-item">
-														<article class="carted-product">
-															<div class="carted-product__select">
-																<div class="checkbox-wrap">
-																	<input type="checkbox" class="checkbox" value="" checked>
-																</div>
-															</div>
-															<a class="product-small-item product-small-item--clickable" href="/productions/146362/selling">
-																<span class="product-small-item__image">
-																	<img alt="상품 이미지" src="https://image.ohou.se/i/bucketplace-v2-development/uploads/productions/166088584050337899.jpg?w=256&amp;h=256&amp;c=c">
-																</span>
-																<span class="product-small-item__content">
-																	<h1 class="product-small-item__title">[GAKYU] 무료배송
-																		모던 라운드 리빙박스 시리즈 8size</h1>
-																	<span class="delivery_info">무료배송&nbsp;|&nbsp;일반택배</span>
-																</span>
-															</a>
-															<button class="carted-product__delete" type="button" aria-label="삭제">
-																<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
-																	<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
-																</svg>
-															</button>
-															<ul class="carted-product__option-list">
-																<li class="carted-product__option-list__item">
-																	<article class="option_box">
-																		<h2 class="option_title">사이즈선택: 리빙박스L /
-																			색상선택: 아이보리</h2>
-																		<button type="button" aria-label="삭제" class="option_delete">
-																			<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
-																				<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
-																			</svg>
-																		</button>
-																		<div class="option_subBox">
-																			<div class="option_qty">
-																				<span class=" minus_qty bi bi-dash-lg"></span>
-																				<button class="chage_qty">1</button>
-																				<span class="plus_qty bi bi-plus-lg"></span>
-																			</div>
-																			<div class="option_price">5,000원</div>
-																		</div>
-																	</article>
-																</li>
-																<li class="carted-product__option-list__item">
-																	<article class="option_box">
-																		<h2 class="option_title">사이즈선택: 리빙박스S /
-																			색상선택: 아이보리</h2>
-																		<button type="button" aria-label="삭제" class="option_delete">
-																			<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
-																				<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
-																			</svg>
-																		</button>
-																		<div class="option_subBox">
-																			<div class="option_qty">
-																				<span class="minus_qty bi bi-dash-lg"></span>
-																				<button class="chage_qty">1</button>
-																				<span class="plus_qty bi bi-plus-lg"></span>
-																			</div>
-																			<div class="option_price">2,700원</div>
-																		</div>
-																	</article>
-																</li>
-															</ul>
-															<div class="carted-product__footer">
-																<span class="carted-product__footer__left">
-																	<button class="carted-product__edit-btn" type="button">옵션변경</button>
-																	<button class="carted-product__order-btn" type="button">바로구매</button>
-																</span>
-																<span class="carted-product__subtotal">
-																	<span class="carted-product__subtotal__number">7,700</span>원
-																</span>
-															</div>
-														</article>
-													</li>
-												</ul>
-												<footer class="commerce-cart__delivery-group__footer">
-													<p class="commerce-cart__delivery-group__total">배송비 무료</p>
-												</footer>
-											</article>
-										</li>
-									</ul>
-								</article>
-							</li>
-						</ul>
+						<!-- 상품 시작 -->
+						<!-- forEach는 commerce-cart__content-wrap 이상에서 들어가야함 이건 임시 테스트 -->
+						<c:forEach var="dto" items="${list}">
+						<article class="carted-product">
+							<div class="carted-product__select">
+								<div class="checkbox-wrap">
+									<input type="checkbox" class="checkbox" value="" checked>
+								</div>
+							</div>
+							<span class="css-l46ngn elsmzm01">오늘출발 마감
+								<span class="afterDeadLine css-1xskdmv elsmzm00">7/8 (월) 발송 예정</span>
+							</span>
+							<a class="product-small-item product-small-item--clickable" href="/productions/169814/selling">
+								<span class="product-small-item__image">
+									<img alt="상품 이미지" src="https://image.ohou.se/i/bucketplace-v2-development/uploads/productions/162546803477431867.jpg?w=256&amp;h=256&amp;c=c">
+								</span>
+								<span class="product-small-item__content">
+									<h1 class="product-small-item__title">[스타일링홈]
+										${dto.productName}</h1>
+									<span class="delivery_info">70,000원 이상
+										무료배송&nbsp;|&nbsp;일반택배
+									</span>
+								</span>
+							</a>
+							<button class="carted-product__delete" type="button" aria-label="삭제">
+								<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
+									<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
+								</svg>
+							</button>
+							<ul class="carted-product__option-list">
+							<!-- 1번째 옵션 -->
+								<li class="carted-product__option-list__item">
+									<article class="option_box">
+										<h2 class="option_title">${dto.optionName}: ${dto.optionValue}
+										 / ${dto.optionName2}: ${dto.optionValue}</h2>
+										<button type="button" aria-label="삭제" class="option_delete">
+											<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
+												<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
+											</svg>
+										</button>
+										<div class="option_subBox">
+											<div class="option_qty">
+												<span class="minus_qty bi bi-dash-lg"></span>
+												<button class="chage_qty">${dto.qty}</button>
+												<span class="plus_qty bi bi-plus-lg"></span>
+											</div>
+											<div class="option_price">${dto.salePrice}원
+											</div>
+										</div>
+									</article>
+								</li>
+								<!-- 2번째 옵션 -->
+								<!--
+								<li class="carted-product__option-list__item">
+									<article class="option_box">
+										<h2 class="option_title">조립/설치비 (1개)</h2>
+										<button type="button" aria-label="삭제" class="option_delete">
+											<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
+												<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
+											</svg>
+										</button>
+										<div class="option_subBox">
+											<div class="option_price">0원</div>
+										</div>
+									</article>
+								</li>
+								-->
+							</ul>
+							<div class="carted-product__footer">
+								<span class="carted-product__footer__left">
+									<button class="carted-product__edit-btn" type="button">옵션변경</button>
+									<button class="carted-product__order-btn" type="button">바로구매</button>
+								</span>
+								<span class="carted-product__subtotal">
+									<span class="carted-product__subtotal__number">29,500</span>원
+								</span>
+							</div>
+						</article>
+						<footer class="commerce-cart__delivery-group__footer">
+							<p class="commerce-cart__delivery-group__total">2개 묶음배송비 3,000원 OR 배송비 무료</p>
+							<p class="commerce-cart__delivery-group__group-caption">묶음배송 상품 600원 추가시 무료배송</p>
+							<p class="commerce-cart__delivery-group__group-link">
+								<a class="commerce-cart__delivery-group__group-link__link" href="/productions/455128/groupable_productions">묶음배송 상품 추가하기
+									<svg class="icon" width="1em" height="1em" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+										<path fill="currentColor" fill-rule="nonzero" d="M6 19.692L8.25 22 18 12 8.25 2 6 4.308 13.5 12z"></path>
+									</svg>
+								</a>
+							</p>
+						</footer>
+						</c:forEach>
 						<!-- 모바일 대응 금액 출력 -->
 						<div class="commerce-cart__summary commerce-cart__content__summary">
 							<dl class="commerce-cart__summary__row">
@@ -598,13 +438,13 @@
 		</div>
 	</div>
 	<!-- 모바일 대응 결제버튼 -->
-		<div class="commerce-cart__footer-wrap" style="position: sticky; bottom: 0px; transition: bottom 0.1s ease 0s;">
-			<div class="commerce-cart__footer" style="position: relative;">
-				<div class="commerce-cart__footer__total">
-					<span class="count">3개 </span>
-					<span class="cost">103,100원</span>
-				</div>
-				<button class="order_btn commerce-cart__footer__order" type="button">바로구매</button>
+	<div class="commerce-cart__footer-wrap" style="position: sticky; bottom: 0px; transition: bottom 0.1s ease 0s;">
+		<div class="commerce-cart__footer" style="position: relative;">
+			<div class="commerce-cart__footer__total">
+				<span class="count">3개 </span>
+				<span class="cost">103,100원</span>
 			</div>
+			<button class="order_btn commerce-cart__footer__order" type="button">바로구매</button>
 		</div>
+	</div>
 </div>
