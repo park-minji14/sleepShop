@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgsg.dra.mapper.MemberMapper">
+
+	<!-- 로그인 멤버 정보를 가져오는 SQL 문 -->
+	<select id="loginMember" parameterType="String" resultType="com.sgsg.dra.domain.Member">
+		SELECT m.memberIdx, membership, userId, userName, userPwd, register_date, modify_date, last_login
+		FROM member m
+		JOIN member1 m1 ON m1.memberIdx = m.memberIdx
+		WHERE userId = #{userId} AND enabled != 0
+	</select>
+	
+	<!-- 마지막 로그인 시간을 업데이트하는 SQL 문 -->
+	<update id="updateLastLogin" parameterType="String">
+		UPDATE member1 SET last_login = SYSDATE, failure_cnt = 0
+		WHERE userId=#{userId}
+	</update>
+	
+	
+	<!-- 새로운 회원의 고유 식별자를 생성하는 SQL 문 -->
+    <select id="memberSeq" resultType="Long">
+       SELECT member_seq.NEXTVAL FROM dual 
+    </select>
+    
+    
+	
+	<!-- 새로운 회원을 member 테이블에 삽입하는 SQL 문 -->
+    <insert id="insertMember" parameterType="Long">
+		INSERT INTO member(memberIdx, membership) VALUES (#{memberIdx}, 1) 
+    </insert>
+	
+	
+	<!-- 새로운 회원을 member1 테이블에 삽입하는 SQL 문 -->
+    <insert id="insertMember1" parameterType="com.sgsg.dra.domain.Member">
+		INSERT INTO member1(memberIdx, userId, userName, EMAIL, userPwd,  enabled, register_date, modify_date, LAST_LOGIN, failure_cnt)
+		VALUES (#{memberIdx}, #{userId}, #{userName}, #{userEmail}, #{userPwd}, 1, SYSDATE, SYSDATE, SYSDATE, 0) 
+    </insert>
+	
+	
+	<!-- 새로운 회원을 member2 테이블에 삽입하는 SQL 문 -->
+    <insert id="insertMember2" parameterType="com.sgsg.dra.domain.Member">
+		INSERT INTO member2(userId, birth, email, tel, zip, addr1, addr2)
+		VALUES (#{userId}, #{birth}, #{email}, #{tel}, 
+			#{zip, jdbcType=VARCHAR}, #{addr1, jdbcType=VARCHAR}, 
+			#{addr2, jdbcType=VARCHAR})
+    </insert>
+	
+	
+	<!-- 새로운 회원을 member1과 member2 테이블에 동시에 삽입하는 SQL 문 -->
+    <update id="insertMember12" parameterType="com.sgsg.dra.domain.Member">
+		INSERT ALL
+		INTO member1(memberIdx, userId, userName, email, userPwd, enabled, 
+			register_date, modify_date, last_login, failure_cnt)
+		VALUES (#{memberIdx}, #{userId}, #{userName}, #{email}, #{userPwd}, 1, SYSDATE, SYSDATE,  SYSDATE, 0)
+		INTO member2(userId, birth, tel, zip, addr1, addr2)
+		VALUES (#{userId}, #{birth},  #{tel}, 
+			#{zip, jdbcType=VARCHAR}, #{addr1, jdbcType=VARCHAR}, 
+			#{addr2, jdbcType=VARCHAR})
+		SELECT * FROM dual     
+    </update>
+	
+	
+	<!-- userId로 회원 정보를 찾는 SQL 문 -->
+	<select id="findById" parameterType="String" resultType="com.sgsg.dra.domain.Member">
+		SELECT m.memberIdx, membership, m1.userId, userName, userPwd, enabled,
+			register_date, modify_date, last_login,
+			TO_CHAR(birth, 'YYYY-MM-DD') birth, email, tel, 
+			zip, addr1, addr2
+		FROM member m 
+		JOIN member1 m1 ON m.memberIdx = m1.memberIdx 
+		LEFT OUTER JOIN member2 m2 ON m1.userId = m2.userId
+		WHERE m1.userId = #{userId}
+	</select>
+	
+	
+	<!-- memberIdx로 회원 정보를 찾는 SQL 문 -->
+	<select id="findByMemberIdx" parameterType="Long" resultType="com.sgsg.dra.domain.Member">
+		SELECT m.memberIdx, membership, enabled, 
+			NVL(m1.userId, 'guest') userId, NVL(userName, '손님') userName, userPwd, 
+			register_date, modify_date, last_login,
+			TO_CHAR(birth, 'YYYY-MM-DD') birth, email, tel,
+			zip, addr1, addr2
+		FROM member m
+		LEFT OUTER JOIN member1 m1 ON m.memberIdx = m1.memberIdx
+		LEFT OUTER JOIN member2 m2 ON m1.userId = m2.userId
+		WHERE m.memberIdx = #{memberIdx}
+	</select>
+	
+	
+	
+	<!-- 회원정보 수정  -->
+	
+	
+	
+	
+	
+</mapper>

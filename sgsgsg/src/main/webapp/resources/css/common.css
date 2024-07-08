@@ -1,0 +1,477 @@
+@charset "UTF-8";
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+/*폰트*/
+@font-face {
+	font-family: 'GmarketSansMedium';
+	src:
+		url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+body {
+	font-family: GmarketSansMedium;
+}
+
+/*헤더 css*/
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	border-bottom: 1px solid #eee;
+}
+
+.logo {
+	font-weight: bold;
+	font-size: 50px;
+	font-family: GmarketSansMedium;
+}
+
+.main-menu {
+	display: flex;
+	list-style-type: none;
+	align-items: center;
+	margin: 0;
+}
+
+.main-menu li {
+	margin-right: 20px;
+	cursor: pointer;
+}
+
+.main-menu li.active, .sub-menu li.active {
+	color: #35c5f0;
+	font-weight: bold;
+}
+
+/*검색창 css*/
+.search-bar {
+	position: relative;
+	flex-grow: 1;
+	margin: 0 20px;
+	align-content: center;
+	flex-wrap: wrap;
+}
+
+.search-bar input {
+	width: 100%;
+	padding: 10px 35px 10px 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	transition: border-color 0.3s;
+}
+
+.search-bar input:focus {
+	border-color: #35c5f0;
+	outline: none;
+}
+
+.search-bar .bi-search {
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #888;
+}
+
+.user-icons {
+	display: flex;
+	align-items: center;
+}
+
+.user-icons>* {
+	margin-left: 15px;
+}
+
+.login-btn {
+	background-color: #35c5f0;
+	color: white;
+	border: none;
+	padding: 10px 15px;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.sub-menu {
+	display: flex;
+	list-style-type: none;
+	padding: 30px 20px;
+	align-items: center;
+	margin-bottom: 0;
+	width: 100%;
+	position: relative;
+}
+
+.sub-menu li {
+	margin-right: 15px;
+	cursor: pointer;
+}
+
+.main-banner {
+	position: relative;
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+
+.carousel {
+	position: relative;
+	height: 100%;
+}
+
+.carousel-inner {
+	height: 100%;
+	width: 300%;
+	display: flex;
+	transition: transform 0.5s ease;
+}
+
+.carousel-item {
+	width: 33.333%;
+	height: 100%;
+	position: relative;
+}
+
+.carousel-item img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.promo-text {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+	color: white;
+	background-color: rgba(0, 0, 0, 0.5);
+	padding: 20px;
+	border-radius: 10px;
+}
+
+.promo-text h2 {
+	font-size: 32px;
+	margin-bottom: 10px;
+}
+
+.promo-text p {
+	font-size: 18px;
+	margin-bottom: 20px;
+}
+
+.promo-btn {
+	background-color: #35c5f0;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	font-size: 16px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.promo-btn:hover {
+	background-color: #2ba5d0;
+}
+
+
+
+/*------------footer style-------------------*/
+.footer-left {
+	flex: 1;
+}
+
+.footer-left h3 {
+	font-size: 18px;
+	margin-bottom: 10px;
+}
+
+.footer-left .phone {
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+.footer-left .time {
+	color: #666;
+	margin-bottom: 15px;
+}
+
+.site-footer {
+	background-color: #f7f9fa;
+	padding: 40px 0;
+	font-family: Arial, sans-serif;
+}
+
+
+.service-info {
+	list-style-type: none;
+	padding: 0;
+	margin-bottom: 20px;
+}
+
+.service-info li {
+	margin-bottom: 5px;
+	color: #666;
+}
+
+.inquiry-btn {
+	display: block;
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 10px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.footer-right {
+	flex: 2;
+}
+
+.footer-links {
+	margin-bottom: 20px;
+}
+
+.footer-links a {
+	color: #333;
+	text-decoration: none;
+	margin-right: 15px;
+}
+
+.company-info, .copyright {
+	color: #666;
+	font-size: 12px;
+	line-height: 1.5;
+}
+
+@media ( max-width : 768px) {
+	.footer-content {
+		flex-direction: column;
+	}
+	.footer-left, .footer-right {
+		width: 100%;
+	}
+}
+.popular-search {
+	position: relative;
+}
+.sub-menu-search {
+	position: absolute;
+	right: 0;
+}
+
+/*로그인 버튼*/
+.login-btn.btn-outline-primary {
+    background-color: #35c5f0;
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    font-size: 14px;  
+    transition: background-color 0.3s ease; 
+}
+
+.login-btn.btn-outline-primary:hover {
+    background-color: #2ba9d1; 
+}
+
+.login-btn.btn-outline-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(53, 197, 240, 0.5); 
+}
+.login-btn {
+    height: 36px;   
+    line-height: 1;
+}
+
+.login-btn-container {
+    display: flex;
+    align-items: center;
+    height: 100%; 
+}
+
+.login-btn {
+    margin-top: 18px;
+    margin-bottom: 5px;
+
+}
+
+.recommended-products .container {
+    max-width: 1200px; 
+    padding: 0 15px;
+    margin: 0 auto;
+}
+
+.carousel-item .row {
+    display: flex;
+    flex-wrap: nowrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.product-col {
+    flex: 0 0 16.666%;
+    max-width: 16.666%;
+    padding-right: 7.5px;
+    padding-left: 7.5px;
+}
+
+.product-item {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.product-item img {
+    width: 100%;
+    height: auto;
+}
+
+
+
+/*인기 검색어 css*/
+.popular-search-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.popular-search-list li {
+	display: flex;
+	justify-content: space-between;
+	padding: 5px 0;
+}
+
+.popular-search-list .new {
+	color: red;
+	font-weight: bold;
+}
+
+.popular-search-content button {
+	background: none;
+	border: none;
+	color: #888;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.popular-search-content button:hover {
+	color: #000;
+}
+
+.popular-search-btn {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 16px;
+	color: #555;
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius: 8px;
+}
+
+.popular-search-content {
+	display: none;
+	position: absolute;
+	top: 100%;
+	right: 0;
+	background-color: rgba(255, 255, 255, 0.8);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	padding: 10px;
+	width: 200px;
+	z-index: 1000;
+	border-radius: 8px;
+}
+
+.popular-search-content.active {
+	display: block;
+}
+
+.popular-search-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-weight: bold;
+	margin-bottom: 10px;
+	background-color: transparent;
+	border: none;
+}
+.inner {
+	max-width: 1200px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+
+/*헤더 고정시키는 css*/
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.fixed-nav {
+  position: fixed;
+  top: var(--header-height); 
+  left: 0;
+  right: 0;
+  z-index: 9998;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+/* 헤더의 높이를 CSS 변수로 정의 */
+:root {
+  --header-height: 60px; 
+}
+
+/* nav의 높이를 CSS 변수로 정의 */
+:root {
+  --nav-height: 40px; /* 실제 nav의 높이로 조정 */
+}
+
+/*서브 메뉴*/
+.sub-menu li a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/*로그인 성공시 버튼,,*/
+.login-btn.btn-outline-primary, .login-success-btn {
+    background-color: #35c5f0;
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.login-success-btn {
+    background-color: #00C0D2;
+}
+
+.login-success-btn:hover {
+    background-color: #00a0b0;
+}
+
+main{
+	padding-top: 100px
+}
+.user-icons img {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+}
+

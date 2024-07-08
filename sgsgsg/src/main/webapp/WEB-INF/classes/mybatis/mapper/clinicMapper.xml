@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgsg.dra.mapper.ClinicMapper">
+
+	<!-- 질문 등록 -->
+	<insert id="insertClinic" parameterType="com.sgsg.dra.domain.Clinic">
+        insert into sleep_clinic_question (question_id, userId, category_id, title, content, is_public,
+            created_date, saveFilename, originalFilename)
+            VALUES (sleep_clinic_question_seq.NEXTVAL, 
+            #{userId}, #{category_id}, #{title}, #{content}, #{is_public}, SYSDATE,
+            #{saveFilename, jdbcType=VARCHAR}, 
+            #{originalFilename, jdbcType=VARCHAR})
+    </insert>
+	
+	
+	<sql id="where-list">
+		<if test="schType=='all' ">
+			( INSTR(c.title, #{kwd}) &gt; 0
+				OR INSTR(c.content, #{kwd}) &gt; 0
+				OR INSTR(cc.category_id, #{kwd}) &gt; 0 )
+		</if>
+		<if test="schType=='title' ">
+			INSTR(c.title, #{kwd}) &gt; 0
+		</if>
+		<if test="schType=='content' ">
+			INSTR(c.content, #{kwd}) &gt; 0
+		</if>
+	</sql>
+	
+	
+	<!-- 질문 개수 -->
+    <select id="dataCount" parameterType="map" resultType="Integer">
+        SELECT NVL(COUNT(*), 0)
+        FROM sleep_clinic_question c
+        JOIN member1 m ON c.userId = m.userId
+        LEFT JOIN sleep_clinic_category cc ON c.category_id = cc.category_id
+        <where>
+            <if test="kwd != null and kwd != '' ">
+                <include refid="where-list"/>
+            </if>
+        </where>
+    </select>
+	
+	
+	<!-- 질문 리스트 -->
+    <select id="listClinic" parameterType="map" resultType="com.sgsg.dra.domain.Clinic">
+        SELECT c.question_id, c.userId, c.title, c.category_id, cc.category_name,
+            TO_CHAR(c.created_date, 'YYYY-MM-DD') created_date,
+            c.is_public, c.saveFilename, c.originalFilename
+        FROM sleep_clinic_question c
+        JOIN member1 m ON c.userId = m.userId
+        LEFT JOIN sleep_clinic_category cc ON c.category_id = cc.category_id
+        <where>
+            <if test="kwd != null and kwd != '' ">
+                <include refid="where-list"/>
+            </if>
+            <if test="category != 'all'">
+	            AND cc.category_name = #{category}
+	        </if>
+        </where>
+        ORDER BY c.question_id DESC
+        OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY        
+    </select>
+    
+    
+    <!-- 카테고리 리스트 -->
+    <select id="listClinicCategory" resultType="com.sgsg.dra.domain.Clinic">
+        SELECT category_id, category_name
+        FROM sleep_clinic_category
+    </select>
+	
+	
+	
+	
+	<!-- 질문 보기 -->
+	<select id="findById" parameterType="Long" resultType="com.sgsg.dra.domain.Clinic">
+	    SELECT c.question_id, c.userId, c.title, c.content, c.is_public,
+	        c.created_date, c.saveFilename, c.originalFilename
+	    FROM sleep_clinic_question c
+	    JOIN member1 m ON c.userId = m.userId
+	    WHERE c.question_id = #{question_id}
+	</select>
+	
+	
+	<!-- 이전 질문 -->
+	<select id="findByPrev" parameterType="map"
+			resultType="com.sgsg.dra.domain.Clinic">
+		SELECT question_id, title, c.is_public
+		FROM sleep_clinic_question c
+		JOIN member1 m ON c.userId = m.userId
+		<where>
+			<if test="kwd != null and kwd != '' ">
+				<include refid="where-list"/>
+			</if>
+			AND ( question_id &gt; #{question_id} )
+		</where>
+		ORDER BY question_id ASC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	
+	
+	<!-- 다음 질문 -->
+	<select id="findByNext" parameterType="map"
+			resultType="com.sgsg.dra.domain.Clinic">
+		SELECT question_id, title, c.is_public
+		FROM sleep_clinic_question c
+		JOIN member1 m ON c.userId = m.userId
+		<where>
+			<if test="kwd != null and kwd != '' ">
+				<include refid="where-list"/>
+			</if>
+			AND ( question_id &lt; #{question_id} )
+		</where>
+		ORDER BY question_id ASC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	
+	
+	<!-- 질문 수정 -->
+	<update id="updateClinic" parameterType="com.sgsg.dra.domain.Clinic">
+		UPDATE sleep_clinic_question SET title=#{title}, content=#{content},
+			category_id=#{category_id}, is_public=#{is_public}
+		WHERE question_id = #{question_id} AND userId = #{userId}
+	</update>
+	
+	<!-- 질문 삭제 -->
+	<delete id="deleteClinic" parameterType="Long">
+		DELETE FROM sleep_clinic_question WHERE question_id=#{question_id}
+	</delete>
+	
+	
+	<!--답변 등록 -->
+	<insert id="insertClinicAnswer" parameterType="com.sgsg.dra.domain.ClinicAnswer">
+		insert into sleep_clinic_answer(answer_num, question_id, userId, content, created_date) 
+		values (
+			sleep_clinic_answer_seq.NEXTVAL, #{question_id}, #{userId}, #{content},
+			sysdate)
+	</insert>
+	
+	
+	<!-- 답변 개수 -->
+	<select id="ClinicAnswerCount" parameterType="map" resultType="Integer">
+		select nvl(count(*), 0)
+		from sleep_clinic_answer
+		where question_id=#{question_id}
+	</select>
+
+
+
+
+
+
+
+
+
+</mapper>
