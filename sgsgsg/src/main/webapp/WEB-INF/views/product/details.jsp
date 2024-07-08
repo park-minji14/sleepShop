@@ -436,11 +436,16 @@
   text-align: right;
 }
 
+/*리뷰 모달*/
+.modal-content{
+margin-top: 200px;
+}
+
     
   </style>
   
   <div class="container-fluid">
-    <main class="container my-5">
+    <div class="container my-5">
       <div class="row">
         <div class="col-md-6">
           <div class="product-images d-flex">
@@ -485,11 +490,10 @@
             </span>
             </div>
             <div class="product-benefits mb-3">
-              <p class="text-muted"><i class="bi bi-gift me-2"></i>혜택: 70P 적립 (WELCOME 0.1% 적립)</p>
-              <p class="text-muted"><i class="bi bi-credit-card me-2"></i>월 13,960원 (5개월) 무이자할부</p>
+              <p class="text-muted"><i class="bi bi-gift me-2"></i>혜택: ${dto.savedMoney} 적립</p>
             </div>
             <div class="delivery-info mb-3">
-              <p class="mb-1"><i class="bi bi-truck me-2"></i>무료배송</p>
+              <p class="mb-1"><i class="bi bi-truck me-2"></i>배송비 : ${dto.delivery}</p>
               <p><i class="bi bi-clock me-2"></i>12:00 까지 결제시 오늘 출발</p>
               <p><i class="bi bi-box-seam me-2"></i>제주도/도서산간 지역 8,000원</p>
             </div>
@@ -539,11 +543,11 @@
           </li>
           <li class="nav-item" role="presentation">
             <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button"
-              role="tab" aria-controls="review" aria-selected="false">리뷰 7,142</button>
+              role="tab" aria-controls="review" aria-selected="false">리뷰 ${dto.reviewCount}</button>
           </li>
           <li class="nav-item" role="presentation">
             <button class="nav-link" id="qna-tab" data-bs-toggle="tab" data-bs-target="#qna" type="button" role="tab"
-              aria-controls="qna" aria-selected="false">문의 2,409</button>
+              aria-controls="qna" aria-selected="false">문의 ${dto.questionCount}</button>
           </li>
           <li class="nav-item" role="presentation">
             <button class="nav-link" id="delivery-tab" data-bs-toggle="tab" data-bs-target="#delivery" type="button"
@@ -578,7 +582,7 @@
           <!--리뷰시작!-->
           <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
             <div class="d-flex justify-content-between align-items-center mb-4">
-              <h3>리뷰 1,414</h3>
+              <h3>리뷰 ${dto.reviewCount}</h3>
               <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">리뷰쓰기</button>
             </div>
 
@@ -665,7 +669,7 @@
           </div>
         </div>
       </div>
-    </main>
+    </div>
 </div>
 
 
@@ -1031,6 +1035,11 @@ $(document).ready(function () {
     // 품절 상태 설정 (테스트용)
     isOutOfStock = false;
     updateProductStatus(isOutOfStock);
+    
+    
+    //옵션개수 
+    
+    
 });
 
 </script>

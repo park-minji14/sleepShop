@@ -34,7 +34,7 @@
 	</select>
 
 	<!-- 상품 상세정보 가져오기 -->
-	<!--상품번호,카테고리번호,분류(일반,기획),상품노출여부,상품이름,가격,적립금,옵션개수,할인율,배송비,썸네일이미지,내용,등록날짜,총 재고,리뷰점수,  -->
+	<!--상품번호,카테고리번호,분류(일반,기획),상품노출여부,상품이름,가격,포인트,옵션개수,할인율,배송비,썸네일이미지,내용,등록날짜,총 재고,리뷰점수,  -->
 	<!-- 리뷰개수,질문개수,시작날짜,종료날짜,특별노출여부,판매개수 -->
 	<select id="findById" parameterType="Long"
 		resultType="com.sgsg.dra.domain.Product">
@@ -96,14 +96,26 @@
 		WHERE p.productShow =
 		1 AND p.productNum = #{productNum}
 	</select>
-
+	
 	<!-- 상품 이미지 조회 -->
 	<select id="listProductFile" parameterType="Long"
 		resultType="com.sgsg.dra.domain.Product">
 		SELECT fileNum,productNum,img_name
 		FROM PRODUCT_IMAGE
-		WHERE productNum = #{productNum}
+		WHERE productNum = #{productNum} 
 	</select>
 
+	<!--상품 옵션 리스트  -->
+	<!-- 
+	<select id="listProductOption" parameterType="Long" resultType="con.sgsg.dra.domain.Product">
+	SELECT OPTIONNUM,OPTIONNAME,PRODUCTNUM,PARENTNUM
+	FROM PRODUCT_OPTION
+	ORDER BY PARENTNUM NULLS FIRST, PARENTNUM  	
+	</select>-->
+	<!--  PARENTNUM 기준으로 NULL값을 오름차순-->
+	
+	<!-- 상품 옵션 디테일 -->
+	
 
+	
 </mapper>
