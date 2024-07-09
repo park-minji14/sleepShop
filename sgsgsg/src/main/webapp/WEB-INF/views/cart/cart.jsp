@@ -24,7 +24,7 @@
 					<span>모두선택</span>
 				</label>
 				<span class="text-right">
-					<button class="commerce-cart__header__delete" type="button">선택삭제</button>
+					<button class="cart-header_delete" type="button">선택삭제</button>
 				</span>
 			</div>
 			<div class="notification">
@@ -52,9 +52,7 @@
 				<div>
 					<article class="carted-product">
 						<div class="carted-product__select">
-							<div class="checkbox-wrap">
-								<input type="checkbox" value="${dto.stockNum}" class="checkbox" checked>
-							</div>
+							<input type="checkbox" value="${dto.stockNum}" class="checkbox" checked>
 						</div>
 						<span class="css-l46ngn elsmzm01">오늘출발 마감
 							<span class="afterDeadLine css-1xskdmv elsmzm00">7/8 (월) 발송 예정</span>
