@@ -3,12 +3,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sgsg.dra.mapper.CartMapper">
 	<insert id="inserCart" parameterType="com.sgsg.dra.domain.Product">
-		INSERT INTO CART_ITEM(CARTNUM, QTY, USERID, STOCKNUM, REG_DATE)
-			VALUES(CART_ITEM_SEQ.NEXTVAL, #{qty}, #{userId}, #{stockNum}, SYSDATE)
+		INSERT INTO CART_ITEM(USERID, STOCKNUM, QTY, REG_DATE)
+			VALUES(#{userId}, #{stockNum}, #{qty}, SYSDATE)
 	</insert>
 	
 	<select id="selectCartList" parameterType="String" resultType="com.sgsg.dra.domain.Product">
-		SELECT c.CARTNUM, c.QTY, c.REG_DATE AS CART_ITEM_REG_DATE,
+		SELECT c.QTY, c.REG_DATE AS CART_ITEM_REG_DATE,
 			s.STOCKNUM, s.TOTALSTOCK,
 			p.PRODUCTNUM, p.CATEGORYNUM, p.PRODUCTNAME,
 			p.CLASSIFY, p.PRICE, p.SALEPRICE, p.DISCOUNTRATE, p.SAVEDMONEY,
@@ -37,8 +37,8 @@
 			FROM optionDetail d2
 			JOIN PRODUCT_OPTION o2 ON d2.OPTIONNUM = o2.OPTIONNUM
 		) d2 ON s.detailNum2 = d2.DETAILNUM
-		WHERE c.USERID = 'admin'
-		GROUP BY c.CARTNUM, c.QTY, c.REG_DATE,
+		WHERE c.USERID = #{userId}
+		GROUP BY c.QTY, c.REG_DATE,
 			s.STOCKNUM, s.TOTALSTOCK,
 			p.PRODUCTNUM, p.CATEGORYNUM, p.PRODUCTNAME,
 			p.CLASSIFY, p.PRICE, p.SALEPRICE, p.DISCOUNTRATE, p.SAVEDMONEY,
@@ -48,7 +48,7 @@
 	</select>
 	
 	<update id="updateQty" parameterType="com.sgsg.dra.domain.Product">
-		UPDATE CART_ITEM SET QTY = #{qty}, REG_DATE=SYSDATE where CARTNUM = #{cartNum}
+		UPDATE CART_ITEM SET QTY = #{qty}, REG_DATE=SYSDATE where USERID=#{userId}, STOCKNUM=#{stockNum}
 	</update>
 	
 	

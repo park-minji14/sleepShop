@@ -487,8 +487,8 @@ function ajaxFun(url, method, formData, dataType, fn, file = false) {
 
 function changeQty(qty, $box) {
 	let url = "${pageContext.request.contextPath}/cart/updateQty";
-	let cartNum=$($box).find('input[name="cartNum"]').val();
-	let query = "qty="+qty+"&cartNum="+cartNum;
+	let stockNum=$($box).find('input[name="stockNum"]').val();
+	let query = "qty="+qty+"&stockNum="+stockNum;
 	
 	const fn = function(data) {
 		$($box).find('.chage_qty').text(qty);
@@ -515,18 +515,28 @@ $('.container').on('click', '.plus_qty', function() {
 	changeQty(qty, $box);
 
 });
-/*
+
 $(function() {
-    $(".btn-outline-primary").click(function() {
+    $(/*장바구니 버튼*/).click(function() {
         let url = "${pageContext.request.contextPath}/cart/insertCart";
-        let query = "qty=1&stockNum=1";
+        let query = "qty="+ /* 수량 */ +"&stockNum="+/* 재고번호*/;
         
         const fn = function(data) {
-            console.log(data);
+            let state = data.state;
+            if(state === "duplicate"){
+            	if(! confirm('이미 장바구니에 들어있는 상품입니다. 추가하시겠습니까?')){
+            		return;
+            	}
+            	let url = "${pageContext.request.contextPath}/cart/updateQty";
+            	const fn = function(data) {
+                    let state = data.state;
+            	}
+            	ajaxFun(url, "post", query, "json", fn);
+            }
         };
         
         ajaxFun(url, "post", query, "json", fn);
     });
 });
-*/
+
 </script>
