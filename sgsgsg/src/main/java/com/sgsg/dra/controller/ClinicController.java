@@ -208,7 +208,7 @@ public class ClinicController {
 	
 	// 질문글 수정
 	@GetMapping("update")
-	public String updateForm(@RequestParam long num,
+	public String updateForm(@RequestParam("num") long num,
 			@RequestParam String page,
 			HttpSession session,
 			Model model) throws Exception {

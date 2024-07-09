@@ -133,7 +133,7 @@ function check() {
 							<td> 
 								<p class="form-control-plaintext">
 									<c:if test="${not empty dto.saveFilename}">
-										<a href="javascript:deleteFile('${dto.num}');"><i class="bi bi-trash"></i></a>
+										<a href="javascript:deleteFile('${dto.question_id}');"><i class="bi bi-trash"></i></a>
 										${dto.originalFilename}
 									</c:if>
 									&nbsp;
@@ -150,7 +150,7 @@ function check() {
 							<button type="reset" class="btn btn-light">다시입력</button>
 							<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/clinic/list';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
 							<c:if test="${mode=='update'}">
-								<input type="hidden" name="num" value="${dto.num}">
+								<input type="hidden" name="question_id" value="${dto.question_id}">
 								<input type="hidden" name="saveFilename" value="${dto.saveFilename}">
 								<input type="hidden" name="originalFilename" value="${dto.originalFilename}">
 								<input type="hidden" name="page" value="${page}">

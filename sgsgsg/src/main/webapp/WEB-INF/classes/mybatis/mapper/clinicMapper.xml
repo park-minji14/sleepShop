@@ -121,8 +121,10 @@
 	<!-- 질문 수정 -->
 	<update id="updateClinic" parameterType="com.sgsg.dra.domain.Clinic">
 		UPDATE sleep_clinic_question SET title=#{title}, content=#{content},
-			category_id=#{category_id}, is_public=#{is_public}
-		WHERE question_id = #{question_id} AND userId = #{userId}
+			category_id=#{category_id}, is_public=#{is_public},
+			saveFilename=#{saveFilename, jdbcType=VARCHAR},
+			originalFilename=#{originalFilename, jdbcType=VARCHAR}
+		WHERE question_id = #{question_id}
 	</update>
 	
 	<!-- 질문 삭제 -->

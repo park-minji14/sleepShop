@@ -297,9 +297,17 @@ document.addEventListener('DOMContentLoaded', function () {
 						<table class="table">
 						<tr> 
 							<!-- <td width="60">${dataCount-(page-1)*size-status.index}</td> -->
-							<td width="60" style="color: white; background: #35c5f0; line-height: 30px; border-radius: 10px; font-size: 20px; padding-top: 30px;">${dto.category_name}</td>    
+							<td width="60" style="color: white; background: #35c5f0; line-height: 50px; border-radius: 10px; font-size: 22px; padding-top: 30px;">
+								${dto.category_name} 
+							</td>    
 							<td class="left">
-							<span style="font-size: 30px; padding-left: 20px; padding-top: 10px;">${dto.title}<span style="color: orange; font-size: 20px;">&nbsp;&nbsp;[답변 0]</span><br><span style="font-size: 18px; padding-left: 25px;">질문자 : ${dto.userId}</span></span>
+								<span style="font-size: 30px; padding-left: 20px; padding-top: 10px;">
+									${dto.title}
+									<c:if test="${not empty dto.saveFilename}">
+										<span style="color: #8C8C8C; font-size: 20px;"><i class="bi bi-archive"></i></span>
+									</c:if>
+									<span style="color: orange; font-size: 20px;">&nbsp;&nbsp;[답변 0]</span><br><span style="font-size: 18px; padding-left: 25px;">질문자 : ${dto.userId}</span>
+								</span>
 							</td>
 							<td style="text-align: right;">${dto.created_date}</td>  
 							<!-- <td>

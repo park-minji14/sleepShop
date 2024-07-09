@@ -308,7 +308,7 @@
 						
 				<c:choose>
 					<c:when test="${sessionScope.member.userId==dto.userId || sessionScope.member.membership>50}">
-						<button type="button" class="btn1" onclick="deleteBoard();">삭제</button>
+						<button type="button" class="btn1" onclick="location.href='${pageContext.request.contextPath}/clinic/delete?num=${dto.question_id}&page=${page}';">삭제</button>
 					</c:when>
 					<c:otherwise>
 						<button type="button" class="btn2" disabled>삭제</button>
