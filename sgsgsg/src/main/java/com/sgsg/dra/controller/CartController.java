@@ -31,15 +31,15 @@ public class CartController {
 	}
 
 	@GetMapping("list")
-	public String cartList(Model model) {
+	public String cartList(Model model, HttpSession session) {
 		//HttpSession session
 		
 		// 시간별, 같은 회사별, 같은 상품별 정렬...
 		
 		 
 		try {
-			//SessionInfo info = (SessionInfo)session.getAttribute("member");
-			List<Product> list= service.selectCartList(null);
+			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			List<Product> list= service.selectCartList(info.getUserId());
 			
 			model.addAttribute("list", list);
 		} catch (Exception e) {
@@ -85,6 +85,8 @@ public class CartController {
 		return model;
 	}
 	
+	@PostMapping("deleteCart")
+	@ResponseBody
 	public Map<String, Object> deleteCart(Product dto, HttpSession session) {
 		String state = "true";
 

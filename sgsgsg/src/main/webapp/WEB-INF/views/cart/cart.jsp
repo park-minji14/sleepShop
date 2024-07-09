@@ -80,10 +80,13 @@
 							</button>
 							<ul class="carted-product__option-list">
 							<!-- 1번째 옵션 -->
+								
 								<li class="carted-product__option-list__item">
 									<article class="option_box">
-										<h2 class="option_title">${dto.optionName}: ${dto.optionValue}
-										 / ${dto.optionName2}: ${dto.optionValue2}</h2>
+										<h2 class="option_title">
+											<c:if test="${not empty dto.optionNum}">${dto.optionName}: ${dto.optionValue}</c:if>
+											<c:if test="${not empty dto.optionNum2}">/ ${dto.optionName2}: ${dto.optionValue2}</c:if>
+										</h2>
 										<button type="button" aria-label="삭제" class="option_delete">
 											<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
 												<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
@@ -487,31 +490,46 @@ function ajaxFun(url, method, formData, dataType, fn, file = false) {
 
 function changeQty(qty, $box) {
 	let url = "${pageContext.request.contextPath}/cart/updateQty";
-	let stockNum=$($box).find('input[name="stockNum"]').val();
+	let stockNum = $($box).find('input[name="stockNum"]').val();
 	let query = "qty="+qty+"&stockNum="+stockNum;
 	
 	const fn = function(data) {
-		$($box).find('.chage_qty').text(qty);
+		if(data.state){
+			$($box).find('.chage_qty').text(qty);
+		}
     };
     
     ajaxFun(url, "post", query, "json", fn);
 }
 
 $('.container').on('click', '.minus_qty', function() {
-	let qty = parseInt($(this).next().text())-1;
 	let $box = $(this).closest('.option_box');
+	let qty = parseInt($($box).find('input[name="qty"]').val())-1;
+	
 	if(qty === 0){
 		if(! confirm('해당 옵션을 삭제하시겠습니까?')){
 			return;
 		}
-		//삭제 코드
+
+		let url = "${pageContext.request.contextPath}/cart/deleteCart";
+		let query = "stockNum="+$($box).find('input[name="stockNum"]').val();
+		
+		const fn = function(data) {
+			if(data.state){
+				$($box).closest('.carted-product').remove();
+				// <footer class="commerce-cart__delivery-group__footer"> 삭제 안됨
+			}
+	    };
+		
+		ajaxFun(url, "post", query, "json", fn);
+		
 	} else {
 		changeQty(qty, $box);
 	}
 });
 $('.container').on('click', '.plus_qty', function() {
-	let qty = parseInt($(this).prev().text())+1;
 	let $box = $(this).closest('.option_box');
+	let qty = parseInt($($box).find('input[name="qty"]').val())+1;
 	changeQty(qty, $box);
 
 });
