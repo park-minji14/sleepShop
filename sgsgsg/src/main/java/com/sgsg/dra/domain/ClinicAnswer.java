@@ -17,7 +17,34 @@ public class ClinicAnswer {
 	public String rated_date;
 	public String content2;
 	
+	public int answerCount;
 	
+	
+	
+	public int getLike() {
+		return like;
+	}
+	public void setLike(int like) {
+		this.like = like;
+	}
+	public String getRated_date() {
+		return rated_date;
+	}
+	public void setRated_date(String rated_date) {
+		this.rated_date = rated_date;
+	}
+	public String getContent2() {
+		return content2;
+	}
+	public void setContent2(String content2) {
+		this.content2 = content2;
+	}
+	public int getAnswerCount() {
+		return answerCount;
+	}
+	public void setAnswerCount(int answerCount) {
+		this.answerCount = answerCount;
+	}
 	public long getAnswer_num() {
 		return answer_num;
 	}

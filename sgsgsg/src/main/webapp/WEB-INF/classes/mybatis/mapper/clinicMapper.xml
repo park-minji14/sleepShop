@@ -47,7 +47,8 @@
     <select id="listClinic" parameterType="map" resultType="com.sgsg.dra.domain.Clinic">
         SELECT c.question_id, c.userId, c.title, c.category_id, cc.category_name,
             TO_CHAR(c.created_date, 'YYYY-MM-DD') created_date,
-            c.is_public, c.saveFilename, c.originalFilename
+            c.is_public, c.saveFilename, c.originalFilename,
+            (SELECT COUNT(*) FROM sleep_clinic_answer a WHERE a.question_id = c.question_id) AS answerCount
         FROM sleep_clinic_question c
         JOIN member1 m ON c.userId = m.userId
         LEFT JOIN sleep_clinic_category cc ON c.category_id = cc.category_id
@@ -76,7 +77,8 @@
 	<!-- 질문 보기 -->
 	<select id="findById" parameterType="Long" resultType="com.sgsg.dra.domain.Clinic">
 	    SELECT c.question_id, c.userId, c.title, c.content, c.is_public,
-	        c.created_date, c.saveFilename, c.originalFilename, cc.category_name
+	        c.created_date, c.saveFilename, c.originalFilename, cc.category_name,
+	        (SELECT COUNT(*) FROM sleep_clinic_answer a WHERE a.question_id = c.question_id) AS answerCount
 	    FROM sleep_clinic_question c
 	    JOIN member1 m ON c.userId = m.userId
 	    LEFT JOIN sleep_clinic_category cc ON c.category_id = cc.category_id
@@ -135,16 +137,16 @@
 	
 	<!--답변 등록 -->
 	<insert id="insertClinicAnswer" parameterType="com.sgsg.dra.domain.ClinicAnswer">
-		insert into sleep_clinic_answer(answer_num, question_id, userId, content, created_date) 
-		values (
-			sleep_clinic_answer_seq.NEXTVAL, #{question_id}, #{userId}, #{content},
-			sysdate)
+	    insert into sleep_clinic_answer(answer_num, question_id, userId, title, content, created_date) 
+	    values (
+	        sleep_clinic_answer_seq.NEXTVAL, 
+	        #{question_id}, #{userId}, #{title}, #{content}, sysdate)
 	</insert>
 	
 	
 	<!-- 답변 개수 -->
 	<select id="ClinicAnswerCount" parameterType="map" resultType="Integer">
-		select nvl(count(*), 0)
+		select nvl(count(*), 0) answerCount
 		from sleep_clinic_answer
 		where question_id=#{question_id}
 	</select>

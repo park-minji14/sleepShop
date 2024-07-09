@@ -337,6 +337,7 @@ public class ClinicController {
 	}
 		
 	
+	/*
 	// 답변 등록
 	@PostMapping("insertClinicAnswer")
 	@ResponseBody
@@ -360,10 +361,62 @@ public class ClinicController {
 		return model;
 		
 	}
+	*/
 	
 	
+	
+	
+	// 답변 작성 폼
+	@GetMapping("writeanswer")
+	public String writeanswerForm(@RequestParam long num, 
+	                              @RequestParam String page, 
+	                              HttpSession session, 
+	                              Model model) throws Exception {
+	    // 로그인 사용자 정보
+	    SessionInfo info = (SessionInfo)session.getAttribute("member");
+	    if (info == null) {
+	        return "redirect:/member/login";
+	    }
+
+	    // 질문 정보 가져오기
+	    Clinic dto = service.findById(num);
+	    if (dto == null) {
+	        return "redirect:/clinic/list?page=" + page;
+	    }
+
+	    model.addAttribute("dto", dto);
+	    model.addAttribute("page", page);
+	    model.addAttribute("mode", "write");
+	    return ".clinic.writeanswer";
+	}
+
+	// 답변 작성 처리
+	@PostMapping("insertClinicAnswer")
+	public String insertClinicAnswerSubmit(ClinicAnswer dto, 
+	                                @RequestParam String page, 
+	                                HttpSession session) throws Exception {
+	    SessionInfo info = (SessionInfo)session.getAttribute("member");
+	    if (info == null) {
+	        return "redirect:/member/login";
+	    }
+
+	    try {
+	        dto.setUserId(info.getUserId());
+	        service.insertClinicAnswer(dto);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return "redirect:/clinic/article?num=" + dto.getQuestion_id() + "&page=" + page;
+	}
+
+	
+	
+	
+
+
 	// 답변 리스트
-	@GetMapping("listClinicAnswer")
+	@GetMapping("listanswer")
 	public String listClinicAnswer(@RequestParam long num,
 			@RequestParam(value = "pageNo", defaultValue = "1") int current_page,
 			HttpSession session,
@@ -397,18 +450,18 @@ public class ClinicController {
 		String paging = myUtil.pagingMethod(current_page, total_page, "listpage");
 		
 		// 포워딩할 JSP로 넘길 모델(데이터)
-		model.addAttribute("listReply", list);
+		model.addAttribute("listanswer", list);
 		model.addAttribute("pageNo", current_page);
-		model.addAttribute("replyCount", dataCount);
+		model.addAttribute("answerCount", dataCount);
 		model.addAttribute("total_page", total_page);
 		model.addAttribute("paging", paging);
 		
 		// ".clinic.listReply" 로 반환하면 안됨(메뉴가 생성됨)
-		return "clinic/listClinicAnswer";
+		return "clinic/listanswer";
 	}
 	
 	
-	
+	/*
 	// 답변 삭제
 	@PostMapping("deleteClinicAnswer")
 	@ResponseBody
@@ -499,6 +552,7 @@ public class ClinicController {
 	}
 	
 	
+	
 	// 댓글 좋아요/싫어요 개수
 	@PostMapping("countClinicAnswerLike")
 	@ResponseBody
@@ -516,6 +570,7 @@ public class ClinicController {
 		
 		return model;
 	}
+	*/
 	
 	
 

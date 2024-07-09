@@ -87,6 +87,12 @@
 	100% {background: #35c5f0; color: white; transform: translateY(4px);}
 }
 
+
+@keyframes btncolor2 {
+	0% {}
+	100% {background: #00A500; color: white; transform: translateY(4px);}
+}
+
 .btn1 {
 	width: 80px;
 	height: 40px;
@@ -100,13 +106,37 @@
 	animation: btncolor 0.3s forwards;
 }
 
-
+ 
 .btn2 {
 	width: 80px;
 	height: 40px;
 	background-color: white;
 	border-radius: 10px;
 	border: 2px solid #35c5f0;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
+}
+
+
+.btn3 {
+	width: 180px;
+	height: 60px;
+	background-color: white;
+	border-radius: 10px;
+	border: 2px solid #00A500;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
+}
+
+.btn3:hover {
+	animation: btncolor2 0.3s forwards;
+}
+
+
+.btn4 {
+	width: 180px;
+	height: 60px;
+	background-color: white;
+	border-radius: 10px;
+	border: 2px solid #00A500;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
 }
 
@@ -321,6 +351,23 @@
 			</span> 
 		</div>
 		
+		<div class="col-auto p-2"> 
+		<c:choose>
+			<c:when test="${sessionScope.member.membership>50}">
+				<button class="btn3" onclick="location.href='${pageContext.request.contextPath}/clinic/writeanswer?num=${dto.question_id}&page=${page}';">답 변 하 기</button> 
+			</c:when>
+			<c:otherwise>
+				<button class="btn4" disabled>답 변 하 기</button>
+			</c:otherwise>
+		</c:choose>
+		</div>
+		
+		<br>
+		
+		<div id="listanswer"></div>
+		
+		
+		
 		
 		
 		
@@ -334,6 +381,18 @@
 function login() {
 	location.href = '${pageContext.request.contextPath}/member/login';
 }
+
+$(function() {
+	let url = "${pageContext.request.contextPath}/clinic/listanswer";
+	let query = "num=${dto.question_id}&pageNo=1";
+	let selector = "#listanswer";
+	
+	const fn = function(data) {
+		$(selector).html(data);
+	}
+	
+	ajaxFun(url, "get", query, "text", fn);
+});
 
 
 function ajaxFun(url, method, formData, dataType, fn, file = false) {
