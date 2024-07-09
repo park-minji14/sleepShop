@@ -6,8 +6,7 @@
 	<!-- 로그인 멤버 정보를 가져오는 SQL 문 -->
 	<select id="loginMember" parameterType="String" resultType="com.sgsg.dra.domain.Member">
 		SELECT m.memberIdx, membership, userId, userName, userPwd, register_date, modify_date, last_login
-		FROM member m
-		JOIN member1 m1 ON m1.memberIdx = m.memberIdx
+		FROM member1 m
 		WHERE userId = #{userId} AND enabled != 0
 	</select>
 	
@@ -24,17 +23,16 @@
     </select>
     
     
-	
-	<!-- 새로운 회원을 member 테이블에 삽입하는 SQL 문 -->
+	<!-- 새로운 회원을 member 테이블에 삽입하는 SQL 문 	
     <insert id="insertMember" parameterType="Long">
 		INSERT INTO member(memberIdx, membership) VALUES (#{memberIdx}, 1) 
     </insert>
-	
+	-->
 	
 	<!-- 새로운 회원을 member1 테이블에 삽입하는 SQL 문 -->
     <insert id="insertMember1" parameterType="com.sgsg.dra.domain.Member">
-		INSERT INTO member1(memberIdx, userId, userName, EMAIL, userPwd,  enabled, register_date, modify_date, LAST_LOGIN, failure_cnt)
-		VALUES (#{memberIdx}, #{userId}, #{userName}, #{userEmail}, #{userPwd}, 1, SYSDATE, SYSDATE, SYSDATE, 0) 
+		INSERT INTO member1(memberIdx, userId, userName, EMAIL, userPwd,  enabled, register_date, modify_date, LAST_LOGIN, failure_cnt, membership)
+		VALUES (#{memberIdx}, #{userId}, #{userName}, #{userEmail}, #{userPwd}, 1, SYSDATE, SYSDATE, SYSDATE, 0, 1) 
     </insert>
 	
 	
