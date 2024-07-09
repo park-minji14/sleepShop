@@ -5,7 +5,7 @@
 
 <style type="text/css">
 .body-container {
-	max-width: 800px;
+	max-width: 1200px;
 }
 
 
@@ -25,12 +25,12 @@ function searchList() {
 
 
 	
-	<div id="tab-content" style="padding: 20px 10px 0;">
+	<div class="body-container" style="padding: 20px 10px 0;">
 			
 				<table class="table table-striped ">
 					<tr>
-						<td align="left" width="50%">
-							5개(1/2 페이지)
+						<td align="left" width="50%" valign="middle">
+							${dataCount}개(${page}/${total_page} 페이지)
 						</td>
 						<td align="right">
 							<select id="selectEnabled" class="form-select" onchange="searchList();" style="width: 200px;">
@@ -42,33 +42,33 @@ function searchList() {
 					</tr>
 				</table>
 					
-				<table class="table table-border board-list">
-					<thead class="table-light">
+				<table class="table table-border board-list" >
+					<thead class="table-light" style="height: 50px;">
 						<tr> 
 							<th width="60">번호</th>
 							<th width="130">아이디</th>
 							<th width="100">이름</th>
-							<th width="120">생년월일</th>
+							<th width="180">생년월일</th>
 							<th width="150">전화번호</th>
-							<th width="100">회원구분</th>
-							<th width="80">상태</th>
-							<th>이메일</th>
+							<th width="180">회원구분</th>
+							<th width="50">상태</th>
+							<th >이메일</th>
 						</tr>
 					</thead>
 					
 					<tbody>
-						
-							<tr> 
-								<td>1</td>
-								<td>abc</td>
-								<td>ㄱㅇㅈ</td>
-								<td>2020-10-10</td>
-								<td>010-1111-1111</td>
-							<td>일반회원</td>
-							<td>활성</td>
-							<td>aaaa@naver.com</td>
-						</tr>
-					
+						<c:forEach var="dto" items="${list}" varStatus="status">
+							<tr class="hover" onclick="profile('${dto.userId}');"> 
+								<td>${dataCount - (page-1) * size - status.index}</td>
+								<td>${dto.userId}</td>
+								<td>${dto.userName}</td>
+								<td>${dto.birth}</td>
+								<td>${dto.tel}</td>
+								<td>${dto.membership==1?"일반회원":(dto.membership==99?"관리자":"일반")}</td>
+								<td>${dto.enabled==1?"활성":"잠금"}</td>
+								<td>${dto.email}</td>
+							</tr>
+						</c:forEach>
 				</tbody>
 			</table>
 					 

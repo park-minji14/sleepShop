@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgsg.dra.admin.mapper.MemberManageMapper">
+	
+	<!-- 회원 리스트 -->
+	<sql id="where-list">
+		<choose>
+			<when test="schType=='userId'">
+				INSTR(m1.userId, #{kwd}) &gt;= 1
+			</when>
+			<otherwise>
+				INSTR(${schType}, #{kwd}) &gt;= 1
+			</otherwise>
+		</choose>
+	</sql>
+
+   
+    <!-- 전체 레코드의 수 세기 -->
+    <select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT COUNT(*)
+		FROM member1 m1
+		LEFT OUTER JOIN member2 m2 ON m1.userId = m2.userId
+		<where>
+			<if test="kwd!=null and kwd!='' ">
+				<include refid="where-list"/>
+			</if>
+			<if test="enabled!=''">
+				AND enabled = #{enabled}
+			</if>
+			AND m1.membership &lt; 50
+		</where> 
+    </select>
+    
+    <select id="listMember" parameterType="map" resultType="com.sgsg.dra.admin.domain.MemberManage">
+		SELECT m1.memberIdx, m1.userId, userName, 
+		TO_CHAR(birth, 'YYYY-MM-DD') birth,
+		tel, membership, enabled, email 
+		FROM member1 m1
+		LEFT OUTER JOIN member2 m2 ON m1.userId = m2.userId
+		<where>
+			<if test="kwd!=null and kwd!='' ">
+				<include refid="where-list"/>
+			</if>
+			<if test="enabled!=''">
+				AND enabled = #{enabled}
+			</if>
+			AND m1.membership &lt; 50
+		</where> 			
+		ORDER BY register_date DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+	</select>
+    
+    
+    
+    
+   	
+	<select id="findById" parameterType="Long" resultType="com.sgsg.dra.admin.domain.MemberManage">
+		SELECT membership, m1.memberIdx, m1.userId, userName, userPwd, enabled,
+			register_date, modify_date, last_login,
+			TO_CHAR(birth, 'YYYY-MM-DD') birth, email, tel, 
+			zip, addr1, addr2
+		FROM member1 m1
+		LEFT OUTER JOIN member2 m2 ON m1.userId = m2.userId
+		WHERE m1.memberIdx = #{memberIdx}
+	</select>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</mapper>
