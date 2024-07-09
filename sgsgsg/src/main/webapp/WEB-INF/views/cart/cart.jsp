@@ -41,7 +41,7 @@
 						</div>
 						<div>
 						<!--
-						cartNum=${dto.cartNum}, productNum=${dto.productNum}, PRODUCTNAME=${dto.productName}, stockNum=${dto.stockNum}, 
+						productNum=${dto.productNum}, PRODUCTNAME=${dto.productName}, stockNum=${dto.stockNum}, 
 						OPTIONNAME=${dto.optionName}, optionValue=${dto.optionValue}, OPTIONNUM=${dto.optionNum}, 
 						OPTIONNAME2=${dto.optionName2}, optionValue2=${dto.optionValue2}, OPTIONNUM2=${dto.optionNum2},
 						qty=${dto.qty}
@@ -55,7 +55,7 @@
 						<article class="carted-product">
 							<div class="carted-product__select">
 								<div class="checkbox-wrap">
-									<input type="checkbox" value="${dto.cartNum}" class="checkbox" checked>
+									<input type="checkbox" value="${dto.stockNum}" class="checkbox" checked>
 								</div>
 							</div>
 							<span class="css-l46ngn elsmzm01">오늘출발 마감
@@ -88,7 +88,6 @@
 											<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
 												<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
 											</svg>
-											<input type="hidden" name="stockNum" value="${dto.stockNum}">
 										</button>
 										<div class="option_subBox">
 											<div class="option_qty">
@@ -98,8 +97,9 @@
 											</div>
 											<div class="option_price"><fmt:formatNumber value="${dto.salePrice*dto.qty}" pattern="#,###" /></div>원
 										</div>
-										<input type="hidden" name="cartNum" value="${dto.cartNum}">
+										<input type="hidden" name="stockNum" value="${dto.stockNum}">
 										<input type="hidden" name="productNum" value="${dto.productNum}">
+										<input type="hidden" name="qty" value="${dto.qty}">
 									</article>
 								</li>
 								<!-- 2번째 옵션 -->
@@ -514,29 +514,6 @@ $('.container').on('click', '.plus_qty', function() {
 	let $box = $(this).closest('.option_box');
 	changeQty(qty, $box);
 
-});
-
-$(function() {
-    $(/*장바구니 버튼*/).click(function() {
-        let url = "${pageContext.request.contextPath}/cart/insertCart";
-        let query = "qty="+ /* 수량 */ +"&stockNum="+/* 재고번호*/;
-        
-        const fn = function(data) {
-            let state = data.state;
-            if(state === "duplicate"){
-            	if(! confirm('이미 장바구니에 들어있는 상품입니다. 추가하시겠습니까?')){
-            		return;
-            	}
-            	let url = "${pageContext.request.contextPath}/cart/updateQty";
-            	const fn = function(data) {
-                    let state = data.state;
-            	}
-            	ajaxFun(url, "post", query, "json", fn);
-            }
-        };
-        
-        ajaxFun(url, "post", query, "json", fn);
-    });
 });
 
 </script>
