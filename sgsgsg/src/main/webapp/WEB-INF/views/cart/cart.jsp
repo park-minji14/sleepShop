@@ -36,97 +36,58 @@
 				</button>
 			</div>
 			<div class="cart-list">
-				<div>
-				<!--
-				productNum=${dto.productNum}, PRODUCTNAME=${dto.productName}, stockNum=${dto.stockNum}, 
-				OPTIONNAME=${dto.optionName}, optionValue=${dto.optionValue}, OPTIONNUM=${dto.optionNum}, 
-				OPTIONNAME2=${dto.optionName2}, optionValue2=${dto.optionValue2}, OPTIONNUM2=${dto.optionNum2},
-				qty=${dto.qty}
-				<br/><br/>
-				
-				-->
-				</div>
 				<!-- 상품 시작 -->
-				<!-- forEach는 commerce-cart__content-wrap 이상에서 들어가야함 이건 임시 테스트 -->
 				<c:forEach var="dto" items="${list}">
-				<div>
-					<article class="carted-product">
-						<div class="carted-product__select">
+				<div class="cart-box">
+					<article class="cart-item">
+						<div class="checkbox-wrap">
 							<input type="checkbox" value="${dto.stockNum}" class="checkbox" checked>
 						</div>
-						<span class="css-l46ngn elsmzm01">오늘출발 마감
-							<span class="afterDeadLine css-1xskdmv elsmzm00">7/8 (월) 발송 예정</span>
-						</span>
-						<a class="product-small-item product-small-item--clickable" href="${pageContext.request.contextPath}/product/details/${product.productNum}">
-							<span class="product-small-item__image">
-								<img alt="상품 이미지" src="${pageContext.request.contextPath}/uploads/product/${product.thumbnail}">
+						<a class="item-link" href="${pageContext.request.contextPath}/product/details/${dto.productNum}">
+							<span class="item-img">
+								<img alt="상품 이미지" src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}">
 							</span>
-							<span class="product-small-item__content">
-								<h1 class="product-small-item__title">${dto.productName}</h1>
-								<span class="delivery_info">70,000원 이상
+							<span class="item-content">
+								<h1 class="item-title">${dto.productName}</h1>
+								<span class="delivery-info">70,000원 이상
 									무료배송&nbsp;|&nbsp;일반택배
 								</span>
 							</span>
 						</a>
-						<button class="carted-product__delete" type="button" aria-label="삭제">
+						<button class="item_delete" type="button" aria-label="삭제">
 							<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
 								<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
 							</svg>
 						</button>
-						<div class="carted-product__option-list">
-						<!-- 1번째 옵션 -->
-							
-							<div class="carted-product__option-list__item">
-								<article class="option_box">
-									<h2 class="option_title">
-										<c:if test="${not empty dto.optionNum}">${dto.optionName}: ${dto.optionValue}</c:if>
-										<c:if test="${not empty dto.optionNum2}">/ ${dto.optionName2}: ${dto.optionValue2}</c:if>
-									</h2>
-									<button type="button" aria-label="삭제" class="option_delete">
-										<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
-											<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
-										</svg>
-									</button>
-									<div class="option_subBox">
-										<div class="option_qty">
-											<span class="minus_qty bi bi-dash-lg"></span>
-											<button class="chage_qty">${dto.qty}</button>
-											<span class="plus_qty bi bi-plus-lg"></span>
-										</div>
-										<div class="option_price"><fmt:formatNumber value="${dto.salePrice*dto.qty}" pattern="#,###" /></div>원
-									</div>
-									<input type="hidden" name="stockNum" value="${dto.stockNum}">
-									<input type="hidden" name="productNum" value="${dto.productNum}">
-									<input type="hidden" name="qty" value="${dto.qty}">
-								</article>
+						<div class="option-box">
+							<h2 class="option-title">
+								<c:if test="${not empty dto.optionNum}">${dto.optionName}: ${dto.optionValue}</c:if>
+								<c:if test="${not empty dto.optionNum2}">/ ${dto.optionName2}: ${dto.optionValue2}</c:if>
+							</h2>
+							<button type="button" aria-label="삭제" class="option_delete">
+								<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
+									<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
+								</svg>
+							</button>
+							<div class="option-subBox">
+								<div class="option-qty">
+									<span class="minus_qty bi bi-dash-lg"></span>
+									<button class="chage_qty">${dto.qty}</button>
+									<span class="plus_qty bi bi-plus-lg"></span>
+								</div>
+								<div class="option-price">
+									<span class="number"><fmt:formatNumber value="${dto.salePrice*dto.qty}" pattern="#,###" /></span>원
+								</div> 
 							</div>
-							<!-- 2번째 옵션 -->
-							<!--
-							<li class="carted-product__option-list__item">
-								<article class="option_box">
-									<h2 class="option_title">조립/설치비 (1개)</h2>
-									<button type="button" aria-label="삭제" class="option_delete">
-										<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
-											<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
-										</svg>
-									</button>
-									<div class="option_subBox">
-										<div class="option_price">0원</div>
-									</div>
-								</article>
-							</li>
-							-->
+							<input type="hidden" name="stockNum" value="${dto.stockNum}">
+							<input type="hidden" name="productNum" value="${dto.productNum}">
+							<input type="hidden" name="qty" value="${dto.qty}">
+							<input type="hidden" name="price" value="${dto.salePrice}">
+							<input type="hidden" name="totalPrice">
 						</div>
-						<div class="carted-product__footer">
-							<span class="carted-product__footer__left">
-								<button class="carted-product__edit-btn" type="button">옵션변경</button>
-								<button class="carted-product__order-btn" type="button">바로구매</button>
-							</span>
-							<span class="carted-product__subtotal">
-								<span class="carted-product__subtotal__number"><fmt:formatNumber value="${dto.salePrice*dto.qty}" pattern="#,###" /></span>원
-							</span>
-						</div>
+						<button class="item_order" type="button">이 상품만 구매</button>
 					</article>
+					<!--
 					<footer class="commerce-cart__delivery-group__footer">
 						<p class="commerce-cart__delivery-group__total">2개 묶음배송비 3,000원 OR 배송비 무료</p>
 						<p class="commerce-cart__delivery-group__group-caption">묶음배송 상품 600원 추가시 무료배송</p>
@@ -138,29 +99,30 @@
 							</a>
 						</p>
 					</footer>
+					-->
 				</div>
 				</c:forEach>
 				<!-- 모바일 대응 금액 출력 -->
-				<div class="commerce-cart__summary commerce-cart__content__summary">
-					<dl class="commerce-cart__summary__row">
+				<div class="cart-summary cart-summary_m">
+					<dl class="">
 						<dt>총 상품금액</dt>
 						<dd>
 							<span class="number">196,800</span>원
 						</dd>
 					</dl>
-					<dl class="commerce-cart__summary__row">
+					<dl class="">
 						<dt>총 배송비</dt>
 						<dd>
 							+ <span class="number">0</span>원
 						</dd>
 					</dl>
-					<dl class="commerce-cart__summary__row">
+					<dl class="">
 						<dt>총 할인금액</dt>
 						<dd>
 							- <span class="number">93,700</span>원
 						</dd>
 					</dl>
-					<dl class="commerce-cart__summary__row commerce-cart__summary__row--total">
+					<dl class=" cart-summary-row--total">
 						<dt>결제금액</dt>
 						<dd>
 							<span class="number">103,100</span>원
@@ -403,26 +365,26 @@
 		<div class="cart-side">
 			<div class="commerce-cart__side-bar-container" style="position: sticky; top: 81px; transition: top 0.1s ease 0s;">
 				<div class="commerce-cart__side-bar" style="position: relative;">
-					<div class="commerce-cart__summary commerce-cart__side-bar__summary">
-						<dl class="commerce-cart__summary__row">
+					<div class="cart-summary commerce-cart__side-bar__summary">
+						<dl class="">
 							<dt>총 상품금액</dt>
 							<dd>
 								<span class="number">196,800</span>원
 							</dd>
 						</dl>
-						<dl class="commerce-cart__summary__row">
+						<dl class="">
 							<dt>총 배송비</dt>
 							<dd>
 								+ <span class="number">0</span>원
 							</dd>
 						</dl>
-						<dl class="commerce-cart__summary__row">
+						<dl class="">
 							<dt>총 할인금액</dt>
 							<dd>
 								- <span class="number">93,700</span>원
 							</dd>
 						</dl>
-						<dl class="commerce-cart__summary__row commerce-cart__summary__row--total">
+						<dl class=" cart-summary__row--total">
 							<dt>결제금액</dt>
 							<dd>
 								<span class="number">103,100</span>원
@@ -483,51 +445,66 @@ function ajaxFun(url, method, formData, dataType, fn, file = false) {
     $.ajax(url, settings);
 }
 
-function changeQty(qty, $box) {
-	let url = "${pageContext.request.contextPath}/cart/updateQty";
+function deleteProduct($box) {
+	if(! confirm('해당 상품을 삭제하시겠습니까?')){
+		return;
+	}
+	let url = "${pageContext.request.contextPath}/cart/deleteCart";
 	let stockNum = $($box).find('input[name="stockNum"]').val();
-	let query = "qty="+qty+"&stockNum="+stockNum;
+	let query = "stockNum="+stockNum;
 	
 	const fn = function(data) {
 		if(data.state){
-			$($box).find('.chage_qty').text(qty);
-			$($box).find('input[name="qty"]').val(qty);
+			$($box).closest('.cart-box').remove();
+			return;
 		}
     };
-    
+	ajaxFun(url, "post", query, "json", fn);
+}
+
+function changeQty($box, query) {
+	let url = "${pageContext.request.contextPath}/cart/updateQty";
+	let qty = query.qty;
+	
+	const fn = function(data) {
+		if(data.state){
+			let totalPrice = $($box).find('input[name="price"]').val() * qty;
+			$($box).find('.chage_qty').text(qty);
+			$($box).find('input[name="qty"]').val(qty);
+			$($box).find('input[name="totalPrice"]').val(totalPrice);
+			$($box).find('.option-price .number').text(totalPrice.toLocaleString());
+		}
+    };
     ajaxFun(url, "post", query, "json", fn);
 }
 
-$('.cart-body').on('click', '.minus_qty', function() {
-	let $box = $(this).closest('.option_box');
-	let qty = parseInt($($box).find('input[name="qty"]').val())-1;
-	
-	if(qty === 0){
-		if(! confirm('해당 옵션을 삭제하시겠습니까?')){
-			return;
-		}
-
-		let url = "${pageContext.request.contextPath}/cart/deleteCart";
-		let query = "stockNum="+$($box).find('input[name="stockNum"]').val();
-		
-		const fn = function(data) {
-			if(data.state){
-				$($box).closest('.carted-product').remove();
-				// <footer class="commerce-cart__delivery-group__footer"> 삭제 안됨
-			}
-	    };
-		
-		ajaxFun(url, "post", query, "json", fn);
-		
-	} else {
-		changeQty(qty, $box);
+$('.cart-body').on('click', function(e) {
+	if(! $(e.target.parentNode).hasClass("option-qty")){
+		return;
 	}
+	let $box = $(e.target).closest('.option-box');
+	let qty = $($box).find('input[name="qty"]').val();
+	let stockNum = $($box).find('input[name="stockNum"]').val();
+	
+	if($(e.target).hasClass("chage_qty")){
+		//
+		return;
+	}
+	if($(e.target).hasClass("plus_qty")){
+		qty++;
+	}
+	if($(e.target).hasClass("minus_qty")){
+		qty--;
+		if(qty === 0){
+			deleteProduct($box)
+		}
+	}
+	changeQty($box, {stockNum:stockNum, qty:qty});
 });
-$('.cart-body').on('click', '.plus_qty', function() {
-	let $box = $(this).closest('.option_box');
-	let qty = parseInt($($box).find('input[name="qty"]').val())+1;
-	changeQty(qty, $box);
 
+$('.cart-body').on('click', '.item_delete', function() {
+	deleteProduct($(this).closest('.cart-box'));
 });
-
+		
+//window.innerWidth
 </script>
