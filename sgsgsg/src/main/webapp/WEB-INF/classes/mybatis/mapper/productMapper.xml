@@ -23,9 +23,9 @@
 		AND
 		categoryNum=#{categoryNum}
 	</select>
-
-	<select id="listProduct"
-		resultType="com.sgsg.dra.domain.Product">
+	
+	<!-- 상품 리스트 -->
+	<select id="listProduct" resultType="com.sgsg.dra.domain.Product">
 		SELECT productNum, categoryNum, productName, price, savedMoney,
 		discountRate, optionCount, delivery, thumbnail
 		FROM PRODUCT
@@ -98,24 +98,93 @@
 	</select>
 	
 	<!-- 상품 이미지 조회 -->
-	<select id="listProductFile" parameterType="Long"
+ <select id="listProductFile" parameterType="Long"
 		resultType="com.sgsg.dra.domain.Product">
 		SELECT fileNum,productNum,img_name
 		FROM PRODUCT_IMAGE
 		WHERE productNum = #{productNum} 
+	</select> 
+	
+	<!-- 모든 카테고리 -->
+	<select id="listAllCategory">
+	SELECT categoryNum, categoryName, use, displayNo, PARENT_CATEGORYNUM, LEVEL FROM (
+	SELECT categoryNum, categoryName, use, displayNo, PARENT_CATEGORYNUM
+	FROM PRODUCT_CATEGORY 
+	WHERE use = 1
+	)
+	START WITH PARENT_CATEGORYNUM IS NULL
+	CONNECT BY PRIOR categoryNum = PARENT_CATEGORYNUM 
+	ORDER SIBLINGS BY displayNo	
 	</select>
-
+	
+	<!-- 상위 카테고리 -->
+	<select id="listCategory" resultType="com.sgsg.dra.domain.Product">
+	SELECT categoryNum, categoryName, use, displayNo, PARENT_CATEGORYNUM,CATEGORYIMAGE
+	FROM PRODUCT_CATEGORY
+	WHERE use = 1 AND PARENT_CATEGORYNUM IS NULL
+	ORDER BY displayNo
+	</select>
+	
+	<!-- 하위 카테고리 -->
+	<select id="listSubCategory" parameterType="Long" resultType="com.sgsg.dra.domain.Product">
+	SELECT categoryNum, categoryName, use, displayNo, PARENT_CATEGORYNUM
+	FROM PRODUCT_CATEGORY 
+	WHERE use = 1 AND PARENT_CATEGORYNUM = #{parentNum}
+	ORDER BY displayNo
+	</select>
+	
 	<!--상품 옵션 리스트  -->
-	<!-- 
-	<select id="listProductOption" parameterType="Long" resultType="con.sgsg.dra.domain.Product">
+	<select id="listProductOption" parameterType="Long" resultType="com.sgsg.dra.domain.Product">
 	SELECT OPTIONNUM,OPTIONNAME,PRODUCTNUM,PARENTNUM
 	FROM PRODUCT_OPTION
+	WHERE productNum = #{productNum}
 	ORDER BY PARENTNUM NULLS FIRST, PARENTNUM  	
-	</select>-->
+	</select>
 	<!--  PARENTNUM 기준으로 NULL값을 오름차순-->
 	
-	<!-- 상품 옵션 디테일 -->
 	
+	<!-- 상품 옵션별 상세 옵션 리스트 -->
+	<select id="listOptionDetail" parameterType="Long" resultType="com.sgsg.dra.domain.Product">
+    SELECT d.detailNum, d.optionValue, s.totalStock
+    FROM optionDetail d
+    LEFT JOIN productStock s ON d.detailNum = s.detailNum
+    WHERE d.optionNum = #{optionNum}
+    ORDER BY d.detailNum
+	</select>
+	
+	<!-- 재고 있는 사풍 조회-->
+	<select id="listOptionDetailStock" parameterType="map" resultType="com.sgsg.dra.domain.Product">
+		SELECT s.stockNum, s.productNum, s.detailNum, s.detailNum2, s.totalStock,
+		o1.optionNum, o1.optionName,
+		o2.optionNum AS optionNum2, o2.optionName AS optionName2,
+		d1.detailNum, d1.optionValue,
+		d2.detailNum AS detailNum2, d2.optionValue AS optionValue2
+		FROM (
+		SELECT stockNum, productNum, detailNum, detailNum2, totalStock
+		FROM productStock
+		WHERE productNum = #{productNum}  
+		<if test="detailNum != null and detailNum != 0">
+				AND detailNum = #{detailNum}
+    		</if>
+		) s
+		LEFT OUTER JOIN (
+		SELECT productNum, optionNum, optionName, PARENTNUM 
+		FROM PRODUCT_OPTION 
+		WHERE productNum = #{productNum} AND PARENTNUM IS NULL
+		) o1 ON s.productNum = o1.productNum
+		LEFT OUTER JOIN (
+		SELECT optionNum, optionName, PARENTNUM
+		FROM PRODUCT_OPTION
+		WHERE productNum = #{productNum} AND PARENTNUM IS NOT NULL
+		) o2 ON o1.optionNum = o2.PARENTNUM
+		LEFT OUTER JOIN optionDetail d1 ON s.detailNum = d1.detailNum
+		LEFT OUTER JOIN optionDetail d2 ON s.detailNum2 = d2.detailNum
+		WHERE NVL(s.totalStock, 0) &gt; 0
+		ORDER BY s.detailNum, s.detailNum2
+	</select>
 
+<!-- 
+	<select id="listProduct" parameterType="map"></select>
+	-->
 	
 </mapper>

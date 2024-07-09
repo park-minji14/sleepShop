@@ -18,8 +18,8 @@ public class HomeController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(Model model) {
         try {
-            List<Product> listCategory = productService.listCategory();
-            model.addAttribute("listCategory", listCategory);
+            List<Product> categoryList = productService.selectCategoryList();
+            model.addAttribute("categoryList", categoryList);
 
             List<Product> listProduct = productService.listProduct();
             model.addAttribute("list", listProduct);

@@ -148,21 +148,21 @@
 	</section>
 
 	<!-- 카테고리 섹션 -->
-	<section class="category-section">
-		<div class="inner">
-			<h2>카테고리</h2>
-			<div class="category-list">
-				<c:forEach var="category" items="${listCategory}">
-					<div class="category-item">
-						<img
-							src="${pageContext.request.contextPath}/uploads/icon/${category.categoryImage}"
-							alt="${category.categoryName}">
-						<p>${category.categoryName}</p>
-					</div>
-				</c:forEach>
-			</div>
-		</div>
-	</section>
+<section class="category-section">
+    <div class="inner">
+        <h2>카테고리</h2>
+        <div class="category-list">
+            <c:forEach var="category" items="${categoryList}">
+                <div class="category-item">
+                    <img
+                        src="${pageContext.request.contextPath}/uploads/icon/${category.categoryImage}"
+                        alt="${category.categoryName}">
+                    <p>${category.categoryName}</p>
+                </div>
+            </c:forEach>
+        </div>
+    </div>
+</section>
 
 <section class="featured-products">
     <div class="inner">
