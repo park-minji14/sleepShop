@@ -65,4 +65,20 @@ public class CartController {
 		
 		return model;
 	}
+	
+	@PostMapping("updateQty")
+	@ResponseBody
+	public Map<String, Object> updateQty(Product dto) {
+		String state = "true";
+		
+		try {
+			service.updateQty(dto);
+		} catch (Exception e) {
+			state = "false";
+		}
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state", state);
+		
+		return model;
+	}
 }
