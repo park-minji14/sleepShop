@@ -21,20 +21,6 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
-//    @RequestMapping("home")
-//    public String home(Model model) {
-//        // 필요한 상품 목록을 가져옵니다.
-//        List<Product> list  = service.listProduct();
-//        List<Product> categoryList  = service.selectCategoryList();
-//        System.out.println("얌마");
-//        model.addAttribute("list", list);
-//        model.addAttribute("categoryList", categoryList);
-//        System.out.println(list);
-//        System.out.println("Category List: " + categoryList);
-//        return ".product.home";
-//    }
-
-
     @GetMapping("/details/{productNum}")
     public String productDetail(@PathVariable Long productNum, Model model) throws Exception {
         try {    
