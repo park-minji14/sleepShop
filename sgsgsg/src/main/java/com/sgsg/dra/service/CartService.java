@@ -8,4 +8,5 @@ public interface CartService {
 	public void inserCart(Product dto) throws Exception;
 	public List<Product> selectCartList(String userId) throws Exception;
 	public void updateQty(Product dto) throws Exception;
+	public void deleteCart(Product dto) throws Exception;
 }

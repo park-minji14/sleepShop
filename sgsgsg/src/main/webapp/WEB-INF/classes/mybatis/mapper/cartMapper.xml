@@ -48,8 +48,12 @@
 	</select>
 	
 	<update id="updateQty" parameterType="com.sgsg.dra.domain.Product">
-		UPDATE CART_ITEM SET QTY = #{qty}, REG_DATE=SYSDATE where USERID=#{userId}, STOCKNUM=#{stockNum}
+		UPDATE CART_ITEM SET QTY = #{qty}, REG_DATE=SYSDATE where USERID=#{userId} and STOCKNUM=#{stockNum}
 	</update>
+	
+	<delete id="deleteCart" parameterType="com.sgsg.dra.domain.Product">
+		delete from cart_item where USERID=#{userId} and STOCKNUM=#{stockNum}
+	</delete>
 	
 	
 </mapper>

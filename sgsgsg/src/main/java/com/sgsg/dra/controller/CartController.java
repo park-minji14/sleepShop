@@ -84,4 +84,20 @@ public class CartController {
 		
 		return model;
 	}
+	
+	public Map<String, Object> deleteCart(Product dto, HttpSession session) {
+		String state = "true";
+
+		try {
+			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			dto.setUserId(info.getUserId());
+			service.deleteCart(dto);
+		} catch (Exception e) {
+			state="false";
+		}
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state", state);
+		
+		return model;
+	}
 }
