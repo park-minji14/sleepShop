@@ -21,7 +21,7 @@
 								<span class="commerce-cart__header__left">
 									<label class="label_check">
 										<span class="checkbox-wrap">
-											<input type="checkbox"  value="">
+											<input type="checkbox" class="chkAll" checked>
 										</span>
 											<span class="commerce-cart__header__caption">모두선택</span>
 									</label>
@@ -55,15 +55,15 @@
 						<article class="carted-product">
 							<div class="carted-product__select">
 								<div class="checkbox-wrap">
-									<input type="checkbox" class="checkbox" value="" checked>
+									<input type="checkbox" value="${dto.cartNum}" class="checkbox" checked>
 								</div>
 							</div>
 							<span class="css-l46ngn elsmzm01">오늘출발 마감
 								<span class="afterDeadLine css-1xskdmv elsmzm00">7/8 (월) 발송 예정</span>
 							</span>
-							<a class="product-small-item product-small-item--clickable" href="/productions/169814/selling">
+							<a class="product-small-item product-small-item--clickable" href="${pageContext.request.contextPath}/product/details/${product.productNum}">
 								<span class="product-small-item__image">
-									<img alt="상품 이미지" src="https://image.ohou.se/i/bucketplace-v2-development/uploads/productions/162546803477431867.jpg?w=256&amp;h=256&amp;c=c">
+									<img alt="상품 이미지" src="${pageContext.request.contextPath}/uploads/product/${product.thumbnail}">
 								</span>
 								<span class="product-small-item__content">
 									<h1 class="product-small-item__title">[스타일링홈]
@@ -83,11 +83,12 @@
 								<li class="carted-product__option-list__item">
 									<article class="option_box">
 										<h2 class="option_title">${dto.optionName}: ${dto.optionValue}
-										 / ${dto.optionName2}: ${dto.optionValue}</h2>
+										 / ${dto.optionName2}: ${dto.optionValue2}</h2>
 										<button type="button" aria-label="삭제" class="option_delete">
 											<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
 												<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
 											</svg>
+											<input type="hidden" name="stockNum" value="${dto.stockNum}">
 										</button>
 										<div class="option_subBox">
 											<div class="option_qty">
@@ -95,9 +96,10 @@
 												<button class="chage_qty">${dto.qty}</button>
 												<span class="plus_qty bi bi-plus-lg"></span>
 											</div>
-											<div class="option_price">${dto.salePrice}원
-											</div>
+											<div class="option_price"><fmt:formatNumber value="${dto.salePrice*dto.qty}" pattern="#,###" /></div>원
 										</div>
+										<input type="hidden" name="cartNum" value="${dto.cartNum}">
+										<input type="hidden" name="productNum" value="${dto.productNum}">
 									</article>
 								</li>
 								<!-- 2번째 옵션 -->
@@ -123,7 +125,7 @@
 									<button class="carted-product__order-btn" type="button">바로구매</button>
 								</span>
 								<span class="carted-product__subtotal">
-									<span class="carted-product__subtotal__number">29,500</span>원
+									<span class="carted-product__subtotal__number"><fmt:formatNumber value="${dto.salePrice*dto.qty}" pattern="#,###" /></span>원
 								</span>
 							</div>
 						</article>
@@ -448,3 +450,83 @@
 		</div>
 	</div>
 </div>
+<script>
+function ajaxFun(url, method, formData, dataType, fn, file = false) {
+    const settings = {
+            type: method, 
+            data: formData,
+            dataType:dataType,
+            success:function(data) {
+                fn(data);
+            },
+            beforeSend: function(jqXHR) {
+                jqXHR.setRequestHeader('AJAX', true);
+            },
+            complete: function () {
+            },
+            error: function(jqXHR) {
+                if(jqXHR.status === 403) {
+                    login();
+                    return false;
+                } else if(jqXHR.status === 400) {
+                    alert('요청 처리가 실패 했습니다.');
+                    return false;
+                }
+                
+                console.log(jqXHR.responseText);
+            }
+    };
+    
+    if(file) {
+        settings.processData = false;
+        settings.contentType = false;
+    }
+    
+    $.ajax(url, settings);
+}
+
+function changeQty(qty, $box) {
+	let url = "${pageContext.request.contextPath}/cart/updateQty";
+	let cartNum=$($box).find('input[name="cartNum"]').val();
+	let query = "qty="+qty+"&cartNum="+cartNum;
+	
+	const fn = function(data) {
+		$($box).find('.chage_qty').text(qty);
+    };
+    
+    ajaxFun(url, "post", query, "json", fn);
+}
+
+$('.container').on('click', '.minus_qty', function() {
+	let qty = parseInt($(this).next().text())-1;
+	let $box = $(this).closest('.option_box');
+	if(qty === 0){
+		if(! confirm('해당 옵션을 삭제하시겠습니까?')){
+			return;
+		}
+		//삭제 코드
+	} else {
+		changeQty(qty, $box);
+	}
+});
+$('.container').on('click', '.plus_qty', function() {
+	let qty = parseInt($(this).prev().text())+1;
+	let $box = $(this).closest('.option_box');
+	changeQty(qty, $box);
+
+});
+/*
+$(function() {
+    $(".btn-outline-primary").click(function() {
+        let url = "${pageContext.request.contextPath}/cart/insertCart";
+        let query = "qty=1&stockNum=1";
+        
+        const fn = function(data) {
+            console.log(data);
+        };
+        
+        ajaxFun(url, "post", query, "json", fn);
+    });
+});
+*/
+</script>

@@ -34,4 +34,14 @@ public class CartServiceImpl implements CartService {
 		return list;
 	}
 
+	@Override
+	public void updateQty(Product dto) throws Exception {
+		try {
+			mapper.updateQty(dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
 }

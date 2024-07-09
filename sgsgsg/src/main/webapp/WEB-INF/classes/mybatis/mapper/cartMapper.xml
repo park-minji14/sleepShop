@@ -3,8 +3,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sgsg.dra.mapper.CartMapper">
 	<insert id="inserCart" parameterType="com.sgsg.dra.domain.Product">
-		insert into cart_item(cartNum, qty, userId, stockNum, reg_date)
-			values(cart_item_seq.nextval, #{qty}, #{userId}, #{stockNum}, sysdate)
+		INSERT INTO CART_ITEM(CARTNUM, QTY, USERID, STOCKNUM, REG_DATE)
+			VALUES(CART_ITEM_SEQ.NEXTVAL, #{qty}, #{userId}, #{stockNum}, SYSDATE)
 	</insert>
 	
 	<select id="selectCartList" parameterType="String" resultType="com.sgsg.dra.domain.Product">
@@ -46,6 +46,10 @@
 			p.REG_DATE, p.UPDATE_DATE, d1.OPTIONNAME, d2.OPTIONNAME,
 			d1.DETAILNUM, d2.DETAILNUM, d1.OPTIONNUM, d2.OPTIONNUM
 	</select>
+	
+	<update id="updateQty" parameterType="com.sgsg.dra.domain.Product">
+		UPDATE CART_ITEM SET QTY = #{qty}, REG_DATE=SYSDATE where CARTNUM = #{cartNum}
+	</update>
 	
 	
 </mapper>
