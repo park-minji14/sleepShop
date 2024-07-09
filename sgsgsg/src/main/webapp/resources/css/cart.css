@@ -1,34 +1,16 @@
 ul {
 	list-style: none;
 	display: block;
-	margin-block-start: 1em;
-	margin-block-end: 1em;
-	margin-inline-start: 0px;
-	margin-inline-end: 0px;
-	padding-inline-start: 40px;
-	unicode-bidi: isolate;
 }
 
 li {
 	list-style: none;
 	display: list-item;
-	text-align: -webkit-match-parent;
-	unicode-bidi: isolate;
 }
 
 a {
 	color: inherit;
 	text-decoration: none;
-}
-
-article, section, div {
-	display: block;
-	unicode-bidi: isolate;
-}
-
-body, dd, div, dl, dt, h1, h2, h3, h4, h5, h6, li, ol, p, ul {
-	margin: 0;
-	padding: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -144,16 +126,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .option_qty {
     width: 70px;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
-    -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
     justify-content: space-between;
     padding: 7px 6px;
     background: #FFFFFF;
@@ -278,7 +252,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .modal__dialog {
-	box-sizing: border-box;
 	background: #fff;
 	position: absolute;
 	left: 50%;
@@ -368,7 +341,6 @@ h1, h2, h3, h4, h5, h6 {
 	margin: 0;
 	padding: 8px 24px;
 	transform: translateX(-50%);
-	box-sizing: border-box;
 	background: none;
 	border: none;
 	font-size: 0;
@@ -736,9 +708,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .commerce-cart__delivery-group__footer {
-	padding: 10px 0;
     font-size: 15px;
-    line-height: 20px;
     text-align: center;
     color: #424242;
     background: #fff;
@@ -853,54 +823,19 @@ h1, h2, h3, h4, h5, h6 {
 	height: 30px;
 }
 
-.commerce-cart-wrap {
-	position: relative;
-	background-color: #f5f5f5;
-	-webkit-box-flex: 1;
-	-webkit-flex: 1 0 auto;
-	-moz-box-flex: 1;
-	-moz-flex: 1 0 auto;
-	-ms-flex: 1 0 auto;
-	flex: 1 0 auto;
-}
 
-.commerce-cart {
-	position: relative;
-}
-
-.commerce-cart__header {
-	display: -webkit-box;
-	display: -webkit-flex;
-	display: -moz-flex;
-	display: -ms-flexbox;
+.cart-header {
 	display: flex;
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	-webkit-align-items: center;
-	-moz-align-items: center;
 	align-items: center;
-	-webkit-box-pack: justify;
-	-ms-flex-pack: justify;
-	-webkit-justify-content: space-between;
-	-moz-justify-content: space-between;
 	justify-content: space-between;
-	box-sizing: border-box;
 	padding: 8px 15px;
-	margin: 0 0 11px;
-	background-color: #fff;
-	border-bottom: 1px solid #ededed;
-	z-index: 100;
-}
-
-.commerce-cart__header-wrap {
+	margin-bottom: 11px;
 	z-index: 100;
 }
 
 @media ( min-width :768px) {
-	.commerce-cart__header {
+	.cart-header {
 		padding: 0 21px;
-		background: none;
-		border: none;
 	}
 }
 
@@ -945,19 +880,6 @@ h1, h2, h3, h4, h5, h6 {
 	opacity: .6;
 }
 
-.commerce-cart__content {
-	position: relative;
-	margin: 0 -15px;
-	padding: 0;
-}
-
-@media ( min-width :768px) {
-	.commerce-cart__content {
-		margin: 0;
-		padding: 30px 0 20px;
-	}
-}
-
 .commerce-cart__content__summary {
 	background-color: #fff;
 }
@@ -968,27 +890,20 @@ h1, h2, h3, h4, h5, h6 {
 	}
 }
 
-.commerce-cart__side-bar-wrap {
+.cart-side {
 	display: none;
-	padding-top: 35px;
+	
 }
 
 @media ( min-width :768px) {
-	.commerce-cart__side-bar-wrap {
+	.cart-side {
 		display: block;
 		position: relative;
         width: 100%;
         min-height: 1px;
-        box-sizing: border-box;
-        -webkit-box-flex: 0;
-        -webkit-flex: 0 0 41.6666666667%;
-        -moz-box-flex: 0;
-        -moz-flex: 0 0 41.6666666667%;
-        -ms-flex: 0 0 41.6666666667%;
-        flex: 0 0 41.6666666667%;
-        max-width: 41.6666666667%;
-        padding-right: 7.5px;
-        padding-left: 7.5px;
+        flex: 0 0 35%;
+        max-width: 35%;
+        padding-left: 8px;
 	}
 }
 
@@ -1022,8 +937,6 @@ h1, h2, h3, h4, h5, h6 {
 	-ms-user-select: none;
 	user-select: none;
 	position: relative;
-	margin: 0;
-	box-sizing: border-box;
 	border: 1px solid transparent;
 	font-family: Noto Sans KR, Noto Sans CJK KR, 맑은 고딕, Malgun Gothic,
 		sans-serif;
@@ -1129,7 +1042,6 @@ h1, h2, h3, h4, h5, h6 {
 	width: 100%;
 	max-width: 220px;
 	margin: 80px auto;
-	box-sizing: border-box;
 	text-align: center
 }
 
@@ -1144,15 +1056,14 @@ h1, h2, h3, h4, h5, h6 {
 	margin-top: 30px;
 }
 
-.label_check {
-	flex-direction: row;
-	padding-right: 6px;
+.label {
 	display : inline-flex;
 	align-items: center;
-	vertical-align: middle;
-	width: 100%;
 }
 
+input[type="checkbox"]{
+	 margin-right: 7px;
+}
 .production-item-image {
 	position: relative;
 	background-color: #f5f5f5;
@@ -1182,8 +1093,6 @@ img {
 	right: 8px;
 	width: 24px;
 	height: 24px;
-	margin: 0;
-	padding: 0;
 	background: none;
 	border: none;
 	z-index: 2;
@@ -1344,73 +1253,40 @@ svg:not(:root) {
 	overflow: hidden;
 }
 
-@media ( min-width : 375px) {
-	.container {
-		margin-right: auto;
-		margin-left: auto;
-		width: calc(100% - 30px);
-		max-width: 100%;
-		box-sizing: border-box;
-		min-height: 1px;
-	}
+.container {
+	position: relative;
+	background-color: #f5f5f5;
+	width: 100%;
+	max-width: 100%;
+}
+
+
+.cart-body {
+	width: 100%;
+	
 }
 
 @media ( min-width : 768px) {
-	.container {
-		margin-right: auto;
-		margin-left: auto;
-		width: calc(100% - 80px);
-		max-width: 100%;
-		box-sizing: border-box;
-		min-height: 1px;
-	}
-}
-
-@media ( min-width : 768px) and (min-width: 375px) {
-	.col-md-7 {
-		padding-right: 5px;
-		padding-left: 5px;
-	}
-}
-
-@media ( min-width : 768px) {
-	.col-md-7 {
+	.cart-body {
 		position: relative;
-		width: 100%;
-		min-height: 1px;
-		box-sizing: border-box;
-		-webkit-box-flex: 0;
-		-webkit-flex: 0 0 58.3333333333%;
-		-moz-box-flex: 0;
-		-moz-flex: 0 0 58.3333333333%;
-		-ms-flex: 0 0 58.3333333333%;
-		flex: 0 0 58.3333333333%;
-		max-width: 58.3333333333%;
-		padding-right: 7.55px;
-		padding-left: 7.55px;
+		flex: 0 0 65%;
+		max-width: 65%;
+		padding-right: 8px;
 	}
 }
 
-/* 상단 알림 */
-.top_notification {
+/* 알림 */
+.notification {
 	display: grid;
 	background: white;
-	margin: auto;
-	box-sizing: border-box;
 	min-height: 46px;
-	height: 46px;
 	border: 1px solid #009FCE;
 	box-shadow: 0 2px 6px rgba(63, 71, 77, 0.15);
 	grid-template-columns: 1fr 40px;
-	-webkit-align-items: center;
-	-webkit-box-align: center;
-	-ms-flex-align: center;
 	align-items: center;
 	margin-bottom: 12px;
 	border-radius: 4px;
 	position: sticky;
-	-webkit-align-self: start;
-	-ms-flex-item-align: start;
 	z-index: 2;
 	width: 100%;
 	font-size: 14px;
@@ -1418,28 +1294,8 @@ svg:not(:root) {
 	color: #009FCE;
 	font-weight: 700;
 }
-@media (max-width: 767px) {
-    .top_notification {
-        -webkit-animation: animation-tn 1s;
-        animation: animation-tn 1s;
-    }
-}
-@keyframes animation-tn {
-	0% {
-	    -webkit-transform: translateY(10px);
-	    -moz-transform: translateY(10px);
-	    -ms-transform: translateY(10px);
-	    transform: translateY(10px);
-	}
-	100% {
-	    -webkit-transform: translateY(0);
-	    -moz-transform: translateY(0);
-	    -ms-transform: translateY(0);
-	    transform: translateY(0);
-	}
-}
 
-.top_notification_delete {
+.notification_delete {
     display: inline-block;
     padding: 10px;
     background: none;
@@ -1450,7 +1306,7 @@ svg:not(:root) {
 	color: #828C94;
 }
 
-.top_notification_delete:hover, .top_notification_delete:focus, .top_notification_delete:active {
+.notification_delete:hover, .notification_delete:focus, .notification_delete:active {
 	opacity: 0.5;
 }
 
@@ -1509,8 +1365,6 @@ svg:not(:root) {
 	position: relative;
 	overflow: auto;
 	-webkit-overflow-scrolling: touch;
-	margin: 0;
-	padding: 0;
 	list-style: none;
 }
 
@@ -1529,8 +1383,7 @@ svg:not(:root) {
     right: 5px;
 }
 .next_product, .prev_product {
-	display: block;
-    margin: 0;
+	display: block
     padding: 10px;
     border: none;
     background-color: #fff;
@@ -1539,12 +1392,10 @@ svg:not(:root) {
     line-height: 0;
     border-radius: 100%;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
-    
     position: absolute;
     top: 50%;
     width: 40px;
     height: 40px;
-    box-sizing: border-box;
     margin-top: -20px;
     z-index: 2;
     cursor: pointer;

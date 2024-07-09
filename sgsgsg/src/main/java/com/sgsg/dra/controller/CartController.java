@@ -71,10 +71,12 @@ public class CartController {
 	
 	@PostMapping("updateQty")
 	@ResponseBody
-	public Map<String, Object> updateQty(Product dto) {
+	public Map<String, Object> updateQty(Product dto, HttpSession session) {
 		String state = "true";
 		
 		try {
+			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			dto.setUserId(info.getUserId());
 			service.updateQty(dto);
 		} catch (Exception e) {
 			state = "false";
