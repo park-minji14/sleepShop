@@ -3,55 +3,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sgsg.dra.admin.mapper.ProductManageMapper">
 
-<!-- 시퀀스 보존용 -->
+<!-- 상품등록 시퀀스 보존용 -->
 <select id="productSeq" resultType="Long">
 	Select product_seq.NextVal From dual
 </select>
-<!-- 
-상품 등록 하기
-<insert id="insertProduct" parameterType="com.sgsg.dra.admin.domain.ProductManage">
-	Insert Into product
-	(productNum, CategoryNum, productName, classify, price, salePrice, 
-		discountRate, savedMoney, delivery, optionCount, content, thumbnail, productShow, reg_date, search_word)
-	Values
-	(#{productNum}, #{categoryNum}, #{productName}, #{classify}, #{price}, #{salePrice}, 
-		#{discountRate}, #{savedMoney}, #{delivery}, #{optionCount}, #{content}, #{thumbnail}, #{productShow}, SYSDATE, #{searchWord})
-</insert> 
--->
 
+<!-- 상품 등록하기 -->
 <insert id="insertProduct" parameterType="com.sgsg.dra.admin.domain.ProductManage">
     Insert Into product
-    (productNum, CategoryNum, productName, classify, price, salePrice, 
-        discountRate, savedMoney, delivery, optionCount, content, thumbnail, productShow, reg_date)
+    (productNum, CategoryNum, productName, classify, price, 
+        discountRate, savedMoney, delivery, optionCount, content, thumbnail, productShow, reg_date, search_Word)
     Values
-    (#{productNum}, #{categoryNum}, #{productName}, #{classify}, #{price}, #{salePrice}, 
-        #{discountRate}, #{savedMoney}, #{delivery}, #{optionCount}, #{content}, #{thumbnail}, #{productShow}, SYSDATE)
+    (#{productNum}, #{categoryNum}, #{productName}, #{classify}, #{price},
+        #{discountRate}, #{savedMoney}, #{delivery}, #{optionCount}, #{content}, #{thumbnail}, #{productShow}, SYSDATE, #{searchWords})
 </insert>
 
-<insert id="insertSearchWord" parameterType="map">
-    Insert Into search_words (search_words_id, productNum, searchWord)
-    Values (search_words_seq.NEXTVAL, #{productNum}, #{searchWord})
-</insert>
-
-<!-- <insert id="insertProduct" parameterType="com.sgsg.dra.admin.domain.ProductManage">
-    Insert Into product
-    (productNum, CategoryNum, productName, classify, price, salePrice, 
-        discountRate, savedMoney, delivery, optionCount, content, thumbnail, productShow, reg_date)
-    Values
-    (#{productNum}, #{categoryNum}, #{productName}, #{classify}, #{price}, #{salePrice}, 
-        #{discountRate}, #{savedMoney}, #{delivery}, #{optionCount}, #{content}, #{thumbnail}, #{productShow}, SYSDATE)
-
-    <selectKey keyProperty="productNum" resultType="int" order="AFTER">
-        SELECT LAST_INSERT_ID()
-    </selectKey>
-
-    <foreach collection="searchWord" item="word" separator=",">
-        Insert Into search_words (search_words_id, productNum, searchWord)
-        Values (search_words_seq.NEXTVAL, #{productNum}, #{word})
-    </foreach>
-</insert> -->
-
-<!-- 추가 이미지 등록 -->
+<!-- 추가적인 이미지 등록 -->
 <insert id="insertProductFile" parameterType="com.sgsg.dra.admin.domain.ProductManage">
 		INSERT INTO product_Image(fileNum, img_name, productNum)
 		VALUES(PRODUCT_IMAGE_SEQ.NEXTVAL, #{filename}, #{productNum} )
@@ -79,5 +46,30 @@
 	WHERE use = 1 AND parent_categorynum = #{parent_categorynum}
 	ORDER BY displayNo
 </select>
+
+<!-- 옵션 1, 2등록용 시퀀스 밸류 보존 -->
+<select id="optionSeq" resultType="Long">
+	Select PRODUCT_OPTION_SEQ.nextval From dual
+</select>
+
+<!-- 옵션 1 등록 -->
+<insert id="insertProductOption" parameterType="com.sgsg.dra.admin.domain.ProductManage">
+	INSERT INTO PRODUCT_OPTION (OPTIONNUM, OPTIONNAME, PRODUCTNUM, PARENTNUM)
+	VALUES (#{optionSeq}, #{optionName}, #{productNum}, #{parentOption, jdbcType=INTEGER})
+</insert>
+
+<!-- 옵션 2 등록시 보존용 시퀀스 -->
+<select id="detailSeq" parameterType="com.sgsg.dra.admin.domain.ProductManage">
+	Select OPTIONDETAIL_SEQ.nextval From dual
+</select>
+
+<!-- 옵션 2 등록 -->
+<insert id="insertOptionDetail" parameterType="com.sgsg.dra.admin.domain.ProductManage">
+	INSERT INTO OPTIONDETAIL (DETAILNUM, OPTIONVALUE, OPTIONNUM)
+	VALUES (#{detailSeq}, #{optionValue}, #{optionNum});
+</insert>
+
+
+
 
 </mapper>

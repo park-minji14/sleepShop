@@ -26,10 +26,10 @@ public class ProductManageServiceImpl implements ProductManageService {
 		try {
 			String filename = fileManager.doFileUpload(dto.getThumbnailFile(), pathname);
 			dto.setThumbnail(filename);
-			
+
 			long productNum = mapper.productSeq();
-			
 			dto.setProductNum(productNum);
+
 			mapper.insertProduct(dto);
 			
 			//추가적인 이미지
@@ -49,18 +49,6 @@ public class ProductManageServiceImpl implements ProductManageService {
 				insertProductOption(dto);
 			}
 			
-			if (dto.getSearchWords() != null && !dto.getSearchWords().trim().isEmpty()) {
-                String[] searchWordsArray = dto.getSearchWords().split(",");
-                for (String word : searchWordsArray) {
-                    word = word.trim();
-                    if (!word.isEmpty()) {
-                        Map<String, Object> paramMap = new HashMap<>();
-                        paramMap.put("productNum", productNum);
-                        paramMap.put("searchWord", word);
-                        mapper.insertSearchWord(paramMap);
-                    }
-                }
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

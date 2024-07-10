@@ -560,17 +560,18 @@ $(function(){
 					</tr>
 					
 					<tr>
-					    <td class="table-light col-sm-2 myCenter">검색어</td>
-					    <td>
-					        <div class="d-flex flex-row mb-2">
-					            <input type="text" id="searchWordInput" class="form-control" placeholder="검색어 입력">
-					            <button type="button" class="btn btn-light ms-2" onclick="addSearchWord()">추가</button>
-					        </div>
-					        <ul id="searchWordList" class="list-group">
-					            <!-- 검색어 리스트 아이템이 여기에 추가됨 -->
-					        </ul>
-					    </td>
-					</tr>
+	                    <td class="table-light col-sm-2 myCenter">검색어</td>
+	                    <td>
+	                        <div class="d-flex flex-row mb-2">
+	                            <input type="text" id="searchWordInput" class="form-control" placeholder="검색어 입력" onkeydown="addSearchWord(event)">
+	                        </div>
+	                        <ul id="searchWordList" class="list-group">
+	                            <!-- 검색어 리스트 아이템이 여기에 추가됨 -->
+	                        </ul>
+	                        <small>,(쉼표) 를 누르면 추가됩니다.</small>
+	                        <input type="hidden" name="searchWords" id="searchWordsInput">
+	                    </td>
+	                </tr>
 
 					<tr>
 						<td class="table-light col-sm-2 myCenter">상품설명</td>
@@ -598,39 +599,13 @@ $(function(){
 					        </div>
 					    </td>
 					</tr>
-					
-					<%-- <tr>
-						<td class="table-light col-sm-2">대표이미지</td>
-						<td>
-							<div class="thumbnail-viewer"></div>
-							<input type="file" name="thumbnailFile" accept="image/*" class="form-control" style="display: none;">
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="table-light col-sm-2">추가이미지</td>
-						<td>
-							<div class="img-grid">
-								<img class="item img-add" src="${pageContext.request.contextPath}/resources/images/add_photo.png">
-								<c:forEach var="vo" items="${listFile}">
-									<img src="${pageContext.request.contextPath}/uploads/product/${vo.filename}"
-										class="item delete-img"
-										data-fileNum="${vo.fileNum}"
-										data-filename="${vo.filename}">
-								</c:forEach>
-							</div>
-							<input type="file" name="addFiles" accept="image/*" multiple class="form-control" style="display: none;">
-						</td>
-					</tr> --%>
-					
+
 				</table>
-				
-				<input type="hidden" name="searchWords" id="searchWordsInput">
 				
 				<table class="table table-borderless">
 					<tr>
 						<td class="text-center">
-							<c:url var="url" value="/admin/product/${classify}/main">
+							<c:url var="url" value="/admin/product/main">
 								<c:if test="${not empty page}">
 									<c:param name="page" value="${page}"/>
 								</c:if>
@@ -783,30 +758,33 @@ $(function(){
 </script>
 
 <script type="text/javascript">
-function addSearchWord() {
-    const searchWordInput = document.getElementById('searchWordInput');
-    const searchWordList = document.getElementById('searchWordList');
-    
-    if (!searchWordInput.value.trim()) {
-        alert("검색어를 입력하세요.");
-        return;
+function addSearchWord(event) {
+    if (event.key === ',' || event.key === 'Enter') {
+        event.preventDefault();
+        const searchWordInput = document.getElementById('searchWordInput');
+        const searchWordList = document.getElementById('searchWordList');
+
+        if (!searchWordInput.value.trim()) {
+            alert("검색어를 입력하세요.");
+            return;
+        }
+
+        const li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+        li.textContent = searchWordInput.value;
+
+        const removeButton = document.createElement('button');
+        removeButton.className = 'btn btn-danger btn-sm';
+        removeButton.textContent = '삭제';
+        removeButton.onclick = function() {
+            searchWordList.removeChild(li);
+        };
+
+        li.appendChild(removeButton);
+        searchWordList.appendChild(li);
+
+        searchWordInput.value = '';
     }
-
-    const li = document.createElement('li');
-    li.className = 'list-group-item d-flex justify-content-between align-items-center';
-    li.textContent = searchWordInput.value;
-
-    const removeButton = document.createElement('button');
-    removeButton.className = 'btn btn-danger btn-sm';
-    removeButton.textContent = '삭제';
-    removeButton.onclick = function() {
-        searchWordList.removeChild(li);
-    };
-
-    li.appendChild(removeButton);
-    searchWordList.appendChild(li);
-
-    searchWordInput.value = '';
 }
 
 function collectSearchWords() {
@@ -815,12 +793,13 @@ function collectSearchWords() {
     searchWordList.querySelectorAll('li').forEach(item => {
         searchWords.push(item.textContent.replace('삭제', '').trim());
     });
-    document.getElementById('searchWordsInput').value = searchWords.join(',');
+    const searchWordsInput = document.getElementById('searchWordsInput');
+    if (searchWordsInput) {
+        searchWordsInput.value = searchWords.join(',').trim();
+    } else {
+    }
 }
 
-document.querySelector('form[name=productForm]').onsubmit = function() {
-    collectSearchWords();
-};
 </script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/vendor/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
@@ -835,14 +814,19 @@ nhn.husky.EZCreator.createInIFrame({
 
 function submitContents(elClickedObj) {
 	 oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);
+	 
+	 
 	 try {
 		if(! check()) {
 			return;
 		}
 		
+		 //검색어 합치기
+		 collectSearchWords();
 		elClickedObj.submit();
 		
 	} catch(e) {
+		console.log(e);
 	}
 }
 
