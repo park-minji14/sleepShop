@@ -1,8 +1,11 @@
 package com.sgsg.dra.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -143,5 +146,49 @@ public class ProductServiceImpl implements ProductService  {
 		return list;
 	}
 
-	
-}
+	@Override
+	public void processOptionStock(List<Product> optionList, List<Product> stockList, boolean isSecondOption) {
+		   if (optionList == null || stockList == null) return;
+		    
+	        for (Product option : optionList) {
+	            for (Product stock : stockList) {
+	                if (!isSecondOption) {
+	                    if (option.getDetailNum() != 0 && option.getDetailNum() == stock.getDetailNum()) {
+	                        option.setStockNum(stock.getStockNum());
+	                        option.setTotalStock(stock.getTotalStock());
+	                        break;
+	                    }
+	                } else {
+	                    if (option.getDetailNum2() != 0 && option.getDetailNum2() == stock.getDetailNum2()) {
+	                        option.setStockNum(stock.getStockNum());
+	                        option.setTotalStock(stock.getTotalStock());
+	                        break;
+	                    }
+	                }
+	            }
+	        }
+	    }
+
+	@Override
+	public List<Product> getDistinctOptionDetails(Long optionNum) {
+	    List<Product> options = mapper.listOptionDetail(optionNum);
+	    List<Product> distinctOptions = new ArrayList<>();
+	    Set<String> uniqueOptionValues = new HashSet<>();
+
+	    for (Product option : options) {
+	        if (uniqueOptionValues.add(option.getOptionValue())) {
+	            distinctOptions.add(option);
+	        }
+	    }
+
+	    return distinctOptions;
+	}
+
+	@Override
+	public List<Product> getSecondOptionDetails(Long productNum, Long detailNum) {
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("productNum", productNum);
+	    map.put("detailNum", detailNum);
+	    return mapper.listOptionDetailStock(map);
+	}
+	}

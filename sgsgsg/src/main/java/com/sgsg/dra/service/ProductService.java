@@ -23,7 +23,11 @@ public interface ProductService {
 	public List<Product> listProductOption(long productNum);
 	public List<Product> listOptionDetail(long optionNum);
 	public List<Product> listOptionDetailStock(Map<String, Object> map);
+	
+	public void processOptionStock(List<Product> optionList, List<Product> stockList, boolean isSecondOption);
    
+    List<Product> getDistinctOptionDetails(Long optionNum);
+    List<Product> getSecondOptionDetails(Long productNum, Long detailNum);
     
     }
 
