@@ -24,7 +24,7 @@
 					<span>모두선택</span>
 				</label>
 				<span class="text-right">
-					<button class="cart-header_delete" type="button">선택삭제</button>
+					<button class="cart-checked_delete" type="button">선택삭제</button>
 				</span>
 			</div>
 			<div class="notification">
@@ -61,8 +61,8 @@
 						</button>
 						<div class="option-box">
 							<h2 class="option-title">
-								<c:if test="${not empty dto.optionNum}">${dto.optionName}: ${dto.optionValue}</c:if>
-								<c:if test="${not empty dto.optionNum2}">/ ${dto.optionName2}: ${dto.optionValue2}</c:if>
+								<c:if test="${dto.optionCount>=1}">${dto.optionName}: ${dto.optionValue}</c:if>
+								<c:if test="${dto.optionCount==2}">/ ${dto.optionName2}: ${dto.optionValue2}</c:if>
 							</h2>
 							<!--
 							<button type="button" aria-label="삭제" class="option_delete">
@@ -85,7 +85,7 @@
 							<input type="hidden" name="productNum" value="${dto.productNum}">
 							<input type="hidden" name="qty" value="${dto.qty}">
 							<input type="hidden" name="productPrice" value="${dto.price}">
-							<input type="hidden" name="salePrice" value="${dto.price*(1-dto.discountRate/100)}">
+							<input type="hidden" name="salePrice" value="${Math.ceil(dto.price*(1-dto.discountRate/100))}">
 							<input type="hidden" name="delivery" value="${dto.delivery}">
 							<input type="hidden" name="totalPrice">
 						</div>
@@ -458,8 +458,9 @@ function deleteProduct($box) {
 	let query = "stockNum="+stockNum;
 	
 	const fn = function(data) {
-		if(data.state){
+		if(data.state === 'true'){
 			$($box).closest('.cart-box').remove();
+			summary();
 			return;
 		}
     };
@@ -471,7 +472,7 @@ function changeQty($box, query) {
 	let qty = query.qty;
 	
 	const fn = function(data) {
-		if(data.state){
+		if(data.state === 'true'){
 			let totalPrice = $($box).find('input[name="salePrice"]').val() * qty;
 			$($box).find('.chage_qty').text(qty.toLocaleString());
 			$($box).find('input[name="qty"]').val(qty);
@@ -519,7 +520,12 @@ $('.cart-list').on('click', function(e) {
 	let stockNum = $($box).find('input[name="stockNum"]').val();
 	
 	if($(e.target).hasClass("chage_qty")){
-		//
+		let result = parseInt(window.prompt('변경할실 수량을 입력하세요. ( 1 ~ 99 )'));
+		if(result <= 0 || result > 99 ){
+			alert('1 ~ 99까지의 수를 입력하세요.');
+		} else {
+			changeQty($box, {stockNum:stockNum, qty:result});
+		}
 		return;
 	}
 	if($(e.target).hasClass("plus_qty")){
@@ -539,5 +545,45 @@ $('.cart-list').on('click', '.item_delete', function() {
 	deleteProduct($(this).closest('.cart-box'));
 });
 
+$(function() {
+	$('.chkAll').click(function() {
+		if($(this).is(':checked')){
+			$('.checkbox').prop('checked', true);
+		} else {
+			$('.checkbox').prop('checked', false);
+		}
+	
+	});
+	
+	$('.notification_delete').click(function() {
+		$(this).closest('.notification').remove();
+	});
+	
+	$('.cart-checked_delete').click(function() {
+		if(! confirm('선택한 상품을 삭제하시겠습니까?')){
+			return;
+		}
+		let stockNumArr = [];
+		$('.checkbox:checked').each(function() {
+			let num = $(this).closest('.cart-item').find('input[name="stockNum"]').val();
+			stockNumArr.push(parseInt(num));
+		});
+		let url = "${pageContext.request.contextPath}/cart/deleteCart";
+		let query = "stockNum="+stockNumArr;
+		
+		const fn = function(data) {
+			console.log(data.state);
+			if(data.state === 'true'){
+				$('.checkbox:checked').each(function() {
+					$(this).closest('.cart-box').remove();
+				});
+				summary();
+				return;
+			}
+	    };
+		ajaxFun(url, "post", query, "json", fn);
+		
+	});
+});
 //window.innerWidth
 </script>

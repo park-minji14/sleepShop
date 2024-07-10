@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sgsg.dra.domain.Product;
@@ -87,13 +88,16 @@ public class CartController {
 	
 	@PostMapping("deleteCart")
 	@ResponseBody
-	public Map<String, Object> deleteCart(Product dto, HttpSession session) {
+	public Map<String, Object> deleteCart(@RequestParam List<Long> stockNum, HttpSession session) {
 		String state = "true";
 
 		try {
 			SessionInfo info = (SessionInfo)session.getAttribute("member");
-			dto.setUserId(info.getUserId());
-			service.deleteCart(dto);
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("userId", info.getUserId());
+			map.put("stockNum", stockNum);
+			service.deleteCart(map);
 		} catch (Exception e) {
 			state="false";
 		}

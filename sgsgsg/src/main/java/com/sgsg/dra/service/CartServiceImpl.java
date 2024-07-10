@@ -1,6 +1,7 @@
 package com.sgsg.dra.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,9 +46,9 @@ public class CartServiceImpl implements CartService {
 	}
 	
 	@Override
-	public void deleteCart(Product dto) throws Exception{
+	public void deleteCart(Map<String, Object> map) throws Exception{
 		try {
-			mapper.deleteCart(dto);
+			mapper.deleteCart(map);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

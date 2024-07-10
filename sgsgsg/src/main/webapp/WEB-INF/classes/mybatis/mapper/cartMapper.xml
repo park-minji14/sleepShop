@@ -52,8 +52,12 @@
 		UPDATE CART_ITEM SET QTY = #{qty}, REG_DATE=SYSDATE where USERID=#{userId} and STOCKNUM=#{stockNum}
 	</update>
 	
-	<delete id="deleteCart" parameterType="com.sgsg.dra.domain.Product">
-		delete from cart_item where USERID=#{userId} and STOCKNUM=#{stockNum}
+	<delete id="deleteCart" parameterType="map">
+		delete from cart_item where USERID=#{userId} and STOCKNUM in (
+		<foreach collection="stockNum" item="num" separator=",">
+			#{num}
+		</foreach>
+		)
 	</delete>
 	
 	
