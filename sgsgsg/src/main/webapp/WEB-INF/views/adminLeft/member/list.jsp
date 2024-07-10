@@ -8,21 +8,31 @@
 	max-width: 1200px;
 }
 
-
-
-
-
-
+.member-list-tr { cursor: pointer; }
 </style>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/boot-board.css" type="text/css">
 
 <script type="text/javascript">
 function searchList() {
 	var f = document.searchForm;
+	f.enabled.value = $("#selectEnabled").val();
 	f.submit();
 }
-</script>
 
+function profile(memberIdx) {
+	let query = "memberIdx="+memberIdx+"&page=${page}";
+	let enabled = "${enabled}";
+	if(enabled) {
+		query += "&enabled=" + enabled;
+	}
+	let kwd = "${kwd}";
+	if( kwd ) {
+		query += "&schType=${schType}&kwd="+encodeURIComponent(kwd);
+	}
+	
+	location.href = "${pageContext.request.contextPath}/adminManagement/memberManage/details?" + query;
+}
+</script>
 
 	
 	<div class="body-container" style="padding: 20px 10px 0;">
@@ -58,7 +68,7 @@ function searchList() {
 					
 					<tbody>
 						<c:forEach var="dto" items="${list}" varStatus="status">
-							<tr class="hover" onclick="profile('${dto.userId}');"> 
+							<tr class="hover member-list-tr" onclick="profile('${dto.memberIdx}');"> 
 								<td>${dataCount - (page-1) * size - status.index}</td>
 								<td>${dto.userId}</td>
 								<td>${dto.userName}</td>
@@ -92,6 +102,7 @@ function searchList() {
 						</div>
 						<div class="col-auto p-1">
 							<input type="text" name="kwd" value="${kwd}" class="form-control">
+							<input type="hidden" name="enabled" value="${enabled}">
 						</div>
 						<div class="col-auto p-1">
 							<button type="button" class="btn btn-light" onclick="searchList()" title="검색"> <i class="bi bi-search"></i> </button>

@@ -51,12 +51,9 @@
 		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 	</select>
     
-    
-    
-    
    	
 	<select id="findById" parameterType="Long" resultType="com.sgsg.dra.admin.domain.MemberManage">
-		SELECT membership, m1.memberIdx, m1.userId, userName, userPwd, enabled,
+		SELECT membership, m1.memberIdx, m1.userId, userName, userPwd, enabled, membership, 
 			register_date, modify_date, last_login,
 			TO_CHAR(birth, 'YYYY-MM-DD') birth, email, tel, 
 			zip, addr1, addr2

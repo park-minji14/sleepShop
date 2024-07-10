@@ -125,6 +125,10 @@ main{
 				data-bs-toggle="tab" href="#recent">최근 본 상품</a></li>
 			<li class="nav-item"><a class="nav-link" id="inquiry-tab"
 				data-bs-toggle="tab" href="#inquiry">1:1 문의</a></li>
+				
+			<li class="nav-item"><a class="nav-link" id="inquiry-tab"
+				data-bs-toggle="tab" href="#point">포인트</a></li>	
+			
 			<li class="nav-item"><a class="nav-link" id="settings-tab"
 				data-bs-toggle="tab" href="#settings">설정</a></li>
 		</ul>
@@ -304,6 +308,17 @@ main{
 				<button class="btn btn-primary mt-3" data-bs-toggle="modal"
 					data-bs-target="#inquiryModal">새 문의 작성</button>
 			</div>
+			
+			
+			<!-- 포인트 탭 -->
+			<div class="tab-pane fade" id="point">
+				<h4 class="mb-4">포인트</h4>
+				<!-- 포인트 목록 -->
+				<div class="point-item">
+					<!-- 상품 정보 및 장바구니 담기/삭제 버튼 -->
+				</div>
+			
+			
 
 			<!-- 설정 탭 -->
 			<div class="tab-pane fade" id="settings">

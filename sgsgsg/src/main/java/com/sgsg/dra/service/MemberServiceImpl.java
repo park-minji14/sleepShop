@@ -60,9 +60,6 @@ public class MemberServiceImpl implements MemberService {
 			long memberSeq = mapper.memberSeq(); // 새로운 회원 시퀀스 번호 생성
 			dto.setMemberIdx(memberSeq); // 시퀀스 번호 설정
 
-			// 회원 정보 저장
-			mapper.insertMember(memberSeq);
-
 			// 회원 정보 저장 (member1, member2 테이블에 동시에 저장)
 			mapper.insertMember12(dto);
 		} catch (Exception e) {

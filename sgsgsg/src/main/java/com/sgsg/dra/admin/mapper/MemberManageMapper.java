@@ -7,14 +7,12 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.sgsg.dra.admin.domain.MemberManage;
 
-
-
-
 @Mapper
 public interface MemberManageMapper {
 	public int dataCount(Map<String, Object> map);
+
 	public List<MemberManage> listMember(Map<String, Object> map);
-	
-	
+
+	public MemberManage findById(Long memberIdx);
 
 }

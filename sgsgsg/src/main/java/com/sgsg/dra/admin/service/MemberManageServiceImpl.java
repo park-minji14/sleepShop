@@ -28,6 +28,7 @@ public class MemberManageServiceImpl implements MemberManageService {
 		return result;
 	}
 
+	//회원 리스트 
 	@Override
 	public List<MemberManage> listMember(Map<String, Object> map) {
 		List<MemberManage> list = null;
@@ -39,6 +40,37 @@ public class MemberManageServiceImpl implements MemberManageService {
 		}
 		
 		return list;
+	}
+
+	
+	//memberIdx로 회원 조회
+	@Override
+	public MemberManage findById(Long memberIdx) {
+		MemberManage dto = null;
+
+		try {
+			dto = mapper.findById(memberIdx);
+
+			if (dto != null) {
+				if (dto.getEmail() != null) {
+					String[] s = dto.getEmail().split("@");
+					dto.setEmail1(s[0]);
+					dto.setEmail2(s[1]);
+				}
+
+				if (dto.getTel() != null) {
+					String[] s = dto.getTel().split("-");
+					dto.setTel1(s[0]);
+					dto.setTel2(s[1]);
+					dto.setTel3(s[2]);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return dto;
 	}
 	
 	

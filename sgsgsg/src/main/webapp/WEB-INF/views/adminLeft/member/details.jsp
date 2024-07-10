@@ -8,7 +8,6 @@
 
 }
 
-
 .table>:not(caption)>*>* {
     padding: .5rem .5rem;
     color: var(--bs-table-color-state, var(--bs-table-color-type, var(--bs-table-color)));
@@ -16,11 +15,7 @@
     border-width: var(--bs-border-width);
     box-shadow: inset 0 0 0 9999px var(--bs-table-bg-state, var(--bs-table-bg-type, var(--bs-table-accent-bg)));
 }	
-
-
-
 </style>
-
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/boot-board.css" type="text/css">
 
@@ -31,33 +26,31 @@ function searchList() {
 }
 </script>
 
-
-
 <h3 style="font-size: 15px; padding-top: 10px;">회원 정보</h3>
 <table class="table td-border mx-auto my-10" style="width: 99%;">
 	<tr>
 		<td width="15%" class="text-center bg-light">회원번호</td>
-		<td width="35%" class="ps-5">15</td>
+		<td width="35%" class="ps-5">${dto.memberIdx}</td>
 		<td width="15%" class="text-center bg-light">아이디</td>
-		<td width="35%" class="ps-5">Test(${dto.membership==1?"일반회원":(dto.membership==31?"일반":"관리자")})</td>
+		<td width="35%" class="ps-5">${dto.userId} (${dto.membership==1?"일반회원":(dto.membership==99?"일반":"관리자")})</td>
 	</tr>
 	<tr>
 		<td class="text-center bg-light">이 름</td>
-		<td class="ps-5">ㄱㅇㅈ</td>
+		<td class="ps-5">${dto.userName}</td>
 		<td class="text-center bg-light">생년월일</td>
-		<td class="ps-5">2020.10.10</td>
+		<td class="ps-5">${dto.birth}</td>
 	</tr>
 	<tr>
 		<td class="text-center bg-light">전화번호</td>
-		<td class="ps-5">010-1111-1111</td>
+		<td class="ps-5">${dto.tel}</td>
 		<td class="text-center bg-light">이메일</td>
-		<td class="ps-5">aaaa@naver.com</td>
+		<td class="ps-5">${dto.email}</td>
 	</tr>
 	<tr>
 		<td class="text-center bg-light">회원가입일</td>
-		<td class="ps-5">2024.07.09</td>
+		<td class="ps-5">${dto.register_date}</td>
 		<td class="text-center bg-light">최근로그인</td>
-		<td class="ps-5">2024.07.09</td>
+		<td class="ps-5">${dto.last_login}</td>
 	</tr>
 	
 	<tr>

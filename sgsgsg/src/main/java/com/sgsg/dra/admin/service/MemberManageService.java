@@ -9,5 +9,9 @@ import com.sgsg.dra.admin.domain.MemberManage;
 public interface MemberManageService {
 	public int dataCount(Map<String, Object> map);
 	public List<MemberManage> listMember(Map<String, Object> map);
+
+	public MemberManage findById(Long memberIdx);
+	
+	
 	
 }
