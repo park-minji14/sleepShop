@@ -18,8 +18,12 @@
 				src="https://img.icons8.com/fluency/24/like.png" alt="좋아요" /></span> <span
 				class="me-3"><img
 				src="https://img.icons8.com/fluency/24/appointment-reminders.png"
-				alt="알림" /></span> <span class="me-3"><img
-				src="https://img.icons8.com/fluency/24/shopping-cart.png" alt="장바구니" /></span>
+				alt="알림" /></span> 
+				<span class="me-3">
+    				<a href="${pageContext.request.contextPath}/cart/list">
+        			<img src="https://img.icons8.com/fluency/24/shopping-cart.png" alt="장바구니" />
+    				</a>
+				</span>
 			<c:choose>
 				<c:when test="${not empty sessionScope.member}">
 					<button id="loginStatusBtn" class="login-btn login-success-btn">로그인
