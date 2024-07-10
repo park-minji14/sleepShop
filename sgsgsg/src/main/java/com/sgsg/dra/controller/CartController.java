@@ -25,11 +25,6 @@ public class CartController {
 	@Autowired
 	private CartService service;
 
-	@GetMapping("product")
-	public String proList() {
-		return ".product.details";
-	}
-
 	@GetMapping("list")
 	public String cartList(Model model, HttpSession session) {
 		//HttpSession session
@@ -39,6 +34,9 @@ public class CartController {
 		 
 		try {
 			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			if(info == null) {
+				return ".member.login";
+			}
 			List<Product> list= service.selectCartList(info.getUserId());
 			
 			model.addAttribute("list", list);

@@ -64,11 +64,13 @@
 								<c:if test="${not empty dto.optionNum}">${dto.optionName}: ${dto.optionValue}</c:if>
 								<c:if test="${not empty dto.optionNum2}">/ ${dto.optionName2}: ${dto.optionValue2}</c:if>
 							</h2>
+							<!--
 							<button type="button" aria-label="삭제" class="option_delete">
 								<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
 									<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
 								</svg>
 							</button>
+							-->
 							<div class="option-subBox">
 								<div class="option-qty">
 									<span class="minus_qty bi bi-dash-lg"></span>
@@ -76,13 +78,15 @@
 									<span class="plus_qty bi bi-plus-lg"></span>
 								</div>
 								<div class="option-price">
-									<span class="number"><fmt:formatNumber value="${dto.salePrice*dto.qty}" pattern="#,###" /></span>원
+									<span class="number"><fmt:formatNumber value="${dto.price*(1-dto.discountRate/100)*dto.qty}" pattern="#,###" /></span>원
 								</div> 
 							</div>
 							<input type="hidden" name="stockNum" value="${dto.stockNum}">
 							<input type="hidden" name="productNum" value="${dto.productNum}">
 							<input type="hidden" name="qty" value="${dto.qty}">
-							<input type="hidden" name="price" value="${dto.salePrice}">
+							<input type="hidden" name="productPrice" value="${dto.price}">
+							<input type="hidden" name="salePrice" value="${dto.price*(1-dto.discountRate/100)}">
+							<input type="hidden" name="delivery" value="${dto.delivery}">
 							<input type="hidden" name="totalPrice">
 						</div>
 						<button class="item_order" type="button">이 상품만 구매</button>
@@ -104,28 +108,28 @@
 				</c:forEach>
 				<!-- 모바일 대응 금액 출력 -->
 				<div class="cart-summary cart-summary_m">
-					<dl class="">
+					<dl class="productSummary">
 						<dt>총 상품금액</dt>
 						<dd>
-							<span class="number">196,800</span>원
+							<span class="number">0</span>원
 						</dd>
 					</dl>
-					<dl class="">
+					<dl class="deliverySummary">
 						<dt>총 배송비</dt>
 						<dd>
 							+ <span class="number">0</span>원
 						</dd>
 					</dl>
-					<dl class="">
+					<dl class="saleSummary">
 						<dt>총 할인금액</dt>
 						<dd>
-							- <span class="number">93,700</span>원
+							- <span class="number">0</span>원
 						</dd>
 					</dl>
-					<dl class=" cart-summary-row--total">
+					<dl class="totalSummary cart-summary-row--total">
 						<dt>결제금액</dt>
 						<dd>
-							<span class="number">103,100</span>원
+							<span class="number">0</span>원
 						</dd>
 					</dl>
 				</div>
@@ -363,31 +367,31 @@
 		</div>
 		<!-- 사이드바 결제금액 + 결제 버튼 -->
 		<div class="cart-side">
-			<div class="commerce-cart__side-bar-container" style="position: sticky; top: 81px; transition: top 0.1s ease 0s;">
+			<div class="commerce-cart__side-bar-container" style="position: sticky; top: 111px; transition: top 0.1s ease 0s;">
 				<div class="commerce-cart__side-bar" style="position: relative;">
 					<div class="cart-summary commerce-cart__side-bar__summary">
-						<dl class="">
+						<dl class="productSummary">
 							<dt>총 상품금액</dt>
 							<dd>
-								<span class="number">196,800</span>원
+								<span class="number">0</span>원
 							</dd>
 						</dl>
-						<dl class="">
+						<dl class="deliverySummary">
 							<dt>총 배송비</dt>
 							<dd>
 								+ <span class="number">0</span>원
 							</dd>
 						</dl>
-						<dl class="">
+						<dl class="saleSummary">
 							<dt>총 할인금액</dt>
 							<dd>
-								- <span class="number">93,700</span>원
+								- <span class="number">0</span>원
 							</dd>
 						</dl>
-						<dl class=" cart-summary__row--total">
+						<dl class="totalSummary cart-summary__row--total">
 							<dt>결제금액</dt>
 							<dd>
-								<span class="number">103,100</span>원
+								<span class="number">0</span>원
 							</dd>
 						</dl>
 					</div>
@@ -468,17 +472,45 @@ function changeQty($box, query) {
 	
 	const fn = function(data) {
 		if(data.state){
-			let totalPrice = $($box).find('input[name="price"]').val() * qty;
-			$($box).find('.chage_qty').text(qty);
+			let totalPrice = $($box).find('input[name="salePrice"]').val() * qty;
+			$($box).find('.chage_qty').text(qty.toLocaleString());
 			$($box).find('input[name="qty"]').val(qty);
 			$($box).find('input[name="totalPrice"]').val(totalPrice);
 			$($box).find('.option-price .number').text(totalPrice.toLocaleString());
+			
+			summary();
 		}
     };
     ajaxFun(url, "post", query, "json", fn);
 }
+$(function() {
+	summary();
+});
+function summary() {
+	let productSummary=0;
+	let deliverySummary=0;
+	let saleSummary=0;
+	let totalSummary=0;
+	$('.option-box').each(function() {
+		
+		let productPrice = parseInt($(this).find('input[name=productPrice]').val());
+		let qty = parseInt($(this).find('input[name="qty"]').val());
+		let delivery = parseInt($(this).find('input[name="delivery"]').val());
+		let salePrice = parseInt($(this).find('input[name="salePrice"]').val());
+		
+		
+		productSummary += productPrice * qty;
+		deliverySummary += delivery;
+		saleSummary += (productPrice - salePrice) * qty;
+		totalSummary += salePrice * qty;
+	});
+	$('.productSummary .number').text(productSummary.toLocaleString());
+	$('.deliverySummary .number').text(deliverySummary.toLocaleString());
+	$('.saleSummary .number').text(saleSummary.toLocaleString());
+	$('.totalSummary .number').text((totalSummary+deliverySummary).toLocaleString());
+}
 
-$('.cart-body').on('click', function(e) {
+$('.cart-list').on('click', function(e) {
 	if(! $(e.target.parentNode).hasClass("option-qty")){
 		return;
 	}
@@ -496,15 +528,16 @@ $('.cart-body').on('click', function(e) {
 	if($(e.target).hasClass("minus_qty")){
 		qty--;
 		if(qty === 0){
-			deleteProduct($box)
+			deleteProduct($box);
+			return;
 		}
 	}
 	changeQty($box, {stockNum:stockNum, qty:qty});
 });
 
-$('.cart-body').on('click', '.item_delete', function() {
+$('.cart-list').on('click', '.item_delete', function() {
 	deleteProduct($(this).closest('.cart-box'));
 });
-		
+
 //window.innerWidth
 </script>

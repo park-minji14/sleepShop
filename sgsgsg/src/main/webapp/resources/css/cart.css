@@ -21,8 +21,8 @@ a {
 	display: inline-block;
 	font-size: 0;
 	padding: 9px;
-	top: 3px;
-	left: -20px;
+    top: 50px;
+    left: -35px;
 }
 
 .checkbox {
@@ -360,7 +360,7 @@ a {
 */
 .cart-item {
 	position: relative;
-    padding: 20px 15px 20px 49px;
+    padding: 0 15px 20px 49px;
     background: #fff;
     border-radius: 6px;
     border: 1px solid #ededed;
@@ -480,7 +480,7 @@ a {
 	border-radius: 6px;
 }
 
-.cart-summary-row {
+.cart-summary dl {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -585,7 +585,7 @@ a {
 }
 
 .commerce-cart__side-bar__summary {
-	margin: 0 0 20px;
+	margin: 20px 0;
 	border: 1px solid #ededed;
 }
 
@@ -1063,7 +1063,7 @@ svg:not(:root) {
     right: 5px;
 }
 .next_product, .prev_product {
-	display: block
+	display: block;
     padding: 10px;
     border: none;
     background-color: #fff;

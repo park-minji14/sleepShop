@@ -18,7 +18,7 @@ public class CartServiceImpl implements CartService {
 		try {
 			mapper.inserCart(dto);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw e;
 		}
 	}
 
