@@ -4,12 +4,16 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.sgsg.dra.admin.domain.ProductManage;
 
+@Mapper
 public interface ProductManageMapper {
 	public long productSeq();
 	public void insertProduct(ProductManage dto) throws SQLException;
 	public void insertProductFile(ProductManage dto) throws SQLException;
+	public void insertSearchWord(Map<String, Object> paramMap) throws Exception;
 	
 	public long optionSeq();
 	public void insertProductOption(ProductManage dto) throws SQLException;

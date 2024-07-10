@@ -9,6 +9,8 @@ public class ProductManage {
 	private String productName;
 	private int classify;
 	private int price;
+	private int salePrice;
+	private int delivery;
 	private int discountRate;
 	private int savedMoney;
 	private int productShow;
@@ -18,6 +20,7 @@ public class ProductManage {
 	private String reg_date;
 	private String update_date;
 	private MultipartFile thumbnailFile;
+	private String searchWords;
 	
 	//카테고리 관련
 	private long categoryNum;
@@ -260,6 +263,22 @@ public class ProductManage {
 	public void setPrevOptionNum2(long prevOptionNum2) {
 		this.prevOptionNum2 = prevOptionNum2;
 	}
-	
-	
+	public int getDelivery() {
+		return delivery;
+	}
+	public void setDelivery(int delivery) {
+		this.delivery = delivery;
+	}
+	public String getSearchWords() {
+		return searchWords;
+	}
+	public void setSearchWords(String searchWords) {
+		this.searchWords = searchWords;
+	}
+	public int getSalePrice() {
+		return salePrice;
+	}
+	public void setSalePrice(int salePrice) {
+		this.salePrice = salePrice;
+	}
 }
