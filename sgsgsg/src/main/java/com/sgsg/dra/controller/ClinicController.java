@@ -187,13 +187,12 @@ public class ClinicController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("schType", schType);
 		map.put("kwd", kwd);
-		map.put("num", num);
+		map.put("question_id", num);
 		
 		Clinic prevDto = service.findByPrev(map);
 		Clinic nextDto = service.findByNext(map);
 		
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
-		
+	
 		model.addAttribute("dto", dto);
 		model.addAttribute("prevDto", prevDto);
 		model.addAttribute("nextDto", nextDto);
@@ -386,12 +385,12 @@ public class ClinicController {
 
 	    model.addAttribute("dto", dto);
 	    model.addAttribute("page", page);
-	    model.addAttribute("mode", "write");
+	    model.addAttribute("mode", "writeanswer");
 	    return ".clinic.writeanswer";
 	}
 
 	// 답변 작성 처리
-	@PostMapping("insertClinicAnswer")
+	@PostMapping("writeanswer")
 	public String insertClinicAnswerSubmit(ClinicAnswer dto, 
 	                                @RequestParam String page, 
 	                                HttpSession session) throws Exception {
@@ -399,9 +398,10 @@ public class ClinicController {
 	    if (info == null) {
 	        return "redirect:/member/login";
 	    }
+	    
+	    dto.setUserId(info.getUserId());
 
 	    try {
-	        dto.setUserId(info.getUserId());
 	        service.insertClinicAnswer(dto);
 	    } catch (Exception e) {
 	        e.printStackTrace();
@@ -422,16 +422,13 @@ public class ClinicController {
 			HttpSession session,
 			Model model) throws Exception {
 		
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		
 		int size = 5;
 		int total_page = 0;
 		int dataCount = 0;
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("num", num);
-		map.put("membership", info.getMembership());
-		map.put("userId", info.getUserId());
+		map.put("question_id", num);
 		
 		dataCount = service.ClinicAnswerCount(map);
 		total_page = myUtil.pageCount(dataCount, size);

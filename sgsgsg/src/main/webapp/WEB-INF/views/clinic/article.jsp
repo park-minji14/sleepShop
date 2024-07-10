@@ -144,6 +144,18 @@
 
 </style>
 
+<c:if test="${sessionScope.member.membership>90 || dto.userId == sessionScope.member.userId}">
+	<script type="text/javascript">
+	function deleteClinic() {
+		if(confirm("게시글을 삭제하시겠습니까 ? ")) {
+			let url = "${pageContext.request.contextPath}/clinic/delete";
+			let query = "num=${dto.question_id}&${query}";
+			location.href = url + "?" + query;
+		}
+	}
+	</script>
+</c:if>
+
 
 <div class="container">
 	<div class="body-container"> 
@@ -151,119 +163,7 @@
 			<h2 style="color: #35c5f0; font-weight: bold;"> 수면클리닉 </h2>
 		</div>
 		
-		<!-- 
-		<div class="body-main">
-			<div class="table-style">
-			<table class="table mt-3 mb-0 board-article"> 
-				<thead>
-					<tr> 
-						<td colspan="2" align="center">
-							${dto.title}
-						</td>
-					</tr>
-				</thead>
-				
-				<tbody>
-					<tr>
-						<td width="50%">
-							질문자 : ${dto.userId}
-						</td>
-						<td align="right">
-							${dto.created_date}
-						</td>
-					</tr>
-					
-					<tr>
-						<td colspan="2" valign="top" height="200" style="border-bottom: none;">
-							${dto.content}
-						</td>
-					</tr>
-					
-					
-					<tr>
-						<td colspan="2">
-							<c:if test="${not empty dto.saveFilename}">
-								<p class="border text-secondary my-1 p-2">
-									<i class="bi bi-folder2-open"></i>
-									<a href="${pageContext.request.contextPath}/clinic/download?question_id=${dto.question_id}">${dto.originalFilename}</a>
-								</p>
-							</c:if>
-						</td>
-					</tr>
-
-					<tr>
-						<td colspan="2">
-							이전글 :
-							<c:if test="${not empty prevDto}">
-								<a href="${pageContext.request.contextPath}/clinic/article?${query}&question_id=${prevDto.question_id}">${prevDto.subject}</a>
-							</c:if>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							다음글 :
-							<c:if test="${not empty nextDto}">
-								<a href="${pageContext.request.contextPath}/clinic/article?${query}&question_id=${nextDto.question_id}">${nextDto.subject}</a>
-							</c:if>
-						</td>
-					</tr>
-
-				</tbody>
-			</table>
-			
-			<table class="table table-borderless">
-				<tr>
-					<td width="50%">
-						<c:choose>
-							<c:when test="${sessionScope.member.userId==dto.userId}">
-								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/clinic/update?num=${dto.question_id}&page=${page}';">수정</button>
-							</c:when>
-							<c:otherwise>
-								<button type="button" class="btn btn-light" disabled>수정</button>
-							</c:otherwise>
-						</c:choose>
-						
-						<c:choose>
-							<c:when test="${sessionScope.member.userId==dto.userId || sessionScope.member.membership>50}">
-								<button type="button" class="btn btn-light" onclick="deleteBoard();">삭제</button>
-							</c:when>
-							<c:otherwise>
-								<button type="button" class="btn btn-light" disabled>삭제</button>
-							</c:otherwise>
-						</c:choose>
-				    			
-					</td>
-					<td class="text-end">
-						<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/clinic/list?${query}';">리스트</button>
-					</td>
-				</tr>
-			</table>
-			</div>
-			
-			<div class="reply">
-				<form name="replyForm" method="post">
-					<div class='form-header'>
-						<span class="bold">답변</span>
-					</div>
-					
-					<table class="table table-borderless reply-form">
-						<tr>
-							<td>
-								<textarea class='form-control' name="content"></textarea>
-							</td>
-						</tr>
-						<tr>
-						   <td align='right'>
-						        <button type='button' class='btn btn-light btnSendReply'>답변 등록</button>
-						    </td>
-						 </tr>
-					</table>
-				</form>
-				
-				<div id="listReply"></div>
-			</div>
-			
-		</div> -->
+	
 		
 		
 		<div class="table-style1">
@@ -338,7 +238,7 @@
 						
 				<c:choose>
 					<c:when test="${sessionScope.member.userId==dto.userId || sessionScope.member.membership>50}">
-						<button type="button" class="btn1" onclick="location.href='${pageContext.request.contextPath}/clinic/delete?num=${dto.question_id}&page=${page}';">삭제</button>
+						<button type="button" class="btn1" onclick="deleteClinic();">삭제</button>
 					</c:when>
 					<c:otherwise>
 						<button type="button" class="btn2" disabled>삭제</button>

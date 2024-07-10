@@ -198,14 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </head>
 <body>
 <hr>
-<!--
-<div class="container">
-	<div class="pic-container">	
-		<div class="body-main" style="text-align: center;">
-			 <img src="${pageContext.request.contextPath}/resources/images/의사아이.png" style="width: 1200px; height: 300px; opacity: 0.5;">
-		</div>
-	</div>
-</div> -->
+
 
 
 	<section class="main-banner">

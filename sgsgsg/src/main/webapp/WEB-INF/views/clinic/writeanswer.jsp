@@ -74,30 +74,30 @@ function check() {
 <div class="container">
 	<div class="body-container">
 	
-	<form name="boardAnswerForm" method="post" enctype="multipart/form-data">
+	
         <h2 style="color: #35c5f0; font-weight: bold;">답변 작성</h2>
         <h5>소중한 답변은 질문자에게 큰 힘이 됩니다.</h5>
         <div class="answer-write-table">
-        <form action="${pageContext.request.contextPath}/clinic/writeanswer" method="post">
-            <input type="hidden" name="question_id" value="${dto.question_id}">
-            <input type="hidden" name="page" value="${page}">
-            <div class="form-group">
-                <br>
-                <div style="text-align: center; font-size: 20px; color: #C90000;"> 
-                	RE:&nbsp;${dto.title}
-                </div>
-                <br>
-                <div>
-					<textarea name="content" id="ir1" class="form-control" style="width: 99%; height: 300px;">${dto.content}</textarea>
-				</div>
-            </div>
-            <div class="form-group text-center">
-                <button type="button" class="btn3" onclick="location.href='${pageContext.request.contextPath}/clinic/article?num=${dto.question_id}&page=${page}';" style="font-size: 18px;">${mode=='update'?'수정완료':'등록하기'}&nbsp;<i class="bi bi-check2"></i></button>
-                <button type="button" class="btn3" onclick="location.href='${pageContext.request.contextPath}/clinic/article?num=${dto.question_id}&page=${page}';" style="font-size: 18px;">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
-            </div> 
-        </form>
+	        <form name="boardAnswerForm" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/clinic/writeanswer" method="post">
+	            <input type="hidden" name="question_id" value="${dto.question_id}">
+	            <input type="hidden" name="page" value="${page}">
+	            <div class="form-group">
+	                <br>
+	                <div style="text-align: center; font-size: 20px; color: #C90000;"> 
+	                	RE:&nbsp;${dto.title}
+	                </div>
+	                <br>
+	                <div>
+						<textarea name="content" id="ir1" class="form-control" style="width: 99%; height: 300px;"></textarea>
+					</div>
+	            </div>
+	            <div class="form-group text-center">
+	            	
+	                <button type="button" class="btn3 btnSendAnswer" onclick="submitContents(this.form);" style="font-size: 18px;">${mode=='update'?'수정완료':'등록하기'}&nbsp;<i class="bi bi-check2"></i></button>
+	                <button type="button" class="btn3" onclick="location.href='${pageContext.request.contextPath}/clinic/article?num=${dto.question_id}&page=${page}';" style="font-size: 18px;">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
+	            </div> 
+	        </form>
         </div>
-     </form>
         
         
     </div>
@@ -132,6 +132,40 @@ function setDefaultFont() {
 	var nFontSize = 12;
 	oEditors.getById["ir1"].setDefaultFont(sDefaultFont, nFontSize);
 }
+
+
+
+// 답변 등록
+/*
+$(function() {
+	$(".btnSendAnswer").click(function() {
+		// num, content, answer
+		let question_id = "${dto.question_id}";
+		const $tb = $(this).closest("form");
+		let content = $tb.find("textarea").val().trim();
+		if (! content) {
+			$tb.find("textarea").focus();
+			return false;
+		}
+		
+		let url = "${pageContext.request.contextPath}/clinic/insertClinicAnswer";
+		let query = {question_id:question_id, content:content};
+		
+		const fn = function(data) {
+			$tb.find("textarea").val("");
+			let state = data.state;
+			if (state === "true") {
+				listPage(1);
+			} else {
+				alert("댓글 등록이 실패했습니다.");
+			}
+			
+		}
+		ajaxFun(url, "post", query, "json", fn);
+		
+	})
+})
+*/
 </script>
   
 

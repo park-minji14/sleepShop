@@ -140,7 +140,7 @@
 	    insert into sleep_clinic_answer(answer_num, question_id, userId, title, content, created_date) 
 	    values (
 	        sleep_clinic_answer_seq.NEXTVAL, 
-	        #{question_id}, #{userId}, #{title}, #{content}, sysdate)
+	        #{question_id}, #{userId}, #{title, jdbcType=VARCHAR}, #{content}, sysdate)
 	</insert>
 	
 	
@@ -150,6 +150,18 @@
 		from sleep_clinic_answer
 		where question_id=#{question_id}
 	</select>
+	
+	
+	<!-- 답변 리스트 -->
+	<select id="listClinicAnswer" parameterType="map" resultType="com.sgsg.dra.domain.ClinicAnswer">
+	    SELECT a.answer_num, a.userId, a.question_id, a.content, a.created_date
+	    FROM sleep_clinic_answer a
+	    JOIN member1 m ON a.userId = m.userId
+	    WHERE a.question_id = #{question_id}
+	    ORDER BY a.answer_num DESC
+	    OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+	</select>
+
 
 
 

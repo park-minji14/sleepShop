@@ -173,10 +173,7 @@ public class ClinicServiceImpl implements ClinicService {
 		try {
 			list = mapper.listClinicAnswer(map);
 			
-			for (ClinicAnswer dto : list) {
-				dto.setContent(myUtil.htmlSymbols(dto.getContent()));
-				dto.setUserId(myUtil.nameMasking(dto.getUserId()));
-			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
