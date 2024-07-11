@@ -61,10 +61,7 @@
                    <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/productManage/list" onclick="setActive(event)">상품관리</a>
                </li>
                <li class="nav-item">
-                   <a class="nav-link" href="#" onclick="setActive(event)">주문관리</a>
-               </li>
-               <li class="nav-item">
-                   <a class="nav-link" href="#" onclick="setActive(event)">배송관리</a>
+                   <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/orderManage/main" onclick="setActive(event)">주문 및 배송 관리</a>
                </li>
                <li class="nav-item">
                    <a class="nav-link" href="#" onclick="setActive(event)">고객센터</a>
