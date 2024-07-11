@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import com.sgsg.dra.domain.Product;
 import com.sgsg.dra.service.ProductService;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,68 +15,109 @@ import java.util.Map;
 @Controller
 @RequestMapping("/product/*")
 public class ProductController {
-
     @Autowired
-    private ProductService productService;
+    private ProductService service;
+    
+    @GetMapping("listAllCategory")
+	@ResponseBody
+	public Map<String, Object> listAllCategory() {
+		Map<String, Object> model = new HashMap<String, Object>();
+		
+		List<Product> listMain = service.listCategory();
+		List<Product> listAll = service.listAllCategory();
+		
+		model.put("listMain", listMain);
+		model.put("listAll", listAll);
+		
+		return model;
+	}
+    
+    @GetMapping("listCategory")
+	@ResponseBody
+	public List<Product> listCategory() {
+		List<Product> list = service.listCategory();
+		return list;
+	}
+
+	@GetMapping("listSubCategory")
+	@ResponseBody
+	public List<Product> listSubCategory(@RequestParam long parentNum) {
+		List<Product> list = service.listSubCategory(parentNum);
+		return list;
+	}
+	
+	@GetMapping("listOptionDetail2")
+	@ResponseBody
+	public List<Product> listOptionDetail2(@RequestParam long optionNum,
+			@RequestParam long optionNum2, @RequestParam long detailNum) {
+		List<Product> list = service.listOptionDetail(optionNum2);
+		return list;
+	}
+	
+	@GetMapping("listOptionDetailStock")
+	@ResponseBody
+	public List<Product> listOptionDetailStock(@RequestParam Map<String, Object> map) {
+		List<Product> list = service.listOptionDetailStock(map);
+		
+		return list;
+	}
+
 
     @GetMapping("/details/{productNum}")
     public String productDetail(@PathVariable Long productNum, Model model) throws Exception {
-        
     	try {    
-            Product dto = productService.findById(productNum);
+            Product dto = service.findById(productNum);
             if (dto == null) {
                 return "redirect:/home";
             }
             
-            List<Product> listFile = productService.listProductFile(productNum);
-            List<Product> listOption = productService.listProductOption(productNum);
-            
-            List<Product> listOptionDetail = null;
-            List<Product> listOptionDetail2 = null;
+            List<Product> listFile = service.listProductFile(productNum);
            
+            List<Product> listOption = service.listProductOption(productNum);
             
-            if (listOption != null && !listOption.isEmpty()) {
-                listOptionDetail = productService.getDistinctOptionDetails(listOption.get(0).getOptionNum());
-                if (listOption.size() > 1) {
-                    listOptionDetail2 = productService.getDistinctOptionDetails(listOption.get(1).getOptionNum());
-                }
+            
+            List<Product>listOptionDetail=null;
+            if(listOption.size()>0) {
+            	listOptionDetail=service.listOptionDetail(listOption.get(0).getOptionNum());
+            }
+      
+         
+            Map<String, Object> map = new HashMap<String, Object>();
+            List<Product> listStock=null;
+            if(dto.getOptionCount()<2) {
+            	map.put("productNum", dto.getProductNum());
+            	listStock=service.listOptionDetailStock(map);
+            	
+            	if(dto.getOptionCount()==0&&listStock.size()>0) {
+            		dto.setStockNum(listStock.get(0).getSpecialNum());
+            		dto.setTotalStock(listStock.get(0).getTotalStock());
+            	}else if(dto.getOptionCount()>0) {
+            		for(Product vo :listOptionDetail) {
+            			for(Product ps : listStock) {
+            				if(vo.getDetailNum()==ps.getDetailNum()) {
+            					vo.setStockNum(ps.getStockNum());
+            					vo.setTotalStock(ps.getTotalStock());
+            					break;
+            				}
+            			}
+            		}
+            	}
             }
             
-            Map<String, Object> map = new HashMap<>();
-            map.put("productNum", productNum);
-            List<Product> listStock = productService.listOptionDetailStock(map);
-            
-            if (dto.getOptionCount() == 0 && listStock != null && !listStock.isEmpty()) {
-                dto.setStockNum(listStock.get(0).getStockNum());
-                dto.setTotalStock(listStock.get(0).getTotalStock());
-            } else if (dto.getOptionCount() >= 1) {
-                productService.processOptionStock(listOptionDetail, listStock, false);
-                if (dto.getOptionCount() >= 2) {
-                    productService.processOptionStock(listOptionDetail2, listStock, true);
-                }
-            }
-            
-            System.out.println();
-           
             model.addAttribute("dto", dto);
             model.addAttribute("listFile", listFile);
             model.addAttribute("listOption", listOption);
             model.addAttribute("listOptionDetail", listOptionDetail);
-            model.addAttribute("listOptionDetail2", listOptionDetail2);
-            model.addAttribute("listStock", listStock);
             
-        
+            System.out.println(model.addAttribute( listOptionDetail));
+            
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("error", "상품 정보를 불러오는 중 오류가 발생했습니다.");
+           
         }
         return ".product.details";
     }
 
-    @GetMapping("/getOptionDetails")
-    @ResponseBody
-    public List<Product> getOptionDetails(@RequestParam Long productNum, @RequestParam Long detailNum) {
-        return productService.getSecondOptionDetails(productNum, detailNum);
-    }
     
+
 }
