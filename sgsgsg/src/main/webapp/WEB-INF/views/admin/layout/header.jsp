@@ -45,7 +45,7 @@
     <div class="info-item">새근새근</div>
     <div class="info-item">오늘: n명, 어제: n명, 최대: 739, 전체: 5000명</div>
     <div class="info-item"><a href="${pageContext.request.contextPath}/">쇼핑몰</a></div>
-    <div class="info-item logout">로그아웃</div>
+    <div class="info-item logout"><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></div>
 </div>
 
 <!-- 하단 네비게이션 바 -->
@@ -70,7 +70,7 @@
                    <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/memberManage/list" onclick="setActive(event)">회원관리</a>
                </li>
                <li class="nav-item">
-                   <a class="nav-link" href="#" onclick="setActive(event)">프로모션</a>
+                   <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/promotionManage/main" onclick="setActive(event)">프로모션 및 이벤트</a>
                 </li>
             </ul>
         </div>

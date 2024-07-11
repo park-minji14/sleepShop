@@ -59,6 +59,10 @@
         <put-attribute name="left" value="/WEB-INF/views/adminLeft/order/orderLeft.jsp" />
         <put-attribute name="body" value="/WEB-INF/views/adminLeft/order/{1}.jsp" />
     </definition>
+    <definition name=".adminLeft.promotion.*" extends=".adminDefaultLayout">
+        <put-attribute name="left" value="/WEB-INF/views/adminLeft/promotion/promotionLeft.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/adminLeft/promotion/{1}.jsp" />
+    </definition>
 
     <!-- 순서가 바뀌면 안됨(* 많은 것이 위에) -->
     <definition name=".*.*.*" extends=".mainLayout">
