@@ -60,7 +60,6 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
     background-color: #fff;
     width: 1100px; 
-    height: 60px; 
 }
 
 
@@ -237,7 +236,7 @@
 				</c:choose>
 						
 				<c:choose>
-					<c:when test="${sessionScope.member.userId==dto.userId || sessionScope.member.membership>50}">
+					<c:when test="${sessionScope.member.userId==dto.userId || sessionScope.member.membership>90}">
 						<button type="button" class="btn1" onclick="deleteClinic();">삭제</button>
 					</c:when>
 					<c:otherwise>
@@ -328,6 +327,28 @@ function ajaxFun(url, method, formData, dataType, fn, file = false) {
 	
 	$.ajax(url, settings);
 }
+
+
+// 답변 삭제
+$(function() {
+	$(".answer").on("click", ".deleteClinicAnswer", function() {
+		if (! confirm('답변을 삭제하시겠습니까 ? ')) {
+			return false;
+		}
+		
+		let answer_num = $(this).attr('data-answer_num');
+		let page = $(this).attr('data-pageNo');
+		
+		let url = '${pageContext.request.contextPath}/clinic/deleteClinicAnswer';
+		let query = 'answer_num=' + answer_num + '&mode=answer';
+		const fn = function(data) {
+			// let state = data.state;
+			listPage(page);
+		}
+		
+		ajaxFun(url, 'post', query, 'json', fn);
+	})
+})
 
 
 

@@ -25,6 +25,14 @@ public class Clinic {
 	private String rated_date;
 	private int like;
 	
+	public int answerCount;
+	
+	public int getAnswerCount() {
+		return answerCount;
+	}
+	public void setAnswerCount(int answerCount) {
+		this.answerCount = answerCount;
+	}
 	public long getCategory_id() {
 		return category_id;
 	}

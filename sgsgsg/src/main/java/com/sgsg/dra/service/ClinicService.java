@@ -20,9 +20,9 @@ public interface ClinicService {
 	public Clinic findByNext(Map<String, Object> map);
 	
 	public void insertClinicAnswer(ClinicAnswer dto) throws Exception;
+	public void deleteClinicAnswer(Map<String, Object> map) throws Exception;
 	public List<ClinicAnswer> listClinicAnswer(Map<String, Object> map);
 	public int ClinicAnswerCount(Map<String, Object> map);
-	public void deleteClinicAnswer(Map<String, Object> map) throws Exception;
 	
 	public List<ClinicAnswer> listClinicAnswerComment(Map<String, Object> map);
 	public int ClinicAnswerCommentCount(Map<String, Object> map);

@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', function () {
 									<c:if test="${not empty dto.saveFilename}">
 										<span style="color: #8C8C8C; font-size: 20px;"><i class="bi bi-archive"></i></span>
 									</c:if>
-									<span style="color: orange; font-size: 20px;">&nbsp;&nbsp;[답변 0]</span><br><span style="font-size: 18px; padding-left: 25px;">질문자 : ${dto.userId}</span>
+									<span style="color: orange; font-size: 20px;">&nbsp;&nbsp;[답변 ${dto.answerCount}]</span><br><span style="font-size: 18px; padding-left: 25px;">질문자 : ${dto.userId}</span>
 								</span>
 							</td>
 							<td style="text-align: right;">${dto.created_date}</td>  

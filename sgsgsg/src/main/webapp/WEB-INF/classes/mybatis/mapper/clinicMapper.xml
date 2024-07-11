@@ -161,6 +161,13 @@
 	    ORDER BY a.answer_num DESC
 	    OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 	</select>
+	
+	<!-- 답변 삭제 -->
+	<delete id="deleteClinicAnswer" parameterType="map">
+		delete from sleep_clinic_answer
+		where answer_num=#{answer_num}
+		AND userId = #{userId}
+	</delete>
 
 
 
