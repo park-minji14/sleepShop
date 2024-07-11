@@ -28,11 +28,7 @@ public class CartController {
 
 	@GetMapping("list")
 	public String cartList(Model model, HttpSession session) {
-		//HttpSession session
-		
-		// 시간별, 같은 회사별, 같은 상품별 정렬...
-		
-		 
+ 
 		try {
 			SessionInfo info = (SessionInfo)session.getAttribute("member");
 			if(info == null) {
@@ -68,7 +64,7 @@ public class CartController {
 		return model;
 	}
 	
-	@PostMapping("updateQty")
+	@GetMapping("updateQty")
 	@ResponseBody
 	public Map<String, Object> updateQty(Product dto, HttpSession session) {
 		String state = "true";

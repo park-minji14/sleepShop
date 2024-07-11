@@ -36,9 +36,22 @@
 
 </style>
 
+
+<c:if test="${sessionScope.member.membership > 90 || dto.userId == sessionScope.member.userId}">
+    <script type="text/javascript">
+    function deleteClinicAnswer(form) {
+    	console.log(form);
+        if(confirm("답변을 삭제하시겠습니까 ? ")) {
+            form.submit();
+        }
+    }
+    </script>
+</c:if>
+
+
 <br><br>
 <div class='reply-info'>
-	<span class='reply-count'>답변 ${answerCount}개</span>
+	<span class='reply-count' >답변 ${answerCount}개</span>
 </div>
 
 <div class="container">
@@ -98,8 +111,25 @@
 				<div class='row reply-writer'>
 					<div class='col-1'><i class='bi bi-person-circle text-muted icon' style="font-size: 30px;"></i></div>
 					<div class='col-auto align-self-center'>
-						<div class='name' style="font-size: 25px;">${vo.userId}</div>
+						<div class='name' style="font-size: 25px;">${vo.userId}
+						</div>
 						<div class='date'>${vo.created_date}</div>
+						<div class="">
+							<div class="answer-list">
+					
+							        <div class="answer-item">
+							            <c:if test="${sessionScope.member.userId == vo.userId || sessionScope.member.membership > 90}">
+							                <form action="${pageContext.request.contextPath}/clinic/deleteAnswer" method="post">
+							                    <input type="hidden" name="answer_num" value="${vo.answer_num}">
+							                    <input type="hidden" name="question_id" value="${vo.question_id}">
+							                    <input type="hidden" name="page" value="${page}">
+							                    <button type="button" class="btn1" onclick="deleteClinicAnswer(this.form);">삭제</button>
+							                </form>
+							            </c:if>
+							        </div>
+							</div>
+						
+						</div>
 					</div>
 				</div>
 			</div>
@@ -108,11 +138,12 @@
 				<div>${vo.content}</div>
 			</div>
 			
+			<br><br>
+			
 		</c:forEach>
-		</div>
-		
-		
-	</div>
+	</div>	
+</div>
+	
 
 
 <div class="page-navigation">

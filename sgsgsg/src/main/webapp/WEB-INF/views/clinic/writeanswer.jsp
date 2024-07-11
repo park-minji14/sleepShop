@@ -74,7 +74,7 @@ function check() {
 <div class="container">
 	<div class="body-container">
 	
-	
+	<div class="answer">
         <h2 style="color: #35c5f0; font-weight: bold;">답변 작성</h2>
         <h5>소중한 답변은 질문자에게 큰 힘이 됩니다.</h5>
         <div class="answer-write-table">
@@ -98,6 +98,7 @@ function check() {
 	            </div> 
 	        </form>
         </div>
+    </div>
         
         
     </div>

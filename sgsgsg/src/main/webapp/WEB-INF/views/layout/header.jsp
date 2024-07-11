@@ -20,15 +20,38 @@
 				src="https://img.icons8.com/fluency/24/appointment-reminders.png"
 				alt="알림" /></span> <span class="me-3"><a href=${pageContext.request.contextPath}/cart/list><img
 				src="https://img.icons8.com/fluency/24/shopping-cart.png" alt="장바구니" /></a></span>
-			<c:choose>
-				<c:when test="${not empty sessionScope.member}">
-					<button id="loginStatusBtn" class="login-btn login-success-btn">로그인
-						성공</button>
-				</c:when>
-				<c:otherwise>
-					<button id="loginBtn" class="login-btn btn-outline-primary">로그인</button>
-				</c:otherwise>
-			</c:choose>
+  <c:choose>
+    <c:when test="${not empty sessionScope.member}">
+        <div class="user-profile">
+            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" 
+                 alt="Profile" 
+                 class="profile-img" 
+                 style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
+            <div class="profile-menu" style="display: none;">
+                <div class="profile-header">
+                    <span class="user-name">오예금요일</span>
+                    <img src="https://img.icons8.com/ios/50/000000/bell.png" alt="Notifications" class="notification-icon" style="width: 24px; height: 24px;">
+                </div>
+                <div class="user-stats">
+                    <span>쿠폰 <strong></strong>개</span>
+                    <span>포인트 <strong></strong>원</span>
+                </div>
+                <ul class="menu-list">
+                    <li><img src="https://img.icons8.com/ios/50/000000/purchase-order.png" alt="구매 내역" style="width: 20px; height: 20px;"> 구매 내역</li>
+                    <li><img src="https://img.icons8.com/ios/50/000000/like.png" alt="좋아요" style="width: 20px; height: 20px;"> 좋아요</li>
+                    <li><img src="https://img.icons8.com/ios/50/000000/settings.png" alt="설정" style="width: 20px; height: 20px;"> 설정</li>
+                </ul>
+                <div class="footer-links">
+                    <a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
+                    <a href="">고객센터 ></a>
+                </div>
+            </div>
+        </div>
+    </c:when>
+    <c:otherwise>
+        <button id="loginBtn" class="login-btn">로그인</button>
+    </c:otherwise>
+</c:choose>
 		</div>
 	</div>
 
@@ -77,24 +100,6 @@ window.location.href = '${pageContext.request.contextPath}/member/login';
 });
 
 
-// 로그인 상태 확인 및 버튼 업데이트
-/*function updateLoginStatus() {
-	
-	$.ajax({url : '${pageContext.request.contextPath}/member/checkLoginStatus',
-				method : 'GET',
-				success : function(response) {
-					if (response.loggedIn) {
-					$('#loginBtn').replaceWith('<button id="loginStatusBtn" class="login-btn login-success-btn">로그인 성공</button>');
-				}
-			}
-		});
-}
-
-	// 페이지 로드 시 로그인 상태 확인
-	updateLoginStatus();
-	
-});
-	*/
 
 //로고 클릭하면 home으로감 
 $(document).ready(function() {
@@ -195,6 +200,23 @@ $(document)
 						$popularSearchContent.removeClass('active');
 					}
 				});
-});		
+});
+
+$(document).ready(function() {
+    const $profileImg = $('.profile-img');
+    const $profileMenu = $('.profile-menu');
+
+    $profileImg.click(function(event) {
+        event.stopPropagation();
+        $profileMenu.toggle();
+    });
+
+    $(document).click(function(event) {
+        if (!$(event.target).closest('.profile-menu').length && !$(event.target).is('.profile-img')) {
+            $profileMenu.hide();
+        }
+    });
+
+});
 				
 	</script>

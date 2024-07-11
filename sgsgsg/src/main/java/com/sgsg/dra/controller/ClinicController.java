@@ -334,33 +334,6 @@ public class ClinicController {
 		
 		return ".error.filedownloadFailure";
 	}
-		
-	
-	/*
-	// 답변 등록
-	@PostMapping("insertClinicAnswer")
-	@ResponseBody
-	public Map<String, Object> insertClinicAnswer(
-			ClinicAnswer dto,
-			HttpSession session) throws Exception {
-		String state = "true";
-		
-		SessionInfo info = (SessionInfo)session.getAttribute("member");
-		
-		try {
-			dto.setUserId(info.getUserId());
-			service.insertClinicAnswer(dto);
-		} catch (Exception e) {
-			state = "false";
-		}
-		
-		
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("state", state);
-		return model;
-		
-	}
-	*/
 	
 	
 	
@@ -452,33 +425,34 @@ public class ClinicController {
 		model.addAttribute("answerCount", dataCount);
 		model.addAttribute("total_page", total_page);
 		model.addAttribute("paging", paging);
+		model.addAttribute("question_id", num);
 		
 		// ".clinic.listReply" 로 반환하면 안됨(메뉴가 생성됨)
 		return "clinic/listanswer";
 	}
 	
 	
-	/*
-	// 답변 삭제
-	@PostMapping("deleteClinicAnswer")
-	@ResponseBody
-	public Map<String, Object> deleteClinicAnswer(
-			@RequestParam Map<String, Object> paramMap) throws Exception {
-		String state = "true";
-		
-		try {
-			service.deleteClinicAnswer(paramMap);
-		} catch (Exception e) {
-			state = "false";
-		}
-		
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("state", state);
-		return model;
-		
+	
+	// 답변 삭제 : POST 방식
+	@PostMapping("deleteAnswer")
+	public String deleteAnswer(@RequestParam long answer_num,
+	                           @RequestParam long question_id,
+	                           @RequestParam String page,
+	                           HttpSession session) throws Exception {
+	    SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+	    Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("answer_num", answer_num);
+	    paramMap.put("userId", info.getUserId());
+
+	    service.deleteClinicAnswer(paramMap);
+
+	    return "redirect:/clinic/article?num=" + question_id + "&page=" + page;
 	}
+		
 	
-	
+
+	/*
 	// 답변의 코멘트
 	@GetMapping("listClinicAnswerComment")
 	public String listClinicAnswerComment(
