@@ -18,8 +18,8 @@
 				src="https://img.icons8.com/fluency/24/like.png" alt="좋아요" /></span> <span
 				class="me-3"><img
 				src="https://img.icons8.com/fluency/24/appointment-reminders.png"
-				alt="알림" /></span> <span class="me-3"><img
-				src="https://img.icons8.com/fluency/24/shopping-cart.png" alt="장바구니" /></span>
+				alt="알림" /></span> <span class="me-3"><a href=${pageContext.request.contextPath}/cart/list><img
+				src="https://img.icons8.com/fluency/24/shopping-cart.png" alt="장바구니" /></a></span>
 			<c:choose>
 				<c:when test="${not empty sessionScope.member}">
 					<button id="loginStatusBtn" class="login-btn login-success-btn">로그인
@@ -78,8 +78,8 @@ window.location.href = '${pageContext.request.contextPath}/member/login';
 
 
 // 로그인 상태 확인 및 버튼 업데이트
-function updateLoginStatus() {
-	/*
+/*function updateLoginStatus() {
+	
 	$.ajax({url : '${pageContext.request.contextPath}/member/checkLoginStatus',
 				method : 'GET',
 				success : function(response) {
@@ -92,8 +92,9 @@ function updateLoginStatus() {
 
 	// 페이지 로드 시 로그인 상태 확인
 	updateLoginStatus();
-	*/
+	
 });
+	*/
 
 //로고 클릭하면 home으로감 
 $(document).ready(function() {
@@ -121,7 +122,7 @@ $(document).ready(function() {
 function updateSubMenu(category) {
 	const subMenuItems = {
 		'쇼핑' : [ {text : '쇼핑홈',url : '${pageContext.request.contextPath}/'}, 
-			{text : '카테고리',url : '${pageContext.request.contextPath}/'}, 
+			{text : '카테고리',url : '${pageContext.request.contextPath}/cart/list'}, 
 			{text : '베스트',url : '${pageContext.request.contextPath}/'},
 			{text : '오늘의딜',url : '${pageContext.request.contextPath}/'}, 
 			{text : '빠른배송',url : '${pageContext.request.contextPath}/'}, 
@@ -194,4 +195,6 @@ $(document)
 						$popularSearchContent.removeClass('active');
 					}
 				});
+});		
+				
 	</script>
