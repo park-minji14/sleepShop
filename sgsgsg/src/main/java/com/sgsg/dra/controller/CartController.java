@@ -68,7 +68,7 @@ public class CartController {
 		return model;
 	}
 	
-	@PostMapping("updateQty")
+	@GetMapping("updateQty")
 	@ResponseBody
 	public Map<String, Object> updateQty(Product dto, HttpSession session) {
 		String state = "true";
