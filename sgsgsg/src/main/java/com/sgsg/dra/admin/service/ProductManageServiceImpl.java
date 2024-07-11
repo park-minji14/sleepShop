@@ -2,6 +2,7 @@ package com.sgsg.dra.admin.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -132,5 +133,30 @@ public class ProductManageServiceImpl implements ProductManageService {
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+
+	@Override
+	public int dataCount(Map<String, Object> map) {
+		int result = 0;
+		
+		try {
+			result = mapper.dataCount(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public List<ProductManage> listProduct(Map<String, Object> map) {
+		List<ProductManage> list = null;
+		
+		try {
+			list = mapper.listProduct(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 }

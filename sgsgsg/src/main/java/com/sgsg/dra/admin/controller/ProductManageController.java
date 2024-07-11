@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,56 @@ public class ProductManageController {
 	private MyUtil myUtil;
 	
 	@RequestMapping("list")
-	public String productManage() {
+	public String productManageList(
+			@RequestParam(value = "page", defaultValue = "1") int current_page,
+			@RequestParam(defaultValue = "0") long parentNum,
+			@RequestParam(defaultValue = "0") long categoryNum,
+			HttpServletRequest req,
+			Model model) throws Exception {
+		
+		String cp = req.getContextPath();
+		
+		int size = 10;
+		int total_page;
+		int dataCount;
+		
+		List<ProductManage> listCategory = service.listCategory();
+		List<ProductManage> listSubCategory = null;
+		if(parentNum == 0 && listCategory.size() !=0) {
+			parentNum = listCategory.get(0).getCategoryNum();
+		}
+		listSubCategory = service.listSubCategory(parentNum);
+		if(categoryNum == 0 && listSubCategory.size() != 0) {
+			categoryNum = listSubCategory.get(0).getCategoryNum();
+		}
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		dataCount = service.dataCount(map);
+		total_page = myUtil.pageCount(dataCount, size);
+		if(current_page > total_page) {
+			current_page = total_page;
+		}
+		
+		int offset = (current_page - 1) * size;
+		if(offset < 0) {
+			offset = 0;
+		}
+		
+		map.put("offset", offset);
+		map.put("size", size);
+		
+		List<ProductManage> list = service.listProduct(map);
+		
+		String listUrl = cp + "/adminManagement/productManage/list";
+		
+		String paging = myUtil.pagingUrl(current_page, total_page, listUrl);
+		
+		model.addAttribute("listCategory", listCategory);
+		model.addAttribute("listSubCategory", listSubCategory);
+		model.addAttribute("list", list);
+		model.addAttribute("dataCount", dataCount);
+		model.addAttribute("paging", paging);
 		
 		return ".adminLeft.product.list";
 	}
@@ -66,7 +116,7 @@ public class ProductManageController {
 		} catch (Exception e) {
 		}
 		
-		return ".adminLeft.product.list";
+		return "redirect:/adminManagement/productManage/list";
 	}
 	
 	@GetMapping("listSubCategory")
