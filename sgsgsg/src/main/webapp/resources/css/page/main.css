@@ -456,3 +456,7 @@ margin: 0 auto;
 .product-slider{
 height: 300px
 }
+
+.product-item{
+	border: none;
+}
