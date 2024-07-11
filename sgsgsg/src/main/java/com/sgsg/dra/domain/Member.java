@@ -22,6 +22,12 @@ public class Member {
 	private String addr2;
 	private int enabled;
 	
+	private String registerId;
+	private int stateCode;
+	private String memo;
+	
+	private String authority;
+	
 	public long getMemberIdx() {
 		return memberIdx;
 	}
@@ -141,5 +147,29 @@ public class Member {
 	}
 	public void setEnabled(int enabled) {
 		this.enabled = enabled;
+	}
+	public String getRegisterId() {
+		return registerId;
+	}
+	public void setRegisterId(String registerId) {
+		this.registerId = registerId;
+	}
+	public int getStateCode() {
+		return stateCode;
+	}
+	public void setStateCode(int stateCode) {
+		this.stateCode = stateCode;
+	}
+	public String getMemo() {
+		return memo;
+	}
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
+	public String getAuthority() {
+		return authority;
+	}
+	public void setAuthority(String authority) {
+		this.authority = authority;
 	}
 }

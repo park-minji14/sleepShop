@@ -62,11 +62,29 @@
 		WHERE m1.memberIdx = #{memberIdx}
 	</select>
     
+ 	<!-- 회원 상태 변경  -->
+	<insert id="insertMemberState" parameterType="com.sgsg.dra.admin.domain.MemberManage">
+		INSERT INTO memberState(num, userId, stateCode, memo, registerId, reg_date)
+		VALUES (memberState_seq.NEXTVAL, #{userId}, #{stateCode}, #{memo}, #{registerId}, SYSDATE)
+	</insert>
     
+ 	<!-- 회원 등급 변경  -->
+    <update id="updateMembership" parameterType="map">
+		UPDATE member1 SET membership = #{membership}
+		WHERE memberIdx=#{memberIdx}
+    </update>
     
-    
-    
-    
+	<!-- 시큐리트 권한 변경 -->
+	<update id="updateAuthority" parameterType="map">
+		UPDATE memberAuthority SET authority = #{authority}
+		WHERE userId = #{userId}
+	</update>
+
+	<!-- 시큐리트 권한 삭제 -->
+	<delete id="deleteAuthority" parameterType="String">
+		DELETE FROM memberAuthority
+		WHERE userId = #{userId}
+	</delete>
     
     
     

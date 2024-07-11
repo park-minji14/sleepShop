@@ -28,10 +28,8 @@ public class MemberManage {
 	private String memo;
 	private String registerId;
 	private String reg_date;
-	
-	
-	
-	
+
+	private String authority;
 	
 	public long getMemberIdx() {
 		return memberIdx;
@@ -188,6 +186,12 @@ public class MemberManage {
 	}
 	public void setFailure_cnt(int failure_cnt) {
 		this.failure_cnt = failure_cnt;
+	}
+	public String getAuthority() {
+		return authority;
+	}
+	public void setAuthority(String authority) {
+		this.authority = authority;
 	}
 	
 }

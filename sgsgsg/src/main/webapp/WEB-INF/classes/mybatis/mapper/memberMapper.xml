@@ -72,10 +72,54 @@
 		WHERE m1.memberIdx = #{memberIdx}
 	</select>
 	
-	<!-- 회원정보 수정  -->
+	<!-- 회원 등급 변경  -->
+    <update id="updateMembership" parameterType="map">
+		UPDATE member1 SET membership = #{membership}
+		WHERE memberIdx=#{memberIdx}
+    </update>
+
+	<!-- 회원 정보 변경(member1)  -->    	
+	<update id="updateMember1" parameterType="com.sgsg.dra.domain.Member">
+		UPDATE member1 SET userPwd=#{userPwd}, modify_date=SYSDATE
+		WHERE userId=#{userId}
+    </update>
+    
+	<!-- 회원 정보 변경(member2)  -->    	
+
+
+
+	<!-- 패스워드 실패 / 회원 상태 -->
+	<select id="checkFailureCount" parameterType="String" resultType="Integer">
+		SELECT NVL(failure_cnt, 0) failure_cnt
+		FROM member1
+		WHERE userId = #{userId}
+	</select>
 	
+	<update id="updateFailureCountReset" parameterType="String">
+		UPDATE member1 SET failure_cnt = 0
+		WHERE userId = #{userId}
+	</update>
 	
+	<update id="updateFailureCount" parameterType="String">
+		UPDATE member1 SET failure_cnt = failure_cnt + 1
+		WHERE userId = #{userId}
+	</update>
+
+	<!-- 멤버 상태 변경 -->
+	<insert id="insertMemberState" parameterType="com.sgsg.dra.domain.Member">
+		INSERT INTO memberState(num, userId, stateCode, memo, registerId, reg_date)
+		VALUES (memberState_seq.NEXTVAL, #{userId}, #{stateCode}, #{memo}, #{registerId}, SYSDATE)
+	</insert>
 	
-	
+	<!-- 권한 테이블 -->
+	<insert id="insertAuthority" parameterType="com.sgsg.dra.domain.Member">
+		INSERT INTO memberAuthority(userId, authority)
+		VALUES (#{userId}, #{authority})
+	</insert>
+
+	<delete id="deleteAuthority" parameterType="String">
+		DELETE FROM memberAuthority
+		WHERE userId = #{userId}
+	</delete>
 	
 </mapper>

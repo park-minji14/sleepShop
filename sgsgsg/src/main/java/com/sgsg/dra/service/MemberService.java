@@ -18,9 +18,8 @@ public interface MemberService {
 	public Member findById(long memberIdx);
 	
 	public void deleteMember(Map<String, Object> map) throws Exception;
-	/*
 	public void generatePwd(Member dto) throws Exception;
-	*/
+
 	public boolean isPasswordCheck(String userId, String userPwd);
 	public void updatePwd(Member dto) throws Exception;
 	public int checkFailureCount(String userId);

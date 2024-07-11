@@ -28,59 +28,10 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 	
-	@GetMapping("login")
+	@RequestMapping("login")
 	public String loginForm() {
 		return ".member.login";
 	}
-	@PostMapping("login")
-	public String loginSubmit(@RequestParam String userId,
-			@RequestParam String userPwd,
-			HttpSession session,
-			Model model) {
-		
-		Member dto = service.loginMember(userId);
-		if (dto == null || !userPwd.equals(dto.getUserPwd())) {
-			model.addAttribute("message", "아이디 또는 패스워드가 일치하지 않습니다.");
-			return ".member.login";
-		}
-		
-		// 세션에 로그인 정보 저장
-		SessionInfo info = new SessionInfo();
-		info.setMemberIdx(dto.getMemberIdx());
-		info.setUserId(dto.getUserId());
-		info.setUserName(dto.getUserName());
-		info.setMembership(dto.getMembership());
-		
-		//세션유지시간 30분, 기본:30분
-		session.setMaxInactiveInterval(30 * 60); 
-
-		session.setAttribute("member", info);
-
-		// 로그인 이전 URI로 이동
-		String uri = (String) session.getAttribute("preLoginURI");
-		session.removeAttribute("preLoginURI");
-		if (uri == null) {
-			uri = "redirect:/";
-		} else {
-			uri = "redirect:" + uri;
-		}
-
-		return uri;
-	}
-	
-	
-	//로그아웃 할 때
-	@GetMapping("logout")
-	public String logout(HttpSession session) {
-		// 세션에 저장된 정보 지우기
-		session.removeAttribute("member");
-
-		// 세션에 저장된 모든 정보 지우고, 세션초기화
-		session.invalidate();
-
-		return "redirect:/";
-	}
-	
 	
 	//회원가입 페이지로 이동
 	@GetMapping("member")
@@ -89,11 +40,9 @@ public class MemberController {
 		return ".member.member";
 	}
 	
-	
-	
-	//회원가입 폼 제출을 처리하고,
-	//예외 발생 시 오류 메시지와 함께 회원가입 페이지로 돌아가며,
-	//성공 시 완료 메시지를 리다이렉트된 페이지에 전달
+	// 회원가입 폼 제출을 처리하고,
+	// 예외 발생 시 오류 메시지와 함께 회원가입 페이지로 돌아가며,
+	// 성공 시 완료 메시지를 리다이렉트된 페이지에 전달
 	@PostMapping("member")
 	public String memberSubmit(Member dto,
 			final RedirectAttributes reAttr,
@@ -158,8 +107,6 @@ public class MemberController {
 		return model;
 	}
 	
-	
-	
 	@GetMapping("pwd")
 	public String pwdForm(String dropout, Model model) {
 
@@ -171,7 +118,6 @@ public class MemberController {
 
 		return ".member.pwd";
 	}
-
 	
 	@PostMapping("pwd")
 	public String pwdSubmit(@RequestParam String userPwd,
@@ -188,7 +134,8 @@ public class MemberController {
 			return "redirect:/";
 		}
 
-		if (! dto.getUserPwd().equals(userPwd)) {
+		boolean bPwd = service.isPasswordCheck(info.getUserId(), userPwd);
+		if ( ! bPwd ) {
 			model.addAttribute("mode", mode);
 			model.addAttribute("message", "패스워드가 일치하지 않습니다.");
 			return ".member.pwd";
@@ -246,9 +193,6 @@ public class MemberController {
 			return "redirect:/member/complete";
 		}
 		
-		
-		
-		
 	
 		// 패스워드 찾기
 		@GetMapping("pwdFind")
@@ -305,5 +249,46 @@ public class MemberController {
 		    return response;
 		}
 	
+		@GetMapping("noAuthorized")
+		public String noAuthorized(Model model) {
+			// 권한이 없는 경우
+			return ".member.noAuthorized";
+		}
+
+		@GetMapping("expired")
+		public String expired(Model model) {
+			// 세션이 만로 된 경우
+			return ".member.expired";
+		}
+		
+		// ---------------------------------
+		@GetMapping("updatePwd")
+		public String updatePwd() throws Exception {
+			// 패스워드 변경 폼
+			return ".member.updatePwd";
+		}
+		
+		@PostMapping("updatePwd")
+		public String updatePwdSubmit(
+				@RequestParam String userPwd,
+				HttpSession session,
+				Model model) throws Exception {
+			
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			
+			Member dto = new Member();
+			dto.setUserId(info.getUserId());
+			dto.setUserPwd(userPwd);
+			
+			try {
+				service.updatePwd(dto);
+			} catch (RuntimeException e) {
+				model.addAttribute("message", "변경할 패스워드가 기존 패스워드와 일치합니다.");
+				return ".member.updatePwd";
+			} catch (Exception e) {
+			}
+			
+			return "redirect:/";
+		}		
 	
 }

@@ -74,6 +74,18 @@ public class MemberManageServiceImpl implements MemberManageService {
 	}
 	
 	
+	// 회원의 멤버십 상태를 업데이트
+	@Override
+	public void updateMembership(Map<String, Object> map) throws Exception {
+		try {
+			mapper.updateMembership(map); // 회원 상태 업데이트
+		} catch (Exception e) {
+			e.printStackTrace(); // 예외 발생 시 스택 트레이스 출력
+			throw e; // 예외 다시 던지기
+		}
+
+	}
+
 	
 	
 	
