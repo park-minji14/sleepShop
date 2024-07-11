@@ -1,9 +1,7 @@
 package com.sgsg.dra.admin.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +28,7 @@ public class ProductManageServiceImpl implements ProductManageService {
 			long productNum = mapper.productSeq();
 			dto.setProductNum(productNum);
 
-			mapper.insertProduct(dto);
+			mapper.insertProduct( dto);
 			
 			//추가적인 이미지
 			if(! dto.getAddFiles().isEmpty()) {
@@ -87,25 +85,26 @@ public class ProductManageServiceImpl implements ProductManageService {
 		return list;
 	}
 	
-	//
+	//옵션
 	private void insertProductOption(ProductManage dto) throws Exception {
 		try {
 			long optionNum = 0, optionNum2 = 0;
 			long detailNum;
 			
-			//옵션 1
+			// 옵션1
 			if(dto.getOptionCount() > 0) {
 				optionNum = mapper.optionSeq();
 				dto.setOptionNum(optionNum);
 				dto.setParentOption(null);
+				mapper.insertProductOption(dto);
 				
-				//1에 해당하는 값을 추가
+				// 옵션1의 값 추가
 				dto.setDetailNums(new ArrayList<Long>());
 				for(String optionValue : dto.getOptionValues()) {
-					detailNum = mapper.detailSeq();
+					detailNum = mapper.detailSeq(); 
 					dto.setDetailNum(detailNum);
 					dto.setOptionValue(optionValue);
-					
+	
 					mapper.insertOptionDetail(dto);
 					
 					dto.getDetailNums().add(detailNum);
@@ -119,10 +118,10 @@ public class ProductManageServiceImpl implements ProductManageService {
 				dto.setParentOption(optionNum);
 				mapper.insertProductOption(dto);
 				
-				//2에 해당 값 추가
+				// 옵션 2 값 추가
 				dto.setDetailNums2(new ArrayList<Long>());
 				for(String optionValue2 : dto.getOptionValues2()) {
-					detailNum = mapper.detailSeq();
+					detailNum = mapper.detailSeq(); 
 					dto.setDetailNum(detailNum);
 					dto.setOptionValue(optionValue2);
 					mapper.insertOptionDetail(dto);

@@ -47,26 +47,26 @@
 	ORDER BY displayNo
 </select>
 
-<!-- 옵션 1, 2등록용 시퀀스 밸류 보존 -->
+<!-- 옵션 1, 2 등록용 시퀀스 밸류 보존 -->
 <select id="optionSeq" resultType="Long">
-	Select PRODUCT_OPTION_SEQ.nextval From dual
+	Select PRODUCT_OPTION_SEQ.NEXTVAL From dual
 </select>
 
 <!-- 옵션 1 등록 -->
 <insert id="insertProductOption" parameterType="com.sgsg.dra.admin.domain.ProductManage">
 	INSERT INTO PRODUCT_OPTION (OPTIONNUM, OPTIONNAME, PRODUCTNUM, PARENTNUM)
-	VALUES (#{optionSeq}, #{optionName}, #{productNum}, #{parentOption, jdbcType=INTEGER})
+	VALUES (#{optionNum}, #{optionName}, #{productNum}, #{parentOption, jdbcType=INTEGER})
 </insert>
 
 <!-- 옵션 2 등록시 보존용 시퀀스 -->
-<select id="detailSeq" parameterType="com.sgsg.dra.admin.domain.ProductManage">
-	Select OPTIONDETAIL_SEQ.nextval From dual
+<select id="detailSeq" resultType="Long">
+	Select OPTIONDETAIL_SEQ.NEXTVAL From dual
 </select>
 
 <!-- 옵션 2 등록 -->
 <insert id="insertOptionDetail" parameterType="com.sgsg.dra.admin.domain.ProductManage">
 	INSERT INTO OPTIONDETAIL (DETAILNUM, OPTIONVALUE, OPTIONNUM)
-	VALUES (#{detailSeq}, #{optionValue}, #{optionNum});
+	VALUES (#{detailNum}, #{optionValue}, #{optionNum})
 </insert>
 
 
