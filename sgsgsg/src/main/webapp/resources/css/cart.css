@@ -289,6 +289,7 @@ a {
 .cart-summary dd, .cart-summary dt {
 	flex: 0 0 auto;
 	font-weight: 500;
+	margin-bottom: 0;
 }
 
 .cart-summary dd {

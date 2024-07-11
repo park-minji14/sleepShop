@@ -1,8 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/cart.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/cart.css" type="text/css">
 	
 <style type="text/css">
 .body-container {
@@ -252,6 +251,10 @@ $(function() {
 	});
 	
 	$('.order_btn, .item_order').click(function() {
+		if($('input.checkbox').length === 0){
+			alert('선택된 상품이 없습니다.')
+			return;
+		}
 		// 체크된 상품 데이터가지고 주문 주소로 이동
 	});
 });
