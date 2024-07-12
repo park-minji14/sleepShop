@@ -4,7 +4,7 @@
 <mapper namespace="com.sgsg.dra.mapper.OrderMapper">
 
 	<!-- 주문 추가 -->
-	<insert id="insertOrder" parameterType="com.sgsg.dra.domain.Order">
+	<insert id="insertOrder" parameterType="map">
 		INSERT INTO PRODUCTORDER(ORDERNUM, USERID, ISSUE_ID, ORDERDATE, TOTALMONEY, USEDSAVED,
 			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENT,
 			TEL, ZIP, ADDR1, ADDR2, DESTMEMO)
@@ -14,9 +14,28 @@
 			#{destMemo})
 	</insert>
 	
+	<!-- 주문 상세 추가 -->
+	<insert id="insertOrderDetail" parameterType="map">
+		INSERT INTO ORDERDETAIL(ORDERDETAILNUM, ORDERNUM, QTY, PRICE, SALEPRICE, PRODUCTMONEY,
+			SAVEDMONEY, USERDELETE, STOCKNUM)
+		VALUES (ORDERDETAIL_seq.nextval, #{orderNum}, #{qty}, #{price}, #{salePrice}, #{productMoney},
+			#{savedMoney}, 0, #{stockNum})
+	</insert>
+	
+	
+	<!-- 사용자의 모든 주문 조회 -->
+	<select id="selectOrder" parameterType="String" resultType="com.sgsg.dra.domain.Order">
+		select ORDERNUM, USERID, ISSUE_ID, ORDERDATE, TOTALMONEY, USEDSAVED,
+			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENT,
+			TEL, ZIP, ADDR1, ADDR2, DESTMEMO
+            from PRODUCTORDER
+            where userId = #{userId};
+	</select>
+	
+	
 	
 	<!-- 배송지 추가 -->
-	<insert id="insertDest" parameterType="com.sgsg.dra.domain.Delivery">
+	<insert id="insertDest" parameterType="map">
 		INSERT INTO MEMBER_DELIVERY(DESTINATIONNUM, RECIPIENTNAME, DEFAULTDEST, TEL, ZIP,
 			REG_DATE, MOD_DATE, ADDR1, ADDR2, DESTMEMO, USERID)
 		VALUES (member_delivery_seq.nextval, #{recipientName}, #{defaultDest},
@@ -42,9 +61,17 @@
 		UPDATE MEMBER_DELIVERY SET DEFAULTDEST=0 WHERE USERID = #{userId} AND DEFAULTDEST = 1
 	</update>
 	
+	<!-- 배송지 수정 -->
+	<update id="updateDest" parameterType="map">
+		UPDATE MEMBER_DELIVERY SET RECIPIENTNAME=#{recipientName}, DEFAULTDEST=#{defaultDest},
+			TEL=#{tel}, ZIP=#{zip}, REG_DATE=#{reg_date}, MOD_DATE=#{mod_date}, ADDR1=#{addr1},
+			ADDR2=#{addr2}, DESTMEMO=#{destMemo}
+		WHERE DESTINATIONNUM = #{destinationNum}
+	</update>
+	
 	<!-- 배송지 삭제 -->
 	<delete id="deleteDest" parameterType="Integer">
-		DELETE FROM MEMBER_DELIVERY WHERE DESTINATIONNUM  = #{destinationNum}
+		DELETE FROM MEMBER_DELIVERY WHERE DESTINATIONNUM = #{destinationNum}
 	</delete>
 	
 	

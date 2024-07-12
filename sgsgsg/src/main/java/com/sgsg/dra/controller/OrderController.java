@@ -4,9 +4,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.sgsg.dra.domain.Delivery;
 import com.sgsg.dra.domain.Order;
 import com.sgsg.dra.domain.SessionInfo;
 import com.sgsg.dra.service.OrderService;
@@ -21,7 +23,18 @@ public class OrderController {
 	@RequestMapping("payment")
 	public String orderMain(HttpSession session) {
 		
-		//SessionInfo info = (SessionInfo)session.getAttribute("member");
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		try {
+			
+			Delivery delivery = orderService.findByDest(info.getUserId());
+			
+			if(delivery != null) {
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return ".order.order";
 	}
