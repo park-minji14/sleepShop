@@ -69,6 +69,23 @@
 	VALUES (#{detailNum}, #{optionValue}, #{optionNum})
 </insert>
 
+<!-- 상품 리스트 끌고오기(우선은 그냥 다 갖고오게끔)-->
+<!-- 검색어 같은 것 구현할 예정 -->
+<select id="listProduct" parameterType="map"
+	resultType="com.sgsg.dra.admin.domain.ProductManage">
+	Select productNum, p.categoryNum, pc.categoryName, productName, classify, price, discountRate, savedMoney, 
+    	delivery, optionCount, content, thumbnail, productShow, To_Char(reg_date, 'YYYY-MM-DD') reg_date, To_Char(update_date, 'YYYY-MM-DD') update_date, search_word
+	From product p
+	Join PRODUCT_CATEGORY pc On p.categoryNum = pc.categoryNum
+	Order By p.productNum DESC
+	OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+</select>
+
+<!-- 전체 상품의 개수(TODO: 일반/특가 에 따라 갖고오는거 다르게 구현할 예정)-->
+<select id="dataCount" parameterType="map" resultType="Integer">
+	Select NVL(COUNT(*), 0)
+	From product p
+</select>
 
 
 
