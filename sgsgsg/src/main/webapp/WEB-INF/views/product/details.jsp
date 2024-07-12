@@ -79,7 +79,6 @@
 			            </select>
 			        </div>
 			    </c:if>
-
 			    <c:if test="${dto.optionCount > 1}">
 			        <div class="mt-2">
 			            <select class="form-select requiredOption2" id="option2" data-option-num2="${listOption[1].optionNum}" disabled>
@@ -559,43 +558,66 @@ $(document).ready(function () {
     } 
  
     
-/* 	 $(function() {
-		    $('#addToCart, #scrollAddToCart').click(function() {
-		        console.log('장바구니 버튼 클릭됨');
+	 function ajaxFun(url, method, formData, dataType, fn, file = false) {
+		    const settings = {
+		            type: method, 
+		            data: formData,
+		            dataType:dataType,
+		            success:function(data) {
+		                fn(data);
+		            },
+		            beforeSend: function(jqXHR) {
+		                jqXHR.setRequestHeader('AJAX', true);
+		            },
+		            complete: function () {
+		            },
+		            error: function(jqXHR) {
+		                if(jqXHR.status === 403) {
+		                    login();
+		                    return false;
+		                } else if(jqXHR.status === 400) {
+		                    alert('요청 처리가 실패 했습니다.');
+		                    return false;
+		                }
 
-		        let stockNum = '';
+		                console.log(jqXHR.responseText);
+		            }
+		    };
+
+		    if(file) {
+		        settings.processData = false;
+		        settings.contentType = false;
+		    }
+
+		    $.ajax(url, settings);
+		}
+
+		$(function() {
+		    $('#addToCart').click(function() {
+		        let stockNum = $('option[data-stockNum]').attr('data-stockNum');
 		        let qty = $('#quantity').val();
 
 		        let url = "${pageContext.request.contextPath}/cart/insertCart";
-		        let query = {
-		            qty: qty,
-		            stockNum: stockNum
+		        let query = "qty="+ qty +"&stockNum="+stockNum;
+
+		        const fn = function(data) {
+		            let state = data.state;
+		            if(state === "duplicate"){
+		                alert('이미 장바구니에 들어있는 상품입니다');
+		            }
+		            if(state === "true"){
+		                if(comfirm('장바구니로 이동하시겠습니까?')){
+		                    location.href='${pageContext.request.contextPath}/cart/list';
+
+		                }
+		            }
 		        };
 
-		        $.ajax({
-		            url: url,
-		            type: "post",
-		            data: query,
-		            dataType: "json",
-		            success: function(data) {
-		                let state = data.state;
-		                if (state === "duplicate") {
-		                    alert('이미 장바구니에 들어있는 상품입니다');
-		                }
-		                if (state === "true") {
-		                    if (confirm('장바구니로 이동하시겠습니까?')) {
-		                        location.href = '${pageContext.request.contextPath}/cart/list';
-		                    }
-		                }
-		            },
-		            error: function(xhr, status, error) {
-		                console.error("AJAX Error:", status, error);
-		                alert("장바구니 추가 중 오류가 발생했습니다.");
-		            }
-		        });
+		        ajaxFun(url, "post", query, "json", fn);
 		    });
 		});
-     */
+
+
 
 
     // 구매 버튼
