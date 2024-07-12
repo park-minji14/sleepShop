@@ -33,7 +33,7 @@
           </div>
         </div>
         
-        
+           
         <div class="col-md-6">
           <div class="product-info">
             <h1 class="product-title mb-3">${dto.productName}</h1>
@@ -557,67 +557,79 @@ $(document).ready(function () {
         
     } 
  
+  
+$(function() {
+    $('#addToCart, #scrollAddToCart').click(function() {
+        console.log('장바구니 버튼 클릭됨');
+        
+       
+        let stockNum = $('.product-options').data('stock-num');
+        if (!stockNum) {
+            alert('옵션을 선택해주세요.');
+            return;
+        }
+        
+        let qty = $('#quantity').val();
+        let option1 = $('#option1').val();
+        let option2 = $('#option2').val();
+        
+        let url = "${pageContext.request.contextPath}/cart/insertCart";
+        let query = {
+            qty: qty,
+            stockNum: stockNum,
+            option1: option1,
+            option2: option2
+        };
+        
+        $.ajax({
+            url: url,
+            type: "post",
+            data: query,
+            dataType: "json",
+            
+            success: function(data) {
+                let state = data.state;
+                if (state === "duplicate") {
+                    alert('이미 장바구니에 들어있는 상품입니다');
+                } else if (state === "true") {
+                    if (confirm('장바구니로 이동하시겠습니까?')) {
+                        location.href = '${pageContext.request.contextPath}/cart/list';
+                    }
+                } else if (state === "login") {
+                    alert('로그인이 필요합니다.');
+                    // 로그인 페이지로 리다이렉트 지금은 노쓸모 
+                } else {
+                    alert('장바구니 담기에 실패했습니다.');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("에지작스 오류!");
+                alert("장바구니 추가 중 오류가 발생했습니다.");
+            }
+        });
+    });
     
-	 function ajaxFun(url, method, formData, dataType, fn, file = false) {
-		    const settings = {
-		            type: method, 
-		            data: formData,
-		            dataType:dataType,
-		            success:function(data) {
-		                fn(data);
-		            },
-		            beforeSend: function(jqXHR) {
-		                jqXHR.setRequestHeader('AJAX', true);
-		            },
-		            complete: function () {
-		            },
-		            error: function(jqXHR) {
-		                if(jqXHR.status === 403) {
-		                    login();
-		                    return false;
-		                } else if(jqXHR.status === 400) {
-		                    alert('요청 처리가 실패 했습니다.');
-		                    return false;
-		                }
+    // 옵션 변경 시 stockNum 업뎃
+    $('.requiredOption, .requiredOption2').change(function() {
+        updateStockNum();
+    });
 
-		                console.log(jqXHR.responseText);
-		            }
-		    };
-
-		    if(file) {
-		        settings.processData = false;
-		        settings.contentType = false;
-		    }
-
-		    $.ajax(url, settings);
-		}
-
-		$(function() {
-		    $('#addToCart').click(function() {
-		        let stockNum = $('option[data-stockNum]').attr('data-stockNum');
-		        let qty = $('#quantity').val();
-
-		        let url = "${pageContext.request.contextPath}/cart/insertCart";
-		        let query = "qty="+ qty +"&stockNum="+stockNum;
-
-		        const fn = function(data) {
-		            let state = data.state;
-		            if(state === "duplicate"){
-		                alert('이미 장바구니에 들어있는 상품입니다');
-		            }
-		            if(state === "true"){
-		                if(comfirm('장바구니로 이동하시겠습니까?')){
-		                    location.href='${pageContext.request.contextPath}/cart/list';
-
-		                }
-		            }
-		        };
-
-		        ajaxFun(url, "post", query, "json", fn);
-		    });
-		});
-
-
+    function updateStockNum() {
+        let option1 = $('#option1').val();
+        let option2 = $('#option2').val();
+        
+        if (option1 && (option2 || $('.product-options').data('option-count') == 1)) {
+            let selectedOption = $('#option1').find(':selected');
+            let stockNum = selectedOption.data('stock-num');
+            if (!stockNum && $('#option2').length) {
+                selectedOption = $('#option2').find(':selected');
+                stockNum = selectedOption.data('stock-num');
+            }
+            $('.product-options').data('stock-num', stockNum);
+            console.log("Updated Stock Number:", stockNum);
+        }
+    }
+});
 
 
     // 구매 버튼
