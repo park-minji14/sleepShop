@@ -36,7 +36,7 @@ a {
 /* 상품 이름 */
 .item-title {
 	min-width: 0;
-	font-size: 15px;
+	font-size: 16px;
 	font-weight: 500;
 	color: #000;
 	line-height: 21px;
@@ -166,15 +166,6 @@ a {
 	padding-left: 12px;
 }
 
-.item-title {
-	font-size: 15px;
-	font-weight: 500;
-	color: #000;
-	line-height: 21px;
-	overflow-wrap: break-word;
-	transition: opacity .1s
-}
-
 .modal {
 	position: fixed;
 	left: 0;
@@ -212,7 +203,7 @@ a {
 	}
 }
 
-.cart-item {
+.cart-list .cart-item {
 	position: relative;
     padding: 0 15px 20px 49px;
     background: #fff;

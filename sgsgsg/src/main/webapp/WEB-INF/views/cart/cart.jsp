@@ -256,6 +256,11 @@ $(function() {
 			return;
 		}
 		// 체크된 상품 데이터가지고 주문 주소로 이동
+		
+		let url = "${pageContext.request.contextPath}/order/payment";
+		let query = "";
+		
+		ajaxFun(url, "get", query, "json", fn);
 	});
 });
 
@@ -302,13 +307,16 @@ $('.cart-list').on('click', function(e) {
 	let stockNum = $($box).find('input[name="stockNum"]').val();
 	
 	if($(e.target).hasClass("chage_qty")){
-		let result = parseInt(window.prompt('변경하실 수량을 입력하세요. ( 1 ~ 99 )'));
-		if(result <= 0 || result > 99 ){
-			alert('1 ~ 99까지의 수를 입력하세요.');
-		} else {
-			changeQty($box, {stockNum:stockNum, qty:result});
+		let result = parseInt(window.prompt('변경하실 수량을 입력하세요. ( 1 ~ 99 )')) || undefined;
+		
+		if(result === undefined){
+			return;
 		}
-		return;
+		if(result <= 0 || result > 99){
+			alert('1 ~ 99까지의 수를 입력하세요.');
+			return;
+		}
+		qty = result;
 	}
 	if($(e.target).hasClass("plus_qty")){
 		qty++;

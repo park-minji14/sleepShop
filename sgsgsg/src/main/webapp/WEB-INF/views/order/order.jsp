@@ -22,7 +22,81 @@
     border: 1px solid #ededed;
     margin-bottom: 12px;
 }
+
+.cart-box {
+	border-top: 1px solid #dee2e6;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.item-summary {
+	color: rgb(107, 109, 110);
+}
 </style>
+
+<script type="text/javascript">
+function sendOk() {
+	const f = document.paymentForm;
+	
+	/*
+	if(! f.recipientName.value) {
+		alert("먼저 배송지를 등록하세요..");
+		return;
+	}
+	
+	if(! /^\d+$/.test(f.usedSaved.value)) {
+		alert("숫자만 입력 가능합니다.");
+		return;
+	}
+
+	let balance = Number($('.btn-usedSaved').attr('data-balance')) || 0;
+	let usedSaved = Number(f.usedSaved.value);
+
+	if(usedSaved > balance) {
+		alert("사용 가능 포인터는 보유 포인터를 초과 할수 없습니다.");
+		return;
+	}
+	
+	// 결제 금액 = 총금액 - 포인트사용금액
+	let p = Number(f.payment.value) - usedSaved;
+	f.payment.value = p;
+	
+	// 결제 API에서 응답 받을 파라미터
+	let payMethod = "카드결제"; // 결제유형
+	let cardName = "BC 카드";  // 카드 이름
+	let authNumber = "1234567890"; // 승인번호
+	let authDate = ""; // 승인 날짜
+	// toISOString() : "YYYY-MM-DDTHH:mm:ss.sssZ" 형식
+	authDate = new Date().toISOString().replace('T', ' ').slice(0, -5); // YYYY-MM-DD HH:mm:ss
+
+	// 결제 API에 요청할 파라미터
+	let payment = f.payment.value; // 결제할 금액
+	let merchant_uid = "${productOrderNumber}";  // 고유 주문번호
+	let productName = "${productOrderName}";  // 주문상품명
+	let buyer_email = "${orderUser.email}";  // 구매자 이메일
+	let buyer_name = "${orderUser.userName}";  // 구매자 이름
+	let buyer_tel = "${orderUser.tel}";   // 구매자 전화번호(필수)
+	let buyer_addr = "${orderUser.addr1}" + " " + "${orderUser.addr2}";  // 구매자 주소
+	buyer_addr = buyer_addr.trim();
+	let buyer_postcode = "${orderUser.zip}"; // 구매자 우편번호
+	
+	// 결제 API로 결제 진행
+	
+	
+	
+	// 결제가 성공한 경우 ------------------------
+	
+	// 결제 방식, 카드번호, 승인번호, 결제 날짜
+	f.payMethod.value = payMethod;
+	f.cardName.value = cardName;
+	f.authNumber.value = authNumber;
+	f.authDate.value = authDate;
+	*/
+	
+	f.action = "${pageContext.request.contextPath}/order/paymentOk"
+	f.submit();
+}
+</script>
 
 <div class="container">
 	<div class="body-container">	
@@ -32,9 +106,9 @@
 		
 		<div class="body-main">
 			<form name="paymentForm" method="post">
-				<div class="cart-list p-3 border rounded order_box">
+				<div class="order-list p-3 border rounded order_box">
 					<div class="fs-6 fw-semibold border-bottom pb-1">상품 정보</div>
-					<div class="cart-box">
+					<div class="cart-box ps-2 pt-2">
 						<div class="cart-item">
 							<a class="item-link" href="${pageContext.request.contextPath}/product/details/${dto.productNum}">
 								<span class="item-img">
@@ -43,14 +117,47 @@
 								<span class="item-content">
 									<h1 class="item-title">${dto.productName}상품 이름</h1>
 									<div class="option-price">
-										<span class="number">19,475</span>원
-										<span class="">${dto.price}</span>
+										<!-- if dto.discountRate != 0 -->
+										<span class="number">${Math.ceil(dto.price*(1-dto.discountRate/100))} 19,475</span>원
+										<span class="text-decoration-line-through">${dto.price} 500원</span>
+										<!-- 
+										<span class="number">${Math.ceil(dto.price*(1-dto.discountRate/100))} 19,475</span>원
+										<span class="text-decoration-line-through">${dto.price}</span>
+										 -->
 									</div>
 								</span>
 							</a>
+							<div class="item-summary">
+								<div class="option">색상: 그레이 / 사이즈: L</div>
+								<div>수량:2개 (38,950원)</div>
+							</div>
 							<div>
-								<h2 class="option-title">색상: 그레이 / 사이즈: L</h2>
-								<span>2개 (38,950원)</span>
+								<span class=""><i class="bi bi-truck"></i>230원</span>
+							</div>
+						</div>
+					</div>
+					<div class="cart-box ps-2 pt-2">
+						<div class="cart-item">
+							<a class="item-link" href="${pageContext.request.contextPath}/product/details/${dto.productNum}">
+								<span class="item-img">
+									<img alt="상품 이미지" src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}">
+								</span>
+								<span class="item-content">
+									<h1 class="item-title">${dto.productName}상품 이름</h1>
+									<div class="option-price">
+										<!-- if dto.discountRate != 0 -->
+										<span class="number">${Math.ceil(dto.price*(1-dto.discountRate/100))} 19,475</span>원
+										<span class="text-decoration-line-through">${dto.price} 500원</span>
+										<!-- 
+										<span class="number">${Math.ceil(dto.price*(1-dto.discountRate/100))} 19,475</span>원
+										<span class="text-decoration-line-through">${dto.price}</span>
+										 -->
+									</div>
+								</span>
+							</a>
+							<div class="item-summary">
+								<div class="option">색상: 그레이 / 사이즈: L</div>
+								<div>수량:2개 (38,950원)</div>
 							</div>
 							<div>
 								<span class=""><i class="bi bi-truck"></i>230원</span>
