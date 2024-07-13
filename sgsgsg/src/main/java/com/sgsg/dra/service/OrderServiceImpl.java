@@ -33,6 +33,25 @@ public class OrderServiceImpl implements OrderService {
 
 		try {
 			mapper.insertOrder(dto);
+			
+			// 결제 내역 저장
+			mapper.insertPayDetail(dto);
+			
+			// 주문 상세
+			for (int i = 0; i < dto.getStockNums().size(); i++) {
+				dto.setStockNum(dto.getStockNums().get(i));
+				dto.setQty(dto.getQtys().get(i));
+				dto.setProductMoney(dto.getProductMoneys().get(i));
+				dto.setPrice(dto.getPrices().get(i));
+				dto.setSalePrice(dto.getSalePrices().get(i));
+				dto.setSavedMoney(dto.getSavedMoneys().get(i));
+				
+				mapper.insertOrderDetail(dto);
+				
+				// 재고 감소
+				mapper.updateProductStock(dto);
+			}
+			
 		} catch (Exception e) {
 			throw e;
 		}
@@ -65,8 +84,16 @@ public class OrderServiceImpl implements OrderService {
 		return delivery;
 	}
 
-
-
+	@Override
+	public List<Delivery> selectAllDest(String userId) throws Exception {
+		List<Delivery> deliverys = null;
+		
+		try {
+			deliverys = mapper.selectAllDest(userId);
+		} catch (Exception e) {
+		}
+		return deliverys;
+	}
 
 
 }

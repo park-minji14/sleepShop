@@ -11,22 +11,33 @@
 	<!-- 주문 추가 -->
 	<insert id="insertOrder" parameterType="map">
 		INSERT INTO PRODUCTORDER(ORDERNUM, USERID, ISSUE_ID, ORDERDATE, TOTALMONEY, USEDSAVED,
-			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENT,
+			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENTNAME,
 			TEL, ZIP, ADDR1, ADDR2, DESTMEMO)
 		VALUES (#{orderNum}, #{userId}, #{issue_id, jdbcType=VARCHAR}, sysdate,
 			#{totalMoney},  #{usedSaved}, #{deliveryCharge}, #{payment}, #{orderState}, sysdate,
-			#{CANCELAMOUNT, jdbcType=VARCHAR}, #{recipient}, #{tel}, #{zip}, #{addr1}, #{addr2},
+			#{cancelAmount, jdbcType=VARCHAR}, #{recipientName}, #{tel}, #{zip}, #{addr1}, #{addr2},
 			#{destMemo})
 	</insert>
 	
+	<!-- 결제 내역 등록 -->
+	<insert id="insertPayDetail" parameterType="com.sgsg.dra.domain.Order">
+		INSERT INTO payDetail(orderNum, payMethod, cardName, authNumber, authDate) 
+			VALUES (#{orderNum}, #{payMethod}, #{cardName}, #{authNumber}, TO_DATE(#{authDate}, 'YYYY-MM-DD HH24:MI:SS') )
+	</insert>
+	
 	<!-- 주문 상세 추가 -->
-	<insert id="insertOrderDetail" parameterType="map">
+	<insert id="insertOrderDetail" parameterType="com.sgsg.dra.domain.Order">
 		INSERT INTO ORDERDETAIL(ORDERDETAILNUM, ORDERNUM, QTY, PRICE, SALEPRICE, PRODUCTMONEY,
 			SAVEDMONEY, USERDELETE, STOCKNUM)
 		VALUES (ORDERDETAIL_seq.nextval, #{orderNum}, #{qty}, #{price}, #{salePrice}, #{productMoney},
 			#{savedMoney}, 0, #{stockNum})
 	</insert>
 	
+	<!-- 판매 개수만큼 재고 감소 -->
+	<update id="updateProductStock" parameterType="com.sgsg.dra.domain.Order">
+		UPDATE productStock SET totalStock = totalStock - #{qty}
+		WHERE stockNum = #{stockNum}
+	</update>
 	
 	<!-- 사용자의 모든 주문 조회 -->
 	<select id="selectOrder" parameterType="String" resultType="com.sgsg.dra.domain.Order">
@@ -83,7 +94,11 @@
 	<!-- 사용자의 모든 배송지 출력 -->
 	<select id="selectAllDest" parameterType="String" resultType="com.sgsg.dra.domain.Delivery">
 		SELECT DESTINATIONNUM, RECIPIENTNAME, DEFAULTDEST, TEL, ZIP, REG_DATE, MOD_DATE,
-			ADDR1, ADDR2, DESTMEMO, USERID from MEMBER_DELIVERY WHERE USERID = #{userId}
+			ADDR1, ADDR2, DESTMEMO, USERID, NVL(COUNT(*), 0) count
+			FROM MEMBER_DELIVERY
+			WHERE USERID = #{userId}
+            GROUP BY DESTINATIONNUM, RECIPIENTNAME, DEFAULTDEST, TEL, ZIP, REG_DATE, MOD_DATE,
+			ADDR1, ADDR2, DESTMEMO, USERID;
 	</select>
 	
 	<!-- 사용자가 기본 배송지를 재설정할 경우 다른 배송지를 기본 배송지가 아니게 -->

@@ -9,15 +9,20 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sgsg.dra.domain.Delivery;
 import com.sgsg.dra.domain.Order;
 import com.sgsg.dra.domain.Product;
 import com.sgsg.dra.domain.SessionInfo;
+import com.sgsg.dra.service.CartService;
 import com.sgsg.dra.service.OrderService;
+import com.sgsg.dra.state.OrderState;
 
 @Controller
 @RequestMapping("/order/*")
@@ -25,6 +30,9 @@ public class OrderController {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private CartService cartService;
 
 	@RequestMapping("payment")
 	public String orderMain(
@@ -86,8 +94,8 @@ public class OrderController {
 			model.addAttribute("totalPayment", totalPayment);
 			model.addAttribute("totalSavedMoney", totalSavedMoney);
 			model.addAttribute("totalDiscountPrice", totalDiscountPrice);
+			model.addAttribute("mode", mode);
 			
-				
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -97,20 +105,74 @@ public class OrderController {
 	}
 	
 	@PostMapping("paymentOk")
-	public String paymentSubmit(Order dto, HttpSession session) {
+	public String paymentSubmit(Order dto,
+			@RequestParam(defaultValue = "buy") String mode,
+			RedirectAttributes reAttr,
+			HttpSession session) {
+		
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+
 		try {
 			
-			
-			SessionInfo info = (SessionInfo)session.getAttribute("member");
-			
 			dto.setUserId(info.getUserId());
+			dto.setOrderState(OrderState.ORDERSTATEINFO[1]);
 			
 			orderService.insertOrder(dto);
+			
+			if(mode.equals("cart")) {
+				// 구매 상품에 대한 장바구니 비우기
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("gubun", "list");
+				map.put("userId", info.getUserId());
+				map.put("stockNum", dto.getStockNums());
+				
+				cartService.deleteCart(map);
+			}
+			
+			String p = String.format("%,d", dto.getPayment());
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append(info.getUserName() + "님 상품을 구매해 주셔서 감사 합니다.<br>");
+			sb.append("구매 하신 상품의 결제가 정상적으로 처리되었습니다.<br>");
+			sb.append("결제 금액 : <label class='fs-5 fw-bold text-primary'>" +  p + "</label>원");
+
+			reAttr.addFlashAttribute("title", "상품 결제 완료");
+			reAttr.addFlashAttribute("message", sb.toString());
+			
+			return "redirect:/order/complete";
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//return "redirect:/";
-		return "/";
+		return "redirect:/";
 	}
-			
+	
+	@GetMapping("complete")
+	public String complete(@ModelAttribute("title") String title, 
+			@ModelAttribute("message") String message
+			) throws Exception {
+		// F5를 누른 경우
+		if (message == null || message.length() == 0) { 
+			return "redirect:/";
+		}
+		
+		return ".order.complete";
+	}
+	
+	@GetMapping("allDest")
+	@RequestMapping
+	public Map<String, Object> selectAllDest(HttpSession session) throws Exception {
+
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		try {
+			List<Delivery> deliveries = orderService.selectAllDest(info.getUserId());
+			map.put("deliverys", deliveries);
+		} catch (Exception e) {
+			map.put("deliverys", "");
+		}
+		
+		return map;
+	}
+	
 }

@@ -14,4 +14,5 @@ public interface OrderService {
 	public List<Product> findByStockNum(Map<String, Object> map) throws Exception;
 	
 	public Delivery findByDest(String userId) throws Exception;
+	public List<Delivery> selectAllDest(String userId) throws Exception;
 }

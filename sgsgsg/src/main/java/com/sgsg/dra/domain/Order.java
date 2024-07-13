@@ -59,7 +59,7 @@ public class Order {
 	private List<Long> detailNums2;
 	private List<String> optionValues;
 	private List<String> optionValues2;
-	private List<Integer> buyQtys;
+	private List<Integer> qtys;
 	private List<Integer> productMoneys;
 	private List<Integer> prices;
 	private List<Integer> salePrices;
@@ -364,11 +364,11 @@ public class Order {
 	public void setOptionValues2(List<String> optionValues2) {
 		this.optionValues2 = optionValues2;
 	}
-	public List<Integer> getBuyQtys() {
-		return buyQtys;
+	public List<Integer> getQtys() {
+		return qtys;
 	}
-	public void setBuyQtys(List<Integer> buyQtys) {
-		this.buyQtys = buyQtys;
+	public void setQtys(List<Integer> qtys) {
+		this.qtys = qtys;
 	}
 	public List<Integer> getProductMoneys() {
 		return productMoneys;

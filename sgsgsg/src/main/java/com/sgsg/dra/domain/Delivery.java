@@ -18,6 +18,7 @@ public class Delivery {
 	private String mod_date;
 	private String destMemo;
 	private String orderNum;
+	private int count;
 	
 	public String getUserId() {
 		return userId;
@@ -114,5 +115,11 @@ public class Delivery {
 	}
 	public void setOrderNum(String orderNum) {
 		this.orderNum = orderNum;
+	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
 	}
 }

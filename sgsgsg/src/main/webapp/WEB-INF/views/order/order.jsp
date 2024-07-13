@@ -60,7 +60,7 @@ function sendOk() {
 	// 결제 금액 = 총금액 - 포인트사용금액
 	let p = Number(f.payment.value) - usedSaved;
 	f.payment.value = p;
-	
+	*/
 	// 결제 API에서 응답 받을 파라미터
 	let payMethod = "카드결제"; // 결제유형
 	let cardName = "BC 카드";  // 카드 이름
@@ -91,7 +91,7 @@ function sendOk() {
 	f.cardName.value = cardName;
 	f.authNumber.value = authNumber;
 	f.authDate.value = authDate;
-	*/
+	
 	
 	f.action = "${pageContext.request.contextPath}/order/paymentOk"
 	f.submit();
@@ -142,6 +142,14 @@ function sendOk() {
 										</c:if>
 									</span>
 								</div>
+								<div>
+									<input type="hidden" name="stockNums" value="${dto.stockNum}">
+									<input type="hidden" name="qtys" value="${dto.qty}">
+									<input type="hidden" name="productMoneys" value="${dto.salePrice * dto.qty}">
+									<input type="hidden" name="prices" value="${dto.price}">
+									<input type="hidden" name="salePrices" value="${dto.salePrice}">
+									<input type="hidden" name="savedMoneys" value="${dto.savedMoney}">
+								</div>
 							</div>
 						</div>
 					</c:forEach>
@@ -167,19 +175,20 @@ function sendOk() {
 							<label class="text-primary">${defaultDest.defaultDest==1? '기본배송지':''}</label>
 						</div>
 						<div class="col-auto">
-							<button type="button" class="btn border changeDest"> 배송지변경 </button>
+							<button type="button" class="btn border" id="changeDest"> 배송지변경 </button>
 						</div>
 					</div>
 					<div class="ps-2 pt-2">
 						<div class="pt-2">${defaultDest.addr1} ${defaultDest.addr2}</div>
 						<div class="pt-2">${defaultDest.tel}</div>
 						<div class="pt-2 w-50">
+							<input type="hidden" name="destinatioNnum" value="${defaultDest.destinatioNnum}">
 							<input type="hidden" name="recipientName" value="${defaultDest.recipientName}">
 							<input type="hidden" name="tel" value="${defaultDest.tel}">
 							<input type="hidden" name="zip" value="${defaultDest.zip}">
 							<input type="hidden" name="addr1" value="${defaultDest.addr1}">
 							<input type="hidden" name="addr2" value="${defaultDest.addr2}">
-							<input type="text" name="destMeno" class="form-control" placeholder="요청사항을 입력합니다." value="${defaultDest.destMemo}">
+							<input type="text" name="destMemo" class="form-control" placeholder="요청사항을 입력합니다." value="${defaultDest.destMemo}">
 						</div>
 					</div>
 				</div>
@@ -251,8 +260,52 @@ function sendOk() {
 		</div>
 	</div>
 </div>
+<div class="modal fade" id="changeDestModal" tabindex="-1" aria-labelledby="orderDialogModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" style="max-width: 80%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="orderDialogModalLabel">배송지 변경</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body pt-1">
+				<div class="modal-order-detail">
+					<table class="text-center table">
+						<tr>
+							<th>&nbsp;</th>
+							<th class="col-2">받는 사람</th>
+							<th class="col-4">기본주소</th>
+							<th class="col-3">상세주소</th>
+							<th class="col-3">전화번호</th>
+						</tr>
+						<tr>
+							<td><input type="checkbox"></td>
+							<td>홍길동</td>
+							<td>서울특별시 마포구 월드컵북로 21</td>
+							<td>풍성빌딩 2층</td>
+							<td>010-0000-0000</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer">
+		        <button type="button" class="btn btn-secondary">수정</button>
+		        <button type="button" class="btn btn-primary">선택</button>
+		      </div>
+		</div>
+	</div>
+</div>
 <script type="text/javascript">
-$('.changeDest').click(function() {
+$(function() {
+	$('#changeDest').on('click', function() {
+		//$('#changeDestModal').addClass('show');
+		$('#changeDestModal').modal("show");
+	});
 	
+	let modal = document.getElementById('changeDestModal');
+	modal.addEventListener('show.bs.modal', function () {
+		
+	});
 });
+
+
 </script>

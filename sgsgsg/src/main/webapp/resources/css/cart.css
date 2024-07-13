@@ -166,6 +166,7 @@ a {
 	padding-left: 12px;
 }
 
+
 .modal {
 	position: fixed;
 	left: 0;
@@ -176,7 +177,6 @@ a {
 	z-index: 100000;
 	overflow-x: hidden;
 	overflow-y: scroll;
-	display: block;
 	-webkit-overflow-scrolling: touch;
 	-webkit-transform: translateZ(0)
 }
