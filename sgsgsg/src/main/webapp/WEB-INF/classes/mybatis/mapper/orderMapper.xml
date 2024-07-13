@@ -32,7 +32,23 @@
             where userId = #{userId};
 	</select>
 	
-	
+	<!-- 재고번호로 상품 찾기 -->
+	<select id="findByStockNum" parameterType="map" resultType="com.sgsg.dra.domain.Product">
+		SELECT s.STOCKNUM, s.PRODUCTNUM, TOTALSTOCK, s.DETAILNUM, s.DETAILNUM2,
+		    p.PRODUCTNAME, p.PRICE, p.DISCOUNTRATE, p.SAVEDMONEY, p.DELIVERY, p.OPTIONCOUNT,
+		    p.THUMBNAIL, o1.OPTIONNAME, d1.OPTIONVALUE, d1.OPTIONNUM,
+		    o1.OPTIONNAME AS OPTIONNAME2, d2.OPTIONVALUE AS OPTIONVALUE2, d2.OPTIONNUM AS OPTIONNUM2
+		FROM PRODUCTSTOCK s
+		JOIN PRODUCT p on s.PRODUCTNUM = p.PRODUCTNUM
+		LEFT OUTER JOIN OPTIONDETAIL d1 ON s.DETAILNUM = d1.DETAILNUM
+		LEFT OUTER JOIN OPTIONDETAIL d2 on s.DETAILNUM2 = d2.DETAILNUM
+		LEFT OUTER JOIN PRODUCT_OPTION o1 on d1.OPTIONNUM = o1.OPTIONNUM
+		LEFT OUTER JOIN PRODUCT_OPTION o2 on d2.OPTIONNUM = o2.OPTIONNUM
+		WHERE p.PRODUCTSHOW=1 AND s.STOCKNUM IN 
+			<foreach collection="stockNum" item="num" open="(" separator="," close=")">
+				#{num}
+			</foreach>
+	</select>
 	
 	<!-- 배송지 추가 -->
 	<insert id="insertDest" parameterType="map">

@@ -108,62 +108,36 @@ function sendOk() {
 			<form name="paymentForm" method="post">
 				<div class="order-list p-3 border rounded order_box">
 					<div class="fs-6 fw-semibold border-bottom pb-1">상품 정보</div>
-					<div class="cart-box ps-2 pt-2">
-						<div class="cart-item">
-							<a class="item-link" href="${pageContext.request.contextPath}/product/details/${dto.productNum}">
-								<span class="item-img">
-									<img alt="상품 이미지" src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}">
-								</span>
-								<span class="item-content">
-									<h1 class="item-title">${dto.productName}상품 이름</h1>
-									<div class="option-price">
-										<!-- if dto.discountRate != 0 -->
-										<span class="number">${Math.ceil(dto.price*(1-dto.discountRate/100))} 19,475</span>원
-										<span class="text-decoration-line-through">${dto.price} 500원</span>
-										<!-- 
-										<span class="number">${Math.ceil(dto.price*(1-dto.discountRate/100))} 19,475</span>원
-										<span class="text-decoration-line-through">${dto.price}</span>
-										 -->
+					<c:forEach items="${productList}" var="dto">
+						<div class="cart-box ps-2 pt-2">
+							<div class="cart-item">
+								<a class="item-link" href="${pageContext.request.contextPath}/product/details/${dto.productNum}">
+									<span class="item-img">
+										<img alt="상품 이미지" src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}">
+									</span>
+									<span class="item-content">
+										<h1 class="item-title">${dto.productName}</h1>
+										<div class="option-price">
+											<span class="number"><fmt:formatNumber value="${dto.price*(1-dto.discountRate/100)}" pattern="#,###" />원</span>
+											<c:if test="${dto.discountRate != 0}">
+												<span class="text-decoration-line-through"><fmt:formatNumber value="${dto.price}" pattern="#,###" />원</span>
+											</c:if>
+										</div>
+									</span>
+								</a>
+								<div class="item-summary">
+									<div class="option">
+										<c:if test="${dto.optionCount>=1}">${dto.optionName}: ${dto.optionValue}</c:if>
+										<c:if test="${dto.optionCount>=2}">/ ${dto.optionName2}: ${dto.optionValue2}</c:if>
 									</div>
-								</span>
-							</a>
-							<div class="item-summary">
-								<div class="option">색상: 그레이 / 사이즈: L</div>
-								<div>수량:2개 (38,950원)</div>
-							</div>
-							<div>
-								<span class=""><i class="bi bi-truck"></i>230원</span>
+									<div>수량:${dto.qty}개 (<fmt:formatNumber value="${dto.price*(1-dto.discountRate/100)*dto.qty}" pattern="#,###" />원)</div>
+								</div>
+								<div>
+									<span class=""><i class="bi bi-truck"></i> ${dto.delivery}원</span>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="cart-box ps-2 pt-2">
-						<div class="cart-item">
-							<a class="item-link" href="${pageContext.request.contextPath}/product/details/${dto.productNum}">
-								<span class="item-img">
-									<img alt="상품 이미지" src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}">
-								</span>
-								<span class="item-content">
-									<h1 class="item-title">${dto.productName}상품 이름</h1>
-									<div class="option-price">
-										<!-- if dto.discountRate != 0 -->
-										<span class="number">${Math.ceil(dto.price*(1-dto.discountRate/100))} 19,475</span>원
-										<span class="text-decoration-line-through">${dto.price} 500원</span>
-										<!-- 
-										<span class="number">${Math.ceil(dto.price*(1-dto.discountRate/100))} 19,475</span>원
-										<span class="text-decoration-line-through">${dto.price}</span>
-										 -->
-									</div>
-								</span>
-							</a>
-							<div class="item-summary">
-								<div class="option">색상: 그레이 / 사이즈: L</div>
-								<div>수량:2개 (38,950원)</div>
-							</div>
-							<div>
-								<span class=""><i class="bi bi-truck"></i>230원</span>
-							</div>
-						</div>
-					</div>
+					</c:forEach>
 				</div>
 				<input type="hidden" name="orderNum" value="${productOrderNumber}">
 				<input type="hidden" name="totalMoney" value="${totalMoney}">
@@ -181,22 +155,23 @@ function sendOk() {
 					<div class="fs-6 fw-semibold border-bottom pb-1">배송지 정보</div>
 					<div class="row ps-2 pt-2">
 						<div class="col-auto pe-2 mt-2">
-							<label class="fw-semibold">김자바</label> <label class="text-primary">기본배송지</label>
+							<label class="fw-semibold">${defaultDest.recipientName}</label>
+							<label class="text-primary">${defaultDest.defaultDest==1? '기본배송지':''}</label>
 						</div>
 						<div class="col-auto">
-							<button type="button" class="btn border"> 배송지변경 </button>
+							<button type="button" class="btn border changeDest"> 배송지변경 </button>
 						</div>
 					</div>
 					<div class="ps-2 pt-2">
-						<div class="pt-2">서울특별시 마포구 월드컵북로 21 풍성빌딩 2층</div>
-						<div class="pt-2">010-1111-1111</div>
+						<div class="pt-2">${defaultDest.addr1} ${defaultDest.addr2}</div>
+						<div class="pt-2">${defaultDest.tel}</div>
 						<div class="pt-2 w-50">
-							<input type="hidden" name="recipientName" value="김자바">
-							<input type="hidden" name="tel" value="010-1111-2222">
-							<input type="hidden" name="zip" value="111-111">
-							<input type="hidden" name="addr1" value="서울특별시 마포구 월드컵북로">
-							<input type="hidden" name="addr2" value="21 풍성빌딩 2층">
-							<input type="text" name="destMeno" class="form-control" placeholder="요청사항을 입력합니다.">
+							<input type="hidden" name="recipientName" value="${defaultDest.recipientName}">
+							<input type="hidden" name="tel" value="${defaultDest.tel}">
+							<input type="hidden" name="zip" value="${defaultDest.zip}">
+							<input type="hidden" name="addr1" value="${defaultDest.addr1}">
+							<input type="hidden" name="addr2" value="${defaultDest.addr2}">
+							<input type="text" name="destMeno" class="form-control" placeholder="요청사항을 입력합니다." value="${defaultDest.destMemo}">
 						</div>
 					</div>
 				</div>
@@ -261,3 +236,8 @@ function sendOk() {
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+$('.changeDest').click(function() {
+	
+});
+</script>
