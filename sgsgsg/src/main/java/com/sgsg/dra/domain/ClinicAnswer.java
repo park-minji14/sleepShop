@@ -13,7 +13,7 @@ public class ClinicAnswer {
 	public String userName;
 	public int membership;
 	
-	public int like;
+	public int pickup;  // 채택 여부
 	public String rated_date;
 	public String content2;
 	
@@ -21,11 +21,12 @@ public class ClinicAnswer {
 	
 	
 	
-	public int getLike() {
-		return like;
+	
+	public int getPickup() {
+		return pickup;
 	}
-	public void setLike(int like) {
-		this.like = like;
+	public void setPickup(int pickup) {
+		this.pickup = pickup;
 	}
 	public String getRated_date() {
 		return rated_date;

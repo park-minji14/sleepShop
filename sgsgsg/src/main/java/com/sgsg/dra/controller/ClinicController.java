@@ -451,9 +451,28 @@ public class ClinicController {
 	}
 		
 	
+	
+	@PostMapping("likeAnswer")
+    public String likeAnswer(@RequestParam long answer_num,
+                              @RequestParam long question_id,
+                              @RequestParam String like_comment,
+                              @RequestParam String page) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        map.put("answer_num", answer_num);
+        map.put("like_comment", like_comment);
 
+        service.insertClinicAnswerLike(map);
+
+        return "redirect:/clinic/article?num=" + question_id + "&page=" + page;
+    }
+	
+
+	
+	
+	
+	
 	/*
-	// 답변의 코멘트
+	// 답변의 코멘트(채택)
 	@GetMapping("listClinicAnswerComment")
 	public String listClinicAnswerComment(
 			@RequestParam Map<String, Object> paramMap,
@@ -472,6 +491,30 @@ public class ClinicController {
 	}
 	
 	
+	
+	// 채택 코멘트 등록
+	@PostMapping("insertClinicAnswerComment")
+	@ResponseBody
+	public Map<String, Object> insertClinicAnswerComment(
+	        @RequestParam Map<String, Object> paramMap,
+	        HttpSession session) throws Exception {
+	    String state = "true";
+	    SessionInfo info = (SessionInfo)session.getAttribute("member");
+
+	    try {
+	        paramMap.put("userId", info.getUserId());
+	        service.insertClinicAnswerComment(paramMap);
+	    } catch (Exception e) {
+	        state = "false";
+	    }
+
+	    Map<String, Object> model = new HashMap<String, Object>();
+	    model.put("state", state);
+	    return model;
+	}
+	
+	
+	/*
 	// 답변의 코멘트 개수
 	@PostMapping("countClinicAnswerComment")
 	@ResponseBody

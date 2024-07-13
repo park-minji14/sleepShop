@@ -1,5 +1,6 @@
 package com.sgsg.dra.service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -273,6 +274,18 @@ public class ClinicServiceImpl implements ClinicService {
 		
 		return list;
 	}
+
+
+	@Override
+	public ClinicAnswer findLikedAnswer(long question_id) throws SQLException {
+		return mapper.findLikedAnswer(question_id);
+	}
+	
+	
+	
+
+
+	
 	
 		
 

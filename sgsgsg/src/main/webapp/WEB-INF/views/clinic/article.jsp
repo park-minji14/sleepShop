@@ -142,7 +142,7 @@
 
 
 </style>
-
+<!-- 
 <c:if test="${sessionScope.member.membership>90 || dto.userId == sessionScope.member.userId}">
 	<script type="text/javascript">
 	function deleteClinic() {
@@ -153,7 +153,7 @@
 		}
 	}
 	</script>
-</c:if>
+</c:if> -->
 
 
 <div class="container">
@@ -350,6 +350,57 @@ $(function() {
 	})
 })
 
+
+
+$(document).ready(function() {
+    // 채택하기 버튼 클릭 시 textarea 표시
+    $('.answer').on('click', '.btnClinicAnswerComment', function() {
+        const $trClinicAnswerComment = $(this).closest('.answer-item').find('.comment-section');
+        
+        if ($trClinicAnswerComment.is(':visible')) {
+            $trClinicAnswerComment.hide();
+        } else {
+            $trClinicAnswerComment.show();
+        }
+    });
+
+    // 채택 코멘트 등록
+    $('.answer').on('click', '.btnSubmitClinicAnswerComment', function() {
+        const $form = $(this).closest('.formClinicAnswerComment');
+        const answer_num = $form.find('input[name="answer_num"]').val();
+        const content2 = $form.find('textarea[name="content2"]').val().trim();
+        
+        if (!content2) {
+            alert('채택 코멘트를 입력하세요.');
+            return;
+        }
+        
+        const data = {
+            answer_num: answer_num,
+            content2: content2
+        };
+        
+        $.ajax({
+            url: "${pageContext.request.contextPath}/clinic/insertClinicAnswerComment",
+            type: "POST",
+            data: data,
+            success: function(response) {
+                if (response.state === 'true') {
+                    alert('채택 코멘트가 등록되었습니다.');
+                    $form.hide();
+                    const $commentDisplay = $form.closest('.reply-writer').find('.comment-display');
+                    $commentDisplay.find('.comment-content').text(content2);
+                    $commentDisplay.show();
+                } else {
+                    alert('채택 코멘트 등록에 실패했습니다.');
+                }
+            },
+            error: function() {
+                alert('서버와의 통신에 실패했습니다.');
+            }
+        });
+    });
+});
 
 
 

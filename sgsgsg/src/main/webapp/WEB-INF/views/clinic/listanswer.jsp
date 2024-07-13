@@ -23,7 +23,7 @@
 
 
 .answer-list-table2 {
-	border: 1px solid #ddd; 
+	border: 1px solid #ddd;  
     border-radius: 20px;
     padding: 10px;
     margin: 30px 0; 
@@ -31,6 +31,29 @@
     background-color: #fff;
     width: 1100px;
 }
+
+
+@keyframes btnlikecolor {
+	0% {}
+	100% {background: #FF9436; color: white; transform: translateY(2px);}
+}
+
+
+.btn-like {
+	width: 100px;
+	height: 40px;
+	background-color: white;
+	border-radius: 10px;
+	border: 2px solid #FF9436;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
+}
+
+
+.btn-like:hover {
+	animation: btnlikecolor 0.3s forwards;
+}
+
+
  
 
 
@@ -45,73 +68,50 @@
             form.submit();
         }
     }
+    
+    
+    function showAdoptForm(answerNum) {
+        document.getElementById("adoptForm_" + answerNum).style.display = "block";
+    }
+
+    function submitAdoptForm(answerNum) {
+        var comment = document.getElementById("adoptComment_" + answerNum).value;
+        if (comment.trim() === "") {
+            alert("코멘트를 입력해주세요.");
+            return;
+        }
+
+        var form = document.getElementById("adoptForm_" + answerNum);
+        if (form && form.tagName === 'FORM') {
+            HTMLFormElement.prototype.submit.call(form);
+        } else {
+            console.error('Form not found or not a form element:', form);
+        } 
+    }
     </script>
 </c:if>
 
 
 <br><br>
 <div class='reply-info'>
-	<span class='reply-count' >답변 ${answerCount}개</span>
+	<span class='reply-count' style="font-size: 22px; color: #6799FF;">전문가의 뜨거운 손길 ${answerCount}개</span>
 </div>
 
 <div class="container">
 	<div class="body-container">
-
-		
-		<!-- 
-			<c:forEach var="vo" items="${listanswer}">
-				<tr class='border table-light'>
-					<td width='50%'>
-						<div class='row reply-writer'>
-							<div class='col-1'><i class='bi bi-person-circle text-muted icon'></i></div>
-							<div class='col-auto align-self-center'>
-								<div class='name'>${vo.userId}</div>
-								<div class='date'>${vo.created_date}</div>
-							</div>
-						</div>
-						<div>${vo.content}</div>
-					</td>
-					<td width='50%' align='right' class='align-middle'>
-						<span class='reply-dropdown'><i class='bi bi-three-dots-vertical'></i></span>
-						<div class="reply-menu">
-							<c:choose>
-								<c:when test="${sessionScope.member.userId==vo.userId}">
-									<div class='deleteReply reply-menu-item' data-answer_num='${vo.answer_num}' data-pageNo='${pageNo}'>삭제</div>
-								</c:when>
-								<c:when test="${sessionScope.member.membership>50}">
-									<div class='deleteReply reply-menu-item' data-answer_num='${vo.answer_num}' data-pageNo='${pageNo}'>삭제</div>
-								</c:when>
-								<c:otherwise>
-									<div class='notifyReply reply-menu-item'>신고</div>
-									<div class='blockReply reply-menu-item'>차단</div>
-								</c:otherwise>
-							</c:choose>
-						</div>
-					</td>
-				</tr>
-		
-			
-			    <tr class='reply-answer'>
-			        <td colspan='2'>
-			        	<div class='border rounded'>
-				            <div id='listReplyAnswer3' class='answer-list'></div>
-				            <div>
-				                <textarea class="form-control m-2"></textarea>
-				            </div>
-							<div class='text-end pe-2 pb-1'>
-								<button type='button' class='btn btn-light btnSendReplyAnswer' data-answer_num='${vo.answer_num}'>답글 등록</button>
-				            </div>
-			            </div>
-					</td>
-			    </tr>
-			</c:forEach>
-		-->
+				
 		<c:forEach var="vo" items="${listanswer}">
 			<div class="answer-list-table">
 				<div class='row reply-writer'>
 					<div class='col-1'><i class='bi bi-person-circle text-muted icon' style="font-size: 30px;"></i></div>
 					<div class='col-auto align-self-center'>
 						<div class='name' style="font-size: 25px;">${vo.userId}
+							<c:if test="${vo.pickup != 1 && sessionScope.member.membership > 90}">
+                                <button type="button" class="btn btn-like" onclick="showAdoptForm(${vo.answer_num});">채택하기</button>
+                            </c:if>
+                            <c:if test="${vo.pickup == 1}">
+                                <span class="adopted-comment">${vo.content2}</span>
+                            </c:if>
 						</div>
 						<div class='date'>${vo.created_date}</div>
 						<div class="">
@@ -126,7 +126,10 @@
 							                    <button type="button" class="btn1" onclick="deleteClinicAnswer(this.form);">삭제</button>
 							                </form>
 							            </c:if>
+							            
 							        </div>
+							          
+		                        
 							</div>
 						
 						</div>
@@ -137,6 +140,18 @@
 			<div class="answer-list-table2">
 				<div>${vo.content}</div>
 			</div>
+			
+			
+			<div id="adoptForm_${vo.answer_num}" class="adopt-form" style="display:none;">
+                <form id="adoptForm_${vo.answer_num}" action="${pageContext.request.contextPath}/clinic/adoptAnswer" method="post">
+                    <input type="hidden" name="answer_num" value="${vo.answer_num}">
+                    <input type="hidden" name="question_id" value="${vo.question_id}">
+                    <textarea id="adoptComment_${vo.answer_num}" name="adopt_comment" class="form-control m-2" placeholder="채택 코멘트를 입력해주세요."></textarea>
+                    <div class='text-end pe-2 pb-1'>
+                        <button type='button' class='btn btn-light' onclick="submitAdoptForm(${vo.answer_num});">등록하기</button>
+                    </div>
+                </form>
+            </div>
 			
 			<br><br>
 			
