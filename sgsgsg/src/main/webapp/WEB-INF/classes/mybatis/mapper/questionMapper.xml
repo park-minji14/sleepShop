@@ -4,9 +4,27 @@
 <mapper namespace="com.sgsg.dra.mapper.QuestionMapper">
 <insert id="insertQuestion" parameterType="com.sgsg.dra.domain.Question">
 INSERT INTO PRODUCT_INQUIRY
- (INQUIRYNUM, PRODUCTNUM, USERID,  QUESTION, QUESTION_DATE, INQUIRY_TYPE
-) VALUES (PRODUCT_INQUIRY_SEQ.NEXTVAL, #{productNum}, #{userId},
-#{question},SYSDATE, #{inquiryType}
-);
+ (INQUIRYNUM, PRODUCTNUM, USERID, QUESTION, QUESTION_DATE, INQUIRY_TYPE)
+VALUES (PRODUCT_INQUIRY_SEQ.NEXTVAL, 
+        #{productNum},
+        #{userId},
+        #{question},
+        SYSDATE, 
+        #{inquiryType}
+)
 </insert>
+<!-- 질문에 파일을 첨부할 때 사용 -->
+	<insert id="insertQuestionFile" parameterType="com.sgsg.dra.domain.Question">
+
+    INSERT INTO PRODUCT_INQUIRY_PHOTO (
+        FILENUM,
+        INQUIRYNUM,
+        FILENAME
+    ) VALUES (
+        PRODUCT_INQUIRY_PHOTO_SEQ.NEXTVAL,
+        #{inquiryNum},
+        #{filename}
+    )
+</insert>
+
 </mapper>

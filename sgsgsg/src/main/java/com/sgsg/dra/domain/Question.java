@@ -1,19 +1,61 @@
 package com.sgsg.dra.domain;
 
+import java.util.List;
+
+
+import org.springframework.web.multipart.MultipartFile;
+
 public class Question {
-    private int inquiryNum; // INQUIRYNUM
-    private int productNum; // PRODUCTNUM
-    private int secret; // SECRET
-    private String question; // QUESTION
-    private String answer; // ANSWER
-    private int showQuestion; // SHOWQUESTION
-    private int locked; // LOCKED
-    private String questionDate; // QUESTION_DATE
-    private String answerDate; // ANSWER_DATE
-    private String userId; // USERID
-    private String answerId; // ANSWERID
-    private String inquiryType; // INQUIRY_TYPE
+    private int inquiryNum; // 질문번호
+    private int productNum; 
+    private int secret; 
+    private String question; 
+    private String answer; 
+    private int showQuestion;
+    private int locked; 
+    private String questionDate; 
+    private String answerDate; 
+    private String userId; 
+    private String answerId; 
+    private String inquiryType; 
     
+    private long fileNum;
+    private String filename;
+    private List<MultipartFile> selectFile;
+    private String[] listFilename;
+    private String productName;
+    
+    
+	public long getFileNum() {
+		return fileNum;
+	}
+	public void setFileNum(long fileNum) {
+		this.fileNum = fileNum;
+	}
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+	public List<MultipartFile> getSelectFile() {
+		return selectFile;
+	}
+	public void setSelectFile(List<MultipartFile> selectFile) {
+		this.selectFile = selectFile;
+	}
+	public String[] getListFilename() {
+		return listFilename;
+	}
+	public void setListFilename(String[] listFilename) {
+		this.listFilename = listFilename;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
 	public int getInquiryNum() {
 		return inquiryNum;
 	}
@@ -33,9 +75,11 @@ public class Question {
 		this.secret = secret;
 	}
 	public String getQuestion() {
+		 System.out.println("Getting question: " + question);
 		return question;
 	}
 	public void setQuestion(String question) {
+		 System.out.println("Setting question: " + question);
 		this.question = question;
 	}
 	public String getAnswer() {

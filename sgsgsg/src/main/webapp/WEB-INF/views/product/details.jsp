@@ -37,6 +37,7 @@
         <div class="col-md-6">
           <div class="product-info">
             <h1 class="product-title mb-3">${dto.productName}</h1>
+             <input type="hidden" id="productNum" value="${dto.productNum}">
             <div class="product-rating mb-3">
               <i class="bi bi-star-fill text-warning"></i>
               <i class="bi bi-star-fill text-warning"></i>
@@ -380,7 +381,7 @@
           </div>
           <div class="mb-3">
             <label for="qnaContent" class="form-label">문의 내용</label>
-            <textarea class="form-control" id="qnaContent" name="content" rows="5" required placeholder=""></textarea>
+            <textarea class="form-control" id="qnaContent" name="question" rows="5" required placeholder=""></textarea>
             <div id="qnaContentGuide" class="form-text">
  				 문의 내용을 자세히 작성해 주세요. 답변은 확인 후 순차적으로 처리되며, 
  				 마이페이지에서도 확인 가능합니다. 개인정보는 문의 처리 후 안전하게 폐기됩니다.
@@ -548,6 +549,27 @@
 </div>
 
 <script type="text/javascript">
+function ajaxFun(url, method, query, dataType, fn) {
+    console.log("ajaxFun 호출됨:", url, method, dataType);
+    $.ajax({
+        type: method,
+        url: url,
+        data: query,
+        dataType: dataType,
+        processData: false,  // FormData를 사용할 때 필요
+        contentType: false,  // FormData를 사용할 때 필요
+        success: function(data) {
+            console.log("Ajax 성공:", data);
+            fn(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log("Ajax 오류:", textStatus, errorThrown);
+            console.log("응답 텍스트:", jqXHR.responseText);
+            alert("오류가 발생했습니다: " + textStatus);
+        }
+    });
+}
+
 $(document).ready(function () {
     // 기본 변수들 선언
     const basePrice = parseFloat($('#totalPrice').data('base-price'));
@@ -969,42 +991,58 @@ $(function() {
     });
 
   // 문의하기 버튼 클릭 시
-  $('#submitQna').on('click', function() {
-	console.log('문의하기 버튼 클릭');
-    var type = $('input[name="qnaType"]:checked').val();
-    var content = $('#qnaContent').val();
-    var isPrivate = $('#qnaPrivate').is(':checked');
-    var file = $('#qnaFile')[0].files[0];
-
-    if (!content) {
-      alert('문의 내용을 입력해주세요.');
-      return;
-    }
-
-    var formData = new FormData();
-    formData.append('content', content);
-    formData.append('isPrivate', isPrivate);
-    if (file) {
-      formData.append('file', file);
-    }
-
-    // AJAX 요청 (실제 구현 시 URL과 처리 로직 수정 필요)
-    $.ajax({
-      url: '/submit-qna',
-      type: 'POST',
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function(response) {
-        alert('문의가 성공적으로 등록되었습니다.');
-        $('#qnaModal').modal('hide');
-        // 여기에 문의 목록을 새로고침하는 로직 추가
-      },
-      error: function() {
-        alert('문의 등록에 실패했습니다. 다시 시도해주세요.');
-      }
+    $('#showQnaForm').click(function(){
+        $("#qnaModal").modal("show");
     });
-  });
+
+ // 문의하기 제출 버튼 클릭 시
+    $('#submitQna').click(function() {
+        console.log("문의하기 제출 버튼 클릭");
+        const f = document.getElementById('qnaForm');
+        let content = $('#qnaContent').val().trim();
+        
+        if (!content) {
+            alert("문의 내용을 입력하세요.");
+            $('#qnaContent').focus();
+            return false;
+        }
+        if (f.qnaFile.files.length > 5) {
+            alert("이미지는 최대 5개까지 가능합니다.");
+            return false;
+        }
+        
+        let productNum = $('#productNum').val();
+        if (!productNum) {
+            console.error("상품 번호가 없습니다.");
+            alert("상품 정보를 불러올 수 없습니다. 페이지를 새로고침 후 다시 시도해주세요.");
+            return false;
+        }
+
+        let formData = new FormData(f);
+        formData.append('isPrivate', $('#qnaPrivate').is(':checked'));
+        formData.append('inquiryType', $('input[name=qnaType]:checked').val());
+        formData.append('productNum', productNum);
+        
+        
+        console.log('Question content:', formData.get('question'));
+        console.log('전송 전 question 내용:', formData.get('question'))
+        
+        let url = "${pageContext.request.contextPath}/question/write";
+        console.log("요청 URL:", url);
+        
+        ajaxFun(url, "POST", formData, "json", function(data) {
+            console.log("서버 응답:", data);
+            if(data.state === "true") {
+                f.reset();
+                $("#qnaModal").modal("hide");
+                
+                alert('문의가 성공적으로 등록되었습니다.');
+                // 문의 목록 새로고침 (필요시 구현)
+                // listQuestion(1);
+            } else {
+                alert('문의 등록에 실패했습니다. 다시 시도해주세요.');
+            }
+        });
+    });
 });
-    	
 </script>
