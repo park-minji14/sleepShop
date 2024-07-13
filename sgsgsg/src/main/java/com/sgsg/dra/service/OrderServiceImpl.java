@@ -16,6 +16,17 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderMapper mapper;
+	
+	@Override
+	public long productOrderNum() throws Exception {
+		long result=0;
+		try {
+			result = mapper.productOrderNum();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	@Override
 	public void insertOrder(Order dto) throws Exception {
@@ -53,6 +64,8 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return delivery;
 	}
+
+
 
 
 

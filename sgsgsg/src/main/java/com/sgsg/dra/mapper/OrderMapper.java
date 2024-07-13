@@ -9,6 +9,7 @@ import com.sgsg.dra.domain.Order;
 import com.sgsg.dra.domain.Product;
 
 public interface OrderMapper {
+	public long productOrderNum() throws SQLException;
 	public void insertOrder(Order dto) throws SQLException;
 	
 	public List<Product> findByStockNum(Map<String, Object> map) throws SQLException;

@@ -3,12 +3,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sgsg.dra.mapper.OrderMapper">
 
+	<!-- 주문시 시퀀스 보존용 -->
+	<select id="productOrderNum" resultType="Long">
+		SELECT productOrder_seq.nextval FROM dual
+	</select>
+	
 	<!-- 주문 추가 -->
 	<insert id="insertOrder" parameterType="map">
 		INSERT INTO PRODUCTORDER(ORDERNUM, USERID, ISSUE_ID, ORDERDATE, TOTALMONEY, USEDSAVED,
 			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENT,
 			TEL, ZIP, ADDR1, ADDR2, DESTMEMO)
-		VALUES (productOrder_seq.nextval, #{userId}, #{issue_id, jdbcType=VARCHAR}, sysdate,
+		VALUES (#{orderNum}, #{userId}, #{issue_id, jdbcType=VARCHAR}, sysdate,
 			#{totalMoney},  #{usedSaved}, #{deliveryCharge}, #{payment}, #{orderState}, sysdate,
 			#{CANCELAMOUNT, jdbcType=VARCHAR}, #{recipient}, #{tel}, #{zip}, #{addr1}, #{addr2},
 			#{destMemo})
@@ -34,20 +39,29 @@
 	
 	<!-- 재고번호로 상품 찾기 -->
 	<select id="findByStockNum" parameterType="map" resultType="com.sgsg.dra.domain.Product">
-		SELECT s.STOCKNUM, s.PRODUCTNUM, TOTALSTOCK, s.DETAILNUM, s.DETAILNUM2,
+		SELECT s.STOCKNUM, s.PRODUCTNUM, s.TOTALSTOCK, s.DETAILNUM, s.DETAILNUM2,
 		    p.PRODUCTNAME, p.PRICE, p.DISCOUNTRATE, p.SAVEDMONEY, p.DELIVERY, p.OPTIONCOUNT,
 		    p.THUMBNAIL, o1.OPTIONNAME, d1.OPTIONVALUE, d1.OPTIONNUM,
 		    o1.OPTIONNAME AS OPTIONNAME2, d2.OPTIONVALUE AS OPTIONVALUE2, d2.OPTIONNUM AS OPTIONNUM2
+		    <if test="mode == 'cart'">
+			    , to_char(c.reg_date, 'yyyy-mm-dd hh24:mi:ss') reg_date
+			</if>
 		FROM PRODUCTSTOCK s
 		JOIN PRODUCT p on s.PRODUCTNUM = p.PRODUCTNUM
 		LEFT OUTER JOIN OPTIONDETAIL d1 ON s.DETAILNUM = d1.DETAILNUM
 		LEFT OUTER JOIN OPTIONDETAIL d2 on s.DETAILNUM2 = d2.DETAILNUM
 		LEFT OUTER JOIN PRODUCT_OPTION o1 on d1.OPTIONNUM = o1.OPTIONNUM
 		LEFT OUTER JOIN PRODUCT_OPTION o2 on d2.OPTIONNUM = o2.OPTIONNUM
+		<if test="mode == 'cart'">
+			left outer join cart_item c on c.STOCKNUM = s.STOCKNUM
+		</if>
 		WHERE p.PRODUCTSHOW=1 AND s.STOCKNUM IN 
 			<foreach collection="stockNum" item="num" open="(" separator="," close=")">
 				#{num}
 			</foreach>
+			<if test="mode == 'cart'">
+				ORDER BY c.REG_DATE DESC
+			</if>
 	</select>
 	
 	<!-- 배송지 추가 -->

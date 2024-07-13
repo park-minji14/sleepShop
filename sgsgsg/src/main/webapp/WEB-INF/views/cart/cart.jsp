@@ -25,6 +25,7 @@
 				<span class="text-right">
 					<button class="cart-checked_delete" type="button">선택삭제</button>
 				</span>
+				<input type="hidden" name="mode" value="cart">
 			</div>
 			<div class="notification">
 				<div class="ms-3">쿠폰 적용된 가격은 결제할 때 확인 가능</div>
@@ -71,6 +72,7 @@
 									<span class="number"><fmt:formatNumber value="${dto.price*(1-dto.discountRate/100)*dto.qty}" pattern="#,###" /></span>원
 								</div> 
 							</div>
+							<input type="hidden" data-stock-num="${dto.stockNum}">
 							<input type="hidden" name="qty" value="${dto.qty}">
 							<input type="hidden" name="productPrice" value="${dto.price}">
 							<input type="hidden" name="salePrice" value="${Math.ceil(dto.price*(1-dto.discountRate/100))}">
@@ -316,8 +318,8 @@ $('.cart-list').on('click', function(e) {
 	}
 	let $box = $(e.target).closest('.option-box');
 	let qty = $($box).find('input[name="qty"]').val();
-	let stockNum = $($box).find('input[name="stockNum"]').val();
-	
+	let stockNum = $box.find('input[data-stock-num]').attr('data-stock-num');
+	console.log(stockNum)
 	if($(e.target).hasClass("chage_qty")){
 		let result = parseInt(window.prompt('변경하실 수량을 입력하세요. ( 1 ~ 99 )')) || undefined;
 		
@@ -341,10 +343,6 @@ $('.cart-list').on('click', function(e) {
 		}
 	}
 	changeQty($box, {stockNum:stockNum, qty:qty});
-});
-
-$('.cart-list').on('click', '.item_delete', function() {
-	//deleteProduct($(this).closest('.cart-box'));
 });
 
 $(function() {

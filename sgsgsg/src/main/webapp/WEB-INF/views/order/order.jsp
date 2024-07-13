@@ -118,7 +118,7 @@ function sendOk() {
 									<span class="item-content">
 										<h1 class="item-title">${dto.productName}</h1>
 										<div class="option-price">
-											<span class="number"><fmt:formatNumber value="${dto.price*(1-dto.discountRate/100)}" pattern="#,###" />원</span>
+											<span class="number"><fmt:formatNumber value="${dto.salePrice}" pattern="#,###" />원</span>
 											<c:if test="${dto.discountRate != 0}">
 												<span class="text-decoration-line-through"><fmt:formatNumber value="${dto.price}" pattern="#,###" />원</span>
 											</c:if>
@@ -130,19 +130,27 @@ function sendOk() {
 										<c:if test="${dto.optionCount>=1}">${dto.optionName}: ${dto.optionValue}</c:if>
 										<c:if test="${dto.optionCount>=2}">/ ${dto.optionName2}: ${dto.optionValue2}</c:if>
 									</div>
-									<div>수량:${dto.qty}개 (<fmt:formatNumber value="${dto.price*(1-dto.discountRate/100)*dto.qty}" pattern="#,###" />원)</div>
+									<div>수량: ${dto.qty}개 (<fmt:formatNumber value="${dto.price*(1-dto.discountRate/100)*dto.qty}" pattern="#,###" />원)</div>
 								</div>
 								<div>
-									<span class=""><i class="bi bi-truck"></i> ${dto.delivery}원</span>
+									<span class=""><i class="bi bi-truck"></i> 
+										<c:if test="${deliveryCharge==0}">
+											무료
+										</c:if>
+										<c:if test="${deliveryCharge!=0}">
+											${dto.delivery}원
+										</c:if>
+									</span>
 								</div>
 							</div>
 						</div>
 					</c:forEach>
 				</div>
-				<input type="hidden" name="orderNum" value="${productOrderNumber}">
-				<input type="hidden" name="totalMoney" value="${totalMoney}">
+				<input type="hidden" name="orderNum" value="${orderNum}">
+				<input type="hidden" name="totalMoney" value="${totalProduct - totalDiscountPrice}">
 				<input type="hidden" name="deliveryCharge" value="${deliveryCharge}">
 				<input type="hidden" name="payment" value="${totalPayment}">
+				<input type="hidden" name="usedSaved" value="${totalSavedMoney}">
 
 				<input type="hidden" name="mode" value="${mode}">
 
@@ -178,12 +186,19 @@ function sendOk() {
 				
 				<div class="p-3 border rounded order_box">
 					<div class="fs-6 fw-semibold border-bottom pb-1">쿠폰 사용</div>
+					<div class="row ps-2 pt-2 col-6">
+						<select class="form-select" id="couponSelect">
+							<option>사용 안함</option>
+							<option value="">첫 결제 할인 쿠폰</option>
+						</select>
+					</div>
 				</div>
 				
 				<div class="p-3 border mt-3 rounded order_box">
 					<div class="fs-6 fw-semibold border-bottom pb-1">포인트</div>
 					<div class="ps-2 pt-2">
-						<div class="pt-2 fw-semibold">보유 <fmt:formatNumber value="${empty userPoint ? 0 : userPoint.balance}"/>원</div>
+						<span class="pt-2 fw-semibold">보유 <fmt:formatNumber value="${empty userPoint ? 0 : userPoint.balance}"/>원</span>
+						<span class="pt-2">(${totalSavedMoney} 적립 예정)</span>
 					</div>
 					<div class="row ps-2 pt-2">
 						<div class="col-6">
@@ -199,31 +214,31 @@ function sendOk() {
 					<dl class="productSummary">
 						<dt>총 상품금액</dt>
 						<dd>
-							<span class="number">62,131</span>원
+							<span class="number"><fmt:formatNumber value="${totalProduct}" pattern="#,###" /></span>원
 						</dd>
 					</dl>
 					<dl class="deliverySummary">
 						<dt>총 배송비</dt>
 						<dd>
-							+ <span class="number">3,230</span>원
+							+ <span class="number"><fmt:formatNumber value="${deliveryCharge}" pattern="#,###" /></span>원
 						</dd>
 					</dl>
 					<dl class="saleSummary">
 						<dt>총 할인금액</dt>
 						<dd>
-							- <span class="number">6,655</span>원
+							- <span class="number"><fmt:formatNumber value="${totalDiscountPrice}" pattern="#,###" /></span>원
 						</dd>
 					</dl>
 					<dl class="">
 						<dt>포인트사용액</dt>
 						<dd>
-							- <span class="number">6,655</span>원
+							- <span class="number">0</span>원
 						</dd>
 					</dl>
 					<dl class="totalSummary">
 						<dt>결제금액</dt>
 						<dd>
-							<span class="number">58,706</span>원
+							<span class="number"><fmt:formatNumber value="${totalPayment}" pattern="#,###" /></span>원
 						</dd>
 					</dl>
 				</div>
