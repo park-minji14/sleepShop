@@ -558,15 +558,15 @@
     background-color: #00C0D2;
     color: #fff;
     padding: 5px 10px;
-    border-radius: 50px; /* 동그랗게 만들기 위해 변경 */
+    border-radius: 50px; /* 동그란 효과 */
     font-size: 0.8rem;
     position: absolute;
     top: -40px;
     left: 10px;
-    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    white-space: nowrap; 
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     animation: float 2s ease-in-out infinite;
-    z-index: 1; /* 다른 요소 위에 표시되도록 설정 */
+    z-index: 1;
 }
 
 .btn-cart {
