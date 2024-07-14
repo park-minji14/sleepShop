@@ -1,5 +1,7 @@
 package com.sgsg.dra.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +55,23 @@ public class OrderServiceImpl implements OrderService {
 				mapper.updateProductStock(dto);
 			}
 			
+			// 사용 포인트 저장(포인트 적립은 구매 확정에서)
+			if(dto.getUsedSaved() > 0) {
+				UserPoint before = findByUserPoint(dto.getUserId());
+				
+				LocalDateTime now = LocalDateTime.now();
+				String dateTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+				
+				UserPoint up = new UserPoint();
+				up.setUserId(dto.getUserId());
+				up.setOrderNum(dto.getOrderNum());
+				up.setChange_points(-dto.getUsedSaved());
+				up.setRemain_points(before.getRemain_points() - dto.getUsedSaved());
+				up.setChange_date(dateTime);
+				up.setReason("구매");
+				mapper.insertUserPoint(up);
+			}
+			
 		} catch (Exception e) {
 			throw e;
 		}
@@ -97,13 +116,15 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public void insertUserPoint(Map<String, Object> map) throws Exception {
-	}
-
-	@Override
 	public UserPoint findByUserPoint(String userId) throws Exception {
+		UserPoint point = null;
 		
-		return null;
+		try {
+			point = mapper.findByUserPoint(userId);
+		} catch (Exception e) {
+			throw e;
+		}
+		return point;
 	}
 
 

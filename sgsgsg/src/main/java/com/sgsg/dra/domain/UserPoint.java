@@ -7,6 +7,7 @@ public class UserPoint {
 	private String change_date;
 	private int remain_points;
 	private String userId;
+	private long orderNum;
 	
 	
 	public long getNum() {
@@ -44,5 +45,11 @@ public class UserPoint {
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	public long getOrderNum() {
+		return orderNum;
+	}
+	public void setOrderNum(long orderNum) {
+		this.orderNum = orderNum;
 	}
 }

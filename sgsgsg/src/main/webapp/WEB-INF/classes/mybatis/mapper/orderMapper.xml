@@ -64,7 +64,7 @@
 		LEFT OUTER JOIN PRODUCT_OPTION o1 on d1.OPTIONNUM = o1.OPTIONNUM
 		LEFT OUTER JOIN PRODUCT_OPTION o2 on d2.OPTIONNUM = o2.OPTIONNUM
 		<if test="mode == 'cart'">
-			LEFT OUTER JOIN CART_ITEM c ON c.STOCKNUM = s.STOCKNUM
+			LEFT OUTER JOIN CART_ITEM c ON c.USERID = #{userId}
 		</if>
 		WHERE p.PRODUCTSHOW=1 AND s.STOCKNUM IN 
 			<foreach collection="stockNum" item="num" open="(" separator="," close=")">
@@ -76,9 +76,9 @@
 	</select>
 	
 	<!-- 포인트 사용 -->
-	<insert id="insertUserPoint" parameterType="map">
-		INSERT INTO POINT_HISTORY(NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, USERID)
-			values(POINT_HISTORY_seq.nextval, ${change_points}, #{reason}, sysdate, #{remain_points}, #{userId});
+	<insert id="insertUserPoint" parameterType="com.sgsg.dra.domain.UserPoint">
+		INSERT INTO POINT_HISTORY(NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, USERID, ORDERNUM)
+			values(POINT_HISTORY_seq.nextval, ${change_points}, #{reason}, sysdate, #{remain_points}, #{userId}, #{orderNum, jdbcType=NUMBER})
 	</insert>
 	
 	<!-- 마지막 포인트 조회 -->

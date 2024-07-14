@@ -20,6 +20,7 @@ import com.sgsg.dra.domain.Delivery;
 import com.sgsg.dra.domain.Order;
 import com.sgsg.dra.domain.Product;
 import com.sgsg.dra.domain.SessionInfo;
+import com.sgsg.dra.domain.UserPoint;
 import com.sgsg.dra.service.CartService;
 import com.sgsg.dra.service.OrderService;
 import com.sgsg.dra.state.OrderState;
@@ -50,6 +51,7 @@ public class OrderController {
 		try {
 			Delivery delivery = orderService.findByDest(info.getUserId());
 			long orderNum = orderService.productOrderNum();
+			String productOrderName = "";
 			int totalProduct = 0; // 상품합
 			int deliveryCharge = 0; // 배송비
 			int totalPayment = 0;  // 결제할 금액(상품합 + 배송비)
@@ -63,9 +65,11 @@ public class OrderController {
 			map.put("stockNum", stockNum);
 			map.put("mode", mode);
 			
-			
+			// 상품 정보 찾기
 			List<Product> productList = orderService.findByStockNum(map);
-			//Order order = orderService.
+			
+			// 마지막 포인트 내역
+			UserPoint userPoint = orderService.findByUserPoint(info.getUserId());
 			
 			for (int i = 0; i < productList.size(); i++) {
 				Product dto = productList.get(i);
@@ -83,11 +87,17 @@ public class OrderController {
 				
 			}
 			
+			productOrderName = productList.get(0).getProductName();
+			if(productList.size() > 1) {
+				productOrderName += " 외 " + (productList.size() - 1) + "건";
+			}
+			
 			deliveryCharge = totalProduct >= 200000 ? 0 : deliveryCharge;
 			totalPayment = totalProduct - totalDiscountPrice + deliveryCharge;
 			
 			model.addAttribute("defaultDest", delivery);
 			model.addAttribute("productList", productList);
+			model.addAttribute("productOrderName", productOrderName);
 			model.addAttribute("orderNum", orderNum);
 			model.addAttribute("deliveryCharge", deliveryCharge);
 			model.addAttribute("totalProduct", totalProduct);
@@ -95,6 +105,7 @@ public class OrderController {
 			model.addAttribute("totalSavedMoney", totalSavedMoney);
 			model.addAttribute("totalDiscountPrice", totalDiscountPrice);
 			model.addAttribute("mode", mode);
+			model.addAttribute("userPoint", userPoint);
 			
 			
 		} catch (Exception e) {

@@ -17,6 +17,5 @@ public interface OrderService {
 	public Delivery findByDest(String userId) throws Exception;
 	public List<Delivery> selectAllDest(String userId) throws Exception;
 	
-	public void insertUserPoint(Map<String, Object> map) throws Exception;
 	public UserPoint findByUserPoint(String userId) throws Exception;
 }

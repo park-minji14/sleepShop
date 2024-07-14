@@ -158,7 +158,7 @@ function sendOk() {
 				<input type="hidden" name="totalMoney" value="${totalProduct - totalDiscountPrice}">
 				<input type="hidden" name="deliveryCharge" value="${deliveryCharge}">
 				<input type="hidden" name="payment" value="${totalPayment}">
-				<input type="hidden" name="usedSaved" value="${totalSavedMoney}">
+				<input type="hidden" name="savedMoney" value="${totalSavedMoney}">
 
 				<input type="hidden" name="mode" value="${mode}">
 
@@ -206,14 +206,14 @@ function sendOk() {
 				<div class="p-3 border mt-3 rounded order_box">
 					<div class="fs-6 fw-semibold border-bottom pb-1">포인트</div>
 					<div class="ps-2 pt-2">
-						<span class="pt-2 fw-semibold">보유 <fmt:formatNumber value="${empty userPoint ? 0 : userPoint.balance}"/>원</span>
+						<span class="pt-2 fw-semibold">보유 <fmt:formatNumber value="${empty userPoint ? 0 : userPoint.remain_points}"/>원</span>
 						<span class="pt-2">(<fmt:formatNumber value="${totalSavedMoney}" pattern="#,###" /> 적립 예정)</span>
 					</div>
 					<div class="row ps-2 pt-2">
 						<div class="col-6">
 							<div class="input-group">
-								<input type="number" class="form-control" name="usedSaved" value="0" min="0" max="${empty userPoint ? 0 : userPoint.balance}">
-								<button type="button" class="input-group-text btn-usedSaved" data-balance="${empty userPoint ? 0 : userPoint.balance}">전액사용</button>
+								<input type="number" class="form-control" name="usedSaved" style="text-align: right;" value="0" min="0" max="${empty userPoint ? 0 : userPoint.remain_points}">
+								<button type="button" class="input-group-text btn-usedSaved" data-balance="${empty userPoint ? 0 : userPoint.remain_points}">전액사용</button>
 							</div>
 						</div>
 					</div>
@@ -238,7 +238,7 @@ function sendOk() {
 							- <span class="number"><fmt:formatNumber value="${totalDiscountPrice}" pattern="#,###" /></span>원
 						</dd>
 					</dl>
-					<dl class="">
+					<dl class="pointUsed">
 						<dt>포인트사용액</dt>
 						<dd>
 							- <span class="number">0</span>원
@@ -304,6 +304,35 @@ $(function() {
 	let modal = document.getElementById('changeDestModal');
 	modal.addEventListener('show.bs.modal', function () {
 		
+	});
+	
+	$('.btn-usedSaved').click(function(){
+		const f = document.paymentForm;
+		
+		let balance = Number($(this).attr('data-balance')) || 0;
+		f.usedSaved.value = balance;
+		
+		let payment = Number(f.payment.value) - balance;
+		
+		$('.totalSummary .number').text(payment.toLocaleString());
+		$('.pointUsed .number').text(balance.toLocaleString());
+	});
+	
+	$('form[name=paymentForm] input[name=usedSaved]').on('keyup mouseup', function() {                                                                                                                     
+		const f = document.paymentForm;
+		let balance = Number($('.btn-usedSaved').attr('data-balance')) || 0;
+		let usedSaved = Number(f.usedSaved.value);
+		
+		if(usedSaved > balance) {
+			usedSaved = balance;
+			f.usedSaved.value = balance;
+		}
+		
+		let payment = Number(f.payment.value) - usedSaved;
+		
+		$('input[name=payment]').val(payment);
+		$('.totalSummary .number').text(payment.toLocaleString());
+		$('.pointUsed .number').text(usedSaved.toLocaleString());
 	});
 });
 

@@ -21,7 +21,7 @@ public interface OrderMapper {
 	public Delivery findByDest(String userId) throws SQLException;
 	public List<Delivery> selectAllDest(String userId) throws SQLException;
 	
-	public void insertUserPoint(Map<String, Object> map) throws SQLException;
+	public void insertUserPoint(UserPoint userPoint) throws SQLException;
 	public UserPoint findByUserPoint(String userId) throws SQLException;
 	
 }
