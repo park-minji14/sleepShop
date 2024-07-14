@@ -251,7 +251,7 @@ td.date {
 	border: 1px solid #ddd; 
     border-radius: 30px;
     padding: 20px;
-    margin: 30px 0; 
+    margin: 20px 0; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
     background-color: #fff;
     width: 1100px;
@@ -346,7 +346,7 @@ element.style {
 				
 				<!-- 1:1 문의 탭 -->
 					<div class="tab-pane fade show active" id="inquiry">
-						<h4 class="mb-4">1:1 문의 내역</h4>
+						<h4 class="mb-4" style="text-align: center;   font-size: 40px; margin: 50px;">1:1 문의 내역</h4>
 					</div>
 					
 					

@@ -223,7 +223,7 @@ font-size: 14px;
 				<!-- 포인트 칸 -->
 				<div class="css-77kc86 e1t6i3i25">
 					<div class="css-0 e1t6i3i24">
-						<h2 class="css-ojabq6 e1t6i3i23">사용 가능한 포인트</h2>
+						<h2 class="css-ojabq6 e1t6i3i23" style="font-size: 40px;">사용 가능한 포인트</h2>
 						<p class="css-1irwz7g e1t6i3i22">27 P</p>
 					</div>
 					<div class="css-1yu4f1z e1t6i3i21">

@@ -255,7 +255,7 @@ font-size: 14px;
 			
 			<!-- 최근 본 상품 탭 -->
 			<div class="tab-pane fade show active" id="recent">
-				<h4 class="mb-4">최근 본 상품</h4>
+				<h4 class="mb-4" style="text-align: center;   font-size: 40px; margin: 50px;">최근 본 상품</h4>
 			
 			
 			

@@ -135,7 +135,7 @@ main{
         <div class="tab-content">
             <!-- 나의 리뷰 탭 -->
             <div class="tab-pane fade show active" id="reviews">
-                <h4 class="mb-4">구매한 상품</h4>
+                <h4 class="mb-4" style="text-align: center;   font-size: 40px; margin: 50px;">구매한 상품</h4>
                 
                 <div class="col-md-6">
 					<select class="form-select" style=" width: 200px; ">
