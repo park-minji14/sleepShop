@@ -24,6 +24,8 @@ public class Product {
 	private int optionCount;
 	private String content;
 	private String thumbnail;
+
+	
 	public String getThumbnail() {
 		return thumbnail;
 	}

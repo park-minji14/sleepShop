@@ -451,9 +451,83 @@ public class ClinicController {
 	}
 		
 	
+	
+	@PostMapping("likeAnswer")
+	public String insertClinicAnswerComment(@RequestParam long answer_num,
+	                                        @RequestParam long question_id,
+	                                        @RequestParam String content2,
+	                                        @RequestParam String page) throws Exception {
+	    ClinicAnswer dto = new ClinicAnswer();
+	    dto.setAnswer_num(answer_num);
+	    dto.setQuestion_id(question_id);
+	    dto.setContent2(content2);
+	    dto.setPickup(1);
 
+	    service.insertClinicAnswerComment(dto);
+
+	    return "redirect:/clinic/article?num=" + question_id + "&page=" + page;
+	}
+	
+
+	
+	
+	
+	 @GetMapping("listanswercomment")
+	    public String listClinicAnswerComment(@RequestParam long num,
+	                                   @RequestParam(value = "pageNo", defaultValue = "1") int current_page,
+	                                   HttpSession session,
+	                                   Model model) throws Exception {
+	        int size = 5;
+	        int total_page = 0;
+	        int dataCount = 0;
+
+	        Map<String, Object> map = new HashMap<>();
+	        map.put("question_id", num);
+
+	        dataCount = service.ClinicAnswerCount(map);
+	        total_page = myUtil.pageCount(dataCount, size);
+	        if (current_page > total_page) {
+	            current_page = total_page;
+	        }
+
+	        int offset = (current_page - 1) * size;
+	        if (offset < 0) offset = 0;
+	        map.put("offset", offset);
+	        map.put("size", size);
+
+	        List<ClinicAnswer> list = service.listClinicAnswer(map);
+	        ClinicAnswer likedAnswer = service.findLikedAnswer(num);
+	        for (ClinicAnswer answer : list) {
+	            if (likedAnswer != null && likedAnswer.getAnswer_num() == answer.getAnswer_num()) {
+	                answer.setPickup(1);
+	                answer.setContent2(likedAnswer.getContent2());
+	            }
+	        }
+
+	        // AJAX용 페이징
+	        String paging = myUtil.pagingMethod(current_page, total_page, "listpage");
+
+	        // 포워딩할 JSP로 넘길 모델(데이터)
+	        model.addAttribute("listanswercomment", list);
+	        model.addAttribute("pageNo", current_page);
+	        model.addAttribute("answerCount", dataCount);
+	        model.addAttribute("total_page", total_page);
+	        model.addAttribute("paging", paging);
+	        model.addAttribute("question_id", num);
+
+	        // ".clinic.listReply" 로 반환하면 안됨(메뉴가 생성됨)
+	        return "clinic/listanswercomment";
+	    }
+}
+	
+	
+
+	
+	
+	
+	
 	/*
-	// 답변의 코멘트
+	// 답변의 코멘트(채택)
 	@GetMapping("listClinicAnswerComment")
 	public String listClinicAnswerComment(
 			@RequestParam Map<String, Object> paramMap,
@@ -470,8 +544,33 @@ public class ClinicController {
 		
 		return "clinic/listClinicAnswerComment";
 	}
+}
 	
 	
+	/*
+	// 채택 코멘트 등록
+	@PostMapping("insertClinicAnswerComment")
+	@ResponseBody
+	public Map<String, Object> insertClinicAnswerComment(
+	        @RequestParam Map<String, Object> paramMap,
+	        HttpSession session) throws Exception {
+	    String state = "true";
+	    SessionInfo info = (SessionInfo)session.getAttribute("member");
+
+	    try {
+	        paramMap.put("userId", info.getUserId());
+	        service.insertClinicAnswerComment(paramMap);
+	    } catch (Exception e) {
+	        state = "false";
+	    }
+
+	    Map<String, Object> model = new HashMap<String, Object>();
+	    model.put("state", state);
+	    return model;
+	}
+	
+	
+	/*
 	// 답변의 코멘트 개수
 	@PostMapping("countClinicAnswerComment")
 	@ResponseBody
@@ -545,4 +644,4 @@ public class ClinicController {
 	
 	
 
-}
+

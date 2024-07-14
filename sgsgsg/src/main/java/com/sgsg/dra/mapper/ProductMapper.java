@@ -27,4 +27,5 @@ public interface ProductMapper {
 	public List<Product> listOptionDetail(long optionNum);
 	public List<Product> listOptionDetailStock(Map<String, Object> map);
 	
+	
 }

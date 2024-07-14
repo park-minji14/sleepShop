@@ -4,6 +4,7 @@
 
 
 <style>
+
 /* 전체 페이지 스타일 */
 body {
 	background-color: #f8f9fa;
@@ -187,6 +188,129 @@ font-size: 14px;
 
 
 
+.member .tab_mp li.on a {
+    border: 1px solid var(--season_color_11);
+    color: var(--season_color_11);
+    background-color: var(--season_color_12);
+}
+
+
+.member .tab_mp li a {
+    display: block;
+    height: 59px;
+    border: 0px solid #e9e9e9;
+    border-bottom: 0;
+    background: #fff;
+    font-size: 15px;
+    line-height: 59px;
+    border-radius: 8px;
+}
+
+
+.tbl_col > thead > tr > th {
+    border-top: 0;
+    padding: 20px 0;
+}
+
+
+.tbl_col > thead > tr > th {
+    padding: 12px 0 16px;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #e9e9e9;
+    color: #404040;
+    font-family: Malgun Gothic, '맑은 고딕';
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.paging {
+    margin-top: 34px;
+    font-size: 0;
+    text-align: center;
+}
+
+
+
+td.date {
+    color: #888 !important;
+    font-family: 'Poppins' !important;
+    font-size: 13px !important;
+    font-weight: 300 !important;
+}
+
+
+.tbl_col > tbody > tr > td {
+    border: 0;
+    padding: 20px 0;
+}
+
+
+.table-style6 {
+	border: 1px solid #ddd; 
+    border-radius: 30px;
+    padding: 20px;
+    margin: 30px 0; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
+    background-color: #fff;
+    width: 1100px;
+}
+
+.date { width: 20%; }
+.inquiry { width: 14%; }
+.subject { flex-grow: 1; }
+.answer { width: 20%; }
+
+.table-header {
+	display: flex;
+	font-size: 18px;
+}
+
+
+
+.cont {
+	display: flex;
+}
+
+/* 숨겨진 기본 라디오 버튼 */
+.radio-input {
+    display: none;
+}
+
+ 
+/* 선택된 라벨 스타일 */
+.radio-input:checked + .radio-label {
+    background-color: #35c5f0;
+    color: white;
+}
+
+
+element.style {
+    text-align: center;
+    font-size: 20px;
+}
+.radio-input:checked + .radio-label {
+    background-color: #35c5f0;
+    color: white;
+}
+.radio-label {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 2px solid #35c5f0;
+    border-radius: 10px;
+    background-color: white;
+    color: #35c5f0;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+
+#option4 {
+	margin: 100px;
+}
+
+
 </style>
 </head>
 <body>
@@ -203,10 +327,10 @@ font-size: 14px;
 				data-bs-toggle="tab" href="#wishlist">찜한 상품</a></li>
 			<li class="nav-item"><a class="nav-link" id="recent-tab"
 				data-bs-toggle="tab" href="#recent">최근 본 상품</a></li>
-			<li class="nav-item"><a class="nav-link" id="inquiry-tab"
-				data-bs-toggle="tab" href="#inquiry">1:1 문의</a></li>
-				
 			<li class="nav-item"><a class="nav-link active" id="inquiry-tab"
+				data-bs-toggle="tab" href="#inquiry ">1:1 문의</a></li>
+				
+			<li class="nav-item"><a class="nav-link " id="inquiry-tab"
 				data-bs-toggle="tab" href="#point">포인트</a></li>	
 			
 			<li class="nav-item"><a class="nav-link" id="settings-tab"
@@ -220,63 +344,115 @@ font-size: 14px;
 			
 			<div class="css-ow22sl e1v2ggz01">
 				
-				<!-- 포인트 칸 -->
-				<div class="css-77kc86 e1t6i3i25">
-					<div class="css-0 e1t6i3i24">
-						<h2 class="css-ojabq6 e1t6i3i23">사용 가능한 포인트</h2>
-						<p class="css-1irwz7g e1t6i3i22">27 P</p>
+				<!-- 1:1 문의 탭 -->
+					<div class="tab-pane fade show active" id="inquiry">
+						<h4 class="mb-4">1:1 문의 내역</h4>
 					</div>
-					<div class="css-1yu4f1z e1t6i3i21">
-						<p class="css-1yx9urm e1t6i3i20">30일 이내 소멸 예정 포인트<b> 0 P</b></p>
-					</div>
-				</div>
-				
-				
-				
-				
-				
-			
-			<!-- 포인트 탭 -->
-				<div class="review-item">
-					<div class="row align-items-center">
-						<div class="col-md-2">
-							<h5>2024-07-07</h5>
-						</div>
-						<div class="col-md-7">
-							<div class ="css-s5xdrg e1rx7pum4"><h2 class="css-z57iji e1rx7pum2">구매확정</h2><div class="accumulate css-1yj5lcs e1rx7pum3" style="width: 40px;">적립</div></div>
-							<p class="text-muted">상품구매확정: 시그니처위드블루70매20팩 (베베숲 시그니처 위드블루 70매 캡 20팩)</p>
-						</div>
-						<div class="col-md-3 text-end">
-							<button class="btn btn-write-review" data-bs-toggle="modal"
-								data-bs-target="#reviewModal">+75P</button>
-						</div>
-					</div>
-				</div>
-				<div class="review-item">
-					<div class="row align-items-center">
-						<div class="col-md-2">
-							<h5>2024-07-07</h5>
-						</div>
-						<div class="col-md-7">
-							<div class="css-s5xdrg e1rx7pum4"><h2 class="css-z57iji e1rx7pum2">구매확정</h2><div class="accumulate css-1yj5lcs e1rx7pum3" style="width: 40px;">적립</div></div>
-							<p class="text-muted">상품구매확정: 시그니처위드블루70매20팩 (베베숲 시그니처 위드블루 70매 캡 20팩)</p>
-						</div>
-						<div class="col-md-3 text-end">
-							<button class="btn btn-write-review" data-bs-toggle="modal"
-								data-bs-target="#reviewModal">+75P</button>
-						</div>
-					</div>
-				</div>
-				
-				
-				
-			</div>
 					
-			
+					
+					<div class="col-md-6">
+						<select class="form-select" style=" width: 200px; ">
+							
+							<option>전체</option>
+							<option>답변완료</option>
+							<option>답변대기</option>
+						</select>
+					</div>
+					
+				
+					
+					<div class="table-style6">
+							<div>
+								<span>
+									<div class="table-header" >
+										
+											<div class="date">작성일</div>
+											<div class="inquiry">문의구분</div>
+											<div class="subject">제목</div>
+											<div class="answer">답변여부</div>
+										
+									</div>
+								</span>
+							</div>
+							<hr>
+							<div>
+								<span>
+									<div class="table-content" >
+										<div class="cont">
+											<div class="date">2024-07-12</div>
+											<div class="inquiry">배송문의</div>
+											<div class="subject">혹시 배송 얼마나 걸리나요?</div>
+											<div class="answer">답변완료</div>
+										</div>
+										<div class="cont">
+											<div class="date">2024-07-12</div>
+											<div class="inquiry">배송문의</div>
+											<div class="subject">혹시 배송 얼마나 걸리나요?</div>
+											<div class="answer">답변완료</div>
+										</div>
+									</div>
+								</span>
+							</div>
+					</div>
+					
+					
+					<input type="radio" id="option4" name="category" value="글 작성" class="radio-input" ${category == '글 작성' ? 'checked' : ''} onclick="#inquiryModal" data-bs-toggle="modal"
+					data-bs-target="#inquiryModal">
+				        <label for="option4" class="radio-label" style="width: 150px; text-align: center; font-size: 20px;">글 작성</label>
+		
+		
+			</div>
 		</div>
-
-	</div>	
+		
+		
+	</div>
 </div>
+
+
+
+
+<!-- 새 문의 작성 모달 -->
+	<div class="modal fade" id="inquiryModal" tabindex="-1"
+		aria-labelledby="inquiryModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="inquiryModalLabel">새 문의 작성</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="mb-3">
+							<label for="inquiryType" class="form-label">문의 유형</label> <select
+								class="form-select" id="inquiryType">
+								<option>배송 관련</option>
+								<option>상품 관련</option>
+								<option>결제 관련</option>
+								<option>기타</option>
+							</select>
+						</div>
+						<div class="mb-3">
+							<label for="inquiryTitle" class="form-label">제목</label> <input
+								type="text" class="form-control" id="inquiryTitle">
+						</div>
+						<div class="mb-3">
+							<label for="inquiryContent" class="form-label">문의 내용</label>
+							<textarea class="form-control" id="inquiryContent" rows="3"></textarea>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary">문의 등록</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+
 
 
 
@@ -322,3 +498,4 @@ font-size: 14px;
 			});
 		});
 	</script>
+</body>

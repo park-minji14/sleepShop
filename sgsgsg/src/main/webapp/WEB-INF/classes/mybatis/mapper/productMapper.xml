@@ -144,13 +144,11 @@
 	
 	
 	<!-- 상품 옵션별 상세 옵션 리스트 -->
-	<select id="listOptionDetail" parameterType="Long" resultType="com.sgsg.dra.domain.Product">
-    SELECT d.detailNum, d.optionValue, s.totalStock
-    FROM optionDetail d
-    LEFT JOIN productStock s ON d.detailNum = s.detailNum
-    WHERE d.optionNum = #{optionNum}
-    ORDER BY d.detailNum
-	</select>
+	<select id="listOptionDetail" parameterType="long" resultType="com.sgsg.dra.domain.Product">
+		SELECT detailNum, optionNum, optionValue
+		FROM optionDetail
+		WHERE optionNum = #{optionNum}
+		ORDER BY detailNum	</select>
 	
 	<!-- 재고 있는 사풍 조회-->
 	<select id="listOptionDetailStock" parameterType="map" resultType="com.sgsg.dra.domain.Product">
@@ -182,7 +180,9 @@
 		WHERE NVL(s.totalStock, 0) &gt; 0
 		ORDER BY s.detailNum, s.detailNum2
 	</select>
+	
 
+    
 <!-- 
 	<select id="listProduct" parameterType="map"></select>
 	-->

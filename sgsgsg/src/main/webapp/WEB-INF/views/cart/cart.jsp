@@ -16,7 +16,7 @@
 
 <div class="container">
 	<div class="body-container">
-		<div class="cart-body">
+		<form class="cart-body" name="cartForm" method="post">
 			<div class="cart-header">
 				<label class="label">
 					<input type="checkbox" class="chkAll">
@@ -25,6 +25,7 @@
 				<span class="text-right">
 					<button class="cart-checked_delete" type="button">선택삭제</button>
 				</span>
+				<input type="hidden" name="mode" value="cart">
 			</div>
 			<div class="notification">
 				<div class="ms-3">쿠폰 적용된 가격은 결제할 때 확인 가능</div>
@@ -40,7 +41,7 @@
 				<div class="cart-box">
 					<article class="cart-item">
 						<div class="checkbox-wrap">
-							<input type="checkbox" value="${dto.stockNum}" class="checkbox">
+							<input type="checkbox" name="stockNum" value="${dto.stockNum}" class="checkbox">
 						</div>
 						<a class="item-link" href="${pageContext.request.contextPath}/product/details/${dto.productNum}">
 							<span class="item-img">
@@ -51,7 +52,7 @@
 								<span class="delivery-info">배송비: ${dto.delivery}원</span>
 							</span>
 						</a>
-						<button class="item_delete" type="button" aria-label="삭제">
+						<button class="item_delete" type="button" onclick="deleteProduct($(this).closest('.cart-box'));" aria-label="삭제">
 							<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
 								<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
 							</svg>
@@ -59,20 +60,19 @@
 						<div class="option-box">
 							<h2 class="option-title">
 								<c:if test="${dto.optionCount>=1}">${dto.optionName}: ${dto.optionValue}</c:if>
-								<c:if test="${dto.optionCount==2}">/ ${dto.optionName2}: ${dto.optionValue2}</c:if>
+								<c:if test="${dto.optionCount>=2}">/ ${dto.optionName2}: ${dto.optionValue2}</c:if>
 							</h2>
 							<div class="option-subBox">
 								<div class="option-qty">
 									<span class="minus_qty bi bi-dash-lg"></span>
-									<button class="chage_qty">${dto.qty}</button>
+									<button type="button" class="chage_qty">${dto.qty}</button>
 									<span class="plus_qty bi bi-plus-lg"></span>
 								</div>
 								<div class="option-price">
 									<span class="number"><fmt:formatNumber value="${dto.price*(1-dto.discountRate/100)*dto.qty}" pattern="#,###" /></span>원
 								</div> 
 							</div>
-							<input type="hidden" name="stockNum" value="${dto.stockNum}">
-							<input type="hidden" name="productNum" value="${dto.productNum}">
+							<input type="hidden" data-stock-num="${dto.stockNum}">
 							<input type="hidden" name="qty" value="${dto.qty}">
 							<input type="hidden" name="productPrice" value="${dto.price}">
 							<input type="hidden" name="salePrice" value="${Math.ceil(dto.price*(1-dto.discountRate/100))}">
@@ -111,7 +111,7 @@
 					</dl>
 				</div>
 			</div>
-		</div>
+		</form>
 		<!-- 사이드바 결제금액 + 결제 버튼 -->
 		<div class="cart-side">
 			<div class="cart-sidebar" style="position: sticky; top: 150px; transition: top 0.1s ease 0s;">
@@ -157,7 +157,7 @@
 	</div>
 </div>
 
-<script>
+<script type="text/javascript">
 function ajaxFun(url, method, formData, dataType, fn, file = false) {
     const settings = {
             type: method, 
@@ -193,11 +193,16 @@ function ajaxFun(url, method, formData, dataType, fn, file = false) {
 }
 
 function deleteProduct($box) {
+	console.log($box)
 	if(! confirm('해당 상품을 삭제하시겠습니까?')){
 		return;
 	}
-	let url = "${pageContext.request.contextPath}/cart/deleteCart";
-	let stockNum = $($box).find('input[name="stockNum"]').val();
+	const f = document.cartForm;
+	f.action = "${pageContext.request.contextPath}/cart/deleteCart";
+	f.submit();
+	
+	let url = "${pageContext.request.contextPath}/cart/deleteCartItem";
+	let stockNum = parseInt($box.find('input[name="stockNum"]').val());
 	let query = "stockNum="+stockNum;
 	
 	const fn = function(data) {
@@ -250,12 +255,26 @@ $(function() {
 		summary();
 	});
 	
-	$('.order_btn, .item_order').click(function() {
+	$('.order_btn').click(function() {
 		if($('input.checkbox').length === 0){
 			alert('선택된 상품이 없습니다.')
 			return;
 		}
-		// 체크된 상품 데이터가지고 주문 주소로 이동
+		
+		const f = document.cartForm;
+		f.action = "${pageContext.request.contextPath}/order/payment";
+		f.submit();
+		
+	});
+	
+	$('.item_order').click(function() {
+		let url = "${pageContext.request.contextPath}/order/payment";
+		
+		let num = $(this).closest('.cart-item').find('input[name="stockNum"]').val();
+		let qty = $(this).closest('.cart-item').find('input[name="qty"]').val();
+		let query = "stockNum="+num+"&qty="+qty;
+		
+		location.href = url+"?"+query;
 	});
 });
 
@@ -299,16 +318,19 @@ $('.cart-list').on('click', function(e) {
 	}
 	let $box = $(e.target).closest('.option-box');
 	let qty = $($box).find('input[name="qty"]').val();
-	let stockNum = $($box).find('input[name="stockNum"]').val();
-	
+	let stockNum = $box.find('input[data-stock-num]').attr('data-stock-num');
+
 	if($(e.target).hasClass("chage_qty")){
-		let result = parseInt(window.prompt('변경하실 수량을 입력하세요. ( 1 ~ 99 )'));
-		if(result <= 0 || result > 99 ){
-			alert('1 ~ 99까지의 수를 입력하세요.');
-		} else {
-			changeQty($box, {stockNum:stockNum, qty:result});
+		let result = parseInt(window.prompt('변경하실 수량을 입력하세요. ( 1 ~ 99 )')) || undefined;
+		
+		if(result === undefined){
+			return;
 		}
-		return;
+		if(result <= 0 || result > 99){
+			alert('1 ~ 99까지의 수를 입력하세요.');
+			return;
+		}
+		qty = result;
 	}
 	if($(e.target).hasClass("plus_qty")){
 		qty++;
@@ -321,10 +343,6 @@ $('.cart-list').on('click', function(e) {
 		}
 	}
 	changeQty($box, {stockNum:stockNum, qty:qty});
-});
-
-$('.cart-list').on('click', '.item_delete', function() {
-	deleteProduct($(this).closest('.cart-box'));
 });
 
 $(function() {
@@ -342,26 +360,9 @@ $(function() {
 		if(! confirm('선택한 상품을 삭제하시겠습니까?')){
 			return;
 		}
-		
-		let stockNumArr = [];
-		$('.checkbox:checked').each(function() {
-			let num = $(this).closest('.cart-item').find('input[name="stockNum"]').val();
-			stockNumArr.push(parseInt(num));
-		});
-		let url = "${pageContext.request.contextPath}/cart/deleteCart";
-		let query = "stockNum="+stockNumArr;
-		
-		const fn = function(data) {
-			console.log(data.state);
-			if(data.state === 'true'){
-				$('.checkbox:checked').each(function() {
-					$(this).closest('.cart-box').remove();
-					summary();
-				});
-				return;
-			}
-	    };
-		ajaxFun(url, "post", query, "json", fn);
+		const f = document.cartForm;
+		f.action = "${pageContext.request.contextPath}/cart/deleteCart";
+		f.submit();
 		
 	});
 });

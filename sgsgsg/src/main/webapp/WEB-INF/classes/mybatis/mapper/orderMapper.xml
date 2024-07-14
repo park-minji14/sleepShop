@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgsg.dra.mapper.OrderMapper">
+
+	<!-- 주문시 시퀀스 보존용 -->
+	<select id="productOrderNum" resultType="Long">
+		SELECT productOrder_seq.nextval FROM dual
+	</select>
+	
+	<!-- 주문 추가 -->
+	<insert id="insertOrder" parameterType="map">
+		INSERT INTO PRODUCTORDER(ORDERNUM, USERID, ISSUE_ID, ORDERDATE, TOTALMONEY, USEDSAVED,
+			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENTNAME,
+			TEL, ZIP, ADDR1, ADDR2, DESTMEMO)
+		VALUES (#{orderNum}, #{userId}, #{issue_id, jdbcType=VARCHAR}, sysdate,
+			#{totalMoney},  #{usedSaved}, #{deliveryCharge}, #{payment}, #{orderState}, sysdate,
+			#{cancelAmount, jdbcType=VARCHAR}, #{recipientName}, #{tel}, #{zip}, #{addr1}, #{addr2},
+			#{destMemo})
+	</insert>
+	
+	<!-- 결제 내역 등록 -->
+	<insert id="insertPayDetail" parameterType="com.sgsg.dra.domain.Order">
+		INSERT INTO payDetail(orderNum, payMethod, cardName, authNumber, authDate) 
+			VALUES (#{orderNum}, #{payMethod}, #{cardName}, #{authNumber}, TO_DATE(#{authDate}, 'YYYY-MM-DD HH24:MI:SS') )
+	</insert>
+	
+	<!-- 주문 상세 추가 -->
+	<insert id="insertOrderDetail" parameterType="com.sgsg.dra.domain.Order">
+		INSERT INTO ORDERDETAIL(ORDERDETAILNUM, ORDERNUM, QTY, PRICE, SALEPRICE, PRODUCTMONEY,
+			SAVEDMONEY, USERDELETE, STOCKNUM)
+		VALUES (ORDERDETAIL_seq.nextval, #{orderNum}, #{qty}, #{price}, #{salePrice}, #{productMoney},
+			#{savedMoney}, 0, #{stockNum})
+	</insert>
+	
+	<!-- 판매 개수만큼 재고 감소 -->
+	<update id="updateProductStock" parameterType="com.sgsg.dra.domain.Order">
+		UPDATE productStock SET totalStock = totalStock - #{qty}
+		WHERE stockNum = #{stockNum}
+	</update>
+	
+	<!-- 사용자의 모든 주문 조회 -->
+	<select id="selectOrder" parameterType="String" resultType="com.sgsg.dra.domain.Order">
+		select ORDERNUM, USERID, ISSUE_ID, ORDERDATE, TOTALMONEY, USEDSAVED,
+			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENT,
+			TEL, ZIP, ADDR1, ADDR2, DESTMEMO
+            from PRODUCTORDER
+            where userId = #{userId};
+	</select>
+	
+	<!-- 재고번호로 상품 찾기, 장바구니에서 구매하는 경우 장바구니 순 정렬 -->
+	<select id="findByStockNum" parameterType="map" resultType="com.sgsg.dra.domain.Product">
+		SELECT s.STOCKNUM, s.PRODUCTNUM, s.TOTALSTOCK, s.DETAILNUM, s.DETAILNUM2,
+		    p.PRODUCTNAME, p.PRICE, p.DISCOUNTRATE, p.SAVEDMONEY, p.DELIVERY, p.OPTIONCOUNT,
+		    p.THUMBNAIL, o1.OPTIONNAME, d1.OPTIONVALUE, d1.OPTIONNUM,
+		    o1.OPTIONNAME AS OPTIONNAME2, d2.OPTIONVALUE AS OPTIONVALUE2, d2.OPTIONNUM AS OPTIONNUM2
+		    <if test="mode == 'cart'">
+			    , to_char(c.reg_date, 'yyyy-mm-dd hh24:mi:ss') reg_date
+			</if>
+		FROM PRODUCTSTOCK s
+		JOIN PRODUCT p on s.PRODUCTNUM = p.PRODUCTNUM
+		LEFT OUTER JOIN OPTIONDETAIL d1 ON s.DETAILNUM = d1.DETAILNUM
+		LEFT OUTER JOIN OPTIONDETAIL d2 on s.DETAILNUM2 = d2.DETAILNUM
+		LEFT OUTER JOIN PRODUCT_OPTION o1 on d1.OPTIONNUM = o1.OPTIONNUM
+		LEFT OUTER JOIN PRODUCT_OPTION o2 on d2.OPTIONNUM = o2.OPTIONNUM
+		<if test="mode == 'cart'">
+			LEFT OUTER JOIN CART_ITEM c ON c.USERID = #{userId}
+		</if>
+		WHERE p.PRODUCTSHOW=1 AND s.STOCKNUM IN 
+			<foreach collection="stockNum" item="num" open="(" separator="," close=")">
+				#{num}
+			</foreach>
+			<if test="mode == 'cart'">
+				ORDER BY c.REG_DATE DESC
+			</if>
+	</select>
+	
+	<!-- 포인트 사용 -->
+	<insert id="insertUserPoint" parameterType="com.sgsg.dra.domain.UserPoint">
+		INSERT INTO POINT_HISTORY(NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, USERID, ORDERNUM)
+			values(POINT_HISTORY_seq.nextval, ${change_points}, #{reason}, sysdate, #{remain_points}, #{userId}, #{orderNum, jdbcType=NUMBER})
+	</insert>
+	
+	<!-- 마지막 포인트 조회 -->
+	<select id="findByUserPoint" parameterType="String" resultType="com.sgsg.dra.domain.UserPoint">
+		SELECT NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, USERID
+		FROM POINT_HISTORY
+		WHERE USERID = #{userId}
+		ORDER BY num DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	
+	<!-- 배송지 추가 -->
+	<insert id="insertDest" parameterType="map">
+		INSERT INTO MEMBER_DELIVERY(DESTINATIONNUM, RECIPIENTNAME, DEFAULTDEST, TEL, ZIP,
+			REG_DATE, MOD_DATE, ADDR1, ADDR2, DESTMEMO, USERID)
+		VALUES (member_delivery_seq.nextval, #{recipientName}, #{defaultDest},
+			#{tel}, #{zip}, sysdate, sysdate, #{addr1}, #{addr2}, #{destMemo}, #{userId})
+	</insert>
+	
+	<!-- 배송지 중 기본 배송지 검색 또는 insert시 같은 주소가 있는지 검색(할 예정) -->
+	<select id="findByDest" parameterType="String" resultType="com.sgsg.dra.domain.Delivery">
+		SELECT DESTINATIONNUM, RECIPIENTNAME, DEFAULTDEST, TEL, ZIP, REG_DATE, MOD_DATE,
+			ADDR1, ADDR2, DESTMEMO, USERID
+		FROM MEMBER_DELIVERY 
+		WHERE USERID = #{userId} AND DEFAULTDEST = 1
+	</select>
+	
+	<!-- 사용자의 모든 배송지 출력 -->
+	<select id="selectAllDest" parameterType="String" resultType="com.sgsg.dra.domain.Delivery">
+		SELECT DESTINATIONNUM, RECIPIENTNAME, DEFAULTDEST, TEL, ZIP, REG_DATE, MOD_DATE,
+			ADDR1, ADDR2, DESTMEMO, USERID, NVL(COUNT(*), 0) count
+			FROM MEMBER_DELIVERY
+			WHERE USERID = #{userId}
+            GROUP BY DESTINATIONNUM, RECIPIENTNAME, DEFAULTDEST, TEL, ZIP, REG_DATE, MOD_DATE,
+			ADDR1, ADDR2, DESTMEMO, USERID;
+	</select>
+	
+	<!-- 사용자가 기본 배송지를 재설정할 경우 다른 배송지를 기본 배송지가 아니게 -->
+	<update id="updateDefaultDest" parameterType="String">
+		UPDATE MEMBER_DELIVERY SET DEFAULTDEST=0 WHERE USERID = #{userId} AND DEFAULTDEST = 1
+	</update>
+	
+	<!-- 배송지 수정 -->
+	<update id="updateDest" parameterType="map">
+		UPDATE MEMBER_DELIVERY SET RECIPIENTNAME=#{recipientName}, DEFAULTDEST=#{defaultDest},
+			TEL=#{tel}, ZIP=#{zip}, REG_DATE=#{reg_date}, MOD_DATE=#{mod_date}, ADDR1=#{addr1},
+			ADDR2=#{addr2}, DESTMEMO=#{destMemo}
+		WHERE DESTINATIONNUM = #{destinationNum}
+	</update>
+	
+	<!-- 배송지 삭제 -->
+	<delete id="deleteDest" parameterType="Integer">
+		DELETE FROM MEMBER_DELIVERY WHERE DESTINATIONNUM = #{destinationNum}
+	</delete>
+	
+	
+
+</mapper>

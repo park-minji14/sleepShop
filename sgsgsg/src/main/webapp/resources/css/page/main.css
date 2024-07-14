@@ -223,13 +223,6 @@
 	font-size: 12px;
 }
 
-.site-footer {
-	background-color: #f7f9fa;
-	padding: 40px 0;
-	font-family: Arial, sans-serif;
-}
-
-
 
 main {
 	padding-top: 0;
@@ -460,3 +453,5 @@ height: 300px
 .product-item{
 	border: none;
 }
+
+

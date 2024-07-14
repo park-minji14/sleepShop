@@ -2,11 +2,14 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sgsg.dra.mapper.CartMapper">
+
+	<!-- 장바구니에 추가 -->
 	<insert id="inserCart" parameterType="com.sgsg.dra.domain.Product">
 		INSERT INTO CART_ITEM(USERID, STOCKNUM, QTY, REG_DATE)
 			VALUES(#{userId}, #{stockNum}, #{qty}, SYSDATE)
 	</insert>
 	
+	<!-- 장바구니 목록 가져오기 -->
 	<select id="selectCartList" parameterType="String" resultType="com.sgsg.dra.domain.Product">
 		SELECT c.QTY, to_char(c.REG_DATE, 'yyyy-mm-dd hh24:mi:ss') AS CART_ITEM_REG_DATE,
 			s.STOCKNUM, s.TOTALSTOCK,
@@ -48,16 +51,24 @@
 		ORDER BY c.REG_DATE DESC
 	</select>
 	
+	<!-- 장바구니 상품 수량 변경 -->
 	<update id="updateQty" parameterType="com.sgsg.dra.domain.Product">
 		UPDATE CART_ITEM SET QTY = #{qty}, REG_DATE=SYSDATE where USERID=#{userId} and STOCKNUM=#{stockNum}
 	</update>
 	
+	<!-- 장바구니 상품 제거 -->
 	<delete id="deleteCart" parameterType="map">
-		delete from cart_item where USERID=#{userId} and STOCKNUM in (
-		<foreach collection="stockNum" item="num" separator=",">
-			#{num}
-		</foreach>
-		)
+		DELETE FROM CART_ITEM WHERE USERID=#{userId}
+		<if test="gubun == 'item' ">
+			AND STOCKNUM = #{stockNum}
+		</if>
+		<if test="gubun == 'list' ">
+			AND STOCKNUM IN
+			<foreach collection="stockNum" item="num"
+				open="(" separator="," close=")">
+				#{num}
+			</foreach>
+		</if>
 	</delete>
 	
 	

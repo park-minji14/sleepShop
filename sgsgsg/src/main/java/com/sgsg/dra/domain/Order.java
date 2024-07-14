@@ -16,7 +16,7 @@ public class Order {
 	private long memberIdx;
 	private String userId;
 
-	private String orderNum;
+	private long orderNum;
 	private long orderDetailNum;
 	private String orderDate;
 	private int usedSaved;
@@ -42,8 +42,8 @@ public class Order {
 	private long stockNum;
 	private int totalStock;	
 
-	private Long detailNum;
-	private Long detailNum2;
+	private long detailNum;
+	private long detailNum2;
 	private String optionValue;
 	private String optionValue2;
 	
@@ -59,7 +59,7 @@ public class Order {
 	private List<Long> detailNums2;
 	private List<String> optionValues;
 	private List<String> optionValues2;
-	private List<Integer> buyQtys;
+	private List<Integer> qtys;
 	private List<Integer> productMoneys;
 	private List<Integer> prices;
 	private List<Integer> salePrices;
@@ -148,10 +148,10 @@ public class Order {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public String getOrderNum() {
+	public long getOrderNum() {
 		return orderNum;
 	}
-	public void setOrderNum(String orderNum) {
+	public void setOrderNum(long orderNum) {
 		this.orderNum = orderNum;
 	}
 	public long getOrderDetailNum() {
@@ -364,11 +364,11 @@ public class Order {
 	public void setOptionValues2(List<String> optionValues2) {
 		this.optionValues2 = optionValues2;
 	}
-	public List<Integer> getBuyQtys() {
-		return buyQtys;
+	public List<Integer> getQtys() {
+		return qtys;
 	}
-	public void setBuyQtys(List<Integer> buyQtys) {
-		this.buyQtys = buyQtys;
+	public void setQtys(List<Integer> qtys) {
+		this.qtys = qtys;
 	}
 	public List<Integer> getProductMoneys() {
 		return productMoneys;

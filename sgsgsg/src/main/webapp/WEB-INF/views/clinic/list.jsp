@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		<div class="container slide-container swiper-container">
 			<div class="swiper-wrapper">
 				<div class="slide-container swiper-slide">
-					<img src="${pageContext.request.contextPath}/uploads/etc/sleep.png"
+					<img src="${pageContext.request.contextPath}/uploads/etc/expert.png"
 						alt="수면클리닉 배너 1"> 
 				</div> 
 				<div class="slide-container swiper-slide">

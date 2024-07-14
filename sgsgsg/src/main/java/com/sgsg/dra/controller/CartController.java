@@ -82,18 +82,21 @@ public class CartController {
 		return model;
 	}
 	
-	@PostMapping("deleteCart")
+	@PostMapping("deleteCartItem")
 	@ResponseBody
-	public Map<String, Object> deleteCart(@RequestParam List<Long> stockNum, HttpSession session) {
+	public Map<String, Object> deleteCartitem(Long stockNum, HttpSession session){
 		String state = "true";
-
+		
 		try {
 			SessionInfo info = (SessionInfo)session.getAttribute("member");
 			
 			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("gubun", "item");
 			map.put("userId", info.getUserId());
 			map.put("stockNum", stockNum);
+			
 			service.deleteCart(map);
+			
 		} catch (Exception e) {
 			state="false";
 		}
@@ -101,5 +104,25 @@ public class CartController {
 		model.put("state", state);
 		
 		return model;
+	}
+	
+	@PostMapping("deleteCart")
+	public String deleteCart(@RequestParam List<Long> stockNum, HttpSession session) {
+		
+
+		try {
+			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("gubun", "list");
+			map.put("userId", info.getUserId());
+			map.put("stockNum", stockNum);
+			
+			service.deleteCart(map);
+			
+		} catch (Exception e) {
+		}
+		
+		return "redirect:/cart/list";
 	}
 }

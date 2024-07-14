@@ -28,11 +28,12 @@ public interface ClinicMapper {
 	public List<ClinicAnswer> listClinicAnswer(Map<String, Object> map);
 	public void deleteClinicAnswer(Map<String, Object> map) throws SQLException;
 	
+	public void insertClinicAnswerComment(ClinicAnswer dto) throws SQLException;
 	public List<ClinicAnswer> listClinicAnswerComment(Map<String, Object> map);
 	public int ClinicAnswerCommentCount(Map<String, Object> map);
 	
-	public void insertClinicAnswerLike(Map<String, Object> map) throws SQLException;
-	public Map<String, Object> ClinicAnswerLikeCount(Map<String, Object> map);
+	
+	ClinicAnswer findLikedAnswer(long question_id) throws SQLException;
 	
 	public List<Clinic> listClinicCategory() throws Exception;
 	
