@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/expert/*")
 public class ExpertController {
 	
-	@GetMapping("list")
-	public String Expertlist() {
+	@GetMapping("profile")
+	public String Expertprofile() {
 		
-		return ".expert.list";
+		return ".expert.profile";
 	}
 	
 }
