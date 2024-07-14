@@ -218,6 +218,10 @@ font-size: 14px;
 }
 
 
+.mb-4{
+	
+}
+
 
 </style>
 </head>
@@ -255,7 +259,7 @@ font-size: 14px;
 			
 			<!-- 최근 본 상품 탭 -->
 			<div class="tab-pane fade show active" id="recent">
-				<h4 class="mb-4">찜한 상품</h4>
+				<h4 class="mb-4" style="text-align: center;   font-size: 50px; margin: 50px;">찜한 상품</h4>
 			
 			
 			
