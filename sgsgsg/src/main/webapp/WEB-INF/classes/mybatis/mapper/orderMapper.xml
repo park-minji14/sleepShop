@@ -48,7 +48,7 @@
             where userId = #{userId};
 	</select>
 	
-	<!-- 재고번호로 상품 찾기 -->
+	<!-- 재고번호로 상품 찾기, 장바구니에서 구매하는 경우 장바구니 순 정렬 -->
 	<select id="findByStockNum" parameterType="map" resultType="com.sgsg.dra.domain.Product">
 		SELECT s.STOCKNUM, s.PRODUCTNUM, s.TOTALSTOCK, s.DETAILNUM, s.DETAILNUM2,
 		    p.PRODUCTNAME, p.PRICE, p.DISCOUNTRATE, p.SAVEDMONEY, p.DELIVERY, p.OPTIONCOUNT,
@@ -64,7 +64,7 @@
 		LEFT OUTER JOIN PRODUCT_OPTION o1 on d1.OPTIONNUM = o1.OPTIONNUM
 		LEFT OUTER JOIN PRODUCT_OPTION o2 on d2.OPTIONNUM = o2.OPTIONNUM
 		<if test="mode == 'cart'">
-			left outer join cart_item c on c.STOCKNUM = s.STOCKNUM
+			LEFT OUTER JOIN CART_ITEM c ON c.STOCKNUM = s.STOCKNUM
 		</if>
 		WHERE p.PRODUCTSHOW=1 AND s.STOCKNUM IN 
 			<foreach collection="stockNum" item="num" open="(" separator="," close=")">
@@ -73,6 +73,21 @@
 			<if test="mode == 'cart'">
 				ORDER BY c.REG_DATE DESC
 			</if>
+	</select>
+	
+	<!-- 포인트 사용 -->
+	<insert id="insertUserPoint" parameterType="map">
+		INSERT INTO POINT_HISTORY(NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, USERID)
+			values(POINT_HISTORY_seq.nextval, ${change_points}, #{reason}, sysdate, #{remain_points}, #{userId});
+	</insert>
+	
+	<!-- 마지막 포인트 조회 -->
+	<select id="findByUserPoint" parameterType="String" resultType="com.sgsg.dra.domain.UserPoint">
+		SELECT NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, USERID
+		FROM POINT_HISTORY
+		WHERE USERID = #{userId}
+		ORDER BY num DESC
+		FETCH FIRST 1 ROWS ONLY
 	</select>
 	
 	<!-- 배송지 추가 -->

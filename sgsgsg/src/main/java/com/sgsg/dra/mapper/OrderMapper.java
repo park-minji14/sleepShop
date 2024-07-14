@@ -7,6 +7,7 @@ import java.util.Map;
 import com.sgsg.dra.domain.Delivery;
 import com.sgsg.dra.domain.Order;
 import com.sgsg.dra.domain.Product;
+import com.sgsg.dra.domain.UserPoint;
 
 public interface OrderMapper {
 	public long productOrderNum() throws SQLException;
@@ -19,4 +20,8 @@ public interface OrderMapper {
 	
 	public Delivery findByDest(String userId) throws SQLException;
 	public List<Delivery> selectAllDest(String userId) throws SQLException;
+	
+	public void insertUserPoint(Map<String, Object> map) throws SQLException;
+	public UserPoint findByUserPoint(String userId) throws SQLException;
+	
 }

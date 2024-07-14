@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.sgsg.dra.domain.Delivery;
 import com.sgsg.dra.domain.Order;
 import com.sgsg.dra.domain.Product;
+import com.sgsg.dra.domain.UserPoint;
 import com.sgsg.dra.mapper.OrderMapper;
 
 @Service
@@ -93,6 +94,16 @@ public class OrderServiceImpl implements OrderService {
 		} catch (Exception e) {
 		}
 		return deliverys;
+	}
+
+	@Override
+	public void insertUserPoint(Map<String, Object> map) throws Exception {
+	}
+
+	@Override
+	public UserPoint findByUserPoint(String userId) throws Exception {
+		
+		return null;
 	}
 
 

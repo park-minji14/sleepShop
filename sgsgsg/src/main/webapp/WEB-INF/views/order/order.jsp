@@ -182,7 +182,7 @@ function sendOk() {
 						<div class="pt-2">${defaultDest.addr1} ${defaultDest.addr2}</div>
 						<div class="pt-2">${defaultDest.tel}</div>
 						<div class="pt-2 w-50">
-							<input type="hidden" name="destinatioNnum" value="${defaultDest.destinatioNnum}">
+							<input type="hidden" name="destinatioNnum" value="${defaultDest.destinationNum}">
 							<input type="hidden" name="recipientName" value="${defaultDest.recipientName}">
 							<input type="hidden" name="tel" value="${defaultDest.tel}">
 							<input type="hidden" name="zip" value="${defaultDest.zip}">
@@ -207,7 +207,7 @@ function sendOk() {
 					<div class="fs-6 fw-semibold border-bottom pb-1">포인트</div>
 					<div class="ps-2 pt-2">
 						<span class="pt-2 fw-semibold">보유 <fmt:formatNumber value="${empty userPoint ? 0 : userPoint.balance}"/>원</span>
-						<span class="pt-2">(${totalSavedMoney} 적립 예정)</span>
+						<span class="pt-2">(<fmt:formatNumber value="${totalSavedMoney}" pattern="#,###" /> 적립 예정)</span>
 					</div>
 					<div class="row ps-2 pt-2">
 						<div class="col-6">

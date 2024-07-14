@@ -65,7 +65,7 @@
 							<div class="option-subBox">
 								<div class="option-qty">
 									<span class="minus_qty bi bi-dash-lg"></span>
-									<button class="chage_qty">${dto.qty}</button>
+									<button type="button" class="chage_qty">${dto.qty}</button>
 									<span class="plus_qty bi bi-plus-lg"></span>
 								</div>
 								<div class="option-price">
@@ -319,7 +319,7 @@ $('.cart-list').on('click', function(e) {
 	let $box = $(e.target).closest('.option-box');
 	let qty = $($box).find('input[name="qty"]').val();
 	let stockNum = $box.find('input[data-stock-num]').attr('data-stock-num');
-	console.log(stockNum)
+
 	if($(e.target).hasClass("chage_qty")){
 		let result = parseInt(window.prompt('변경하실 수량을 입력하세요. ( 1 ~ 99 )')) || undefined;
 		
