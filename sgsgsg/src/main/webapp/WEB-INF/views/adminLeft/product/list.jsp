@@ -122,8 +122,8 @@
                         <td>${dto.discountRate}%</td>
                         <td><fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100.0)}" type="number" maxFractionDigits="2"/></td>
                         <td>${dto.savedMoney}</td>
-                        <td><button class="btn btn-sm btn-primary btnUpdate">수정</button></td>
-                        <td><button class="btn btn-sm btn-danger btnDelete">삭제</button></td>
+                        <td><button type="button" class="btn btn-sm btn-primary" id="btnUpdate" data-productNum="${dto.productNum}" data-parentNum="${dto.parentNum}" onclick="sendProductNum(this)">수정</button></td>
+                        <td><button type="button" class="btn btn-sm btn-danger" id="btnDelete" data-productNum="${dto.productNum}" onclick="sendProductNum(this)">삭제</button></td>
                     </tr>
                     
                		</c:forEach>
@@ -176,6 +176,43 @@ $(function(){
 		
 	});
 });
+
+function sendProductNum(button) {
+	console.log(button.getAttribute('data-parentNum'));
+    const productNum = button.getAttribute('data-productNum');
+    const parentNum = button.getAttribute('data-parentNum');
+    const f = document.createElement('form');
+    const bType = button.id;
+    f.method = 'get';
+    
+    const productNumInput = document.createElement('input');
+    productNumInput.type = 'hidden';
+    productNumInput.name = 'productNum';
+    productNumInput.value = productNum;
+    f.appendChild(productNumInput);
+    
+    const parentNumInput = document.createElement('input');
+    parentNumInput.type = 'hidden';
+    parentNumInput.name = 'parentNum';
+    parentNumInput.value = parentNum;
+    f.appendChild(parentNumInput);
+    
+    const pageNumInput = document.createElement('input');
+    pageNumInput.type = 'hidden';
+    pageNumInput.name = 'pageNo';
+    pageNumInput.value = '${pageNo}';
+    f.appendChild(pageNumInput);
+    
+    document.body.appendChild(f);
+    
+    if(bType === 'btnUpdate'){
+    f.action = '${pageContext.request.contextPath}/adminManagement/productManage/productUpdate';
+    } else if (bType === 'btnDelete') {
+    f.action = '${pageContext.request.contextPath}/adminManagement/productManage/productDelete';
+    }
+    
+    f.submit();
+}
 
 function ajaxFun(url, method, formData, dataType, fn, file = false) {
 	const settings = {

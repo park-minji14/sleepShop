@@ -33,7 +33,7 @@
 
 <!-- 상품 상위 카테고리 목록 -->
 <select id="listCategory" resultType="com.sgsg.dra.admin.domain.ProductManage">
-	SELECT categoryNum, categoryName, displayno, parent_categorynum, categoryimage, use
+	SELECT categoryNum, categoryName, displayno, parent_categorynum as ParentNum, categoryimage, use
 	FROM product_Category
 	WHERE use = 1 AND parent_categorynum IS NULL
 	ORDER BY displayno
@@ -41,7 +41,7 @@
 
 <!-- 상품 하위 카테고리 목록 -->
 <select id="listSubCategory" parameterType="Long" resultType="com.sgsg.dra.admin.domain.ProductManage">
-	SELECT categoryNum, categoryName, displayno, parent_categorynum, categoryimage, use
+	SELECT categoryNum, categoryName, displayno, parent_categorynum as ParentNum, categoryimage, use
 	FROM PRODUCT_CATEGORY
 	WHERE use = 1 AND parent_categorynum = #{parent_categorynum}
 	ORDER BY displayNo
@@ -69,16 +69,60 @@
 	VALUES (#{detailNum}, #{optionValue}, #{optionNum})
 </insert>
 
+<!-- 상품 수정하기 -->
+<update id="updateProduct" parameterType="com.sgsg.dra.admin.domain.ProductManage">
+	UPDATE product SET categoryNum = #{categoryNum}, productName = #{productName},
+		classify = #{classify}, price = #{price}, discountRate = #{discountRate}, savedMoney = #{savedMoney},
+		optionCount = #{optionCount}, delivery = #{delivery}, content = #{content}, 
+		thumbnail = #{thumbnail}, productShow = #{productShow}, update_date = SYSDATE, search_Word = #{searchWords}
+	WHERE productNum = #{productNum}
+</update>
+	
+<!-- 상품 옵션 수정하기 -->
+<update id="updateProductOption" parameterType="com.sgsg.dra.admin.domain.ProductManage">
+	UPDATE PRODUCT_OPTION SET optionName = #{optionName}
+	WHERE optionNum = #{optionNum}
+</update>
+<!-- 상품 옵션 값 수정하기 -->
+<update id="updateOptionDetail" parameterType="com.sgsg.dra.admin.domain.ProductManage">
+	UPDATE OPTIONDETAIL SET optionValue = #{optionValue}
+	WHERE detailNum = #{detailNum}
+</update>
+
 <!-- 상품 리스트 끌고오기(우선은 그냥 다 갖고오게끔)-->
 <!-- 검색어 같은 것 구현할 예정 -->
 <select id="listProduct" parameterType="map"
 	resultType="com.sgsg.dra.admin.domain.ProductManage">
-	Select productNum, p.categoryNum, pc.categoryName, productName, classify, price, discountRate, savedMoney, 
+	Select productNum, pc.Parent_categoryNum as ParentNum, p.categoryNum, pc.categoryName, productName, classify, price, discountRate, savedMoney, 
     	delivery, optionCount, content, thumbnail, productShow, To_Char(reg_date, 'YYYY-MM-DD') reg_date, To_Char(update_date, 'YYYY-MM-DD') update_date, search_word
 	From product p
 	Join PRODUCT_CATEGORY pc On p.categoryNum = pc.categoryNum
 	Order By p.productNum DESC
 	OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+</select>
+
+<select id="listProductFile" parameterType="Long" resultType="com.sgsg.dra.admin.domain.ProductManage">
+	SELECT fileNum, productNum, img_name As filename
+	FROM PRODUCT_IMAGE
+	WHERE productNum = #{productNum}
+</select>
+
+<!-- 옵션1, 옵션2 -->
+<select id="listProductOption" parameterType="Long" 
+	resultType="com.sgsg.dra.admin.domain.ProductManage">
+	SELECT optionNum, optionName, parentNum, productNum
+	FROM product_Option
+	WHERE productNum = #{productNum}
+	ORDER BY parentNum NULLS FIRST, parentNum
+</select>
+
+<!-- 옵션 상세 정보 -->	
+<select id="listOptionDetail" parameterType="Long" 
+	resultType="com.sgsg.dra.admin.domain.ProductManage">
+	SELECT detailNum, optionNum, optionValue
+	FROM OPTIONDETAIL
+	WHERE optionNum = #{optionNum}
+	ORDER BY detailNum
 </select>
 
 <!-- 전체 상품의 개수(TODO: 일반/특가 에 따라 갖고오는거 다르게 구현할 예정)-->
@@ -87,6 +131,36 @@
 	From product p
 </select>
 
+<!-- 상품 상세 정보 -->
+<!-- 재고등록 이후에 구현해서 LEFT OUTER JOIN 해놔야함 -->
+<select id="findById" parameterType="Long" resultType="com.sgsg.dra.admin.domain.ProductManage">
+	SELECT p.productNum, p.categoryNum, pc.categoryName, p.productName, p.classify, p.price, p.discountRate, 
+		p.savedMoney, p.delivery, p.content, p.optionCount, p.search_Word As searchWords,
+		p.thumbnail, p.productShow, p.reg_date, p.update_date
+	FROM product p
+	JOIN PRODUCT_CATEGORY pc ON p.categoryNum = pc.categoryNum
+	WHERE p.productNum = #{productNum}
+</select>
+
+<delete id="deleteProduct" parameterType="Long">
+	DELETE FROM product WHERE productNum = #{productNum}
+</delete>
+
+<delete id="deleteProductFile" parameterType="Long">
+	DELETE FROM PRODUCT_IMAGE WHERE fileNum = #{fileNum}
+</delete>
+
+<delete id="deleteProductOption" parameterType="Long">
+	DELETE FROM product_Option WHERE optionNum = #{optionNum}
+</delete>
+
+<delete id="deleteOptionDetail" parameterType="Long">
+	DELETE FROM OPTIONDETAIL WHERE detailNum = #{detailNum}
+</delete>
+
+<delete id="deleteOptionDetail2" parameterType="Long">
+	DELETE FROM OPTIONDETAIL WHERE optionNum = #{optionNum}
+</delete>
 
 
 </mapper>

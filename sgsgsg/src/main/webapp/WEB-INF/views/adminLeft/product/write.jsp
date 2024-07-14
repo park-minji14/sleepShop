@@ -240,7 +240,7 @@ $(function(){
 });
 </script>
 
-<c:if test="${mode=='update'}">
+<c:if test="${mode=='productUpdate'}">
 	<script type="text/javascript">
 	$(function(){
 		let count = ${dto.optionCount};
@@ -262,7 +262,7 @@ $(function(){
 		let mode = '${mode}';
 		let savedCount = '${dto.optionCount}';
 		let totalStock = '${dto.totalStock}';
-		if(mode === 'update' && totalStock !== '0') {
+		if(mode === 'productUpdate' && totalStock !== '0') {
 			alert('옵션 변경이 불가능 합니다.');
 			$(this).val(savedCount);
 			return false;
@@ -306,7 +306,7 @@ $(function(){
 		
 		// 수정에서 등록된 자료 삭제
 		let mode = "${mode}";
-		if(mode === "update" && $minus.parent(".input-group").find("input[name=detailNums]").length === 1) {
+		if(mode === "productUpdate" && $minus.parent(".input-group").find("input[name=detailNums]").length === 1) {
 			// 저장된 옵션값중 최소 하나는 삭제되지 않도록 설정
 			if($el.find(".input-group input[name=detailNums]").length <= 1) {
 				alert("옵션값은 최소 하나이상 필요합니다.");	
@@ -318,7 +318,7 @@ $(function(){
 			}
 			
 			let detailNum = $minus.parent(".input-group").find("input[name=detailNums]").val();
-			let url = "${pageContext.request.contextPath}/admin/product/deleteOptionDetail";
+			let url = "${pageContext.request.contextPath}/adminManagement/productManage/deleteOptionDetail";
 			$.post(url, {detailNum:detailNum}, function(data){
 				if(data.state === "true") {
 					$minus.closest(".input-group").remove();
@@ -360,7 +360,7 @@ $(function(){
 		
 		// 수정에서 등록된 자료 삭제
 		let mode = "${mode}";
-		if(mode === "update" && $minus.parent(".input-group").find("input[name=detailNums2]").length === 1) {
+		if(mode === "productUpdate" && $minus.parent(".input-group").find("input[name=detailNums2]").length === 1) {
 			// 저장된 옵션값중 최소 하나는 삭제되지 않도록 설정
 			if($el.find(".input-group input[name=detailNums2]").length <= 1) {
 				alert("옵션값은 최소 하나이상 필요합니다.");	
@@ -372,7 +372,7 @@ $(function(){
 			}
 			
 			let detailNum = $minus.parent(".input-group").find("input[name=detailNums2]").val();
-			let url = "${pageContext.request.contextPath}/admin/product/deleteOptionDetail";
+			let url = "${pageContext.request.contextPath}/adminManagement/productManage/deleteOptionDetail";
 			$.post(url, {detailNum:detailNum}, function(data){
 				if(data.state === "true") {
 					$minus.closest(".input-group").remove();
@@ -488,7 +488,7 @@ $(function(){
 						<td>
 							<div class="mb-2">
 								<input type="text" name="optionName" class="form-control" style="width: 250px;" placeholder="옵션명" value="${dto.optionName}">
-								<c:if test="${mode=='update'}">
+								<c:if test="${mode=='productUpdate'}">
 									<input type="hidden" name="optionNum" value="${empty dto.optionNum ? 0 : dto.optionNum}">
 								</c:if>
 							</div>
@@ -520,7 +520,7 @@ $(function(){
 						<td>
 							<div class="mb-2">
 								<input type="text" name="optionName2" style="width: 250px;" class="form-control" placeholder="옵션명" value="${dto.optionName2}">
-								<c:if test="${mode=='update'}">
+								<c:if test="${mode=='productUpdate'}">
 									<input type="hidden" name="optionNum2" value="${empty dto.optionNum2 ? 0 : dto.optionNum2}">
 								</c:if>
 							</div>
@@ -605,20 +605,19 @@ $(function(){
 				<table class="table table-borderless">
 					<tr>
 						<td class="text-center">
-							<c:url var="url" value="/admin/product/main">
+							<c:url var="url" value="/adminManagement/productManage/list">
 								<c:if test="${not empty page}">
 									<c:param name="page" value="${page}"/>
 								</c:if>
 							</c:url>
 							
-							<button type="button" class="btn btn-dark" onclick="submitContents(this.form);">${mode=="update"?"수정완료":"등록완료"}</button>
+							<button type="button" class="btn btn-dark" onclick="submitContents(this.form);">${mode=="productUpdate"?"수정완료":"등록완료"}</button>
 							<button type="reset" class="btn btn-light">다시입력</button>
-							<button type="button" class="btn btn-light" onclick="location.href='${url}';">${mode=="update"?"수정취소":"등록취소"}</button>
-							<c:if test="${mode=='update'}">
+							<button type="button" class="btn btn-light" onclick="location.href='${url}';">${mode=="productUpdate"?"수정취소":"등록취소"}</button>
+							<c:if test="${mode=='productUpdate'}">
 								<input type="hidden" name="productNum" value="${dto.productNum}">
 								<input type="hidden" name="thumbnail" value="${dto.thumbnail}">
 								<input type="hidden" name="page" value="${page}">
-								
 								
 								<input type="hidden" name="prevOptionNum" value="${empty dto.optionNum ? 0 : dto.optionNum}">
 								<input type="hidden" name="prevOptionNum2" value="${empty dto.optionNum2 ? 0 : dto.optionNum2}">
@@ -685,7 +684,7 @@ $(function(){
 		let $img = $(this);
 		let fileNum = $img.attr("data-fileNum");
 		let filename = $img.attr("data-filename");
-		let url="${pageContext.request.contextPath}/admin/product/deleteFile";
+		let url="${pageContext.request.contextPath}/adminManagement/productManage/deleteFile";
 		$.post(url, {fileNum:fileNum, filename:filename}, function(data){
 			$img.remove();
 		}, "json");
@@ -758,6 +757,39 @@ $(function(){
 </script>
 
 <script type="text/javascript">
+$(document).ready(function() {
+    // 서버에서 전달받은 검색어 데이터를 자바스크립트 변수로 저장
+    const searchWord = "${dto.searchWords}";
+
+    if (searchWord) {
+        const searchWords = searchWord.split(',');
+        const searchWordList = document.getElementById('searchWordList');
+        const searchWordsInput = document.getElementById('searchWordsInput');
+
+        // 각 검색어를 리스트에 추가
+        searchWords.forEach(word => {
+            const li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+            li.textContent = word;
+
+            const removeButton = document.createElement('button');
+            removeButton.className = 'btn btn-danger btn-sm';
+            removeButton.textContent = '삭제';
+            removeButton.onclick = function() {
+                searchWordList.removeChild(li);
+                collectSearchWords(); // 검색어를 다시 수집
+            };
+
+            li.appendChild(removeButton);
+            searchWordList.appendChild(li);
+        });
+
+        // 히든 필드에 검색어 설정
+        searchWordsInput.value = searchWords.join(',');
+    }
+});
+
+// 검색어를 추가하는 함수
 function addSearchWord(event) {
     if (event.key === ',' || event.key === 'Enter') {
         event.preventDefault();
@@ -778,15 +810,18 @@ function addSearchWord(event) {
         removeButton.textContent = '삭제';
         removeButton.onclick = function() {
             searchWordList.removeChild(li);
+            collectSearchWords(); // 검색어를 다시 수집
         };
 
         li.appendChild(removeButton);
         searchWordList.appendChild(li);
 
         searchWordInput.value = '';
+        collectSearchWords(); // 검색어를 다시 수집
     }
 }
 
+// 검색어를 수집하는 함수
 function collectSearchWords() {
     const searchWordList = document.getElementById('searchWordList');
     const searchWords = [];
@@ -794,10 +829,7 @@ function collectSearchWords() {
         searchWords.push(item.textContent.replace('삭제', '').trim());
     });
     const searchWordsInput = document.getElementById('searchWordsInput');
-    if (searchWordsInput) {
-        searchWordsInput.value = searchWords.join(',').trim();
-    } else {
-    }
+    searchWordsInput.value = searchWords.join(',').trim();
 }
 
 </script>
@@ -820,9 +852,8 @@ function submitContents(elClickedObj) {
 		if(! check()) {
 			return;
 		}
-		
 		 //검색어 합치기
-		 collectSearchWords();
+		collectSearchWords();
 		elClickedObj.submit();
 		
 	} catch(e) {

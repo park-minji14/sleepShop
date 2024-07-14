@@ -7,6 +7,10 @@ import com.sgsg.dra.admin.domain.ProductManage;
 
 public interface ProductManageService {
 	public void insertProduct(ProductManage dto, String pathname) throws Exception;
+	public void updateProduct(ProductManage dto, String pathname) throws Exception;
+	public void deleteProduct(long productNum, String pathname) throws Exception;
+	public void deleteProductFile(long fileNum, String pathname) throws Exception;
+	public void deleteOptionDetail(long detailNum) throws Exception;
 	
 	public ProductManage findByCategory(long categoryNum);
 	public List<ProductManage> listCategory();
@@ -14,4 +18,12 @@ public interface ProductManageService {
 	
 	public int dataCount(Map<String, Object> map);
 	public List<ProductManage> listProduct(Map<String, Object> map);
+	
+	public ProductManage findById(long productNum);
+	
+	public List<ProductManage> listProductFile(long productNum);
+	public List<ProductManage> listProductOption(long productNum);
+	public List<ProductManage> listOptionDetail(long optionNum);
+	
+	
 }
