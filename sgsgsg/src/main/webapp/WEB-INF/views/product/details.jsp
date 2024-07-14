@@ -279,16 +279,44 @@
                 </div>
 
                 <!-- 상품문의 탭 내용 -->
-                <div class="tab-pane fade mb-4" id="qna" role="tabpanel" aria-labelledby="qna-tab">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h3>상품 문의</h3>
-                        <button id="showQnaForm" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#qnaModal">문의하기</button>
-                    </div>
-                    <div id="qnaList" class="list-question">
-
-                    </div>
-                </div>
-
+				<div class="tab-pane fade mb-4" id="qna" role="tabpanel" aria-labelledby="qna-tab">
+				    <div class="container">
+				        <div class="row mb-4">
+				            <div class="col-12">
+				                <h3 class="border-bottom pb-2">상품 문의</h3>
+				            </div>
+				        </div>
+				        <div class="row mb-3">
+				            <div class="col-12">
+				                <div class="alert alert-info" role="alert">
+				                    <h5 class="alert-heading">
+				                        <i class="bi bi-info-circle me-2"></i>
+				                        문의 안내사항
+				                    </h5>
+				                    <ul class="mb-0">
+				                        <li>상품과 관련 없는 문의나 욕설, 비방 내용은 답변이 거부될 수 있습니다.</li>
+				                        <li>개인정보가 포함된 문의는 비밀글로 작성해 주세요.</li>
+				                        <li>답변은 영업일 기준 2~3일 내에 등록됩니다.</li>
+				                    </ul>
+				                </div>
+				            </div>
+				        </div>
+				        <div class="row mb-4" style="padding: 0;">
+				            <div class="col-12 text-end">
+				                <button id="showQnaForm" class="btn btn-outline-dark rounded-pill" data-bs-toggle="modal" data-bs-target="#qnaModal">
+				                    <i class="bi bi-pencil-square me-2"></i>문의하기
+				                </button>
+				            </div>
+				        </div>
+				        <div class="row">
+				            <div class="col-12">
+				                <div id="qnaList" class="list-question border p-3 rounded">
+				                    <!-- 상품문의 리스트 -->
+				                </div>
+				            </div>
+				        </div>
+				    </div>
+				</div>
                 <!-- 배송/환불 탭 내용 -->
                 <div class="tab-pane fade mb-4" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
                     <h2>배송/교환/환불</h2>
