@@ -205,9 +205,11 @@ document.addEventListener('DOMContentLoaded', function () {
 		<div class="container slide-container swiper-container">
 			<div class="swiper-wrapper">
 				<div class="slide-container swiper-slide">
+					<a href="${pageContext.request.contextPath}/expertapply/apply">
 					<img src="${pageContext.request.contextPath}/uploads/etc/expert.png"
 						alt="수면클리닉 배너 1"> 
-				</div> 
+					</a>
+				</div>  
 				<div class="slide-container swiper-slide">
 					<img src="${pageContext.request.contextPath}/uploads/etc/doctor.png"
 						alt="수면클리닉 배너 2">
