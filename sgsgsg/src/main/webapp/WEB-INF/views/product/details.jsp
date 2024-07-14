@@ -6,7 +6,59 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/page/details.css"
 	type="text/css">
-	
+
+<style>
+.pagination {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50px;
+    padding: 5px;
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.pagination .page-item:first-child .page-link,
+.pagination .page-item:last-child .page-link {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin: 0 5px;
+    background-color: #f8f9fa;
+    border: none;
+    color: #6c757d;
+}
+
+.pagination .page-item:not(:first-child):not(:last-child) .page-link {
+    border: none;
+    background-color: transparent;
+    color: #6c757d;
+    font-weight: bold;
+    padding: 0.5rem 0.8rem;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination .page-link:focus {
+    box-shadow: none;
+}
+
+.pagination .page-link:hover {
+    background-color: #e9ecef;
+}
+</style>
   
   <div class="container-fluid">
     <div class="container my-5">
@@ -22,16 +74,16 @@
 			  </c:forEach>
 			</div>
 			
-			<div class="main-image-container">
-			  <c:choose>
-			    <c:when test="${not empty listFile}">
-			      <img src="${pageContext.request.contextPath}/uploads/product/${listFile[0].img_name}"
-			           class="img-fluid rounded main-image" id="mainImage" alt="메인 상품 이미지">
-			    </c:when>
-			  </c:choose>
-			</div>
-          </div>
-        </div>
+		<div class="main-image-container">
+		  <c:choose>
+		    <c:when test="${not empty listFile}">
+		      <img src="${pageContext.request.contextPath}/uploads/product/${listFile[0].img_name}"
+		           class="img-fluid rounded main-image" id="mainImage" alt="메인 상품 이미지">
+		    </c:when>
+		  </c:choose>
+		</div>
+         </div>
+       </div>
         
            
         <div class="col-md-6">
@@ -232,29 +284,8 @@
                         <h3>상품 문의</h3>
                         <button id="showQnaForm" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#qnaModal">문의하기</button>
                     </div>
-                    <div id="qnaList">
-                        <!-- 기존 문의 목록 -->
-                        <div class="qna-item">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <strong>장남균</strong>
-                                <span class="badge bg-success">답변완료</span>
-                            </div>
-                            <p class="mb-1">상품 사이즈가 어떻게 되나요?</p>
-                            <small class="text-muted">2024-07-10</small>
-                            <div class="qna-answer mt-2">
-                                <strong>관리자</strong>
-                                <p class="mb-1">안녕하세요. 상품 사이즈는 S, M, L로 구성되어 있습니다.</p>
-                                <small class="text-muted">2024-07-11</small>
-                            </div>
-                        </div>
-                        <div class="qna-item">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <strong>김영진</strong>
-                                <span class="badge bg-warning text-dark">답변대기</span>
-                            </div>
-                            <p class="mb-1">배송은 얼마나 걸리나요?</p>
-                            <small class="text-muted">2024-07-12</small>
-                        </div>
+                    <div id="qnaList" class="list-question">
+
                     </div>
                 </div>
 
@@ -383,15 +414,16 @@
             <label for="qnaContent" class="form-label">문의 내용</label>
             <textarea class="form-control" id="qnaContent" name="question" rows="5" required placeholder=""></textarea>
             <div id="qnaContentGuide" class="form-text">
- 				 문의 내용을 자세히 작성해 주세요. 답변은 확인 후 순차적으로 처리되며, 
- 				 마이페이지에서도 확인 가능합니다. 개인정보는 문의 처리 후 안전하게 폐기됩니다.
-			</div>
+              문의 내용을 자세히 작성해 주세요. 답변은 확인 후 순차적으로 처리되며, 
+              마이페이지에서도 확인 가능합니다. 개인정보는 문의 처리 후 안전하게 폐기됩니다.
+            </div>
           </div>
           <div class="mb-3">
             <label for="qnaFile" class="form-label">파일 첨부</label>
-            <input type="file" class="form-control" id="qnaFile" name="file" accept="image/*">
-            <div class="form-text">이미지 파일만 첨부 가능합니다. (최대 5MB)</div>
+            <input type="file" class="form-control" id="qnaFile" name="file" accept="image/*" multiple>
+            <div class="form-text">이미지 파일만 첨부 가능합니다. (최대 5개, 각 5MB 이하)</div>
           </div>
+          <div id="fileList" class="mt-2"></div>
           <div class="mb-3 form-check">
             <input type="checkbox" class="form-check-input" id="qnaPrivate" name="isPrivate">
             <label class="form-check-label" for="qnaPrivate">비밀글로 문의하기</label>
@@ -405,8 +437,6 @@
     </div>
   </div>
 </div>
-
-
     <!-- 스크롤 시 나타나는 옵션 선택 영역 -->
 <div id="scrollOptionArea" class="scroll-option-area">
   <h6 class="mb-2" id="scrollProductName">${dto.productName}</h6>
@@ -556,8 +586,8 @@ function ajaxFun(url, method, query, dataType, fn) {
         url: url,
         data: query,
         dataType: dataType,
-        processData: false,  // FormData를 사용할 때 필요
-        contentType: false,  // FormData를 사용할 때 필요
+        processData: false, 
+        contentType: false, 
         success: function(data) {
             console.log("Ajax 성공:", data);
             fn(data);
@@ -749,7 +779,7 @@ $(document).ready(function () {
         
     } 
  
-//TODO : 장바구니 
+//장바구니 
 $(function() {
     $('#addToCart, #scrollAddToCart').click(function() {
         console.log('장바구니 버튼 클릭됨');
@@ -945,104 +975,208 @@ $(function() {
     
 
 
-    function updateGuideText() {
-        var selectedType = $('input[name="qnaType"]:checked').val();
-        console.log('선택된 유형:', selectedType);
-        var guideText = '';
-        switch(selectedType) {
-            case '상품':
-                guideText = '상품에 대해 궁금하신 내용을 자세히 적어주세요.';
-                break;
-            case '배송':
-                guideText = '배송 관련 문의 사항을 적어주세요.';
-                break;
-            case '반품/교환':
-                guideText = '반품 또는 교환 사유를 자세히 적어주세요.';
-                break;
-            case '환불':
-                guideText = '환불 사유와 원하시는 처리 방법을 적어주세요.';
-                break;
-            case '기타':
-                guideText = '문의 사항을 자세히 적어주세요.';
-                break;
-            default:
-                guideText = '문의 유형을 선택해주세요.';
-        }
-        console.log('설정할 가이드 텍스트:', guideText);
-        
-        var $textarea = $('#qnaContent');
-        if ($textarea.length) {
-            $textarea.attr('placeholder', guideText);
-            console.log('가이드 텍스트 설정 완료');
-        } else {
-            console.error('#qnaContent 요소를 찾을 수 없습니다.');
+function updateGuideText() {
+    var selectedType = $('input[name="qnaType"]:checked').val();
+    console.log('선택된 유형:', selectedType);
+    var guideText = '';
+    switch(selectedType) {
+        case '상품':
+            guideText = '상품에 대해 궁금하신 내용을 자세히 적어주세요.';
+            break;
+        case '배송':
+            guideText = '배송 관련 문의 사항을 적어주세요.';
+            break;
+        case '반품/교환':
+            guideText = '반품 또는 교환 사유를 자세히 적어주세요.';
+            break;
+        case '환불':
+            guideText = '환불 사유와 원하시는 처리 방법을 적어주세요.';
+            break;
+        case '기타':
+            guideText = '문의 사항을 자세히 적어주세요.';
+            break;
+        default:
+            guideText = '문의 유형을 선택해주세요.';
+    }
+    console.log('설정할 가이드 텍스트:', guideText);
+    
+    var $textarea = $('#qnaContent');
+    if ($textarea.length) {
+        $textarea.attr('placeholder', guideText);
+        console.log('가이드 텍스트 설정 완료');
+    } else {
+        console.error('#qnaContent 요소를 찾을 수 없습니다.');
+    }
+}
+
+// 문의 유형 변경 시 이벤트 핸들러
+$(document).on('change', 'input[name="qnaType"]', function() {
+    console.log('문의 유형 변경:', $(this).val());
+    updateGuideText();
+});
+
+   // 모달이 열릴 때 초기 가이드 텍스트 설정
+   $('#qnaModal').on('shown.bs.modal', function () {
+       updateGuideText();
+   });
+
+// 문의하기 버튼 클릭 시
+   $('#showQnaForm').click(function(){
+       $("#qnaModal").modal("show");
+   });
+
+   // 파일 선택 시
+   $('#qnaFile').on('change', function() {
+       var files = this.files;
+       updateFileList(files);
+   });
+
+// 파일 목록 업데이트 함수
+function updateFileList(files) {
+    $('#fileList').empty();
+    if (files.length > 5) {
+        alert('최대 5개의 파일만 선택할 수 있습니다.');
+        $('#qnaFile').val('');
+        return;
+    }
+    for (var i = 0; i < files.length; i++) {
+        $('#fileList').append('<p>' + files[i].name + ' <button type="button" class="btn btn-sm btn-danger remove-file" data-index="' + i + '">삭제</button></p>');
+    }
+}
+
+// 파일 삭제 버튼 클릭 시
+$(document).on('click', '.remove-file', function() {
+    var index = $(this).data('index');
+    var files = $('#qnaFile')[0].files;
+    var newFileList = new DataTransfer();
+    for (var i = 0; i < files.length; i++) {
+        if (i !== index) {
+            newFileList.items.add(files[i]);
         }
     }
+    $('#qnaFile')[0].files = newFileList.files;
+    updateFileList($('#qnaFile')[0].files);
+});
 
-    // 문의 유형 변경 시 이벤트 핸들러
-    $(document).on('change', 'input[name="qnaType"]', function() {
-        console.log('문의 유형 변경:', $(this).val());
-        updateGuideText();
-    });
 
-    // 모달이 열릴 때 초기 가이드 텍스트 설정
-    $('#qnaModal').on('shown.bs.modal', function () {
-        updateGuideText();
-    });
-
-  // 문의하기 버튼 클릭 시
-    $('#showQnaForm').click(function(){
-        $("#qnaModal").modal("show");
-    });
-
- // 문의하기 제출 버튼 클릭 시
-    $('#submitQna').click(function() {
-        console.log("문의하기 제출 버튼 클릭");
-        const f = document.getElementById('qnaForm');
-        let content = $('#qnaContent').val().trim();
-        
-        if (!content) {
-            alert("문의 내용을 입력하세요.");
-            $('#qnaContent').focus();
-            return false;
+// 문의하기 제출 버튼 클릭 시
+$('#submitQna').click(function() {
+    console.log("문의하기 제출 버튼 클릭");
+    const f = document.getElementById('qnaForm');
+    let content = $('#qnaContent').val().trim();
+    
+    if (!content) {
+        alert("문의 내용을 입력하세요.");
+        $('#qnaContent').focus();
+        return false;
+    }
+    
+    let files = $('#qnaFile')[0].files;
+    if (files.length > 5) {
+        alert("이미지는 최대 5개까지 가능합니다.");
+        return false;
+    }
+    
+    let productNum = $('#productNum').val();
+    if (!productNum) {
+        console.error("상품 번호가 없습니다.");
+        alert("상품 정보를 불러올 수 없습니다. 페이지를 새로고침 후 다시 시도해주세요.");
+        return false;
+    }
+    
+    let formData = new FormData(f);
+    
+    // 여러 파일 추가
+    for (let i = 0; i < files.length; i++) {
+        formData.append('file', files[i]);
+        console.log('File ' + i + ':', files[i].name);
+    }
+    
+    formData.append('secret', $('#qnaPrivate').is(':checked') ? 0 : 1);
+    formData.append('inquiryType', $('input[name=qnaType]:checked').val());
+    formData.append('productNum', productNum);
+    
+    // FormData 내용 로깅 (디버깅용)
+    for (let pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+    }
+    
+    let url = "${pageContext.request.contextPath}/question/write";
+    console.log("요청 URL:", url);
+    
+    ajaxFun(url, "POST", formData, "json", function(data) {
+        console.log("서버 응답:", data);
+        if(data.state === "true") {
+            f.reset();
+            $("#qnaModal").modal("hide");
+            
+            alert('문의가 성공적으로 등록되었습니다.');
+            // 문의 목록 새로고침 (필요시 구현)
+            // listQuestion(1);
+        } else {
+            alert('문의 등록에 실패했습니다. 다시 시도해주세요.');
         }
-        if (f.qnaFile.files.length > 5) {
-            alert("이미지는 최대 5개까지 가능합니다.");
-            return false;
-        }
-        
-        let productNum = $('#productNum').val();
-        if (!productNum) {
-            console.error("상품 번호가 없습니다.");
-            alert("상품 정보를 불러올 수 없습니다. 페이지를 새로고침 후 다시 시도해주세요.");
-            return false;
-        }
-
-        let formData = new FormData(f);
-        formData.append('isPrivate', $('#qnaPrivate').is(':checked'));
-        formData.append('inquiryType', $('input[name=qnaType]:checked').val());
-        formData.append('productNum', productNum);
-        
-        
-        console.log('Question content:', formData.get('question'));
-        console.log('전송 전 question 내용:', formData.get('question'))
-        
-        let url = "${pageContext.request.contextPath}/question/write";
-        console.log("요청 URL:", url);
-        
-        ajaxFun(url, "POST", formData, "json", function(data) {
-            console.log("서버 응답:", data);
-            if(data.state === "true") {
-                f.reset();
-                $("#qnaModal").modal("hide");
-                
-                alert('문의가 성공적으로 등록되었습니다.');
-                // 문의 목록 새로고침 (필요시 구현)
-                // listQuestion(1);
-            } else {
-                alert('문의 등록에 실패했습니다. 다시 시도해주세요.');
-            }
-        });
     });
 });
+    
+    listQuestion(1);
+});
+
+//상품 리스트 출력
+function listQuestion(page) {
+    let productNum = '${dto.productNum}';
+    let url = '${pageContext.request.contextPath}/question/list';
+    let query = 'productNum=' + productNum + '&pageNo=' + page;
+
+    const fn = function(data) {
+        printQuestion(data);
+    };
+    ajaxFun(url, 'get', query, 'json', fn);
+}
+
+    
+//상품 문의 
+function printQuestion(data) {
+    console.log('Data to be processed:', data);
+    let dataCount = data.dataCount;
+    $('.title-qnaCount').html('(' + dataCount + ')');
+    let out = '';
+    if (Array.isArray(data.list)) {
+        for (let item of data.list) {
+        	console.log('Item:', item); 
+            let userName = item.userName || '';
+            let question = item.question || '';
+            let questionDate = item.question_Date || '';
+            let answer = item.answer || '';
+            let answerDate = item.answer_Date || '';
+            let answerState = answer ? 
+                '<span class="badge bg-success">답변완료</span>' : 
+                '<span class="badge bg-warning text-dark">답변대기</span>';
+
+                out += '<div class="qna-item">';
+                out += '    <div class="d-flex justify-content-between align-items-center mb-2">';
+                out += '        <strong>' + userName + '</strong>';
+                out += '        ' + answerState;
+                out += '    </div>';
+                out += '    <p class="mb-1">' + question + '</p>';
+                out += '    <small class="text-muted">작성일: ' + questionDate + '</small>';
+                
+                if (answer) {
+                    out += '    <div class="qna-answer mt-2">';
+                    out += '        <strong>장남균</strong>';
+                    out += '        <p class="mb-1">' + answer + '</p>';
+                    out += '        <small class="text-muted">답변일: ' + answerDate + '</small>';
+                    out += '    </div>';
+                }      
+            out += '</div>';
+        }
+    } else {
+        console.error('data.list is not an array:', data.list);
+    }
+    if (dataCount > 0) {
+        out += '<div class="page-navigation">' + data.paging + '</div>';
+    }
+    $('.list-question').html(out);
+}
+
 </script>

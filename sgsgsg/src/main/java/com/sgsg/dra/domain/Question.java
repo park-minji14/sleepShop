@@ -13,8 +13,9 @@ public class Question {
     private String answer; 
     private int showQuestion;
     private int locked; 
-    private String questionDate; 
-    private String answerDate; 
+    
+    private String question_Date; 
+    private String answer_Date; 
     private String userId; 
     private String answerId; 
     private String inquiryType; 
@@ -24,8 +25,16 @@ public class Question {
     private List<MultipartFile> selectFile;
     private String[] listFilename;
     private String productName;
+	private long memberIdx;
+	private String userName;
     
-    
+    public long getMemberIdx() {
+		return memberIdx;
+	}
+
+	public void setMemberIdx(long memberIdx) {
+		this.memberIdx = memberIdx;
+	}
 	public long getFileNum() {
 		return fileNum;
 	}
@@ -100,18 +109,6 @@ public class Question {
 	public void setLocked(int locked) {
 		this.locked = locked;
 	}
-	public String getQuestionDate() {
-		return questionDate;
-	}
-	public void setQuestionDate(String questionDate) {
-		this.questionDate = questionDate;
-	}
-	public String getAnswerDate() {
-		return answerDate;
-	}
-	public void setAnswerDate(String answerDate) {
-		this.answerDate = answerDate;
-	}
 	public String getUserId() {
 		return userId;
 	}
@@ -129,5 +126,29 @@ public class Question {
 	}
 	public void setInquiryType(String inquiryType) {
 		this.inquiryType = inquiryType;
+	}
+
+	public String getQuestion_Date() {
+		return question_Date;
+	}
+
+	public void setQuestion_Date(String question_Date) {
+		this.question_Date = question_Date;
+	}
+
+	public String getAnswer_Date() {
+		return answer_Date;
+	}
+
+	public void setAnswer_Date(String answer_Date) {
+		this.answer_Date = answer_Date;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 }

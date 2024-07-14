@@ -2,18 +2,24 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sgsg.dra.mapper.QuestionMapper">
-<insert id="insertQuestion" parameterType="com.sgsg.dra.domain.Question">
-INSERT INTO PRODUCT_INQUIRY
- (INQUIRYNUM, PRODUCTNUM, USERID, QUESTION, QUESTION_DATE, INQUIRY_TYPE)
-VALUES (PRODUCT_INQUIRY_SEQ.NEXTVAL, 
-        #{productNum},
-        #{userId},
-        #{question},
-        SYSDATE, 
-        #{inquiryType}
-)
+<!-- 1.상품문의 등록 -->
+<insert id="insertQuestion" parameterType="com.sgsg.dra.domain.Question" useGeneratedKeys="true" keyProperty="inquiryNum">
+    INSERT INTO PRODUCT_INQUIRY
+    (INQUIRYNUM, PRODUCTNUM, USERID, QUESTION, QUESTION_DATE, INQUIRY_TYPE,SECRET)
+    VALUES (PRODUCT_INQUIRY_SEQ.NEXTVAL, 
+            #{productNum},
+            #{userId},
+            #{question},
+            SYSDATE, 
+            #{inquiryType},
+            #{secret}
+    )
+    <selectKey keyProperty="inquiryNum" resultType="int" order="AFTER">
+        SELECT PRODUCT_INQUIRY_SEQ.CURRVAL FROM DUAL
+    </selectKey>
 </insert>
-<!-- 질문에 파일을 첨부할 때 사용 -->
+
+<!-- 2.상품문의 파일등록 -->
 	<insert id="insertQuestionFile" parameterType="com.sgsg.dra.domain.Question">
 
     INSERT INTO PRODUCT_INQUIRY_PHOTO (
@@ -26,5 +32,118 @@ VALUES (PRODUCT_INQUIRY_SEQ.NEXTVAL,
         #{filename}
     )
 </insert>
+
+<!-- 3.특정 상품에 대한 질문 갯수 -->
+<select id="dataCount" parameterType="map" resultType="Integer">
+SELECT NVL(COUNT(*), 0)
+FROM PRODUCT_INQUIRY
+WHERE PRODUCTNUM = #{productNum} AND SHOWQUESTION = 1 AND LOCKED = 1
+</select>
+
+<!-- 4.특정 상품 질문 리스트(일반 공개글) -->
+<select id="listQuestion" parameterType="map" resultType="com.sgsg.dra.domain.Question">
+SELECT q.INQUIRYNUM, q.USERID, m.USERNAME, q.SECRET, q.QUESTION, q.ANSWER, 
+       m2.USERID AS ANSWERID, m2.USERNAME AS ANSWERNAME, 
+       q.PRODUCTNUM, f.FILENAME, q.SHOWQUESTION, 
+       q.QUESTION_DATE, q.ANSWER_DATE
+FROM PRODUCT_INQUIRY q
+JOIN MEMBER1 m ON q.USERID = m.USERID
+LEFT OUTER JOIN (
+    SELECT INQUIRYNUM, LISTAGG(FILENAME, ',') WITHIN GROUP (ORDER BY FILENUM) AS FILENAME
+    FROM PRODUCT_INQUIRY_PHOTO
+    GROUP BY INQUIRYNUM
+) f ON q.INQUIRYNUM = f.INQUIRYNUM
+LEFT OUTER JOIN MEMBER1 m2 ON q.ANSWERID = m2.USERID
+WHERE q.PRODUCTNUM = #{productNum} AND q.SHOWQUESTION = 1 AND q.LOCKED = 1
+ORDER BY q.INQUIRYNUM DESC
+OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+</select>
+
+<!-- 특정 사용자의 질문 갯수 답변 유무에 따른 필터링 -->
+<select id="dataCount2" parameterType="map" resultType="Integer">
+    SELECT NVL(COUNT(*), 0)
+    FROM PRODUCT_INQUIRY
+    <where>
+        <if test="userId != null">
+            USERID = #{userId}
+        </if>
+        <if test="mode != null">
+            <if test="mode == 2">
+                AND ( ANSWER IS NOT NULL )
+            </if>
+            <if test="mode == 3">
+                AND ( ANSWER IS NULL )
+            </if>
+        </if>
+    </where>
+</select>
+
+<!-- 사용자의 질문 목록을 가져오는 쿼리 -->
+<!-- 특정 사용자의 질문만 가져오고, mode에 따라 답변이 있는지 없는지 필터링 -->
+<!-- 최신 질문부터 정렬하고 페이징 처리 -->
+<select id="listQuestion2" parameterType="map" resultType="com.sgsg.dra.domain.Question">
+    SELECT q.INQUIRYNUM, q.USERID, m.USERNAME, q.SECRET, q.QUESTION, q.ANSWER, 
+           m2.USERID AS ANSWERID, m2.USERNAME AS ANSWERNAME, 
+           q.PRODUCTNUM, p.PRODUCTNAME, f.FILENAME, q.SHOWQUESTION, q.LOCKED,
+           q.QUESTION_DATE, q.ANSWER_DATE
+    FROM PRODUCT_INQUIRY q
+    JOIN PRODUCT p ON q.PRODUCTNUM = p.PRODUCTNUM 
+    JOIN MEMBER1 m ON q.USERID = m.USERID
+    LEFT OUTER JOIN (
+        SELECT INQUIRYNUM, LISTAGG(FILENAME, ',') WITHIN GROUP (ORDER BY FILENUM) AS FILENAME
+        FROM PRODUCT_INQUIRY_PHOTO
+        GROUP BY INQUIRYNUM
+    ) f ON q.INQUIRYNUM = f.INQUIRYNUM
+    LEFT OUTER JOIN MEMBER1 m2 ON q.ANSWERID = m2.USERID
+    <where>
+        <if test="userId != null">
+            q.USERID = #{userId}
+        </if>
+        <if test="mode != null">
+            <if test="mode == 2">
+                AND (q.ANSWER IS NOT NULL)
+            </if>
+            <if test="mode == 3">
+                AND (q.ANSWER IS NULL)
+            </if>
+        </if>
+    </where>
+    ORDER BY q.INQUIRYNUM DESC
+    OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+</select>
+
+<!-- 특정 질문에 대한 답변을 업데이트하는 쿼리 -->
+<!-- 답변 내용, 답변 작성자 ID, 답변 날짜, 질문 공개 여부, 잠금 상태를 업데이트 -->
+<!-- INQUIRYNUM 값을 사용하여 특정 질문을 식별 -->
+<update id="updateQuestion" parameterType="com.sgsg.dra.domain.Question">
+    UPDATE PRODUCT_INQUIRY 
+    SET 
+        ANSWER = #{answer},
+        ANSWERID = #{answerId},
+        ANSWER_DATE = SYSDATE,
+        SHOWQUESTION = #{showQuestion},
+        LOCKED = #{locked}
+    WHERE 
+        INQUIRYNUM = #{inquiryNum}
+</update>
+
+<!-- 특정 질문에 첨부된 파일 리스트를 가져올 때 사용 -->
+<select id="listQuestionFile" parameterType="long" resultType="com.sgsg.dra.domain.Question">
+    SELECT 
+        FILENUM,        
+        INQUIRYNUM,   
+        FILENAME        
+    FROM PRODUCT_INQUIRY_PHOTO
+    WHERE 
+        INQUIRYNUM = #{inquiryNum} 
+</select>
+
+<!-- 질문을 삭제할 때 사용 -->
+<delete id="deleteQuestion" parameterType="long">
+    DELETE FROM PRODUCT_INQUIRY
+    WHERE 
+        INQUIRYNUM = #{inquiryNum} 
+</delete>
+
 
 </mapper>

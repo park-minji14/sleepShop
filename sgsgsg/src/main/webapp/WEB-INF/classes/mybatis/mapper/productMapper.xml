@@ -81,7 +81,7 @@
 		COUNT(*) questionCount
 		FROM PRODUCT_INQUIRY
 		WHERE showQuestion = 1 AND
-		locked = 0
+		locked = 1
 		GROUP BY productNum
 		) pi ON p.productNum = pi.productNum
 		LEFT
@@ -181,7 +181,11 @@
 		ORDER BY s.detailNum, s.detailNum2
 	</select>
 	
-
+<select id="getCategoryById" parameterType="Long" resultType="com.sgsg.dra.domain.Product">
+    SELECT categoryNum, categoryName, categoryImage
+    FROM PRODUCT_CATEGORY
+    WHERE categoryNum = #{categoryNum} AND use = 1
+</select>
     
 <!-- 
 	<select id="listProduct" parameterType="map"></select>
