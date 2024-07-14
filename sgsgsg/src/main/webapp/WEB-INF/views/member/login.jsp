@@ -15,8 +15,7 @@
 }
 
 h1 {
-    color: #35c5f0;
-    font-size: 32px;
+    font-size: 40px;
     text-align: center;
     margin-bottom: 30px;
 }
@@ -180,10 +179,10 @@ $(document).ready(function() {
 
     <form name="loginForm" id="loginForm" action="" method="post">
         <div class="input__block">
-            <input type="text" name="userId" placeholder="아이디" id="userId" value="JinTaeX">
+            <input type="text" name="userId" placeholder="아이디" id="userId" value="">
         </div>
         <div class="input__block">
-            <input type="password" name="userPwd" placeholder="비밀번호" id="userPwd" value="zz1414!!">
+            <input type="password" name="userPwd" placeholder="비밀번호" id="userPwd" value="">
         </div>
         <p class="form-control-plaintext text-center">${message}</p>
         <button class="login__btn" type="button" onclick="sendLogin();">로그인</button>
