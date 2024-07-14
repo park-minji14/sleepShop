@@ -10,10 +10,6 @@
     align-items: center;
 }
 
-.body-container {
-	width: 1100px;
-}
-
 
 .expert-style {
     border-radius: 20px;
