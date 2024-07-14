@@ -549,7 +549,7 @@ svg:not(:root) {
 }
 
 /* 알림 */
-.notification {
+.top-notification {
 	display: grid;
 	background: white;
 	min-height: 46px;

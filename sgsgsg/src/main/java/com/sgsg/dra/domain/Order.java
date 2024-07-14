@@ -15,6 +15,7 @@ public class Order {
 
 	private long memberIdx;
 	private String userId;
+	private String userName;
 
 	private long orderNum;
 	private long orderDetailNum;
@@ -147,6 +148,12 @@ public class Order {
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	public long getOrderNum() {
 		return orderNum;
