@@ -89,7 +89,7 @@ body {
 }
 
 .user-icons>* {
-	margin-left: 15px;
+	margin-left: 10px;
 }
 
 .login-btn {
@@ -457,8 +457,8 @@ main{
 	padding-top: 150px
 }
 .user-icons img {
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     vertical-align: middle;
 }
 
@@ -580,4 +580,38 @@ input[type=number] {
 
 .popular-search-list li:last-child {
     border-bottom: none;
+}
+
+.notification {
+  position: relative;
+}
+.notification::after {
+  content: attr(data-count);
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  padding: 0.2em 0.4em;
+  font-size: 12px;
+}
+
+.notification {
+  position: relative;
+  display: inline-block;
+}
+.notification::after {
+  content: attr(data-count);
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #2ba9d1;
+  color: white;
+  border-radius: 50%;
+  padding: 3px 6px;
+  font-size: 12px;
+  line-height: 1;
+  min-width: 18px;
+  text-align: center;
 }

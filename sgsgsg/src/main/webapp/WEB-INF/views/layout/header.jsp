@@ -14,44 +14,41 @@
 			<i class="bi bi-search"></i> <input type="text" placeholder="쇼핑 검색">
 		</div>
 		<div class="user-icons">
-			<span class="me-3"><img
-				src="https://img.icons8.com/fluency/24/like.png" alt="좋아요" /></span> <span
-				class="me-3"><img
-				src="https://img.icons8.com/fluency/24/appointment-reminders.png"
-				alt="알림" /></span> <span class="me-3"><a href=${pageContext.request.contextPath}/cart/list><img
-				src="https://img.icons8.com/fluency/24/shopping-cart.png" alt="장바구니" /></a></span>
-  <c:choose>
-    <c:when test="${not empty sessionScope.member}">
-        <div class="user-profile">
-            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" 
-                 alt="Profile" 
-                 class="profile-img" 
-                 style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
-            <div class="profile-menu" style="display: none;">
-                <div class="profile-header">
-                    <span class="user-name">오예금요일</span>
-                    <img src="https://img.icons8.com/ios/50/000000/bell.png" alt="Notifications" class="notification-icon" style="width: 24px; height: 24px;">
-                </div>
-                <div class="user-stats">
-                    <span>쿠폰 <strong></strong>개</span>
-                    <span>포인트 <strong></strong>원</span>
-                </div>
-                <ul class="menu-list">
-                    <li><img src="https://img.icons8.com/ios/50/000000/purchase-order.png" alt="구매 내역" style="width: 20px; height: 20px;"> 구매 내역</li>
-                    <li><img src="https://img.icons8.com/ios/50/000000/like.png" alt="좋아요" style="width: 20px; height: 20px;"> 좋아요</li>
-                    <li><img src="https://img.icons8.com/ios/50/000000/settings.png" alt="설정" style="width: 20px; height: 20px;"> 설정</li>
-                </ul>
-                <div class="footer-links">
-                    <a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
-                    <a href="">고객센터 ></a>
-                </div>
-            </div>
-        </div>
-    </c:when>
-    <c:otherwise>
-        <button id="loginBtn" class="login-btn">로그인</button>
-    </c:otherwise>
-</c:choose>
+			<span class="me-4"><img src="https://img.icons8.com/fluent-systems-regular/60/000000/like--v1.png" alt="좋아요" /></span>
+			<span class="me-4 notification" data-count="2"><img src="https://img.icons8.com/fluent-systems-regular/60/000000/appointment-reminders.png" alt="알림" /></span>
+			<span class="me-4"><a href="${pageContext.request.contextPath}/cart/list"><img src="https://img.icons8.com/fluent-systems-regular/60/000000/shopping-cart.png" alt="장바구니" /></a></span>
+			<c:choose>
+				<c:when test="${not empty sessionScope.member}">
+					<div class="user-profile">
+						<img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" 
+							 alt="Profile" 
+							 class="profile-img" 
+							 style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
+						<div class="profile-menu" style="display: none;">
+							<div class="profile-header">
+								<span class="user-name">${sessionScope.member.userName}</span>
+								<img src="https://img.icons8.com/ios/50/000000/bell.png" alt="Notifications" class="notification-icon" style="width: 24px; height: 24px;">
+							</div>
+							<div class="user-stats">
+								<span>쿠폰 <strong></strong>개</span>
+								<span>포인트 <strong></strong>원</span>
+							</div>
+							<ul class="menu-list">
+								<li><img src="https://img.icons8.com/ios/50/000000/purchase-order.png" alt="구매 내역" style="width: 20px; height: 20px;"> 구매 내역</li>
+								<li><img src="https://img.icons8.com/ios/50/000000/like.png" alt="좋아요" style="width: 20px; height: 20px;"> 좋아요</li>
+								<li><img src="https://img.icons8.com/ios/50/000000/settings.png" alt="설정" style="width: 20px; height: 20px;"> 설정</li>
+							</ul>
+							<div class="footer-links">
+								<a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
+								<a href="#">고객센터 ></a>
+							</div>
+						</div>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<button id="loginBtn" class="login-btn">로그인</button>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</div>
 
@@ -91,132 +88,126 @@
 	</nav>
 </div>
 
-	<script type="text/javascript">
-	
-//로그인
-$(document).ready(function() {
-$('#loginBtn').on('click',function() {
-window.location.href = '${pageContext.request.contextPath}/member/login';
-});
+<script>
+	$(document).ready(function() {
+		// 로그인 버튼 클릭 시 로그인 페이지로 이동
+		$('#loginBtn').on('click', function() {
+			window.location.href = '${pageContext.request.contextPath}/member/login';
+		});
 
+		// 로고 클릭 시 홈으로 이동
+		$('#logo').on('click', function() {
+			window.location.href = '${pageContext.request.contextPath}';
+		});
 
+		// 초기 서브메뉴 설정을 '쇼핑'으로 변경
+		updateSubMenu('쇼핑');
 
-//로고 클릭하면 home으로감 
-$(document).ready(function() {
-	$('#logo').on('click', function() {
-		window.location.href = '${pageContext.request.contextPath}';
-	});
-});
+		// 메인 메뉴의 첫 번째 항목(쇼핑)을 활성화
+		$('.main-menu li:first-child').addClass('active');
 
-$(document).ready(function() {
-	// 초기 서브메뉴 설정을 '쇼핑'으로 변경
-	updateSubMenu('쇼핑');
+		// 메인 메뉴 클릭 이벤트 처리
+		$('.main-menu li').on('click', function() {
+			$('.main-menu li').removeClass('active');
+			$(this).addClass('active');
+			updateSubMenu($(this).text());
+		});
 
-	// 메인 메뉴의 첫 번째 항목(쇼핑)을 활성화
-	$('.main-menu li:first-child').addClass('active');
+		// 검색창 외부 클릭 시 검색창 닫기
+		$(document).on('click', function(event) {
+			const $popularSearchContent = $('#popularSearchContent');
+			const $popularSearchButton = $('.popular-search-btn');
+			const $closeButton = $('.close-btn');
+			if (!$popularSearchContent.is(event.target) &&
+				!$popularSearchButton.is(event.target) &&
+				!$closeButton.is(event.target) &&
+				$popularSearchContent.has(event.target).length === 0) {
+				$popularSearchContent.removeClass('active');
+			}
+		});
 
-	// 메인 메뉴 클릭 이벤트
-	$('.main-menu li').on('click', function() {
-		$('.main-menu li').removeClass('active');
-		$(this).addClass('active');
-		updateSubMenu($(this).text());
-	});
-});
+		// 프로필 메뉴 토글 기능
+		const $profileImg = $('.profile-img');
+		const $profileMenu = $('.profile-menu');
 
-//여기에 링크첨부,,,
-function updateSubMenu(category) {
-	const subMenuItems = {
-		'쇼핑' : [ {text : '쇼핑홈',url : '${pageContext.request.contextPath}/'}, 
-			{text : '카테고리',url : '${pageContext.request.contextPath}/cart/list'}, 
-			{text : '베스트',url : '${pageContext.request.contextPath}/'},
-			{text : '오늘의딜',url : '${pageContext.request.contextPath}/'}, 
-			{text : '빠른배송',url : '${pageContext.request.contextPath}/'}, 
-			{text : '기획전',url : '${pageContext.request.contextPath}/'}],
-		'커뮤니티' : [ {text : '홈',url : '${pageContext.request.contextPath}/'}, 
-			{text : '수면클리닉',url : '${pageContext.request.contextPath}/clinic/list'}, 
-			{text : '질문과답변',url : '${pageContext.request.contextPath}/'}, 
-			{text : '이벤트',url : '${pageContext.request.contextPath}/'} ]
-	};
+		$profileImg.click(function(event) {
+			event.stopPropagation();
+			$profileMenu.toggle();
+		});
 
-	const $subMenu = $('#subMenu');
-	$subMenu.empty();
-
-	$.each(subMenuItems[category], function(index, item) {
-		const $li = $('<li>').appendTo($subMenu);
-		const $a = $('<a>').attr('href', item.url).text(item.text)
-				.appendTo($li);
-
-		if (index === 0) {
-			$li.addClass('active');
-		}
-
-		$a.on('click', function(e) {
-			e.preventDefault();
-			window.location.href = $(this).attr('href');
+		$(document).click(function(event) {
+			if (!$(event.target).closest('.profile-menu').length && !$(event.target).is('.profile-img')) {
+				$profileMenu.hide();
+			}
 		});
 	});
 
-	$subMenu.on('click', 'li', function() {
-		$subMenu.find('li').removeClass('active');
-		$(this).addClass('active');
-	});
-}
-
-// 검색어
-function togglePopularSearch() {
-	$('#popularSearchContent').toggleClass('active');
-}
-
-// 검색어 순위
-const $popularSearchText = $('#popularSearchText');
-const $popularSearchList = $('.popular-search-list li');
-let popularSearchIndex = 0;
-
-function updatePopularSearch() {
-	if ($popularSearchList.length > 0) {
-		const $currentItem = $popularSearchList.eq(popularSearchIndex);
-		const itemText = $currentItem.find('span:first').text();
-		$popularSearchText.html(itemText);
-		popularSearchIndex = (popularSearchIndex + 1)
-				% $popularSearchList.length;
+	// 검색어 토글 기능
+	function togglePopularSearch() {
+		$('#popularSearchContent').toggleClass('active');
 	}
-}
 
-setInterval(updatePopularSearch, 3000);
-updatePopularSearch();
+	// 검색어 순위 업데이트 기능
+	const $popularSearchText = $('#popularSearchText');
+	const $popularSearchList = $('.popular-search-list li');
+	let popularSearchIndex = 0;
 
-// 검색창 외부 클릭 시 닫기
-$(document)
-		.on(
-				'click',
-				function(event) {
-					const $popularSearchContent = $('#popularSearchContent');
-					const $popularSearchButton = $('.popular-search-btn');
-					const $closeButton = $('.close-btn');
-					if (!$popularSearchContent.is(event.target)
-							&& !$popularSearchButton.is(event.target)
-							&& !$closeButton.is(event.target)
-							&& $popularSearchContent.has(event.target).length === 0) {
-						$popularSearchContent.removeClass('active');
-					}
-				});
-});
+	function updatePopularSearch() {
+		if ($popularSearchList.length > 0) {
+			const $currentItem = $popularSearchList.eq(popularSearchIndex);
+			const itemText = $currentItem.find('span:first').text();
+			$popularSearchText.html(itemText);
+			popularSearchIndex = (popularSearchIndex + 1) % $popularSearchList.length;
+		}
+	}
 
-$(document).ready(function() {
-    const $profileImg = $('.profile-img');
-    const $profileMenu = $('.profile-menu');
+	// 일정 간격으로 검색어 순위 업데이트
+	setInterval(updatePopularSearch, 3000);
+	updatePopularSearch();
 
-    $profileImg.click(function(event) {
-        event.stopPropagation();
-        $profileMenu.toggle();
-    });
+	// 서브메뉴 업데이트 함수
+	function updateSubMenu(category) {
+		const subMenuItems = {
+			'쇼핑': [
+				{text: '쇼핑홈', url: '${pageContext.request.contextPath}/'}, 
+				{text: '카테고리', url: '${pageContext.request.contextPath}/cart/list'}, 
+				{text: '베스트', url: '${pageContext.request.contextPath}/'},
+				{text: '오늘의딜', url: '${pageContext.request.contextPath}/'}, 
+				{text: '빠른배송', url: '${pageContext.request.contextPath}/'}, 
+				{text: '기획전', url: '${pageContext.request.contextPath}/'}
+			],
+			'커뮤니티': [
+				{text: '홈', url: '${pageContext.request.contextPath}/'}, 
+				{text: '수면클리닉', url: '${pageContext.request.contextPath}/clinic/list'}, 
+				{text: '질문과답변', url: '${pageContext.request.contextPath}/'}, 
+				{text: '이벤트', url: '${pageContext.request.contextPath}/'}
+			]
+		};
 
-    $(document).click(function(event) {
-        if (!$(event.target).closest('.profile-menu').length && !$(event.target).is('.profile-img')) {
-            $profileMenu.hide();
-        }
-    });
+		const $subMenu = $('#subMenu');
+		$subMenu.empty();
 
-});
-				
-	</script>
+		// 서브메뉴 항목을 생성 및 추가
+		$.each(subMenuItems[category], function(index, item) {
+			const $li = $('<li>').appendTo($subMenu);
+			const $a = $('<a>').attr('href', item.url).text(item.text).appendTo($li);
+
+			if (index === 0) {
+				$li.addClass('active');
+			}
+
+			// 링크 클릭 시 기본 동작 방지하고 페이지 이동
+			$a.on('click', function(e) {
+				e.preventDefault();
+				window.location.href = $(this).attr('href');
+			});
+		});
+
+		// 서브메뉴 클릭 시 활성화 상태 변경
+		$subMenu.on('click', 'li', function() {
+			$subMenu.find('li').removeClass('active');
+			$(this).addClass('active');
+		});
+	}
+</script>
+
