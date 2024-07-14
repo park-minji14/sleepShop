@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgsg.dra.admin.mapper.OrderManageMapper">
+	
+	<!-- 주문 목록 가지고 오기 -->
+	<select id="listOrder" resultType="com.sgsg.dra.domain.Order">
+		SELECT ORDERNUM, o.USERID, USERNAME, ISSUE_ID, TO_CHAR(ORDERDATE, 'YYYY-MM-DD HH24:MI:SS) ORDERDATE, TOTALMONEY, USEDSAVED,
+			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENTNAME,
+			o.TEL, o.ZIP, o.ADDR1, o.ADDR2, DESTMEMO
+		FROM PRODUCTORDER o
+		JOIN MEMBER1 m ON o.USERID = m.USERID
+		ORDER BY ORDERNUM DESC
+	</select>
+	
+	
+</mapper>

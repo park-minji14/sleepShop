@@ -27,7 +27,7 @@
 				</span>
 				<input type="hidden" name="mode" value="cart">
 			</div>
-			<div class="notification">
+			<div class="top-notification">
 				<div class="ms-3">쿠폰 적용된 가격은 결제할 때 확인 가능</div>
 				<button type="button" aria-label="삭제" class="notification_delete">
 					<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
@@ -347,7 +347,7 @@ $('.cart-list').on('click', function(e) {
 
 $(function() {
 	$('.notification_delete').click(function() {
-		$(this).closest('.notification').remove();
+		$(this).closest('.top-notification').remove();
 	});
 	
 	$('.cart-checked_delete').click(function() {
