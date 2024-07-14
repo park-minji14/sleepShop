@@ -189,7 +189,7 @@
     
     
     <!-- 답변에 대한 채택 리스트 -->
-    <!-- 
+    
 	<select id="listClinicAnswerComment" parameterType="map"
 			resultType="com.sgsg.dra.domain.ClinicAnswer">
 		select answer_num, question_id, a.userId, content, rated_date,
@@ -200,6 +200,6 @@
 		where l.content2 = #{content2}
 		order by answer_num desc
 	</select>
-	-->
+
 
 </mapper>

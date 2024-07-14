@@ -25,12 +25,10 @@ public interface ClinicService {
 	public List<ClinicAnswer> listClinicAnswer(Map<String, Object> map);
 	public int ClinicAnswerCount(Map<String, Object> map);
 	
-	
+	public void insertClinicAnswerComment(ClinicAnswer dto) throws Exception;
 	public List<ClinicAnswer> listClinicAnswerComment(Map<String, Object> map);
 	public int ClinicAnswerCommentCount(Map<String, Object> map);
 	
-	public void insertClinicAnswerLike(Map<String, Object> map) throws Exception;
-	public Map<String, Object> ClinicAnswerLikeCount(Map<String, Object> map);
 	
 	ClinicAnswer findLikedAnswer(long num) throws SQLException;
 	

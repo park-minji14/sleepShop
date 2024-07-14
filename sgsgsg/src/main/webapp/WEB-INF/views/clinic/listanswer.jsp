@@ -70,25 +70,51 @@
     }
     
     
-    function showAdoptForm(answerNum) {
-        document.getElementById("adoptForm_" + answerNum).style.display = "block";
+    function toggleAdoptForm(answer_num) {
+        var adoptForm = document.getElementById("adoptForm_" + answer_num);
+        if (adoptForm) {
+            if (adoptForm.style.display === "block") {
+                adoptForm.style.display = "none";
+            } else {
+                adoptForm.style.display = "block";
+            }
+        } else {
+            console.error('Form not found:', adoptForm);
+        }
     }
-
-    function submitAdoptForm(answerNum) {
-        var comment = document.getElementById("adoptComment_" + answerNum).value;
+    
+    
+    function submitAdoptForm(answer_num) {
+        var comment = document.getElementById("content2_" + answer_num).value;
         if (comment.trim() === "") {
             alert("코멘트를 입력해주세요.");
             return;
         }
 
-        var form = document.getElementById("adoptForm_" + answerNum);
+        var form = document.getElementById("adoptForm_" + answer_num);
+        console.log(form);  // 확인용 로그
+
         if (form && form.tagName === 'FORM') {
-            HTMLFormElement.prototype.submit.call(form);
-        } else {
+            // 폼 제출을 시도하는 대신 폼의 내용을 로깅하여 확인합니다.
+            console.log('Submitting form:', form);
+            form.submit();  // HTMLFormElement.prototype.submit.call(form); 대신 form.submit() 사용
+        } else { 
             console.error('Form not found or not a form element:', form);
-        } 
-    }
-    </script>
+        }
+    } 
+    
+    
+    window.onload = function() {
+        var adoptedComments = document.querySelectorAll('.adopted-comment');
+        adoptedComments.forEach(function(comment) {
+            var parent = comment.closest('.answer-list-table');
+            var adoptForm = parent.querySelector('.adopt-form');
+            if (adoptForm) {
+                adoptForm.style.display = 'none';
+            }
+        });
+    };
+    </script> 
 </c:if>
 
 
@@ -107,11 +133,11 @@
 					<div class='col-auto align-self-center'>
 						<div class='name' style="font-size: 25px;">${vo.userId}
 							<c:if test="${vo.pickup != 1 && sessionScope.member.membership > 90}">
-                                <button type="button" class="btn btn-like" onclick="showAdoptForm(${vo.answer_num});">채택하기</button>
+                                <button type="button" class="btn btn-like" onclick="toggleAdoptForm(${vo.answer_num});">채택하기</button>
                             </c:if>
-                            <c:if test="${vo.pickup == 1}">
+                            <!-- <c:if test="${vo.pickup == 1}"> -->
                                 <span class="adopted-comment">${vo.content2}</span>
-                            </c:if>
+                            <!-- </c:if> -->
 						</div>
 						<div class='date'>${vo.created_date}</div>
 						<div class="">
@@ -143,19 +169,19 @@
 			
 			
 			<div id="adoptForm_${vo.answer_num}" class="adopt-form" style="display:none;">
-                <form id="adoptForm_${vo.answer_num}" action="${pageContext.request.contextPath}/clinic/adoptAnswer" method="post">
+                <form id="adoptForm_${vo.answer_num}" action="${pageContext.request.contextPath}/clinic/likeAnswer" method="post">
                     <input type="hidden" name="answer_num" value="${vo.answer_num}">
                     <input type="hidden" name="question_id" value="${vo.question_id}">
-                    <textarea id="adoptComment_${vo.answer_num}" name="adopt_comment" class="form-control m-2" placeholder="채택 코멘트를 입력해주세요."></textarea>
+                    <textarea id="content2_${vo.answer_num}" name="content2" class="form-control m-2" placeholder="답변자에게 감사인사를 전하세요!"></textarea>
                     <div class='text-end pe-2 pb-1'>
                         <button type='button' class='btn btn-light' onclick="submitAdoptForm(${vo.answer_num});">등록하기</button>
-                    </div>
+                    </div> 
                 </form>
             </div>
 			
 			<br><br>
 			
-		</c:forEach>
+		</c:forEach> 
 	</div>	
 </div>
 	

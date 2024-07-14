@@ -236,28 +236,7 @@ public class ClinicServiceImpl implements ClinicService {
 		return result;
 	}
 
-	@Override
-	public void insertClinicAnswerLike(Map<String, Object> map) throws Exception {
-		try {
-			mapper.insertClinicAnswerLike(map);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
-		
-		
-	}
-
-	@Override
-	public Map<String, Object> ClinicAnswerLikeCount(Map<String, Object> map) {
-		Map<String, Object> countMap = null;
-		try {
-			countMap = mapper.ClinicAnswerLikeCount(map);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return countMap;
-	}
+	
 
 	
 	
@@ -280,7 +259,19 @@ public class ClinicServiceImpl implements ClinicService {
 	public ClinicAnswer findLikedAnswer(long question_id) throws SQLException {
 		return mapper.findLikedAnswer(question_id);
 	}
-	
+
+
+	@Override
+	public void insertClinicAnswerComment(ClinicAnswer dto) throws Exception {
+		try {
+			mapper.insertClinicAnswerComment(dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+	}
+
 	
 	
 
