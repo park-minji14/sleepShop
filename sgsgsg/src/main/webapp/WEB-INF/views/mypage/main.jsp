@@ -118,7 +118,7 @@ main{
 			<li class="nav-item"><a class="nav-link active" id="orders-tab"
 				data-bs-toggle="tab" href="#orders">나의 쇼핑</a></li>
 			<li class="nav-item"><a class="nav-link" id="reviews-tab"
-				data-bs-toggle="tab" href="#reviews">나의 리뷰</a></li>
+				data-bs-toggle="tab" href="${pageContext.request.contextPath}/mypage/review">나의 리뷰</a></li>
 			<li class="nav-item"><a class="nav-link" id="wishlist-tab"
 				data-bs-toggle="tab" href="#wishlist">찜한 상품</a></li>
 			<li class="nav-item"><a class="nav-link" id="recent-tab"
@@ -131,6 +131,10 @@ main{
 			
 			<li class="nav-item"><a class="nav-link" id="settings-tab"
 				data-bs-toggle="tab" href="#settings">설정</a></li>
+			<!-- <c:if test="${sessionScope.member.membership > 50}">
+			<li class="nav-item"><a class="nav-link" id="settings-tab"
+				data-bs-toggle="tab" href="#expert">전문가 프로필</a></li>
+			</c:if> -->
 		</ul>
 
 		<!-- 탭 컨텐츠 -->
