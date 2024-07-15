@@ -178,7 +178,7 @@ public class OrderController {
 		
 		try {
 			List<Delivery> deliveries = orderService.selectAllDest(info.getUserId());
-			model.addAttribute("deliverys", deliveries);
+			model.addAttribute("deliveries", deliveries);
 		} catch (Exception e) {
 		}
 		

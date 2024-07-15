@@ -159,6 +159,7 @@ function sendOk() {
 				<input type="hidden" name="deliveryCharge" value="${deliveryCharge}">
 				<input type="hidden" name="payment" value="${totalPayment}">
 				<input type="hidden" name="savedMoney" value="${totalSavedMoney}">
+				<input type="hidden" name="productOrderName" value="${productOrderName}">
 
 				<input type="hidden" name="mode" value="${mode}">
 
@@ -171,24 +172,25 @@ function sendOk() {
 					<div class="fs-6 fw-semibold border-bottom pb-1">배송지 정보</div>
 					<div class="row ps-2 pt-2">
 						<div class="col-auto pe-2 mt-2">
-							<label class="fw-semibold">${defaultDest.recipientName}</label>
+							<span class="fw-semibold recipientName">${defaultDest.recipientName}</span>
 							<label class="text-primary">${defaultDest.defaultDest==1? '기본배송지':''}</label>
+							<input type="hidden" name="defaultDest">
 						</div>
 						<div class="col-auto">
 							<button type="button" class="btn border" id="changeDest"> 배송지변경 </button>
 						</div>
 					</div>
 					<div class="ps-2 pt-2">
-						<div class="pt-2">${defaultDest.addr1} ${defaultDest.addr2}</div>
-						<div class="pt-2">${defaultDest.tel}</div>
+						<span class="pt-2 addr1">${defaultDest.addr1}</span>
+						<span class="pt-2 addr2">${defaultDest.addr2}</span>
+						<span class="pt-2 tel" style="display: block;">${defaultDest.tel}</span>
 						<div class="pt-2 w-50">
-							<input type="hidden" name="destinatioNnum" value="${defaultDest.destinationNum}">
-							<input type="hidden" name="recipientName" value="${defaultDest.recipientName}">
-							<input type="hidden" name="tel" value="${defaultDest.tel}">
-							<input type="hidden" name="zip" value="${defaultDest.zip}">
-							<input type="hidden" name="addr1" value="${defaultDest.addr1}">
-							<input type="hidden" name="addr2" value="${defaultDest.addr2}">
-							<input type="hidden" name="productOrderName" value="${productOrderName}">
+							<input type="hidden" name="destinationNum" class="destinationNum" value="${defaultDest.destinationNum}">
+							<input type="hidden" name="recipientName" class="recipientName" value="${defaultDest.recipientName}">
+							<input type="hidden" name="tel" class="tel" value="${defaultDest.tel}">
+							<input type="hidden" name="zip" class="zip" value="${defaultDest.zip}">
+							<input type="hidden" name="addr1" class="addr1" value="${defaultDest.addr1}">
+							<input type="hidden" name="addr2"  class="addr2"value="${defaultDest.addr2}">
 							<input type="text" name="destMemo" class="form-control" placeholder="요청사항을 입력합니다." value="${defaultDest.destMemo}">
 						</div>
 					</div>
@@ -272,8 +274,8 @@ function sendOk() {
 				<div class="modal-order-detail changeDest-list"></div>
 			</div>
 			<div class="modal-footer">
-		        <button type="button" class="btn btn-secondary">수정</button>
-		        <button type="button" class="btn btn-primary">선택</button>
+		        <button type="button" class="btn btn-danger">삭제</button>
+		        <button type="button" class="btn btn-primary selectDest">선택</button>
 		      </div>
 		</div>
 	</div>
@@ -287,7 +289,19 @@ $(function() {
 	
 	let modal = document.getElementById('changeDestModal');
 	modal.addEventListener('show.bs.modal', function () {
-				
+		$('.selectDest').click(function() {
+			let dest = $('input[type=radio]:checked');
+			let $tr = dest.closest('tr')
+			if(! dest){
+				alert('변경할 배송지를 선택해주세요.');
+				return;
+			}
+			$('input[name=destinationNum]').val(dest.attr('data-destnum'));
+			$('.recipientName').val($tr.find('.sRecipientName').text());
+			$('.recipientName').text($tr.find('.sRecipientName').text());
+			
+			$('#changeDestModal').modal("hide");
+		});
 	});
 	
 	$('.btn-usedSaved').click(function(){

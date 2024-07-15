@@ -7,19 +7,24 @@
 		<tr>
 			<th>&nbsp;</th>
 			<th class="col-2">받는 사람</th>
-			<th class="col-4">기본주소</th>
-			<th class="col-3">상세주소</th>
+			<th class="col-3">기본주소</th>
+			<th class="col-2">상세주소</th>
 			<th class="col-3">전화번호</th>
+			<th class="col-3">메모</th>
 		</tr>
 	</thead>
 	<tbody>
-		<tr>
-			<td><input type="checkbox"></td>
-			<td>홍길동</td>
-			<td>서울특별시 마포구 월드컵북로 21</td>
-			<td>풍성빌딩 2층</td>
-			<td>010-0000-0000</td>
-		</tr>
+		<c:forEach var="dto" items="${deliveries}">
+			<tr>
+				<td><input type="radio" name="radioDest" data-destnum="${dto.destinationNum}"
+					data-default="${dto.defaultDest}"></td>
+				<td class="sRecipientName">${dto.recipientName}</td>
+				<td>${dto.addr1}</td>
+				<td>${dto.addr2}</td>
+				<td>${dto.tel}</td>
+				<td>${dto.destMemo}</td>
+			</tr>
+		</c:forEach>
 	</tbody>
 </table>
 					
