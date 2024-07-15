@@ -334,8 +334,6 @@ body {
     height: auto;
 }
 
-
-
 /*인기 검색어 css*/
 .popular-search-list {
 	list-style: none;
@@ -410,6 +408,7 @@ body {
 	width: 100%;
 }
 
+
 /*헤더 고정시키는 css*/
 .fixed-header {
   position: fixed;
@@ -429,14 +428,12 @@ body {
   background-color: rgba(255, 255, 255, 1);
 }
 
-/* 헤더의 높이를 CSS 변수로 정의 */
 :root {
   --header-height: 60px; 
 }
 
-/* nav의 높이를 CSS 변수로 정의 */
 :root {
-  --nav-height: 40px; /* 실제 nav의 높이로 조정 */
+  --nav-height: 40px; 
 }
 
 /*서브 메뉴*/
@@ -614,4 +611,9 @@ input[type=number] {
   line-height: 1;
   min-width: 18px;
   text-align: center;
+}
+
+/*a태그 밑줄 제거*/
+a{
+	text-decoration: none; !important;
 }
