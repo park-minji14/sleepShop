@@ -142,6 +142,14 @@
 	WHERE p.productNum = #{productNum}
 </select>
 
+<!-- 해당 상품 옵션 전체 가져오기 -->
+<select id="findByidOption" parameterType="Long" resultType="com.sgsg.dra.admin.domain.ProductManage">
+	Select po.ProductNum, po.parentNum, po.OptionNum, po.OptionName, od.DetailNum, od.OptionValue
+	From product_option po
+	Join OptionDetail od On po.optionNum = od.optionNum
+	Where productNum = #{productNum}
+</select>
+
 <delete id="deleteProduct" parameterType="Long">
 	DELETE FROM product WHERE productNum = #{productNum}
 </delete>

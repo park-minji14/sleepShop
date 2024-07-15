@@ -305,23 +305,51 @@ public class ProductManageServiceImpl implements ProductManageService {
 	
 	@Override
 	public void deleteProduct(long productNum, String pathname) throws Exception {
-		try {
-			// 파일 삭제(thumbnail)
-
-			// 추가 파일 삭제
-			
-			// 재고 삭제
-
-			// 옵션2 삭제
-			
-			// 옵션1 삭제
-			
-			// 상품 삭제
-			// mapper.deleteProduct(productNum);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
+	    try {
+	        // 추가 이미지의 리스트
+	        List<ProductManage> moreImage = mapper.listProductFile(productNum);
+	        ProductManage dto = mapper.findById(productNum);
+	        if (dto == null) {
+	            return;
+	        }
+	        // 파일 삭제(thumbnail)
+	        fileManager.doFileDelete(dto.getFilename(), pathname);
+	        mapper.deleteProductFile(dto.getFileNum());
+	        
+	        // 추가 파일 삭제
+	        if (moreImage != null && !moreImage.isEmpty()) {
+	            for (ProductManage item : moreImage) {
+	                if (item.getFilename() != null && !item.getFilename().isEmpty()) {
+	                    fileManager.doFileDelete(item.getFilename(), pathname);
+	                    mapper.deleteProductFile(item.getFileNum());
+	                }
+	            }
+	        }
+	        
+	        // 옵션 삭제
+	        if (dto.getOptionCount() > 0) {
+	            List<ProductManage> opDto = mapper.findByidOption(productNum);
+	            for (ProductManage option : opDto) {
+	                if (option.getOptionNum2() != null && option.getOptionNum2() != 0) {
+	                    mapper.deleteOptionDetail2(option.getOptionNum2());
+	                    mapper.deleteProductOption(option.getOptionNum2());
+	                }
+	                if (option.getOptionNum() != null && option.getOptionNum() != 0) {
+	                    mapper.deleteOptionDetail2(option.getOptionNum());
+	                    mapper.deleteProductOption(option.getOptionNum());
+	                }
+	            }
+	        }
+	        
+	        // 재고 삭제 (추가 기능 구현 필요)
+	        // TODO: 재고가 있으면 삭제되게끔 하면 안됨...
+	        
+	        // 상품 삭제
+	        mapper.deleteProduct(productNum);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw e;
+	    }
 	}
 	
 	@Override

@@ -30,6 +30,7 @@ public interface ProductManageMapper {
 	public List<ProductManage> listProductFile(long productNum);
 	public List<ProductManage> listProductOption(long productNum);
 	public List<ProductManage> listOptionDetail(long optionNum);
+	public List<ProductManage> findByidOption(long productNum);
 	
 	public void updateProduct(ProductManage dto) throws SQLException;
 	public void deleteProduct(long productNum) throws SQLException;

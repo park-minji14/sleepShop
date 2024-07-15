@@ -67,11 +67,16 @@
 	                <button type="reset" class="btn btn-secondary me-2">초기화</button>
 	                <button type="submit" class="btn btn-primary">검색</button>
 	            </div>
+	            
             
             </div>
             
         </form>
         
+       	<div class="page-navigation">
+			${dataCount == 0 ? "등록된 상품이 없습니다." : paging}
+		</div>
+		
         <!-- 상품 목록 -->
         <div class="table-responsive">
             <table class="table table-striped table-bordered">

@@ -21,6 +21,8 @@ import com.sgsg.dra.admin.domain.ProductManage;
 import com.sgsg.dra.admin.service.ProductManageService;
 import com.sgsg.dra.common.MyUtil;
 
+import oracle.jdbc.proxy.annotation.Post;
+
 @Controller
 @RequestMapping("adminManagement/productManage/*")
 public class ProductManageController {
@@ -160,6 +162,7 @@ public class ProductManageController {
 		model.addAttribute("mode", "productUpdate");
 		
 		model.addAttribute("dto", dto);
+		model.addAttribute("classify", dto.getClassify());
 		model.addAttribute("listFile", listFile);
 		model.addAttribute("listOptionDetail", listOptionDetail);
 		model.addAttribute("listOptionDetail2", listOptionDetail2);
@@ -242,5 +245,21 @@ public class ProductManageController {
 		model.put("listSubCategory", listSubCategory);
 		
 		return model;
+	}
+	
+	@GetMapping("productDelete")
+	public String deleteProduct(
+			@RequestParam long productNum,
+			HttpSession session
+			) throws Exception {
+		try {
+			String root = session.getServletContext().getRealPath("/");
+			String path = root + "uploads" + File.separator + "product";
+			
+			service.deleteProduct(productNum, path);
+		} catch (Exception e) {
+		}
+		
+		return "redirect:/adminManagement/productManage/list";
 	}
 }
