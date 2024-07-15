@@ -269,24 +269,7 @@ function sendOk() {
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body pt-1">
-				<div class="modal-order-detail">
-					<table class="text-center table">
-						<tr>
-							<th>&nbsp;</th>
-							<th class="col-2">받는 사람</th>
-							<th class="col-4">기본주소</th>
-							<th class="col-3">상세주소</th>
-							<th class="col-3">전화번호</th>
-						</tr>
-						<tr>
-							<td><input type="checkbox"></td>
-							<td>홍길동</td>
-							<td>서울특별시 마포구 월드컵북로 21</td>
-							<td>풍성빌딩 2층</td>
-							<td>010-0000-0000</td>
-						</tr>
-					</table>
-				</div>
+				<div class="modal-order-detail changeDest-list"></div>
 			</div>
 			<div class="modal-footer">
 		        <button type="button" class="btn btn-secondary">수정</button>
@@ -298,13 +281,13 @@ function sendOk() {
 <script type="text/javascript">
 $(function() {
 	$('#changeDest').on('click', function() {
-		//$('#changeDestModal').addClass('show');
+		$('.changeDest-list').load('${pageContext.request.contextPath}/order/allDest');
 		$('#changeDestModal').modal("show");
 	});
 	
 	let modal = document.getElementById('changeDestModal');
 	modal.addEventListener('show.bs.modal', function () {
-		
+				
 	});
 	
 	$('.btn-usedSaved').click(function(){
