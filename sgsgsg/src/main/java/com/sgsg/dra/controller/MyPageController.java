@@ -11,54 +11,54 @@ public class MyPageController {
 	// 메인화면
 	@GetMapping("main")
 	public String main() {
-		
 		return ".mypage.main";
 	}
 	
-	
-	//포인트
-	@GetMapping("point")
-	public String point() {
-		
-		return ".mypage.point";
+
+	// 나의 쇼핑
+	@GetMapping("myshop")
+	public String myshop() {
+		return "mypage/myshop";
 	}
 	
-	
+	// 포인트
+	@GetMapping("point")
+	public String point() {
+		return "mypage/point";
+	}
 	
 	//마이 리뷰
 	@GetMapping("review")
 	public String review() {
-		
-		return ".mypage.review";
+		return "mypage/review";
 	}
-	
 		
-		
-	//최근 본 상품
-	@GetMapping("recentProduct")
+	// 최근 본 상품
+	@GetMapping("recent")
 	public String recentProduct() {
-		
-		return ".mypage.recentProduct";
+		return "mypage/recentProduct";
 	}
-		
 	
 	//1:1문의
 	@GetMapping("oneToone")
 	public String oneToone() {
+		return "mypage/oneToone";
+	}
+	
+	//1:1문의 상세페이지
+	@GetMapping("oneTooneDetails")
+	public String oneTooneDetails() {
 		
-		return ".mypage.oneToone";
+		return ".mypage.oneTooneDetails";
 	}
 	
 	
 	
-	//찜한 상품
+	// 찜한 상품
 	@GetMapping("wishlist")
 	public String wishlist() {
-		
-		return ".mypage.wishlist";
+		return "mypage/wishlist";
 	}
-	
-	
 
 }
 
