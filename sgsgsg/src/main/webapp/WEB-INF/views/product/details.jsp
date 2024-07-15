@@ -16,6 +16,9 @@
     align-items: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+page-navigation{
+	text-align: center;
+}
 
 .pagination .page-item:first-child .page-link,
 .pagination .page-item:last-child .page-link {
@@ -196,12 +199,7 @@
                                     <h3>상품 설명</h3>
                                     <p>오마이갓 오마이갓 오마이갓</p>
                                     <h3>주요 특징</h3>
-                                    <ul>
-                                        <li>뭔가</li>
-                                        <li>를</li>
-                                        <li>지어내서 요로캐</li>
-                                        <li>작성을 해요,,,</li>
-                                    </ul>
+                                    	<div >${dto.content}</div>
                                 </div>
                                 <img src="https://via.placeholder.com/1200x800" alt="제품 상세 설명" class="img-fluid w-100 mt-4">
                             </div>
@@ -210,116 +208,151 @@
                 </div>
 
                 <!-- 리뷰 탭 내용 -->
-                <div class="tab-pane fade mb-4" id="review" role="tabpanel" aria-labelledby="review-tab">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h3>리뷰 ${dto.reviewCount}</h3>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">리뷰쓰기</button>
-                    </div>
-                    <div class="review-summary mb-4">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <!-- 평점 계산 하는 함수를... 만들어야 -->
-                                <h2 class="display-4">${dto.reviewCount}</h2>
-                                <div class="stars">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-half text-warning"></i>
-                                </div>
-                            </div>
-                            <!-- 리뷰 평점 별로 갯수...를 표현 -->
-                            <div class="col-md-9">
-                                <div class="progress mb-2" style="height: 20px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 80%;" aria-valuenow="80"
-                                        aria-valuemin="0" aria-valuemax="100">5점 (15)</div>
-                                </div>
-                                <div class="progress mb-2" style="height: 20px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 15%;" aria-valuenow="15"
-                                        aria-valuemin="0" aria-valuemax="100">4점 (22)</div>
-                                </div>
-                                <div class="progress mb-2" style="height: 20px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 3%;" aria-valuenow="3"
-                                        aria-valuemin="0" aria-valuemax="100">3점 (41)</div>
-                                </div>
-                                <div class="progress mb-2" style="height: 20px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 1%;" aria-valuenow="1"
-                                        aria-valuemin="0" aria-valuemax="100">2점 (9)</div>
-                                </div>
-                                <div class="progress mb-2" style="height: 20px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 1%;" aria-valuenow="1"
-                                        aria-valuemin="0" aria-valuemax="100">1점 (5)</div>
-                                </div>
-                            </div>
+              <div class="tab-pane fade mb-4" id="review" role="tabpanel" aria-labelledby="review-tab">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h3 class="border-bottom pb-2">리뷰 ${dto.reviewCount}</h3>
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="alert alert-info" role="alert">
+                    <h5 class="alert-heading">
+                        <i class="bi bi-info-circle me-2"></i>
+                        리뷰 안내사항
+                    </h5>
+                    <ul class="mb-0">
+                        <li>구매하신 상품에 대한 정직한 리뷰를 남겨주세요.</li>
+                        <li>상품과 무관한 내용이나 욕설, 비방 등은 삭제될 수 있습니다.</li>
+                        <li>리뷰 작성시 포인트가 적립됩니다.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h2 class="display-4"></h2>
+                        <div class="stars mb-3">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <i class="bi bi-star-half text-warning"></i>
                         </div>
-                    </div>
-                    <div class="review-list">
-                        <!-- 리뷰 예시 -->
-                        <div class="review-item">
-                            <div class="d-flex align-items-center mb-2">
-                                <img src="https://via.placeholder.com/40" alt="User" class="rounded-circle me-2">
-                                <strong>진태만두</strong>
-                                <div class="stars ms-auto">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                </div>
-                            </div>
-                            <p class="mb-2">2024.06.13 · 새근새근 구매</p>
-                            <div class="review-content">
-                                <p>오예 ...</p>
-                                <img src="https://via.placeholder.com/200x200" alt="Review Image" class="img-fluid mb-2">
-                            </div>
-                            <button class="btn btn-sm btn-outline-secondary">도움이 돼요</button>
-                        </div>
-                        <!-- 추가 리뷰 나올 곳 -->
+                        <p class="mb-0">${dto.reviewCount} 리뷰 기준</p>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">구매자 만족도</h5>
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="me-2">뭘쓰지</span>
+                            <div class="progress flex-grow-1" style="height: 10px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span class="ms-2">85%</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="me-2">뭔그를</span>
+                            <div class="progress flex-grow-1" style="height: 10px;">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span class="ms-2">75%</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="me-2">배송</span>
+                            <div class="progress flex-grow-1" style="height: 10px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span class="ms-2">90%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                <!-- 상품문의 탭 내용 -->
-				<div class="tab-pane fade mb-4" id="qna" role="tabpanel" aria-labelledby="qna-tab">
-				    <div class="container">
-				        <div class="row mb-4">
-				            <div class="col-12">
-				                <h3 class="border-bottom pb-2">상품 문의</h3>
-				            </div>
-				        </div>
-				        <div class="row mb-3">
-				            <div class="col-12">
-				                <div class="alert alert-info" role="alert">
-				                    <h5 class="alert-heading">
-				                        <i class="bi bi-info-circle me-2"></i>
-				                        문의 안내사항
-				                    </h5>
-				                    <ul class="mb-0">
-				                        <li>상품과 관련 없는 문의나 욕설, 비방 내용은 답변이 거부될 수 있습니다.</li>
-				                        <li>개인정보가 포함된 문의는 비밀글로 작성해 주세요.</li>
-				                        <li>답변은 영업일 기준 2~3일 내에 등록됩니다.</li>
-				                    </ul>
-				                </div>
-				            </div>
-				        </div>
-				        <div class="row mb-4" style="padding: 0;">
-				            <div class="col-12 text-end">
-				                <button id="showQnaForm" class="btn btn-outline-dark rounded-pill" data-bs-toggle="modal" data-bs-target="#qnaModal">
-				                    <i class="bi bi-pencil-square me-2"></i>문의하기
-				                </button>
-				            </div>
-				        </div>
-				        <div class="row">
-				            <div class="col-12">
-				                <div id="qnaList" class="list-question border p-3 rounded">
-				                    <!-- 상품문의 리스트 -->
-				                </div>
-				            </div>
-				        </div>
-				    </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="review-list border p-3 rounded">
+                    <!-- 리뷰 예시 -->
+                    <div class="review-item border-bottom pb-3 mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <img src="https://via.placeholder.com/40" alt="User" class="rounded-circle me-2">
+                            <strong>진태만두</strong>
+                            <div class="stars ms-auto">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                            </div>
+                        </div>
+                        <p class="mb-2">2024.06.13 · 새근새근 구매</p>
+                        <div class="review-content">
+                            <p>오예 ...</p>
+                            <img src="https://via.placeholder.com/200x200" alt="Review Image" class="img-fluid mb-2">
+                        </div>
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill">
+                            <i class="bi bi-hand-thumbs-up me-1"></i>도움이 돼요
+                        </button>
+                    </div>
+                    <!-- 추가 리뷰 나올 곳 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ <!-- 상품문의 탭 내용 -->
+	<div class="tab-pane fade mb-4" id="qna" role="tabpanel" aria-labelledby="qna-tab">
+	    <div class="container">
+	        <div class="row mb-4">
+	            <div class="col-12">
+	                <h3 class="border-bottom pb-2">상품 문의</h3>
+	            </div>
+	        </div>
+	        <div class="row mb-3">
+	            <div class="col-12">
+	                <div class="alert alert-info" role="alert">
+	                    <h5 class="alert-heading">
+	                        <i class="bi bi-info-circle me-2"></i>
+	                        문의 안내사항
+	                    </h5>
+	                    <ul class="mb-0">
+	                        <li>상품과 관련 없는 문의나 욕설, 비방 내용은 답변이 거부될 수 있습니다.</li>
+	                        <li>개인정보가 포함된 문의는 비밀글로 작성해 주세요.</li>
+	                        <li>답변은 영업일 기준 2~3일 내에 등록됩니다.</li>
+	                    </ul>
+	                </div>
+	            </div>
+	        </div>
+			<div class="row">
+				<div class="col-12">
+					<div id="qnaList" class="list-question border p-3 rounded">
+						<!-- 상품문의 리스트 -->
+					</div>
 				</div>
+			</div>
+			<div class="row mb-4" style="padding: 0;">
+				<div class="col-12 text-end">
+					<button id="showQnaForm"
+						class="btn btn-outline-dark rounded-pill"
+						data-bs-toggle="modal" data-bs-target="#qnaModal">
+						<i class="bi bi-pencil-square me-2"></i>문의하기
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
                 <!-- 배송/환불 탭 내용 -->
                 <div class="tab-pane fade mb-4" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
-                    <h2>배송/교환/환불</h2>
+                    <h2 style="padding-bottom: 30px;">배송/교환/환불</h2>
 
                     <div class="policy-card">
                         <h5><i class="bi bi-truck"></i> 배송</h5>
@@ -469,7 +502,7 @@
 <div id="scrollOptionArea" class="scroll-option-area">
   <h6 class="mb-2" id="scrollProductName">${dto.productName}</h6>
   <p class="mb-2">가격: <span id="scrollProductPrice"><fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100)}" pattern="#,###원" /></span></p>
-  
+
   <c:choose>
     <c:when test="${dto.optionCount == 0}">
       <p>단품</p>

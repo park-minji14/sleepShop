@@ -59,7 +59,7 @@ ORDER BY q.INQUIRYNUM DESC
 OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 </select>
 
-<!-- 특정 사용자의 질문 갯수 답변 유무에 따른 필터링 -->
+<!-- 5.특정 사용자의 질문 갯수 답변 유무에 따른 필터링 -->
 <select id="dataCount2" parameterType="map" resultType="Integer">
     SELECT NVL(COUNT(*), 0)
     FROM PRODUCT_INQUIRY
@@ -79,7 +79,7 @@ OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 </select>
 
 <!-- 사용자의 질문 목록을 가져오는 쿼리 -->
-<!-- 특정 사용자의 질문만 가져오고, mode에 따라 답변이 있는지 없는지 필터링 -->
+<!-- 6.특정 사용자의 질문만 가져오고, mode에 따라 답변이 있는지 없는지 필터링 -->
 <!-- 최신 질문부터 정렬하고 페이징 처리 -->
 <select id="listQuestion2" parameterType="map" resultType="com.sgsg.dra.domain.Question">
     SELECT q.INQUIRYNUM, q.USERID, m.USERNAME, q.SECRET, q.QUESTION, q.ANSWER, 

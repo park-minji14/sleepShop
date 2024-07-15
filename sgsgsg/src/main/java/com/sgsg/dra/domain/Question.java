@@ -83,12 +83,10 @@ public class Question {
 	public void setSecret(int secret) {
 		this.secret = secret;
 	}
-	public String getQuestion() {
-		 System.out.println("Getting question: " + question);
+	public String getQuestion() {	 
 		return question;
 	}
 	public void setQuestion(String question) {
-		 System.out.println("Setting question: " + question);
 		this.question = question;
 	}
 	public String getAnswer() {
