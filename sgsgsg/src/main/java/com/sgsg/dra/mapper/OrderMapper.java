@@ -10,7 +10,7 @@ import com.sgsg.dra.domain.Product;
 import com.sgsg.dra.domain.UserPoint;
 
 public interface OrderMapper {
-	public long productOrderNum() throws SQLException;
+	public String findByMaxOrderNumber();
 	public void insertOrder(Order dto) throws SQLException;
 	public void insertOrderDetail(Order dto) throws SQLException;
 	public void insertPayDetail(Order dto) throws SQLException;

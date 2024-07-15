@@ -2,8 +2,10 @@ package com.sgsg.dra.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,14 +22,46 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderMapper mapper;
 	
+	private static AtomicLong count = new AtomicLong(0);
+	
 	@Override
-	public long productOrderNum() throws Exception {
-		long result=0;
+	public String productOrderNumber() {
+		// 상품 주문 번호 생성
+		String result = "";
+		
 		try {
-			result = mapper.productOrderNum();
+			Calendar cal = Calendar.getInstance();
+			String y =String.format("%04d", cal.get(Calendar.YEAR));
+			String m = String.format("%02d", (cal.get(Calendar.MONTH) + 1));
+			String d = String.format("%03d", cal.get(Calendar.DATE) * 7);
+			
+			String preNumber = y + m + d;
+			String savedPreNumber = "0";
+			long savedLastNumber = 0;
+			String maxOrderNumber = mapper.findByMaxOrderNumber();
+			if(maxOrderNumber != null && maxOrderNumber.length() > 9) {
+				savedPreNumber = maxOrderNumber.substring(0, 9);
+				savedLastNumber = Long.parseLong(maxOrderNumber.substring(9));
+			}
+			
+			long lastNumber = 1;
+			if(! preNumber.equals(savedPreNumber)) {
+				count.set(0);
+				lastNumber = count.incrementAndGet();
+			} else {
+				lastNumber = count.incrementAndGet();
+				
+				if( savedLastNumber >= lastNumber )  {
+					count.set(savedLastNumber);
+					lastNumber = count.incrementAndGet();
+				}
+			}
+			
+			result = preNumber + String.format("%09d", lastNumber);
+			
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
+		
 		return result;
 	}
 

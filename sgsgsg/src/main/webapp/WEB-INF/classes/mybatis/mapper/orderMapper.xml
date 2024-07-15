@@ -3,20 +3,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sgsg.dra.mapper.OrderMapper">
 
-	<!-- 주문시 시퀀스 보존용 -->
-	<select id="productOrderNum" resultType="Long">
-		SELECT productOrder_seq.nextval FROM dual
+	
+	<select id="findByMaxOrderNumber" resultType="String">
+		SELECT orderNum
+		FROM productOrder
+		ORDER BY orderDate DESC
+		FETCH FIRST 1 ROWS ONLY
 	</select>
 	
 	<!-- 주문 추가 -->
 	<insert id="insertOrder" parameterType="map">
 		INSERT INTO PRODUCTORDER(ORDERNUM, USERID, ISSUE_ID, ORDERDATE, TOTALMONEY, USEDSAVED,
 			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENTNAME,
-			TEL, ZIP, ADDR1, ADDR2, DESTMEMO)
+			TEL, ZIP, ADDR1, ADDR2, DESTMEMO, PRODUCTORDERNAME)
 		VALUES (#{orderNum}, #{userId}, #{issue_id, jdbcType=VARCHAR}, sysdate,
 			#{totalMoney},  #{usedSaved}, #{deliveryCharge}, #{payment}, #{orderState}, sysdate,
 			#{cancelAmount, jdbcType=VARCHAR}, #{recipientName}, #{tel}, #{zip}, #{addr1}, #{addr2},
-			#{destMemo})
+			#{destMemo}, #{productOrderName})
 	</insert>
 	
 	<!-- 결제 내역 등록 -->
@@ -42,7 +45,7 @@
 	<!-- 사용자의 모든 주문 조회 -->
 	<select id="selectOrder" parameterType="String" resultType="com.sgsg.dra.domain.Order">
 		select ORDERNUM, USERID, ISSUE_ID, ORDERDATE, TOTALMONEY, USEDSAVED,
-			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENT,
+			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENTNAME,
 			TEL, ZIP, ADDR1, ADDR2, DESTMEMO
             from PRODUCTORDER
             where userId = #{userId};
@@ -50,35 +53,71 @@
 	
 	<!-- 재고번호로 상품 찾기, 장바구니에서 구매하는 경우 장바구니 순 정렬 -->
 	<select id="findByStockNum" parameterType="map" resultType="com.sgsg.dra.domain.Product">
-		SELECT s.STOCKNUM, s.PRODUCTNUM, s.TOTALSTOCK, s.DETAILNUM, s.DETAILNUM2,
-		    p.PRODUCTNAME, p.PRICE, p.DISCOUNTRATE, p.SAVEDMONEY, p.DELIVERY, p.OPTIONCOUNT,
-		    p.THUMBNAIL, o1.OPTIONNAME, d1.OPTIONVALUE, d1.OPTIONNUM,
-		    o1.OPTIONNAME AS OPTIONNAME2, d2.OPTIONVALUE AS OPTIONVALUE2, d2.OPTIONNUM AS OPTIONNUM2
-		    <if test="mode == 'cart'">
-			    , to_char(c.reg_date, 'yyyy-mm-dd hh24:mi:ss') reg_date
-			</if>
-		FROM PRODUCTSTOCK s
-		JOIN PRODUCT p on s.PRODUCTNUM = p.PRODUCTNUM
-		LEFT OUTER JOIN OPTIONDETAIL d1 ON s.DETAILNUM = d1.DETAILNUM
-		LEFT OUTER JOIN OPTIONDETAIL d2 on s.DETAILNUM2 = d2.DETAILNUM
-		LEFT OUTER JOIN PRODUCT_OPTION o1 on d1.OPTIONNUM = o1.OPTIONNUM
-		LEFT OUTER JOIN PRODUCT_OPTION o2 on d2.OPTIONNUM = o2.OPTIONNUM
 		<if test="mode == 'cart'">
-			LEFT OUTER JOIN CART_ITEM c ON c.USERID = #{userId}
-		</if>
-		WHERE p.PRODUCTSHOW=1 AND s.STOCKNUM IN 
+			SELECT c.QTY, to_char(c.REG_DATE, 'yyyy-mm-dd hh24:mi:ss') AS CART_ITEM_REG_DATE,
+			s.STOCKNUM, s.TOTALSTOCK,
+			p.PRODUCTNUM, p.CATEGORYNUM, p.PRODUCTNAME,
+			p.CLASSIFY, p.PRICE, p.DISCOUNTRATE, p.SAVEDMONEY,
+			p.DELIVERY, p.OPTIONCOUNT, p.THUMBNAIL, p.PRODUCTSHOW,
+			p.REG_DATE AS PRODUCT_REG_DATE, p.UPDATE_DATE,
+			LISTAGG(d1.OPTIONVALUE, ', ') WITHIN GROUP (ORDER BY d1.DETAILNUM) AS OPTIONVALUE,
+			d1.OPTIONNAME AS OPTIONNAME, d1.DETAILNUM AS DETAILNUM, d1.OPTIONNUM AS OPTIONNUM,
+			LISTAGG(d2.OPTIONVALUE, ', ') WITHIN GROUP (ORDER BY d2.DETAILNUM) AS OPTIONVALUE2,
+			d2.OPTIONNAME AS OPTIONNAME2, d2.DETAILNUM AS DETAILNUM2, d2.OPTIONNUM AS OPTIONNUM2
+		FROM CART_ITEM c
+		JOIN PRODUCTSTOCK s ON c.STOCKNUM = s.STOCKNUM
+		JOIN (
+			SELECT p1.PRODUCTNUM, p1.CATEGORYNUM, p1.PRODUCTNAME,
+				p1.CLASSIFY, p1.PRICE, p1.DISCOUNTRATE, p1.SAVEDMONEY,
+				p1.DELIVERY, p1.OPTIONCOUNT, p1.THUMBNAIL, p1.PRODUCTSHOW,
+				p1.REG_DATE, p1.UPDATE_DATE
+			FROM PRODUCT p1
+		) p ON s.PRODUCTNUM = p.PRODUCTNUM
+		LEFT OUTER JOIN (
+			SELECT d1.DETAILNUM, d1.OPTIONVALUE, o1.OPTIONNUM, o1.OPTIONNAME
+			FROM optionDetail d1
+			JOIN PRODUCT_OPTION o1 ON d1.OPTIONNUM = o1.OPTIONNUM
+		) d1 ON s.detailNum = d1.DETAILNUM
+		LEFT OUTER JOIN (
+			SELECT d2.DETAILNUM, d2.OPTIONVALUE, o2.OPTIONNUM, o2.OPTIONNAME
+			FROM optionDetail d2
+			JOIN PRODUCT_OPTION o2 ON d2.OPTIONNUM = o2.OPTIONNUM
+		) d2 ON s.detailNum2 = d2.DETAILNUM
+		WHERE c.USERID = #{userId} AND p.PRODUCTSHOW=1 AND c.STOCKNUM IN 
 			<foreach collection="stockNum" item="num" open="(" separator="," close=")">
 				#{num}
 			</foreach>
-			<if test="mode == 'cart'">
-				ORDER BY c.REG_DATE DESC
-			</if>
+		GROUP BY c.QTY, c.REG_DATE,
+			s.STOCKNUM, s.TOTALSTOCK,
+			p.PRODUCTNUM, p.CATEGORYNUM, p.PRODUCTNAME,
+			p.CLASSIFY, p.PRICE, p.DISCOUNTRATE, p.SAVEDMONEY,
+			p.DELIVERY, p.OPTIONCOUNT, p.THUMBNAIL, p.PRODUCTSHOW,
+			p.REG_DATE, p.UPDATE_DATE, d1.OPTIONNAME, d2.OPTIONNAME,
+			d1.DETAILNUM, d2.DETAILNUM, d1.OPTIONNUM, d2.OPTIONNUM
+		ORDER BY c.REG_DATE DESC
+		</if>
+		<if test="mode != 'cart'">
+			SELECT s.STOCKNUM, s.PRODUCTNUM, s.TOTALSTOCK, s.DETAILNUM, s.DETAILNUM2,
+			    p.PRODUCTNAME, p.PRICE, p.DISCOUNTRATE, p.SAVEDMONEY, p.DELIVERY, p.OPTIONCOUNT,
+			    p.THUMBNAIL, o1.OPTIONNAME, d1.OPTIONVALUE, d1.OPTIONNUM,
+			    o2.OPTIONNAME AS OPTIONNAME2, d2.OPTIONVALUE AS OPTIONVALUE2, d2.OPTIONNUM AS OPTIONNUM2
+			FROM PRODUCTSTOCK s
+			JOIN PRODUCT p on s.PRODUCTNUM = p.PRODUCTNUM
+			LEFT OUTER JOIN OPTIONDETAIL d1 ON s.DETAILNUM = d1.DETAILNUM
+			LEFT OUTER JOIN OPTIONDETAIL d2 on s.DETAILNUM2 = d2.DETAILNUM
+			LEFT OUTER JOIN PRODUCT_OPTION o1 on d1.OPTIONNUM = o1.OPTIONNUM
+			LEFT OUTER JOIN PRODUCT_OPTION o2 on d2.OPTIONNUM = o2.OPTIONNUM
+			WHERE p.PRODUCTSHOW=1 AND s.STOCKNUM IN 
+				<foreach collection="stockNum" item="num" open="(" separator="," close=")">
+					#{num}
+				</foreach>
+		</if>
 	</select>
 	
 	<!-- 포인트 사용 -->
 	<insert id="insertUserPoint" parameterType="com.sgsg.dra.domain.UserPoint">
 		INSERT INTO POINT_HISTORY(NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, USERID, ORDERNUM)
-			values(POINT_HISTORY_seq.nextval, ${change_points}, #{reason}, sysdate, #{remain_points}, #{userId}, #{orderNum, jdbcType=NUMBER})
+			values(POINT_HISTORY_seq.nextval, ${change_points}, #{reason}, sysdate, #{remain_points}, #{userId}, #{orderNum, jdbcType=INTEGER})
 	</insert>
 	
 	<!-- 마지막 포인트 조회 -->

@@ -9,7 +9,7 @@ import com.sgsg.dra.domain.Product;
 import com.sgsg.dra.domain.UserPoint;
 
 public interface OrderService {
-	public long productOrderNum() throws Exception;
+	public String productOrderNumber();
 	public void insertOrder(Order dto) throws Exception;
 	
 	public List<Product> findByStockNum(Map<String, Object> map) throws Exception;

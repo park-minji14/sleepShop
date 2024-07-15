@@ -272,7 +272,7 @@ $(function() {
 		
 		let num = $(this).closest('.cart-item').find('input[name="stockNum"]').val();
 		let qty = $(this).closest('.cart-item').find('input[name="qty"]').val();
-		let query = "stockNum="+num+"&qty="+qty;
+		let query = "stockNum="+num+"&qty="+qty+"&mode=item";
 		
 		location.href = url+"?"+query;
 	});

@@ -50,7 +50,7 @@ public class OrderController {
 		
 		try {
 			Delivery delivery = orderService.findByDest(info.getUserId());
-			long orderNum = orderService.productOrderNum();
+			String orderNum = orderService.productOrderNumber();
 			String productOrderName = "";
 			int totalProduct = 0; // 상품합
 			int deliveryCharge = 0; // 배송비
@@ -130,15 +130,17 @@ public class OrderController {
 			
 			orderService.insertOrder(dto);
 			
-			if(mode.equals("cart")) {
+			if(mode.equals("cart") || mode.equals("item")) {
 				// 구매 상품에 대한 장바구니 비우기
 				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("gubun", "list");
+				String gubun = mode.equals("cart") ? "list" : "item";
+				
+				map.put("gubun", gubun);
 				map.put("userId", info.getUserId());
 				map.put("stockNum", dto.getStockNums());
 				
 				cartService.deleteCart(map);
-			}
+			} 
 			
 			String p = String.format("%,d", dto.getPayment());
 			

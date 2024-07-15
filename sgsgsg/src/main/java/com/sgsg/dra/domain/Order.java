@@ -17,7 +17,7 @@ public class Order {
 	private String userId;
 	private String userName;
 
-	private long orderNum;
+	private String orderNum;
 	private long orderDetailNum;
 	private String orderDate;
 	private int usedSaved;
@@ -53,8 +53,8 @@ public class Order {
 	private List<String> optionNames;
 	private List<String> optionNames2;
 
+	private String productOrderName;
 	private List<Long> productNums;
-
 	private List<Long> stockNums;
 	private List<Long> detailNums;
 	private List<Long> detailNums2;
@@ -66,7 +66,7 @@ public class Order {
 	private List<Integer> salePrices;
 	private List<Integer> savedMoneys;
 	
-	private Long cartNum;
+	private long cartNum;
 
 	// 배송지 정보
 	private String recipientName;
@@ -155,10 +155,10 @@ public class Order {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	public long getOrderNum() {
+	public String getOrderNum() {
 		return orderNum;
 	}
-	public void setOrderNum(long orderNum) {
+	public void setOrderNum(String orderNum) {
 		this.orderNum = orderNum;
 	}
 	public long getOrderDetailNum() {
@@ -287,16 +287,16 @@ public class Order {
 	public void setTotalStock(int totalStock) {
 		this.totalStock = totalStock;
 	}
-	public Long getDetailNum() {
+	public long getDetailNum() {
 		return detailNum;
 	}
-	public void setDetailNum(Long detailNum) {
+	public void setDetailNum(long detailNum) {
 		this.detailNum = detailNum;
 	}
-	public Long getDetailNum2() {
+	public long getDetailNum2() {
 		return detailNum2;
 	}
-	public void setDetailNum2(Long detailNum2) {
+	public void setDetailNum2(long detailNum2) {
 		this.detailNum2 = detailNum2;
 	}
 	public String getOptionValue() {
@@ -334,6 +334,12 @@ public class Order {
 	}
 	public void setOptionNames2(List<String> optionNames2) {
 		this.optionNames2 = optionNames2;
+	}
+	public String getProductOrderName() {
+		return productOrderName;
+	}
+	public void setProductOrderName(String productOrderName) {
+		this.productOrderName = productOrderName;
 	}
 	public List<Long> getProductNums() {
 		return productNums;
@@ -401,10 +407,10 @@ public class Order {
 	public void setSavedMoneys(List<Integer> savedMoneys) {
 		this.savedMoneys = savedMoneys;
 	}
-	public Long getCartNum() {
+	public long getCartNum() {
 		return cartNum;
 	}
-	public void setCartNum(Long cartNum) {
+	public void setCartNum(long cartNum) {
 		this.cartNum = cartNum;
 	}
 	public String getRecipientName() {

@@ -49,6 +49,7 @@ function sendOk() {
 		return;
 	}
 
+	*/
 	let balance = Number($('.btn-usedSaved').attr('data-balance')) || 0;
 	let usedSaved = Number(f.usedSaved.value);
 
@@ -60,7 +61,6 @@ function sendOk() {
 	// 결제 금액 = 총금액 - 포인트사용금액
 	let p = Number(f.payment.value) - usedSaved;
 	f.payment.value = p;
-	*/
 	// 결제 API에서 응답 받을 파라미터
 	let payMethod = "카드결제"; // 결제유형
 	let cardName = "BC 카드";  // 카드 이름
@@ -188,6 +188,7 @@ function sendOk() {
 							<input type="hidden" name="zip" value="${defaultDest.zip}">
 							<input type="hidden" name="addr1" value="${defaultDest.addr1}">
 							<input type="hidden" name="addr2" value="${defaultDest.addr2}">
+							<input type="hidden" name="productOrderName" value="${productOrderName}">
 							<input type="text" name="destMemo" class="form-control" placeholder="요청사항을 입력합니다." value="${defaultDest.destMemo}">
 						</div>
 					</div>
@@ -330,7 +331,6 @@ $(function() {
 		
 		let payment = Number(f.payment.value) - usedSaved;
 		
-		$('input[name=payment]').val(payment);
 		$('.totalSummary .number').text(payment.toLocaleString());
 		$('.pointUsed .number').text(usedSaved.toLocaleString());
 	});
