@@ -19,6 +19,7 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
     background-color: #fff;
     width: 1100px;
+    position: relative;
 }
 
 
@@ -54,7 +55,29 @@
 }
 
 
- 
+.comment-style {
+	height: 40px;
+	color: #ED4C00; 
+	border: 3px solid #368AFF;  
+	background: #E6FFFF; 
+	border-radius: 20px;
+}
+
+
+.adopted-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #35c5f0;
+    color: white;
+    border: 3px solid #35c5f0;
+    border-radius: 30px;
+    padding: 5px 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
 
 
 </style>
@@ -70,40 +93,51 @@
     }
     
     
-    function toggleAdoptForm(answer_num) {
-        var adoptForm = document.getElementById("adoptForm_" + answer_num);
-        if (adoptForm) {
-            if (adoptForm.style.display === "block") {
-                adoptForm.style.display = "none";
-            } else {
-                adoptForm.style.display = "block";
-            }
+    function toggleForm(answer_num) {
+        var form = document.getElementById("form_" + answer_num);
+        if (form) {
+            form.style.display = (form.style.display === "block") ? "none" : "block";
         } else {
-            console.error('Form not found:', adoptForm);
+            console.error('Form not found:', form);
         }
     }
-    
-    
-    function submitAdoptForm(answer_num) {
-        var comment = document.getElementById("content2_" + answer_num).value;
-        if (comment.trim() === "") {
+
+    function submitForm(answer_num) {
+        var textarea = document.getElementById("textarea_" + answer_num);
+        if (textarea.value.trim() === "") {
             alert("코멘트를 입력해주세요.");
             return;
         }
+        
+        if (!confirm("이 답변을 채택하시겠습니까?")) {
+            return;
+        }
 
-        var form = document.getElementById("adoptForm_" + answer_num);
-        console.log(form);  // 확인용 로그
-
+        var form = document.getElementById("submitForm_" + answer_num);
         if (form && form.tagName === 'FORM') {
-            // 폼 제출을 시도하는 대신 폼의 내용을 로깅하여 확인합니다.
-            console.log('Submitting form:', form);
-            form.submit();  // HTMLFormElement.prototype.submit.call(form); 대신 form.submit() 사용
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", form.action, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("comment_" + answer_num).textContent = textarea.value;
+                    form.style.display = "none";
+                    
+                    var adoptButtons = document.getElementsByClassName('adopt-btn');
+                    for (var i = 0; i < adoptButtons.length; i++) {
+                        adoptButtons[i].style.display = 'none';
+                    }
+                }
+            };
+
+            var formData = new FormData(form);
+            var queryString = new URLSearchParams(formData).toString();
+            xhr.send(queryString);
         } else { 
             console.error('Form not found or not a form element:', form);
         }
-    } 
-    
-    
+    }
+
     window.onload = function() {
         var adoptedComments = document.querySelectorAll('.adopted-comment');
         adoptedComments.forEach(function(comment) {
@@ -113,6 +147,16 @@
                 adoptForm.style.display = 'none';
             }
         });
+        
+        
+        <c:forEach var="adopted" items="${adoptedAnswers}">
+        document.getElementById("comment_${adopted.answer_num}").textContent = "${adopted.content2}";
+        var adoptButtons = document.getElementsByClassName('adopt-btn');
+        for (var i = 0; i < adoptButtons.length; i++) {
+            adoptButtons[i].style.display = 'none';
+        }
+    	</c:forEach>
+    	
     };
     </script> 
 </c:if>
@@ -132,12 +176,17 @@
 					<div class='col-1'><i class='bi bi-person-circle text-muted icon' style="font-size: 30px;"></i></div>
 					<div class='col-auto align-self-center'>
 						<div class='name' style="font-size: 25px;">${vo.userId}
-							<c:if test="${vo.pickup != 1 && sessionScope.member.membership > 90}">
-                                <button type="button" class="btn btn-like" onclick="toggleAdoptForm(${vo.answer_num});">채택하기</button>
-                            </c:if>
-                            <!-- <c:if test="${vo.pickup == 1}"> -->
-                                <span class="adopted-comment">${vo.content2}</span>
-                            <!-- </c:if> -->
+						    <c:if test="${vo.pickup != 1 && sessionScope.member.membership > 90}">
+						        <button type="submit" class="btn btn-like adopt-btn" onclick="toggleForm(${vo.answer_num});">채택하기</button>
+						    </c:if>
+						    
+						    <c:if test="${vo.pickup == 1}">
+							    <span class="adopted-comment comment-style" id="comment_${vo.answer_num}" style="font-size: 22px;">
+							    	<span style="color: #6F6F6F;">&nbsp;👑 [질문자의 인사]</span>  
+							    	<span>&nbsp;${vo.content2}&nbsp;</span>
+							    </span>  
+							    <span class="text-end adopted-badge">채택</span>
+						    </c:if>
 						</div>
 						<div class='date'>${vo.created_date}</div>
 						<div class="">
@@ -168,16 +217,16 @@
 			</div>
 			
 			
-			<div id="adoptForm_${vo.answer_num}" class="adopt-form" style="display:none;">
-                <form id="adoptForm_${vo.answer_num}" action="${pageContext.request.contextPath}/clinic/likeAnswer" method="post">
-                    <input type="hidden" name="answer_num" value="${vo.answer_num}">
-                    <input type="hidden" name="question_id" value="${vo.question_id}">
-                    <textarea id="content2_${vo.answer_num}" name="content2" class="form-control m-2" placeholder="답변자에게 감사인사를 전하세요!"></textarea>
-                    <div class='text-end pe-2 pb-1'>
-                        <button type='button' class='btn btn-light' onclick="submitAdoptForm(${vo.answer_num});">등록하기</button>
-                    </div> 
-                </form>
-            </div>
+			<div id="form_${vo.answer_num}" class="adopt-form" style="display:none;">
+			    <form id="submitForm_${vo.answer_num}" action="${pageContext.request.contextPath}/clinic/insertClinicAnswerComment" method="post">
+			        <input type="hidden" name="answer_num" value="${vo.answer_num}">
+			        <input type="hidden" name="question_id" value="${vo.question_id}">
+			        <textarea id="textarea_${vo.answer_num}" name="content2" class="form-control m-2" placeholder="답변자에게 감사인사를 전하세요!"></textarea>
+			        <div class='text-end pe-2 pb-1'>
+			            <button type='button' class='btn btn-light' onclick="submitForm(${vo.answer_num});">등록하기</button>
+			        </div> 
+			    </form> 
+			</div>
 			
 			<br><br>
 			

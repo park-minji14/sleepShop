@@ -142,7 +142,6 @@
 
 
 </style>
-<!-- 
 <c:if test="${sessionScope.member.membership>90 || dto.userId == sessionScope.member.userId}">
 	<script type="text/javascript">
 	function deleteClinic() {
@@ -153,7 +152,7 @@
 		}
 	}
 	</script>
-</c:if> -->
+</c:if>
 
 
 <div class="container">

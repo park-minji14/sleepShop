@@ -26,7 +26,7 @@ public interface ClinicService {
 	public int ClinicAnswerCount(Map<String, Object> map);
 	
 	public void insertClinicAnswerComment(ClinicAnswer dto) throws Exception;
-	public List<ClinicAnswer> listClinicAnswerComment(Map<String, Object> map);
+	public List<ClinicAnswer> listClinicAnswerComment(long num) throws Exception;
 	public int ClinicAnswerCommentCount(Map<String, Object> map);
 	
 	

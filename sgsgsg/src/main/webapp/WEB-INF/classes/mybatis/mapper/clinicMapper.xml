@@ -154,9 +154,10 @@
 	
 	<!-- 답변 리스트 -->
 	<select id="listClinicAnswer" parameterType="map" resultType="com.sgsg.dra.domain.ClinicAnswer">
-	    SELECT a.answer_num, a.userId, a.question_id, a.content, a.created_date
+	    SELECT a.answer_num, a.userId, a.question_id, a.content, a.created_date, l.pickup, l.content2
 	    FROM sleep_clinic_answer a
 	    JOIN member1 m ON a.userId = m.userId
+	    LEFT JOIN sleep_clinic_answer_like l ON a.answer_num = l.answer_num
 	    WHERE a.question_id = #{question_id}
 	    ORDER BY a.answer_num DESC
 	    OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
@@ -172,34 +173,25 @@
 	
 	
 	<!-- 답변 채택 등록 -->
-    <insert id="insertClinicAnswerComment" parameterType="map">
+    <insert id="insertClinicAnswerComment" parameterType="com.sgsg.dra.domain.ClinicAnswer">
         INSERT INTO sleep_clinic_answer_like (answer_num, pickup, rated_date, content2)
         VALUES (#{answer_num}, 1, SYSDATE, #{content2})
     </insert>
     
     
-    <!-- 질문의 채택된 답변 여부 확인 -->
-    <select id="findLikedAnswer" parameterType="long" resultType="com.sgsg.dra.domain.ClinicAnswer">
-        SELECT a.answer_num, a.question_id, a.userId, a.content, a.created_date, l.content2, l.pickup
-        FROM sleep_clinic_answer a
-        LEFT JOIN sleep_clinic_answer_like l ON a.answer_num = l.answer_num
-        WHERE a.question_id = #{question_id} AND l.pickup = 1
-    </select>
-    
     
     
     <!-- 답변에 대한 채택 리스트 -->
-    
-	<select id="listClinicAnswerComment" parameterType="map"
+	<select id="listClinicAnswerComment" parameterType="long"
 			resultType="com.sgsg.dra.domain.ClinicAnswer">
-		select answer_num, question_id, a.userId, content, rated_date,
-			l.content2,
+		select a.answer_num, a.question_id, a.userId, a.content,
+			l.content2, l.pickup
 		from sleep_clinic_answer a
 		join member1 m on a.userId = m.userId
 		LEFT JOIN sleep_clinic_answer_like l ON a.answer_num = l.answer_num
-		where l.content2 = #{content2}
-		order by answer_num desc
+		WHERE a.question_id = #{question_id} AND l.pickup = 1
 	</select>
+	
 
 
 </mapper>

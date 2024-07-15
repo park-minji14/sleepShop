@@ -29,7 +29,7 @@ public interface ClinicMapper {
 	public void deleteClinicAnswer(Map<String, Object> map) throws SQLException;
 	
 	public void insertClinicAnswerComment(ClinicAnswer dto) throws SQLException;
-	public List<ClinicAnswer> listClinicAnswerComment(Map<String, Object> map);
+	public List<ClinicAnswer> listClinicAnswerComment(long num) throws SQLException;
 	public int ClinicAnswerCommentCount(Map<String, Object> map);
 	
 	

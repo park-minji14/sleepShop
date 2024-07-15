@@ -415,12 +415,14 @@ public class ClinicController {
 		map.put("size", size);
 		
 		List<ClinicAnswer> list = service.listClinicAnswer(map);
+		List<ClinicAnswer> adoptedAnswers = service.listClinicAnswerComment(num);
 		
 		// AJAX용 페이징
 		String paging = myUtil.pagingMethod(current_page, total_page, "listpage");
 		
 		// 포워딩할 JSP로 넘길 모델(데이터)
 		model.addAttribute("listanswer", list);
+		model.addAttribute("adoptedAnswers", adoptedAnswers);
 		model.addAttribute("pageNo", current_page);
 		model.addAttribute("answerCount", dataCount);
 		model.addAttribute("total_page", total_page);
@@ -449,9 +451,34 @@ public class ClinicController {
 
 	    return "redirect:/clinic/article?num=" + question_id + "&page=" + page;
 	}
+	
+	
+	@PostMapping("insertClinicAnswerComment")
+	@ResponseBody
+	public Map<String, Object> insertClinicAnswerComment(
+			ClinicAnswer dto,
+			HttpSession session) throws Exception {
+		String state = "true";
+		
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		try {
+			dto.setUserId(info.getUserId());
+			service.insertClinicAnswerComment(dto);
+		} catch (Exception e) {
+			state = "false";
+		}
+		
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state", state);
+		return model;
+		
+	}
+}
 		
 	
-	
+	/*
 	@PostMapping("likeAnswer")
 	public String insertClinicAnswerComment(@RequestParam long answer_num,
 	                                        @RequestParam long question_id,
@@ -471,7 +498,7 @@ public class ClinicController {
 
 	
 	
-	
+	/*
 	 @GetMapping("listanswercomment")
 	    public String listClinicAnswerComment(@RequestParam long num,
 	                                   @RequestParam(value = "pageNo", defaultValue = "1") int current_page,
@@ -519,6 +546,7 @@ public class ClinicController {
 	        return "clinic/listanswercomment";
 	    }
 }
+*/
 	
 	
 
