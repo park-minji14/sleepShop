@@ -15,7 +15,7 @@
 	border: 5px solid #35c5f0; 
     border-radius: 20px;
     padding: 10px;
-    margin: 30px 0; 
+    margin: 10px 0; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
     background-color: #fff;
     width: 1100px;
@@ -27,7 +27,7 @@
 	border: 1px solid #ddd;  
     border-radius: 20px;
     padding: 10px;
-    margin: 30px 0; 
+    margin: 10px 0; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
     background-color: #fff;
     width: 1100px;
@@ -115,6 +115,7 @@
 
         var form = document.getElementById("submitForm_" + answer_num);
         if (form && form.tagName === 'FORM') {
+        	location.reload();
             var xhr = new XMLHttpRequest();
             xhr.open("POST", form.action, true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
