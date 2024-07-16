@@ -8,7 +8,7 @@
             <a class="nav-link active" href="#">고객센터</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/supportManage/list">1:1 문의</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/supportManage/supportList">1:1 문의</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">상품문의</a>

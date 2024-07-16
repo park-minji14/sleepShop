@@ -4,5 +4,5 @@
 
 <div class="unique-main-content">
     <!-- 메인 콘텐츠 내용 -->
-	고객센터 화면이에요
+	1:1문의 메인이 될 화면이에요.
 </div>
