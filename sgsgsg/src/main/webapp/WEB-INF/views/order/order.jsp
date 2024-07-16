@@ -32,6 +32,11 @@
 .item-summary {
 	color: rgb(107, 109, 110);
 }
+
+input[type="checkbox"]{
+	margin-right: 0;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -168,31 +173,21 @@ function sendOk() {
 				<input type="hidden" name="authNumber" value="">
 				<input type="hidden" name="authDate" value="">
 
-				<div class="p-3 border rounded order_box">
-					<div class="fs-6 fw-semibold border-bottom pb-1">배송지 정보</div>
-					<div class="row ps-2 pt-2">
-						<div class="col-auto pe-2 mt-2">
-							<span class="fw-semibold recipientName">${defaultDest.recipientName}</span>
-							<label class="text-primary">${defaultDest.defaultDest==1? '기본배송지':''}</label>
-							<input type="hidden" name="defaultDest">
-						</div>
-						<div class="col-auto">
-							<button type="button" class="btn border" id="changeDest"> 배송지변경 </button>
-						</div>
+				<div class="p-3 border rounded order_box destInfo">
+					<div class="fs-6 border-bottom pb-1">
+						<span class="fw-semibold">배송지 정보 </span>
+						<span>
+							<input type="radio" name="mainDest" style="display: none;" id="mainDD">
+							<label for="mainDD" class="btn border btn-outline-success"> 기본배송지 </label>
+							<input type="radio" name="mainDest" style="display: none;" id="mainCD">
+							<label for="mainCD" class="btn border btn-outline-primary" id="changeDest">배송지변경</label>
+							<input type="radio" name="mainDest" style="display: none;" id="mainDI">
+							<label for="mainDI" class="btn border btn-outline-warning"> 직접입력 </label>
+						</span>
+						<button type="button" class="btn btn-outline-warning fade" id="directDest">우편번호 검색</button>
 					</div>
-					<div class="ps-2 pt-2">
-						<span class="pt-2 addr1">${defaultDest.addr1}</span>
-						<span class="pt-2 addr2">${defaultDest.addr2}</span>
-						<span class="pt-2 tel" style="display: block;">${defaultDest.tel}</span>
-						<div class="pt-2 w-50">
-							<input type="hidden" name="destinationNum" class="destinationNum" value="${defaultDest.destinationNum}">
-							<input type="hidden" name="recipientName" class="recipientName" value="${defaultDest.recipientName}">
-							<input type="hidden" name="tel" class="tel" value="${defaultDest.tel}">
-							<input type="hidden" name="zip" class="zip" value="${defaultDest.zip}">
-							<input type="hidden" name="addr1" class="addr1" value="${defaultDest.addr1}">
-							<input type="hidden" name="addr2"  class="addr2"value="${defaultDest.addr2}">
-							<input type="text" name="destMemo" class="form-control" placeholder="요청사항을 입력합니다." value="${defaultDest.destMemo}">
-						</div>
+					<div class="ps-2 pt-2 w-50 destBox">
+						
 					</div>
 				</div>
 				
@@ -271,7 +266,7 @@ function sendOk() {
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body pt-1">
-				<div class="modal-order-detail changeDest-list"></div>
+				<div class="changeDest-list"></div>
 			</div>
 			<div class="modal-footer">
 		        <button type="button" class="btn btn-danger">삭제</button>
@@ -280,8 +275,75 @@ function sendOk() {
 		</div>
 	</div>
 </div>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script type="text/javascript">
 $(function() {
+	$('input[name=mainDest]').change(function(e) {
+		let info = $(e.target).closest('.destInfo');
+		
+		let out = '<div class="fw-semibold recipientName">${defaultDest.recipientName}</div>';
+		out += '<span class="mt-2 addr1">${defaultDest.addr1}</span>';
+		out += '(<span class="pt-2 zip">1234</span>)';
+		out += '<div class="pt-2 addr2">${defaultDest.addr2}</div>';
+		out += '<div class="pt-2 tel">${defaultDest.tel}</div>';
+		out += '<input type="text" name="destMemo" class="form-control my-2" placeholder="요청사항을 입력합니다." value="${defaultDest.destMemo}">';
+		out += '<span class="fade pt-2 mainCD">';
+		out += '	<label>';
+		out += '		<input type="checkbox" name="defaultDest" value="1">';
+		out += '		<span>기본 배송지로 변경</span>';
+		out += '	</label>';
+		out += '</span>';
+		out += '<span class="pt-2">';
+		out += '	<input type="hidden" name="recipientName" value="${defaultDest.recipientName}">';
+		out += '	<input type="hidden" name="tel" value="${defaultDest.tel}">';
+		out += '	<input type="hidden" name="zip" value="${defaultDest.zip}">';
+		out += '	<input type="hidden" name="addr1" value="${defaultDest.addr1}">';
+		out += '	<input type="hidden" name="addr2"  value="${defaultDest.addr2}">';
+		out += '</span>';
+		
+		if(e.target.id==="mainDI"){
+			out = '<input class="form-control recipientName" placeholder="이름">';
+			out += '<input class="form-control mt-2 addr1" placeholder="기본주소 (우편번호 검색을 해주세요)" readonly></input>';
+			out += '<input class="form-control mt-2 zip" placeholder="우편번호" readonly>';
+			out += '<input class="form-control mt-2 addr2" placeholder="상세주소">';
+			out += '<input class="form-control mt-2 tel" placeholder="전화번호 (010-1234-5678 형식으로 입력하세요)"></input>';
+			out += '<input type="text" name="destMemo" class="form-control my-2" placeholder="요청사항을 입력합니다">';
+			out += '<span class="fade pt-2 mainCD">';
+			out += '	<label>';
+			out += '		<input type="radio" name="defaultDest" value="1">';
+			out += '		<span>기본 배송지로 변경</span>';
+			out += '	</label>';
+			out += '	<label>';
+			out += '		<input type="radio" name="defaultDest" value="2">';
+			out += '		<span>배송지 등록</span>';
+			out += '	</label>';
+			out += '</span>';
+			out += '<span class="pt-2">';
+			out += '	<input type="hidden" name="recipientName" value="${defaultDest.recipientName}">';
+			out += '	<input type="hidden" name="tel" value="${defaultDest.tel}">';
+			out += '	<input type="hidden" name="zip" value="${defaultDest.zip}">';
+			out += '	<input type="hidden" name="addr1" value="${defaultDest.addr1}">';
+			out += '	<input type="hidden" name="addr2"  value="${defaultDest.addr2}">';
+			out += '</span>';
+		}
+		
+		if(e.target.id==="mainDD"){
+			info.find('.show').removeClass('show');
+			$('.destInfo .destBox').html(out);
+		}
+		if(e.target.id==="mainCD"){
+			//$('#directDest').removeClass('show');
+			info.find('.mainCD').addClass('show');
+		}
+		
+		if(e.target.id==="mainDI"){
+			$('.destInfo .destBox').html(out);
+			info.find('.fade').addClass('show');
+		}
+		
+	});
+	mainDD.click();
+	
 	$('#changeDest').on('click', function() {
 		$('.changeDest-list').load('${pageContext.request.contextPath}/order/allDest');
 		$('#changeDestModal').modal("show");
@@ -290,12 +352,13 @@ $(function() {
 	let modal = document.getElementById('changeDestModal');
 	modal.addEventListener('show.bs.modal', function () {
 		$('.selectDest').click(function() {
-			let dest = $('input[type=radio]:checked');
+			let dest = $('.changeDest-list input[type=radio]:checked');
 			let $tr = dest.closest('tr')
-			if(! dest){
+			if(dest.length !=1){
 				alert('변경할 배송지를 선택해주세요.');
 				return;
 			}
+			
 			$('input[name=destinationNum]').val(dest.attr('data-destnum'));
 			$('.recipientName').val($tr.find('.sRecipientName').text());
 			$('.recipientName').text($tr.find('.sRecipientName').text());
@@ -333,5 +396,38 @@ $(function() {
 	});
 });
 
+document.querySelector('#directDest').addEventListener('click', function(e) {
+	if($(e.target).hasClass('show')){
+		new daum.Postcode(
+			{
+				oncomplete : function(data) {
+					var fullAddr = '';
+					var extraAddr = '';
+					if (data.userSelectedType === 'R') {
+						fullAddr = data.roadAddress;
+					} else {
+						fullAddr = data.jibunAddress;
+					}
+
+					if (data.userSelectedType === 'R') {
+						if (data.bname !== '') {
+							extraAddr += data.bname;
+						}
+						if (data.buildingName !== '') {
+							extraAddr += (extraAddr !== '' ? ', '
+									+ data.buildingName : data.buildingName);
+						}
+						fullAddr += (extraAddr !== '' ? ' (' + extraAddr
+								+ ')' : '');
+					}
+
+					document.getElementsByClassName('zip')[0].value = data.zonecode;
+					document.getElementById('addr1').value = fullAddr;
+
+					document.getElementById('addr2').focus();
+				}
+		}).open();
+	}
+});
 
 </script>

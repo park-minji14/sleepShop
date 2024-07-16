@@ -27,4 +27,10 @@
 		</c:forEach>
 	</tbody>
 </table>
+<script>
+$(document).on('click','table > tbody > tr',function(e){
+    if($(e.target).attr('type') == 'radio'){ return true; }
+    $(this).find('input[type=radio]').prop('checked', 'checked');
+});
+</script>
 					
