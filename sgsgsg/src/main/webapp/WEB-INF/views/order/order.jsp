@@ -177,8 +177,6 @@ function sendOk() {
 					<div class="fs-6 border-bottom pb-1">
 						<span class="fw-semibold">배송지 정보 </span>
 						<span>
-							<input type="radio" name="mainDest" style="display: none;" id="mainDD">
-							<label for="mainDD" class="btn border btn-outline-success"> 기본배송지 </label>
 							<input type="radio" name="mainDest" style="display: none;" id="mainCD">
 							<label for="mainCD" class="btn border btn-outline-primary" id="changeDest">배송지변경</label>
 							<input type="radio" name="mainDest" style="display: none;" id="mainDI">
@@ -282,14 +280,14 @@ $(function() {
 		let info = $(e.target).closest('.destInfo');
 		
 		let out = '<div class="fw-semibold recipientName">${defaultDest.recipientName}</div>';
-		out += '<span class="mt-2 addr1">${defaultDest.addr1}</span>';
-		out += '(<span class="pt-2 zip">1234</span>)';
+		out += '<span class="mt-2 addr1">${defaultDest.addr1} </span>';
+		out += '(<span class="pt-2 zip">${defaultDest.zip}</span>)';
 		out += '<div class="pt-2 addr2">${defaultDest.addr2}</div>';
 		out += '<div class="pt-2 tel">${defaultDest.tel}</div>';
 		out += '<input type="text" name="destMemo" class="form-control my-2" placeholder="요청사항을 입력합니다." value="${defaultDest.destMemo}">';
-		out += '<span class="fade pt-2 mainCD">';
+		out += '<span class="pt-2">';
 		out += '	<label>';
-		out += '		<input type="checkbox" name="defaultDest" value="1">';
+		out += '		<input type="checkbox" name="defaultDest" value="1" ${defaultDest.defaultDest==1? "checked":""}>';
 		out += '		<span>기본 배송지로 변경</span>';
 		out += '	</label>';
 		out += '</span>';
@@ -308,14 +306,14 @@ $(function() {
 			out += '<input class="form-control mt-2 addr2" placeholder="상세주소">';
 			out += '<input class="form-control mt-2 tel" placeholder="전화번호 (010-1234-5678 형식으로 입력하세요)"></input>';
 			out += '<input type="text" name="destMemo" class="form-control my-2" placeholder="요청사항을 입력합니다">';
-			out += '<span class="fade pt-2 mainCD">';
+			out += '<span class="pt-2">';
 			out += '	<label>';
-			out += '		<input type="radio" name="defaultDest" value="1">';
-			out += '		<span>기본 배송지로 변경</span>';
+			out += '		<input type="checkbox" name="insertDest" value="1" onchange="$(\'.destInfo .defaultDest\').prop(\'disabled\', !$(this).is(\':checked\'));">';
+			out += '		<span>배송지 등록</span>';
 			out += '	</label>';
 			out += '	<label>';
-			out += '		<input type="radio" name="defaultDest" value="2">';
-			out += '		<span>배송지 등록</span>';
+			out += '		<input type="checkbox" name="defaultDest" value="1">';
+			out += '		<span>기본 배송지로 변경</span>';
 			out += '	</label>';
 			out += '</span>';
 			out += '<span class="pt-2">';
@@ -327,13 +325,10 @@ $(function() {
 			out += '</span>';
 		}
 		
-		if(e.target.id==="mainDD"){
-			info.find('.show').removeClass('show');
-			$('.destInfo .destBox').html(out);
-		}
+		
 		if(e.target.id==="mainCD"){
 			//$('#directDest').removeClass('show');
-			info.find('.mainCD').addClass('show');
+			$('.destInfo .destBox').html(out);
 		}
 		
 		if(e.target.id==="mainDI"){
@@ -342,7 +337,7 @@ $(function() {
 		}
 		
 	});
-	mainDD.click();
+	mainCD.click();
 	
 	$('#changeDest').on('click', function() {
 		$('.changeDest-list').load('${pageContext.request.contextPath}/order/allDest');
