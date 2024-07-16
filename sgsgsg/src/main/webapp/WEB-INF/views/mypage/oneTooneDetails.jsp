@@ -357,16 +357,8 @@ element.style {
 								<span>
 									<div class="table-content" >
 										<div class="cont">
-											<div class="date">2024-07-12</div>
-											<div class="inquiry">배송문의</div>
-											<div class="subject">혹시 배송 얼마나 걸리나요?</div>
-											<div class="answer">답변완료</div>
-										</div>
-										<div class="cont">
-											<div class="date">2024-07-12</div>
-											<div class="inquiry">배송문의</div>
-											<div class="subject">혹시 배송 얼마나 걸리나요?</div>
-											<div class="answer">답변완료</div>
+											<div class="content">${dto.content}</div>
+											
 										</div>
 									</div>
 								</span>
@@ -390,16 +382,8 @@ element.style {
 								<span>
 									<div class="table-content" >
 										<div class="cont">
-											<div class="date">2024-07-12</div>
-											<div class="inquiry">배송문의</div>
-											<div class="subject">혹시 배송 얼마나 걸리나요?</div>
-											<div class="answer">답변완료</div>
-										</div>
-										<div class="cont">
-											<div class="date">2024-07-12</div>
-											<div class="inquiry">배송문의</div>
-											<div class="subject">혹시 배송 얼마나 걸리나요?</div>
-											<div class="answer">답변완료</div>
+											<div class="content">${dto.response_content}</div>
+											
 										</div>
 									</div>
 								</span>

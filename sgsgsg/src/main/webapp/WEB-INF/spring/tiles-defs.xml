@@ -43,6 +43,7 @@
     </definition>
 
     <!-- 구체적인 페이지 정의 -->
+    <!-- support는 고객센터 -->
     <definition name=".adminLeft.product.*" extends=".adminDefaultLayout">
         <put-attribute name="left" value="/WEB-INF/views/adminLeft/product/productLeft.jsp" />
         <put-attribute name="body" value="/WEB-INF/views/adminLeft/product/{1}.jsp" />

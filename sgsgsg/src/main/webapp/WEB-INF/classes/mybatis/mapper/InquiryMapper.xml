@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgsg.dra.mapper.InquiryMapper">
+	
+	<!-- 글 등록 -->
+	<insert id="insertInquiry"  parameterType="com.sgsg.dra.domain.Inquiry">
+		INSERT INTO inquiry(num, title, userId, content, created_date, category)
+		VALUES (inquiry_seq.NEXTVAL,#{title}, #{userId} , #{content}, SYSDATE, #{category})
+	</insert>
+
+
+	<sql id="where-list">
+		<if test="">
+			( INSTR(subject, #{kwd}) &gt; 0 
+				OR INSTR(content, #{kwd}) &gt; 0 )
+		</if>
+		<if test="schType=='subject'">
+			INSTR(subject, #{kwd}) &gt; 0
+		</if>
+		<if test="schType=='content'">
+			DBMS_LOB.INSTR(content, #{kwd}) &gt; 0 
+		</if>
+		<if test="schType=='userName'">
+			userName=#{kwd}
+		</if>
+		<if test="schType=='userId'">
+			INSTR(i.userId, #{kwd}) = 1
+		</if>
+		<if test="schType=='created_date'">
+			( TO_CHAR(i.created_date, 'YYYY-MM-DD') = #{kwd}
+				OR TO_CHAR(i.created_date, 'YYYYMMDD') = #{kwd} )
+		</if>
+	
+	</sql>
+
+	<!-- 글개수 -->
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM inquiry i
+		JOIN member1 m ON i.userId=m.userId
+		<where>
+			i.userId = #{userId}
+		</where>
+	</select>
+
+
+	<!-- 글리스트 -->
+    <select id="listInquiry" parameterType="map" resultType="com.sgsg.dra.domain.Inquiry">
+		SELECT num, created_date, category, title, response_date, content, response_content
+		FROM inquiry i
+		JOIN member1 m ON i.userId=m.userId
+		<where>
+			i.userId = #{userId}
+		</where>   
+		ORDER BY num DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+	</select>
+
+
+	<!-- 글 보기 -->
+	<select id="findById" resultType="com.sgsg.dra.domain.Inquiry" parameterType="Long">
+		SELECT num, created_date, category, title, response_date, content, response_content, userId, userId2
+		FROM inquiry i
+		JOIN member1 m ON i.userId=m.userId
+		LEFT OUTER JOIN member1 a ON i.userId2 = a.userId
+		WHERE num = #{num}
+	</select>
+	
+	
+	<!-- 글 삭제 -->
+	<delete id="deleteInquiry" parameterType="Long">
+		DELETE FROM inquiry WHERE num = #{num}
+	</delete>
+	
+
+
+
+</mapper>
