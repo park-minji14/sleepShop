@@ -21,7 +21,7 @@
 	border: 5px solid #35c5f0; 
     border-radius: 30px;
     padding: 20px;
-    margin: 30px 0; 
+    margin: 20px 0; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
     background-color: #fff;
     width: 1100px; 
@@ -33,7 +33,7 @@
 	border: 1px solid #ddd; 
     border-radius: 20px;
     padding: 10px;
-    margin: 30px 0; 
+    margin: 20px 0; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
     background-color: #fff;
     width: 1100px;
@@ -44,7 +44,7 @@
 	border: 1px solid #ddd;  
     border-radius: 30px; 
     padding: 10px;
-    margin: 30px 0; 
+    margin: 20px 0; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
     background-color: #fff;
     width: 1100px;
@@ -56,7 +56,7 @@
 	border: 1px solid #ddd; 
     border-radius: 30px;
     padding: 20px;
-    margin: 30px 0; 
+    margin: 20px 0; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
     background-color: #fff;
     width: 1100px; 
@@ -65,7 +65,7 @@
 
 .table-style5 {
 	padding: 10px;
-    margin: 30px 0; 
+    margin: 20px 0; 
     background-color: #fff;
     width: 1100px;
 }
@@ -75,7 +75,7 @@
 	border: 1px solid #ddd; 
     border-radius: 30px;
     padding: 20px;
-    margin: 30px 0; 
+    margin: 20px 0; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
     background-color: #fff;
     width: 1100px;
@@ -142,7 +142,6 @@
 
 
 </style>
-<!-- 
 <c:if test="${sessionScope.member.membership>90 || dto.userId == sessionScope.member.userId}">
 	<script type="text/javascript">
 	function deleteClinic() {
@@ -153,7 +152,7 @@
 		}
 	}
 	</script>
-</c:if> -->
+</c:if>
 
 
 <div class="container">

@@ -107,9 +107,7 @@ public class ClinicServiceImpl implements ClinicService {
 		try {
 			list = mapper.listClinic(map);
 			
-			for(Clinic dto : list) {
-				dto.setUserId(myUtil.nameMasking(dto.getUserId()));
-			}
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -208,20 +206,9 @@ public class ClinicServiceImpl implements ClinicService {
 	}
 
 	@Override
-	public List<ClinicAnswer> listClinicAnswerComment(Map<String, Object> map) {
-		List<ClinicAnswer> list = null;
-		
-		try {
-			list = mapper.listClinicAnswerComment(map);
-			for (ClinicAnswer dto : list) {
-				dto.setContent(myUtil.htmlSymbols(dto.getContent()));
-				dto.setUserId(myUtil.nameMasking(dto.getUserId()));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
+    public List<ClinicAnswer> listClinicAnswerComment(long num) throws Exception {
+        return mapper.listClinicAnswerComment(num);
+    }
 
 	
 	@Override
@@ -256,8 +243,8 @@ public class ClinicServiceImpl implements ClinicService {
 
 
 	@Override
-	public ClinicAnswer findLikedAnswer(long question_id) throws SQLException {
-		return mapper.findLikedAnswer(question_id);
+	public ClinicAnswer findLikedAnswer(long num) throws SQLException {
+		return mapper.findLikedAnswer(num);
 	}
 
 

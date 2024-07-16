@@ -173,19 +173,16 @@ public class OrderController {
 	
 	@GetMapping("allDest")
 	@RequestMapping
-	public Map<String, Object> selectAllDest(HttpSession session) throws Exception {
-
+	public String selectAllDest(HttpSession session, Model model) throws Exception {
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
-		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try {
 			List<Delivery> deliveries = orderService.selectAllDest(info.getUserId());
-			map.put("deliverys", deliveries);
+			model.addAttribute("deliveries", deliveries);
 		} catch (Exception e) {
-			map.put("deliverys", "");
 		}
 		
-		return map;
+		return "order/destList";
 	}
 	
 }

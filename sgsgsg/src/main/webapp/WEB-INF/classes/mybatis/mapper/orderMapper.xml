@@ -48,7 +48,7 @@
 			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENTNAME,
 			TEL, ZIP, ADDR1, ADDR2, DESTMEMO
             from PRODUCTORDER
-            where userId = #{userId};
+            where userId = #{userId}
 	</select>
 	
 	<!-- 재고번호로 상품 찾기, 장바구니에서 구매하는 경우 장바구니 순 정렬 -->
@@ -152,7 +152,7 @@
 			FROM MEMBER_DELIVERY
 			WHERE USERID = #{userId}
             GROUP BY DESTINATIONNUM, RECIPIENTNAME, DEFAULTDEST, TEL, ZIP, REG_DATE, MOD_DATE,
-			ADDR1, ADDR2, DESTMEMO, USERID;
+			ADDR1, ADDR2, DESTMEMO, USERID
 	</select>
 	
 	<!-- 사용자가 기본 배송지를 재설정할 경우 다른 배송지를 기본 배송지가 아니게 -->
