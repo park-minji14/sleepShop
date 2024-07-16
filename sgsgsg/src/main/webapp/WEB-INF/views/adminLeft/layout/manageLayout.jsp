@@ -18,6 +18,7 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mySideBar.css" type="text/css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/vendor/bootstrap5/icon/bootstrap-icons.css" type="text/css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" type="text/css">
+	<link rel="stylesheet"href="${pageContext.request.contextPath}/resources/css/admin.css" type="text/css">
 	
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/vendor/jquery/js/jquery.min.js"></script>
 	
