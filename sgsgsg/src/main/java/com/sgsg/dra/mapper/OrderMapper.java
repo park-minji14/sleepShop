@@ -18,8 +18,12 @@ public interface OrderMapper {
 	
 	public List<Product> findByStockNum(Map<String, Object> map) throws SQLException;
 	
+	public void insertDest(Delivery dto) throws SQLException;
 	public Delivery findByDest(String userId) throws SQLException;
 	public List<Delivery> selectAllDest(String userId) throws SQLException;
+	public void updateDefaultDest(String userId) throws SQLException;
+	public void updateDest(Delivery dto) throws SQLException;
+	public void deleteDest(Map<String, Object> map) throws SQLException;
 	
 	public void insertUserPoint(UserPoint userPoint) throws SQLException;
 	public UserPoint findByUserPoint(String userId) throws SQLException;

@@ -102,7 +102,7 @@ public class OrderServiceImpl implements OrderService {
 				up.setChange_points(-dto.getUsedSaved());
 				up.setRemain_points(before.getRemain_points() - dto.getUsedSaved());
 				up.setChange_date(dateTime);
-				up.setReason("구매");
+				up.setReason("사용");
 				mapper.insertUserPoint(up);
 			}
 			
@@ -159,6 +159,32 @@ public class OrderServiceImpl implements OrderService {
 			throw e;
 		}
 		return point;
+	}
+	
+	@Override
+	public void upsert(Delivery dto) throws Exception {
+		try {
+			if(dto.getDefaultDest() == 1) {
+				mapper.updateDefaultDest(dto.getUserId());
+			}
+			if(dto.getDestinationNum() != 0) {
+				mapper.updateDest(dto);
+			}
+			if (dto.getInsertDest() == 1) {
+				mapper.insertDest(dto);
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	@Override
+	public void deleteDest(Map<String, Object> map) throws Exception {
+		try {
+			mapper.deleteDest(map);
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 
