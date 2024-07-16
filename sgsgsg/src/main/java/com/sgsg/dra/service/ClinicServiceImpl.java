@@ -107,9 +107,7 @@ public class ClinicServiceImpl implements ClinicService {
 		try {
 			list = mapper.listClinic(map);
 			
-			for(Clinic dto : list) {
-				dto.setUserId(myUtil.nameMasking(dto.getUserId()));
-			}
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

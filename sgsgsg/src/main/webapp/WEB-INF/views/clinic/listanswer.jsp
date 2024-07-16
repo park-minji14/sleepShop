@@ -57,7 +57,7 @@
 
 .comment-style {
 	height: 40px;
-	color: #ED4C00; 
+	color: #black; 
 	border: 3px solid #368AFF;  
 	background: #E6FFFF; 
 	border-radius: 20px;
@@ -82,17 +82,29 @@
 
 </style>
 
-
-<c:if test="${sessionScope.member.membership > 90 || dto.userId == sessionScope.member.userId}">
-    <script type="text/javascript">
+<script type="text/javascript">
     function deleteClinicAnswer(form) {
     	console.log(form);
         if(confirm("답변을 삭제하시겠습니까 ? ")) {
             form.submit();
         }
     }
+</script>
+     
+<c:if test="${sessionScope.member.membership > 90 || vo.question_userId == sessionScope.member.userId}">
+    <script type="text/javascript">
     
+    window.onload = function() {
+        var isPicked = ${isPicked};
+        if (isPicked) {
+            var adoptButtons = document.querySelectorAll('.adopt-btn');
+            adoptButtons.forEach(function(button) {
+                button.style.display = 'none';
+            });
+        }
+    };
     
+     
     function toggleForm(answer_num) {
         var form = document.getElementById("form_" + answer_num);
         if (form) {
@@ -139,28 +151,10 @@
         }
     }
 
-    window.onload = function() {
-        var adoptedComments = document.querySelectorAll('.adopted-comment');
-        adoptedComments.forEach(function(comment) {
-            var parent = comment.closest('.answer-list-table');
-            var adoptForm = parent.querySelector('.adopt-form');
-            if (adoptForm) {
-                adoptForm.style.display = 'none';
-            }
-        });
-        
-        
-        <c:forEach var="adopted" items="${adoptedAnswers}">
-        document.getElementById("comment_${adopted.answer_num}").textContent = "${adopted.content2}";
-        var adoptButtons = document.getElementsByClassName('adopt-btn');
-        for (var i = 0; i < adoptButtons.length; i++) {
-            adoptButtons[i].style.display = 'none';
-        }
-    	</c:forEach>
-    	
-    };
+   
     </script> 
 </c:if>
+
 
 
 <br><br>
@@ -177,13 +171,14 @@
 					<div class='col-1'><i class='bi bi-person-circle text-muted icon' style="font-size: 30px;"></i></div>
 					<div class='col-auto align-self-center'>
 						<div class='name' style="font-size: 25px;">${vo.userId}
-						    <c:if test="${vo.pickup != 1 && sessionScope.member.membership > 90}">
+						    <c:if test="${vo.pickup != 1 && sessionScope.member.userId == vo.question_userId}">
 						        <button type="submit" class="btn btn-like adopt-btn" onclick="toggleForm(${vo.answer_num});">채택하기</button>
-						    </c:if>
+						    </c:if> 
+						   
 						    
 						    <c:if test="${vo.pickup == 1}">
-							    <span class="adopted-comment comment-style" id="comment_${vo.answer_num}" style="font-size: 22px;">
-							    	<span style="color: #6F6F6F;">&nbsp;👑 [질문자의 인사]</span>  
+							    <span class="adopted-comment comment-style" id="comment_${vo.answer_num}" style="font-size: 20px;"> 
+							    	<span style="color: #ED4C00;">&nbsp;[질문자의 인사]</span>  
 							    	<span>&nbsp;${vo.content2}&nbsp;</span>
 							    </span>  
 							    <span class="text-end adopted-badge">채택</span>

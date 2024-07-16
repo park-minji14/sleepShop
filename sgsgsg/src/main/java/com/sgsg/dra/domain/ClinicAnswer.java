@@ -19,6 +19,17 @@ public class ClinicAnswer {
 	
 	public int answerCount;
 	
+	public String question_userId;
+	
+	
+	
+	
+	public String getQuestion_userId() {
+		return question_userId;
+	}
+	public void setQuestion_userId(String question_userId) {
+		this.question_userId = question_userId;
+	}
 	
 	
 	
