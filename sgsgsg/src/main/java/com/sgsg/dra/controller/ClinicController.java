@@ -115,19 +115,7 @@ public class ClinicController {
 		return ".clinic.list";
 	}
 	
-	/*
-	// AJAX-JSON
-	@GetMapping("listCategory")
-	@ResponseBody
-	public Map<String, Object> listCategory() throws Exception {
-
-		List<Clinic> listCategory = service.listClinicCategory();
-
-		Map<String, Object> model = new HashMap<>();
-		model.put("listCategory", listCategory);
-		return model;
-	}
-	*/
+	
 	
 	
 	@GetMapping("write")

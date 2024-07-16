@@ -56,10 +56,10 @@
 
 
 .comment-style {
-	height: 40px;
+	height: 50px;
 	color: #black; 
-	border: 3px solid #368AFF;  
-	background: #E6FFFF; 
+	border: 2px solid #35c5f0;  
+	background: #F8FFFF; 
 	border-radius: 20px;
 }
 
@@ -170,7 +170,8 @@
 				<div class='row reply-writer'>
 					<div class='col-1'><i class='bi bi-person-circle text-muted icon' style="font-size: 30px;"></i></div>
 					<div class='col-auto align-self-center'>
-						<div class='name' style="font-size: 25px;">${vo.userId}
+						<div class='name' style="font-size: 25px;">
+							<a href="${pageContext.request.contextPath}/expert/profile?userId=${vo.userId}" style="text-decoration: none; color: inherit;">${vo.userId}</a>
 						    <c:if test="${vo.pickup != 1 && sessionScope.member.userId == vo.question_userId}">
 						        <button type="submit" class="btn btn-like adopt-btn" onclick="toggleForm(${vo.answer_num});">채택하기</button>
 						    </c:if> 
