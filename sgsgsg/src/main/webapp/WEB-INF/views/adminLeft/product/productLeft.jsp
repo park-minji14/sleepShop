@@ -32,22 +32,18 @@
 <nav class="sidebar">
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link active" href="#">상품관리</a>
+            <a class="nav-link active" href="#">상품</a>
         </li>
-		<li class="nav-item">
-            <a class="nav-link toggleSubMenu" href="#">전체 상품 관리 <span class="jArrow"></span></a>
-            <ul class="nav flex-column submenu">
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/productManage/productWrite">상품 등록</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">재고 관리</a>
-                </li>
-            </ul>
+        <li class="nav-item">
+            <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/productManage/productList">상품 관리</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/productManage/stockList">재고 관리</a>
+        </li>	
         <li class="nav-item">
             <a class="nav-link" href="#">예시2</a>
         </li>
+		<!-- 		
 		<li class="nav-item">
             <a class="nav-link toggleSubMenu" href="#">예시3 <span class="jArrow"></span></a>
             <ul class="nav flex-column submenu">
@@ -61,7 +57,8 @@
                     <a class="nav-link" href="#">하위 예시3-3</a>
                 </li>
             </ul>
-        </li>
+        </li> 
+        -->
     </ul>
 </nav>
 

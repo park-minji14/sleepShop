@@ -4,7 +4,7 @@
 
     <div class="container mt-4">
         <!-- 검색 필터 -->
-        <form class="mb-4 ">
+        <form class="mb-4 " name="searchForm" action="${pageContext.request.contextPath}/adminManagement/productManage/stockList">
         
         	<div class="border border-secondary-subtle p-3">
 	            <div class="row mb-3">
@@ -87,13 +87,8 @@
                         <th>상품코드</th>
                         <th>상품명</th>
                         <th>카테고리</th>
-                        <!-- 숨기라고 하심 <th>최초등록일</th> -->
+                        <th>전체재고</th>
                         <th>최근수정일</th>
-                        <th>진열</th>
-                        <th>정가</th>
-                        <th>할인율</th>
-                        <th>판매가</th>
-                        <th>적립금</th>
                         <th colspan="2">관리</th>
                     </tr>
                 </thead>
@@ -103,56 +98,39 @@
                			<tr>
                         <td><input type="checkbox"></td>
                         <td>
-                        	<img src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}" alt="상품 이미지" width="70"> 
+                        	<img src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}" alt="상품 이미지" width="50" height="50"> 
                         </td>
                         <td>${dto.productNum}</td>
                         <td>${dto.productName}</td>
                         <td>${dto.categoryName}</td>
-                        <%-- <td>${dto.reg_date}</td> --%>
+                        <td>${dto.totalStock}</td>
                         <td>${dto.update_date}</td>
-                        <td>
-				            <c:choose>
-				                <c:when test="${dto.productShow == 0}">
-				                    숨김
-				                </c:when>
-				                <c:when test="${dto.productShow == 1}">
-				                    진열
-				                </c:when>
-				                <c:otherwise>
-				                    비정상적인 데이터
-				                </c:otherwise>
-				            </c:choose>
-				        </td>
-                        <td>${dto.price}</td>
-                        <td>${dto.discountRate}%</td>
-                        <td><fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100.0)}" type="number" maxFractionDigits="2"/></td>
-                        <td>${dto.savedMoney}</td>
-                        <td><button type="button" class="btn btn-sm btn-primary" id="btnUpdate" data-productNum="${dto.productNum}" data-parentNum="${dto.parentNum}" onclick="sendProductNum(this)">수정</button></td>
-                        <td><button type="button" class="btn btn-sm btn-danger" id="btnDelete" data-productNum="${dto.productNum}" onclick="sendProductNum(this)">삭제</button></td>
+                        <td><button type="button" class="btn btn-sm btn-primary btn-productStock" id="btnArticle" data-productNum="${dto.productNum}" data-optionCount="${dto.optionCount}">상세보기</button></td>
+                        <td><button type="button" class="btn btn-sm btn-danger" id="btnUpdate" data-productNum="${dto.productNum}" onclick="sendProductNum(this)">재고수정</button></td>
                     </tr>
                     
                		</c:forEach>
-<!--                   <tr>
-                        <td><input type="checkbox"></td>
-                        <td><img src="이미지 URL" alt="상품 이미지" width="50"></td>
-                        <td>AP-100001</td>
-                        <td>상품명 예시</td>
-                        <td>패션의류/잡화/뷰티</td>
-                        <td>21-06-06</td>
-                        <td>23-11-10</td>
-                        <td>진열</td>
-                        <td>20,000</td>
-                        <td>29,520</td>
-                        <td>1,480</td>
-                        <td><button class="btn btn-sm btn-primary btnUpdate">수정</button></td>
-                        <td><button class="btn btn-sm btn-danger btnDelete">삭제</button></td>
-                    </tr> -->
                     
                 </tbody>
             </table>
         </div>
-        <button class="btn btn-success mt-3">+ 상품등록</button>
+        
     </div>
+    
+<!-- 재고 상세보기 대화상자 -->
+<div class="modal fade" id="productStockDialogModal" tabindex="-1" aria-labelledby="productStockDialogModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="productStockDialogModalLabel">재고관리</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body pt-1">
+				<div class="modal-productStock"></div>
+			</div>
+		</div>
+	</div>
+</div>
     
 <script type="text/javascript">
 $(function(){
@@ -182,7 +160,7 @@ $(function(){
 	});
 });
 
-function sendProductNum(button) {
+/* function sendProductNum(button) {
 	console.log(button.getAttribute('data-parentNum'));
     const productNum = button.getAttribute('data-productNum');
     const parentNum = button.getAttribute('data-parentNum');
@@ -196,12 +174,6 @@ function sendProductNum(button) {
     productNumInput.value = productNum;
     f.appendChild(productNumInput);
     
-    const parentNumInput = document.createElement('input');
-    parentNumInput.type = 'hidden';
-    parentNumInput.name = 'parentNum';
-    parentNumInput.value = parentNum;
-    f.appendChild(parentNumInput);
-    
     const pageNumInput = document.createElement('input');
     pageNumInput.type = 'hidden';
     pageNumInput.name = 'pageNo';
@@ -210,14 +182,123 @@ function sendProductNum(button) {
     
     document.body.appendChild(f);
     
-    if(bType === 'btnUpdate'){
-    f.action = '${pageContext.request.contextPath}/adminManagement/productManage/productUpdate';
-    } else if (bType === 'btnDelete') {
-    f.action = '${pageContext.request.contextPath}/adminManagement/productManage/productDelete';
+    if(bType === 'btnArticle'){
+   	f.method= 'post';
+    f.action = '${pageContext.request.contextPath}/adminManagement/productManage/productStockArticle';
+    } else if (bType === 'btnUpdate') {
+    f.action = '${pageContext.request.contextPath}/adminManagement/productManage/productStockUpdate';
     }
     
     f.submit();
 }
+ */
+$(function(){
+	$('.btn-productStock').click(function(){
+		// 재고 관리 대화상자
+		let productNum = $(this).attr('data-productNum');
+		let optionCount = $(this).attr('data-optionCount');
+		let url = '${pageContext.request.contextPath}/adminManagement/productManage/listProductStock?productNum='+productNum+'&optionCount='+optionCount;
+		
+		$('.modal-productStock').load(url);
+		
+		$('#productStockDialogModal').modal('show');
+	});
+	
+	$('.modal-productStock').on('click', '.btn-allStockUpdate', function(){
+		// 재고 일괄 변경
+		if(! confirm('재고를 일괄 변경 하시겠습니까 ? ')) {
+			return false;
+		}
+		
+		let productNum = $(this).attr('data-productNum');
+		let url = '${pageContext.request.contextPath}/adminManagement/productManage/updateProductStock';
+		let query = 'productNum='+productNum;
+		
+		let isValid = true;
+		$('.productStcok-list tr').each(function(){
+			let $input = $(this).find('input[name=totalStock]');
+			let $btn = $(this).find('.btn-stockUpdate');
+			
+			if(!/^\d+$/.test($input.val().trim())) {
+				alert('재고량은 숫자만 가능합니다.');
+				$input.focus();
+				isValid = false;
+				return false;
+			}
+			
+			let stockNum = $btn.attr('data-stockNum');
+			let detailNum = $btn.attr('data-detailNum');
+			detailNum = detailNum ? detailNum : 0;
+			let detailNum2 = $btn.attr('data-detailNum2');
+			detailNum2 = detailNum2 ? detailNum2 : 0;
+			let totalStock = $input.val().trim();
+			
+			query += '&stockNums=' + stockNum;
+			query += '&detailNums=' + detailNum;
+			query += '&detailNums2=' + detailNum2;
+			query += '&totalStocks=' + totalStock;
+		});
+		
+		if( ! isValid ) {
+			return false;
+		}
+		
+		const fn = function(data) {
+			if(data.state === "true") {
+				alert("재고가 일괄 변경 되었습니다.");
+			} else {
+				alert("재고 일괄 변경이 실패 했습니다.");
+			}
+		};
+		
+		ajaxFun(url, "post", query, "json", fn);		
+	});
+	
+	$('.modal-productStock').on('click', '.btn-stockUpdate', function(){
+		// 재고 변경	
+		let productNum = $(this).attr('data-productNum');
+		let stockNum = $(this).attr('data-stockNum');
+		let detailNum = $(this).attr('data-detailNum');
+		detailNum = detailNum ? detailNum : 0;
+		let detailNum2 = $(this).attr('data-detailNum2');
+		detailNum2 = detailNum2 ? detailNum2 : 0;
+		let totalStock = $(this).closest('tr').find('input[name=totalStock]').val().trim();
+		
+		if(!/^\d+$/.test(totalStock)) {
+			alert('재고량은 숫자만 가능합니다.');
+			$(this).closest('tr').find('input[name=totalStock]').focus();
+			return false;
+		}
+	
+		let url = '${pageContext.request.contextPath}/adminManagement/productManage/updateProductStock';
+		let query = {productNum:productNum, stockNums:stockNum, detailNums:detailNum, detailNums2:detailNum2, totalStocks:totalStock};
+		
+		const fn = function(data) {
+			if(data.state === "true") {
+				alert("재고가 변경 되었습니다.");
+			} else {
+				alert("재고 변경이 실패 했습니다.");
+			}
+		};
+		
+		ajaxFun(url, "post", query, "json", fn);		
+		
+	});
+});
+ 
+const productStockModalEl = document.getElementById('productStockDialogModal');
+productStockModalEl.addEventListener('show.bs.modal', function(){
+});
+
+productStockModalEl.addEventListener('hidden.bs.modal', function(){
+	//모달 안보일 때 바로 갱신시켜줌
+	searchList();
+});
+
+function searchList() {
+	const f = document.searchForm;
+	f.submit();
+};
 
 function ajaxFun(url, method, formData, dataType, fn, file = false) {
 	const settings = {

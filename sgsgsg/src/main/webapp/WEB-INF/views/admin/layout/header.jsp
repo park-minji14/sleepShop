@@ -58,7 +58,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                <li class="nav-item">
-                   <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/productManage/list" onclick="setActive(event)">상품관리</a>
+                   <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/productManage/productList" onclick="setActive(event)">상품관리</a>
                </li>
                <li class="nav-item">
                    <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/orderManage/main" onclick="setActive(event)">주문 및 배송 관리</a>

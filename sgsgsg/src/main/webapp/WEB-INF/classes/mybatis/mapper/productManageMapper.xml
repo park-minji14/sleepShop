@@ -170,5 +170,64 @@
 	DELETE FROM OPTIONDETAIL WHERE optionNum = #{optionNum}
 </delete>
 
+<!-- 상품 재고 -->
+<insert id="insertProductStock" parameterType="com.sgsg.dra.admin.domain.ProductStockManage">
+	INSERT INTO productStock(stockNum, productNum, detailNum, detailNum2, totalStock)
+		VALUES (productStock_seq.NEXTVAL, #{productNum}, 
+			#{detailNum, jdbcType=BIGINT}, #{detailNum2, jdbcType=BIGINT},
+			#{totalStock})
+</insert>
+
+<update id="updateProductStock" parameterType="com.sgsg.dra.admin.domain.ProductStockManage">
+	UPDATE productStock SET totalStock = #{totalStock}
+	WHERE stockNum = #{stockNum}
+</update>
+
+<select id="listProductForStock" parameterType="map"
+	resultType="com.sgsg.dra.admin.domain.ProductManage">
+	SELECT 
+	    p.productNum, pc.Parent_categoryNum as ParentNum, p.categoryNum, pc.categoryName, p.productName, 
+	    p.classify, p.price, p.discountRate, p.savedMoney, p.delivery, p.optionCount,
+	    p.thumbnail, p.productShow, TO_CHAR(p.reg_date, 'YYYY-MM-DD') as reg_date, 
+	    TO_CHAR(p.update_date, 'YYYY-MM-DD') as update_date,  p.search_word, 
+	    NVL(SUM(ps.totalStock), 0) as totalstock
+	FROM 
+	    product p
+	JOIN PRODUCT_CATEGORY pc ON p.categoryNum = pc.categoryNum
+	LEFT OUTER JOIN productStock ps ON p.productNum = ps.productNum
+	GROUP BY p.productNum, pc.Parent_categoryNum, p.categoryNum, pc.categoryName, 
+	    p.productName, p.classify, p.price, p.discountRate, p.savedMoney, 
+	    p.delivery, p.optionCount,p.thumbnail, p.productShow, 
+	    TO_CHAR(p.reg_date, 'YYYY-MM-DD'), TO_CHAR(p.update_date, 'YYYY-MM-DD'), p.search_word
+	ORDER BY p.productNum DESC
+	OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+</select>
+
+<select id="listProductStock" parameterType="map" resultType="com.sgsg.dra.admin.domain.ProductStockManage">
+	SELECT p.productNum, p.productName, 
+		po1.optionNum, po1.optionName,
+		po2.optionNum optionNum2, po2.optionName optionName2,
+		d1.detailNum, d1.optionValue, 
+		d2.detailNum detailNum2, d2.optionValue optionValue2,
+	 	ps.stockNum, NVL(ps.totalStock, 0) totalStock
+	FROM product p 
+	LEFT OUTER JOIN product_Option po1 ON p.productNum = po1.productNum AND parentNum IS NULL
+	LEFT OUTER JOIN product_Option po2 ON po1.optionNum = po2.parentNum
+    LEFT OUTER JOIN OPTIONDETAIL d1 ON po1.optionNum = d1.optionNum
+    LEFT OUTER JOIN OPTIONDETAIL d2 ON po2.optionNum = d2.optionNum
+       <choose>
+       	<when test="optionCount == 0">
+       		LEFT OUTER JOIN productStock ps ON p.productNum = ps.productNum
+       	</when>
+       	<when test="optionCount == 1">
+       		LEFT OUTER JOIN productStock ps ON d1.detailNum = ps.detailNum
+       	</when>
+       	<otherwise>
+       		LEFT OUTER JOIN productStock ps ON d1.detailNum = ps.detailNum AND d2.detailNum = ps.detailNum2
+       	</otherwise>
+       </choose>
+	WHERE p.productNum = #{productNum}
+       ORDER BY detailNum, detailNum2
+</select>
 
 </mapper>

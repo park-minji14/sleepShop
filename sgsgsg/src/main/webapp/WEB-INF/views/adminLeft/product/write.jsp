@@ -605,7 +605,7 @@ $(function(){
 				<table class="table table-borderless">
 					<tr>
 						<td class="text-center">
-							<c:url var="url" value="/adminManagement/productManage/list">
+							<c:url var="url" value="/adminManagement/productManage/productList">
 								<c:if test="${not empty page}">
 									<c:param name="page" value="${page}"/>
 								</c:if>

@@ -18,10 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sgsg.dra.admin.domain.ProductManage;
+import com.sgsg.dra.admin.domain.ProductStockManage;
 import com.sgsg.dra.admin.service.ProductManageService;
 import com.sgsg.dra.common.MyUtil;
-
-import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 @RequestMapping("adminManagement/productManage/*")
@@ -33,7 +32,7 @@ public class ProductManageController {
 	@Autowired
 	private MyUtil myUtil;
 	
-	@RequestMapping("list")
+	@RequestMapping("productList")
 	public String productManageList(
 			@RequestParam(value = "page", defaultValue = "1") int current_page,
 			@RequestParam(defaultValue = "0") long parentNum,
@@ -75,7 +74,7 @@ public class ProductManageController {
 		
 		List<ProductManage> list = service.listProduct(map);
 		
-		String listUrl = cp + "/adminManagement/productManage/list";
+		String listUrl = cp + "/adminManagement/productManage/productList";
 		
 		String paging = myUtil.pagingUrl(current_page, total_page, listUrl);
 		
@@ -85,7 +84,7 @@ public class ProductManageController {
 		model.addAttribute("dataCount", dataCount);
 		model.addAttribute("paging", paging);
 		
-		return ".adminLeft.product.list";
+		return ".adminLeft.product.productList";
 	}
 	
 	@GetMapping("productWrite")
@@ -132,7 +131,7 @@ public class ProductManageController {
 		ProductManage dto = service.findById(productNum);
 		if(dto == null) {
 			String query = "page=" + current_page;
-			return "redirect:/adminManagement/productManage/list" + query;
+			return "redirect:/adminManagement/productManage/productList" + query;
 		}
 		
 		// 카테고리
@@ -193,7 +192,7 @@ public class ProductManageController {
 			throw e;
 		}
 		
-		return "redirect:/adminManagement/productManage/list";
+		return "redirect:/adminManagement/productManage/productList";
 	}
 	
 	@PostMapping("deleteFile")
@@ -260,6 +259,103 @@ public class ProductManageController {
 		} catch (Exception e) {
 		}
 		
-		return "redirect:/adminManagement/productManage/list";
+		return "redirect:/adminManagement/productManage/productList";
 	}
+	
+	@RequestMapping("stockList")
+	public String stockManageList(
+			@RequestParam(value = "page", defaultValue = "1") int current_page,
+			@RequestParam(defaultValue = "0") long parentNum,
+			@RequestParam(defaultValue = "0") long categoryNum,
+			HttpServletRequest req,
+			Model model) throws Exception {
+		
+		String cp = req.getContextPath();
+		
+		int size = 10;
+		int total_page;
+		int dataCount;
+		
+		List<ProductManage> listCategory = service.listCategory();
+		List<ProductManage> listSubCategory = null;
+		if(parentNum == 0 && listCategory.size() !=0) {
+			parentNum = listCategory.get(0).getCategoryNum();
+		}
+		listSubCategory = service.listSubCategory(parentNum);
+		if(categoryNum == 0 && listSubCategory.size() != 0) {
+			categoryNum = listSubCategory.get(0).getCategoryNum();
+		}
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		dataCount = service.dataCount(map);
+		total_page = myUtil.pageCount(dataCount, size);
+		if(current_page > total_page) {
+			current_page = total_page;
+		}
+		
+		int offset = (current_page - 1) * size;
+		if(offset < 0) {
+			offset = 0;
+		}
+		
+		map.put("offset", offset);
+		map.put("size", size);
+		
+		List<ProductManage> list = service.listProductForStock(map);
+		
+		String listUrl = cp + "/adminManagement/productManage/stockList";
+		
+		String paging = myUtil.pagingUrl(current_page, total_page, listUrl);
+		
+		model.addAttribute("listCategory", listCategory);
+		model.addAttribute("listSubCategory", listSubCategory);
+		model.addAttribute("list", list);
+		model.addAttribute("dataCount", dataCount);
+		model.addAttribute("paging", paging);
+		
+		return ".adminLeft.product.stockList";
+	}
+	
+	// AJAX-Text
+	@GetMapping("listProductStock")
+	public String listProductStock(@RequestParam Map<String, Object> paramMap, Model model) throws Exception {
+		// 상세 옵션별 재고 -----
+		try {
+			List<ProductStockManage> list = service.listProductStock(paramMap); // productNum, optionCount
+			
+			if(list.size() >= 1) {
+				String productName = list.get(0).getProductName();
+				String title = list.get(0).getOptionName();
+				String title2 = list.get(0).getOptionName2();
+				
+				model.addAttribute("productNum", paramMap.get("productNum"));
+				model.addAttribute("productName", productName);
+				model.addAttribute("title", title);
+				model.addAttribute("title2", title2);
+			}
+			
+			model.addAttribute("list", list);
+		} catch (Exception e) {
+		}
+		
+		return "adminLeft/product/listProductStock";
+	}
+	
+	@PostMapping("updateProductStock")
+	@ResponseBody
+	public Map<String, Object> updateProductStock(ProductStockManage dto) throws Exception {
+		// 상세 옵션별 재고 추가 또는 변경 -----
+		String state = "true";
+		try {
+			service.updateProductStock(dto);
+		} catch (Exception e) {
+			state = "false";
+		}
+		
+		Map<String, Object> model = new HashMap<>();
+		model.put("state", state);
+		return model;
+	}
+	
 }

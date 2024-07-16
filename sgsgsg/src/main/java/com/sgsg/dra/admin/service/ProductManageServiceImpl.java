@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sgsg.dra.admin.domain.ProductManage;
+import com.sgsg.dra.admin.domain.ProductStockManage;
 import com.sgsg.dra.admin.mapper.ProductManageMapper;
 import com.sgsg.dra.common.FileManager;
 
@@ -159,7 +160,59 @@ public class ProductManageServiceImpl implements ProductManageService {
 		
 		return list;
 	}
-
+	
+	@Override
+	public List<ProductManage> listProductForStock(Map<String, Object> map) {
+		List<ProductManage> list = null;
+		
+		try {
+			list = mapper.listProductForStock(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	
+	@Override
+	public List<ProductStockManage> listProductStock(Map<String, Object> map) {
+		List<ProductStockManage> list = null;
+		
+		try {
+			list = mapper.listProductStock(map);
+		} catch (Exception e) {
+		}
+		
+		return list;
+	}
+	
+	@Override
+	public void updateProductStock(ProductStockManage dto) throws Exception{
+		try {
+			// 상세 옵션별 재고 추가 또는 변경
+			for(int idx = 0; idx < dto.getStockNums().size(); idx++) {
+				dto.setStockNum(dto.getStockNums().get(idx));
+				if(dto.getDetailNums() != null && dto.getDetailNums().get(idx) != 0) {
+					dto.setDetailNum(dto.getDetailNums().get(idx));
+				}
+				if(dto.getDetailNums2() != null && dto.getDetailNums2().get(idx) != 0) {
+					dto.setDetailNum2(dto.getDetailNums2().get(idx));
+				}
+				dto.setTotalStock(dto.getTotalStocks().get(idx));
+				
+				if(dto.getStockNum() == 0) {
+					mapper.insertProductStock(dto);
+				} else {
+					mapper.updateProductStock(dto);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
 	@Override
 	public void updateProduct(ProductManage dto, String pathname) throws Exception {
 		try {
@@ -428,5 +481,5 @@ public class ProductManageServiceImpl implements ProductManageService {
 		
 		return dto;
 	}
-	
+
 }
