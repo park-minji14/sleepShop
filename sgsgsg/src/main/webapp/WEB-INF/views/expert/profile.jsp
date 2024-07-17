@@ -116,17 +116,16 @@
 			<div class="expert-text" style="margin-left: 50px; margin-top: 30px;">
 				<span style="font-size: 32px; display: block;">취득 자격증</span>
 				<div class="certificates show-slide">
-					<span style="font-size: 18px; display: block; border: 2px solid #B7F0B1; border-radius: 20px; background: #B7F0B1; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- 자격증 1</span>
-					<span style="font-size: 18px; display: block; border: 2px solid #B7F0B1; border-radius: 20px; background: #B7F0B1; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- 자격증 2</span>
-					<span style="font-size: 18px; display: block; border: 2px solid #B7F0B1; border-radius: 20px; background: #B7F0B1; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- 자격증 3</span>
-					<!-- 여기서 추가 텍스트를 작성할 수 있습니다 -->
-				</div>
+                        <span style="font-size: 18px; display: block; border: 2px solid #B7F0B1; border-radius: 20px; background: #B7F0B1; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- ${dto.license1}</span>
+                        <span style="font-size: 18px; display: block; border: 2px solid #B7F0B1; border-radius: 20px; background: #B7F0B1; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- ${dto.license2}</span>
+                        <span style="font-size: 18px; display: block; border: 2px solid #B7F0B1; border-radius: 20px; background: #B7F0B1; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- ${dto.license3}</span> 
+                </div>
 				
 				<div class="additional-text" style="margin-top: 40px;">
 		            <span style="font-size: 30px; display: block;">답변 갯수</span>
 		        </div>
 		        <div>
-		        	<span id="answer-count" style="font-size: 40px; display: block; color: #008000;">0개</span>
+		        	<span id="answer-count" style="font-size: 40px; display: block; color: #008000;">${answerCount}개</span>
 		        </div>
 				
 			</div>
@@ -134,10 +133,9 @@
 			<div class="expert-text" style="margin-left: 30px; margin-top: 30px; padding-left: 30px;">
 				<span style="font-size: 32px; display: block;">경력 사항</span>
 				<div class="additional-info show-slide">
-					<span style="font-size: 18px; display: block; border: 2px solid #ADD8E6; border-radius: 20px; background: #ADD8E6; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- 경력 1</span>
-					<span style="font-size: 18px; display: block; border: 2px solid #ADD8E6; border-radius: 20px; background: #ADD8E6; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- 경력 2</span>
-					<span style="font-size: 18px; display: block; border: 2px solid #ADD8E6; border-radius: 20px; background: #ADD8E6; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- 경력 3</span>
-					<!-- 여기서 추가 텍스트를 작성할 수 있습니다 -->
+					<span style="font-size: 18px; display: block; border: 2px solid #ADD8E6; border-radius: 20px; background: #ADD8E6; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- ${dto.career1}</span>
+					<span style="font-size: 18px; display: block; border: 2px solid #ADD8E6; border-radius: 20px; background: #ADD8E6; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- ${dto.career2}</span>
+					<span style="font-size: 18px; display: block; border: 2px solid #ADD8E6; border-radius: 20px; background: #ADD8E6; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- ${dto.career3}</span>
 				</div>
 				
 				<div class="additional-text" style="margin-top: 40px;">
@@ -151,7 +149,7 @@
 		</div>
 		
 		<div class="expert-style2">
-			<span style="font-size: 22px;">전문가 샘플 자기소개입니다.</span>
+			<span style="font-size: 22px;">${dto.exposed_content}</span>
 		</div>
 		
 		<div>
@@ -165,7 +163,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', (event) => {
     const targetRate = 66.7;
-    const targetCount = 12;
+    const targetCount = ${answerCount};
     const duration = 700;
     const incrementRate = targetRate / (duration / 10);
     const incrementCount = targetCount / (duration / 10);

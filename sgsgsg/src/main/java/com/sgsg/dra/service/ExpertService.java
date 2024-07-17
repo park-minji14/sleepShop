@@ -7,5 +7,7 @@ public interface ExpertService {
 	public Expert getExpertProfile(String userId) throws Exception;
 	
     public void updateExpertProfile(Expert dto);
+    
+    public int getAnswerCount(String userId);
 
 }

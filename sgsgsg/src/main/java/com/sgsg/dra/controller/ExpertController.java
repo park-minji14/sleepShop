@@ -22,13 +22,18 @@ public class ExpertController {
     public String Expertprofile(@RequestParam("userId") String userId, Model model) {
     	
         Expert dto = null;
+        int answerCount = 0;
+        
 		try {
 			dto = expertService.getExpertProfile(userId);
+			answerCount = expertService.getAnswerCount(userId);
+					
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
         
         model.addAttribute("dto", dto);
+        model.addAttribute("answerCount", answerCount);
         
         return ".expert.profile";
     }
@@ -51,8 +56,8 @@ public class ExpertController {
     }
     
     
-    
-    @PostMapping("updateProfile")
+     
+    @PostMapping("editprofile")
     public String updateExpertProfile(Expert dto) {
         expertService.updateExpertProfile(dto);
         return "redirect:/expert/profile?userId=" + dto.getUserId();

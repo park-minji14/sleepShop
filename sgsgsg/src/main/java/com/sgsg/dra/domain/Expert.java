@@ -2,26 +2,55 @@ package com.sgsg.dra.domain;
 
 public class Expert {
 	public String userId;
-	public String license;
-	public String career;
+	public String license1;
+	public String license2;
+	public String license3;
+	public String career1;
+	public String career2;
+	public String career3;
 	public String exposed_content;
+	
 	public String getUserId() {
 		return userId;
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public String getLicense() {
-		return license;
+	public String getLicense1() {
+		return license1;
 	}
-	public void setLicense(String license) {
-		this.license = license;
+	public void setLicense1(String license1) {
+		this.license1 = license1;
 	}
-	public String getCareer() {
-		return career;
+	public String getLicense2() {
+		return license2;
 	}
-	public void setCareer(String career) {
-		this.career = career;
+	public void setLicense2(String license2) {
+		this.license2 = license2;
+	}
+	public String getLicense3() {
+		return license3;
+	}
+	public void setLicense3(String license3) {
+		this.license3 = license3;
+	}
+	public String getCareer1() {
+		return career1;
+	}
+	public void setCareer1(String career1) {
+		this.career1 = career1;
+	}
+	public String getCareer2() {
+		return career2;
+	}
+	public void setCareer2(String career2) {
+		this.career2 = career2;
+	}
+	public String getCareer3() {
+		return career3;
+	}
+	public void setCareer3(String career3) {
+		this.career3 = career3;
 	}
 	public String getExposed_content() {
 		return exposed_content;
@@ -29,6 +58,9 @@ public class Expert {
 	public void setExposed_content(String exposed_content) {
 		this.exposed_content = exposed_content;
 	}
+	
+	
+	
 	
 	
 }

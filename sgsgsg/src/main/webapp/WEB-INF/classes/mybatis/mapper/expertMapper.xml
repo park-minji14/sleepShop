@@ -6,7 +6,7 @@
 
 <mapper namespace="com.sgsg.dra.mapper.ExpertMapper">
     <select id="getExpertProfile" parameterType="String" resultType="com.sgsg.dra.domain.Expert">
-        SELECT userId, license, career, exposed_content
+        SELECT userId, license1, license2, license3, career1, career2, career3, exposed_content
         FROM expert_mypage
         WHERE userId = #{userId}
     </select>
@@ -14,7 +14,16 @@
     
     <update id="updateExpertProfile" parameterType="com.sgsg.dra.domain.Expert">
         UPDATE expert_mypage
-        SET license=#{license}, career=#{career}, exposed_content=#{exposed_content}
+        SET license1=#{license1, jdbcType=VARCHAR}, license2=#{license2, jdbcType=VARCHAR}, license3=#{license3, jdbcType=VARCHAR}, 
+        career1=#{career1, jdbcType=VARCHAR}, career2=#{career2, jdbcType=VARCHAR}, career3=#{career3, jdbcType=VARCHAR}, 
+        exposed_content=#{exposed_content, jdbcType=VARCHAR}
         WHERE userId = #{userId}
     </update>
+    
+    <select id="getAnswerCount" parameterType="String" resultType="int">
+        SELECT COUNT(*) 
+        FROM sleep_clinic_answer
+        WHERE userId = #{userId}
+    </select>
+    
 </mapper>

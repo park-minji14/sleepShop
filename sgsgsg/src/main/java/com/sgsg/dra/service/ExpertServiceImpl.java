@@ -27,4 +27,9 @@ public class ExpertServiceImpl implements ExpertService {
     public void updateExpertProfile(Expert dto) {
         expertMapper.updateExpertProfile(dto);
     }
+    
+    @Override
+    public int getAnswerCount(String userId) {
+        return expertMapper.getAnswerCount(userId);
+    }
 }
