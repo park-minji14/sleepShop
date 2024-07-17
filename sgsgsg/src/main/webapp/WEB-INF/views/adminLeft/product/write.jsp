@@ -393,14 +393,17 @@ $(function(){
 });
 </script>
 
-
 	<div class="body-container">
 		<div class="body-main">
 		
 			<form name="productForm" method="post" enctype="multipart/form-data">
 				<table class="table table-form">
+					<colgroup>
+						<col style="width:100px;">
+						<col>
+					</colgroup>
 					<tr>
-						<td class="table-light col-sm-2 myCenter">카테고리</td>
+						<td class="table-light  myCenter">카테고리</td>
 						<td>
 							<div class="row">
 								<div class="col-6 pe-1">
@@ -423,13 +426,13 @@ $(function(){
 						</td>
 					</tr>
 					<tr>
-						<td class="table-light col-sm-2 myCenter">상품명</td>
+						<td class="table-light  myCenter">상품명</td>
 						<td>
 							<input type="text" name="productName" class="form-control" value="${dto.productName}">
 						</td>
 					</tr>
 					<tr>
-						<td class="table-light col-sm-2 myCenter">상품구분</td>
+						<td class="table-light  myCenter">상품구분</td>
 						<td>
 							<div class="row">
 								<div class="col-6">
@@ -442,8 +445,8 @@ $(function(){
 						</td>
 					</tr>
 					<tr>
-						<td class="table-light col-sm-2 myCenter">상품가격</td>
-						<td class="table-light col-sm-2 myCenter">적립금</td>
+						<td class="table-light  myCenter">상품가격</td>
+						<td class="table-light  myCenter">적립금</td>
 					</tr>
 					<tr>
 						<td>
@@ -455,8 +458,8 @@ $(function(){
 
 					</tr>
 					<tr>
-					    <td class="table-light col-sm-2 myCenter">할인율</td>
-					    <td class="table-light col-sm-2 myCenter">배송비</td>
+					    <td class="table-light myCenter">할인율</td>
+					    <td class="table-light  myCenter">배송비</td>
 					</tr>
 					<tr>
 					    <td>
@@ -469,7 +472,7 @@ $(function(){
 					    </td>
 					</tr>
 					<tr>
-						<td class="table-light col-sm-2 myCenter">상품 옵션</td>
+						<td class="table-light  myCenter">상품 옵션</td>
 						<td>
 							<div class="row">
 								<div class="col-6">
@@ -484,7 +487,7 @@ $(function(){
 						</td>
 					</tr>
 					<tr class="product-option-1">
-						<td class="table-light col-sm-2 myCenter">옵션 1</td>
+						<td class="table-light  myCenter">옵션 1</td>
 						<td>
 							<div class="mb-2">
 								<input type="text" name="optionName" class="form-control" style="width: 250px;" placeholder="옵션명" value="${dto.optionName}">
@@ -516,7 +519,7 @@ $(function(){
 						</td>
 					</tr>
 					<tr class="product-option-2">
-						<td class="table-light col-sm-2 myCenter">옵션 2</td>
+						<td class="table-light  myCenter">옵션 2</td>
 						<td>
 							<div class="mb-2">
 								<input type="text" name="optionName2" style="width: 250px;" class="form-control" placeholder="옵션명" value="${dto.optionName2}">
@@ -549,7 +552,7 @@ $(function(){
 					</tr>
 					
 					<tr>
-						<td class="table-light col-sm-2 myCenter">상품 진열</td>
+						<td class="table-light  myCenter">상품 진열</td>
 						<td>
 							<div class="pt-2 pb-2">
 								<input type="radio" name="productShow" class="form-check-input" id="productShow1" value="1" ${dto.productShow==1 ? "checked='checked'" : "" }> <label class="form-check-label" for="productShow1">상품진열</label>
@@ -560,7 +563,7 @@ $(function(){
 					</tr>
 					
 					<tr>
-	                    <td class="table-light col-sm-2 myCenter">검색어</td>
+	                    <td class="table-light  myCenter">검색어</td>
 	                    <td>
 	                        <div class="d-flex flex-row mb-2">
 	                            <input type="text" id="searchWordInput" class="form-control" placeholder="검색어 입력" onkeydown="addSearchWord(event)">
@@ -574,14 +577,14 @@ $(function(){
 	                </tr>
 
 					<tr>
-						<td class="table-light col-sm-2 myCenter">상품설명</td>
+						<td class="table-light  myCenter">상품설명</td>
 						<td>
 							<textarea name="content" id="ir1" class="form-control" style="max-width: 95%; height: 290px;">${dto.content}</textarea>
 						</td>
 					</tr>
 					
 					<tr>
-					    <td class="table-light col-sm-2 myCenter">대표이미지 및 추가이미지</td>
+					    <td class="table-light  myCenter">대표이미지 및 추가이미지</td>
 					    <td>
 					        <div class="d-flex flex-wrap align-items-start">
 					            <div class="thumbnail-viewer me-2"></div>
@@ -629,6 +632,7 @@ $(function(){
 		
 		</div>
 	</div>
+
 
 <script type="text/javascript">
 // 대표(썸네일) 이미지

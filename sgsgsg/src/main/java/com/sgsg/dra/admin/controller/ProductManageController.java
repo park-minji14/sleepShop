@@ -117,7 +117,7 @@ public class ProductManageController {
 		} catch (Exception e) {
 		}
 		
-		return "redirect:/adminManagement/productManage/productlist";
+		return "redirect:/adminManagement/productManage/productList";
 	}
 	
 	@GetMapping("productUpdate")

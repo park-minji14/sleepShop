@@ -2,10 +2,62 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-    <div class="container mt-4">
+<style>
+.container {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    padding: 25px;
+}
+.table {
+    background-color: #ffffff;
+}
+.table thead th {
+    background-color: #3949ab;
+    color: #ffffff;
+    border-color: #303f9f;
+}
+.btn-primary {
+    background-color: #3949ab;
+    border-color: #3949ab;
+}
+.btn-primary:hover {
+    background-color: #303f9f;
+    border-color: #303f9f;
+}
+.product-preview {
+    position: relative;
+    cursor: pointer;
+}
+.product-preview .preview-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    z-index: 1;
+    width: 200px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.product-preview:hover .preview-content {
+    display: block;
+}
+.status-icon {
+    font-size: 1.2em;
+}
+.status-icon.visible {
+    color: #4CAF50;
+}
+.status-icon.hidden {
+    color: #F44336;
+}
+
+</style>
+
+    <div class="mt-4">
         <!-- 검색 필터 -->
+                <!-- 검색 필터 -->
         <form class="mb-4 ">
-        
         	<div class="border border-secondary-subtle p-3">
 	            <div class="row mb-3">
 	                <div class="col">
@@ -73,67 +125,68 @@
         </form>
         
         <button class="btn btn-success mt-3"><a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/productManage/productWrite">+ 상품 등록</a></button>
-       	<div class="page-navigation">
+       	<div class="page-navigation mt-3">
 			${dataCount == 0 ? "등록된 상품이 없습니다." : paging}
 		</div>
-		
-        <!-- 상품 목록 -->
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead>
+    <!-- 상품 목록 -->
+    <div class="table-responsive mt-3">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>선택</th>
+                    <th>이미지</th>
+                    <th>상품코드</th>
+                    <th>상품명</th>
+                    <th>카테고리</th>
+                    <th>최근수정일</th>
+                    <th>진열</th>
+                    <th>정가</th>
+                    <th>할인율</th>
+                    <th>판매가</th>
+                    <th>적립금</th>
+                    <th colspan="2">관리</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="dto" items="${list}" varStatus="status">
                     <tr>
-                        <th>선택</th>
-                        <th>이미지</th>
-                        <th>상품코드</th>
-                        <th>상품명</th>
-                        <th>카테고리</th>
-                        <th>최근수정일</th>
-                        <th>진열</th>
-                        <th>정가</th>
-                        <th>할인율</th>
-                        <th>판매가</th>
-                        <th>적립금</th>
-                        <th colspan="2">관리</th>
-                    </tr>
-                </thead>
-                <tbody>
-               		<!-- 상품 진열할 곳 -->
-               		<c:forEach var="dto" items="${list}" varStatus="status">
-               			<tr>
                         <td><input type="checkbox"></td>
                         <td>
-                        	<img src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}" alt="상품 이미지" width="50"> 
+                            <img src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}" alt="상품 이미지" width="50" height="50">
                         </td>
                         <td>${dto.productNum}</td>
-                        <td>${dto.productName}</td>
+                        <td class="product-preview">
+                            ${dto.productName}
+                            <div class="preview-content">
+                                <strong>${dto.productName}</strong><br>
+                                카테고리: ${dto.categoryName}<br>
+                                가격: <fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100.0)}" type="number" maxFractionDigits="0"/>원<br>
+                                재고: [재고 정보 추가 필요]
+                            </div>
+                        </td>
                         <td>${dto.categoryName}</td>
                         <td>${dto.update_date}</td>
-                        <td>
-				            <c:choose>
-				                <c:when test="${dto.productShow == 0}">
-				                    숨김
-				                </c:when>
-				                <c:when test="${dto.productShow == 1}">
-				                    진열
-				                </c:when>
-				                <c:otherwise>
-				                    비정상적인 데이터
-				                </c:otherwise>
-				            </c:choose>
-				        </td>
-                        <td>${dto.price}</td>
+						<td>
+						    <c:choose>
+						        <c:when test="${dto.productShow == 1}">
+						            <p>진열</p>
+						        </c:when>
+						        <c:otherwise>
+						            <p>숨김</p>
+						        </c:otherwise>
+						    </c:choose>
+						</td>
+                        <td><fmt:formatNumber value="${dto.price}" type="number"/></td>
                         <td>${dto.discountRate}%</td>
-                        <td><fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100.0)}" type="number" maxFractionDigits="2"/></td>
+                        <td><fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100.0)}" type="number" maxFractionDigits="0"/></td>
                         <td>${dto.savedMoney}</td>
                         <td><button type="button" class="btn btn-sm btn-primary" id="btnUpdate" data-productNum="${dto.productNum}" data-parentNum="${dto.parentNum}" onclick="sendProductNum(this)">수정</button></td>
                         <td><button type="button" class="btn btn-sm btn-danger" id="btnDelete" data-productNum="${dto.productNum}" onclick="sendProductNum(this)">삭제</button></td>
                     </tr>
-                    
-               		</c:forEach>
-
-                </tbody>
-            </table>
-        </div>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
         
     </div>
     

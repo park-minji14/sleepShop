@@ -1,8 +1,57 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
-    <div class="container mt-4">
+<style>
+.container {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    padding: 25px;
+}
+.table {
+    background-color: #ffffff;
+}
+.table thead th {
+    background-color: #3949ab;
+    color: #ffffff;
+    border-color: #303f9f;
+}
+.btn-primary {
+    background-color: #3949ab;
+    border-color: #3949ab;
+}
+.btn-primary:hover {
+    background-color: #303f9f;
+    border-color: #303f9f;
+}
+.product-preview {
+    position: relative;
+    cursor: pointer;
+}
+.product-preview .preview-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    z-index: 1;
+    width: 200px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.product-preview:hover .preview-content {
+    display: block;
+}
+.status-icon {
+    font-size: 1.2em;
+}
+.status-icon.visible {
+    color: #4CAF50;
+}
+.status-icon.hidden {
+    color: #F44336;
+}
+</style>
+    <div class="mt-4">
         <!-- 검색 필터 -->
         <form class="mb-4 " name="searchForm" action="${pageContext.request.contextPath}/adminManagement/productManage/stockList">
         
