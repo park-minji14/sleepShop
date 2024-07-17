@@ -19,6 +19,7 @@ public class SpecialsManage {
 	
 	private MultipartFile selectFile;
 	private String imageFilename;
+	
 	public long getSpecialNum() {
 		return specialNum;
 	}

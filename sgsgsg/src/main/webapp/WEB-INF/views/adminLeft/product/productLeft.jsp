@@ -14,7 +14,7 @@
             <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/productManage/stockList">재고 관리</a>
         </li>	
         <li class="nav-item">
-            <a class="nav-link" href="#">예시2</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/productManage/specialList">오늘의 특가</a>
         </li>
 		<!-- 		
 		<li class="nav-item">

@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +25,7 @@ import com.sgsg.dra.admin.service.SpecialsManageService;
 import com.sgsg.dra.common.MyUtil;
 
 @Controller
-@RequestMapping("/admin/specials/*")
+@RequestMapping("adminManagement/productManage/*")
 public class SpecialsManageController {
 	@Autowired
 	private SpecialsManageService service;
@@ -34,8 +33,8 @@ public class SpecialsManageController {
 	@Autowired
 	private MyUtil myUtil;
 	
-	@RequestMapping("{classify}/main") 
-	public String list(@PathVariable int classify,
+	@RequestMapping("specialList")
+	public String list(
 			@RequestParam(defaultValue = "1") int state,
 			@RequestParam(defaultValue = "all") String schType,
 			@RequestParam(defaultValue = "") String kwd,		
@@ -54,7 +53,6 @@ public class SpecialsManageController {
 		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("classify", classify);
 		map.put("state", state); // 1:진행중, 2:진행예정, 3:기간종료
 		map.put("schType", schType);
 		map.put("kwd", kwd);
@@ -73,8 +71,8 @@ public class SpecialsManageController {
 		
 		List<SpecialsManage> list = service.listSpecials(map);
 		
-		String listUrl = cp + "/admin/specials/" +classify + "/main";
-		String articleUrl = cp + "/admin/specials/" +classify + "/article?page=" + current_page;
+		String listUrl = cp + "/adminManagement/productManage/specialList";
+		String articleUrl = cp + "/adminManagement/productManage/specialArticle?page=" + current_page;
 		String query = "";
 		
 		if(state != 1) {
@@ -92,8 +90,6 @@ public class SpecialsManageController {
 
 		String paging = myUtil.pagingUrl(current_page, total_page, listUrl);
 		
-		model.addAttribute("classify", classify);
-		
 		model.addAttribute("list", list);
 		model.addAttribute("dataCount", dataCount);
 		
@@ -108,21 +104,20 @@ public class SpecialsManageController {
 		model.addAttribute("total_page", total_page);
 		model.addAttribute("paging", paging);
 		
-		return ".admin.specials.list";
+		return ".adminLeft.product.specialList";
 	}
 
-	@GetMapping("{classify}/write")
-	public String writeForm(@PathVariable int classify,
+	@GetMapping("specialWrite")
+	public String writeForm(
 			Model model) throws Exception {
 		
-		model.addAttribute("classify", classify);
-		model.addAttribute("mode", "write");
+		model.addAttribute("mode", "specialWrite");
 		
-		return ".admin.specials.write";
+		return ".adminLeft.product.specialWrite";
 	}
 
-	@PostMapping("{classify}/write")
-	public String writeSubmit(@PathVariable int classify,
+	@PostMapping("specialWrite")
+	public String writeSubmit(
 			SpecialsManage dto,
 			HttpSession session,
 			Model model) throws Exception {
@@ -135,11 +130,11 @@ public class SpecialsManageController {
 		} catch (Exception e) {
 		}
 		
-		return "redirect:/admin/specials/" + classify + "/main";
+		return "redirect:/adminManagement/productManage/specialList";
 	}
 	
-	@GetMapping("{classify}/article")
-	public String article(@PathVariable int classify,
+	@GetMapping("specialArticle")
+	public String article(
 			@RequestParam long specialNum,
 			@RequestParam(defaultValue = "1") int state,
 			@RequestParam(defaultValue = "all") String schType,
@@ -159,20 +154,18 @@ public class SpecialsManageController {
 		SpecialsManage dto = service.findById(specialNum);
 
 		if (dto == null) {
-			return "redirect:/admin/specials/" + classify + "/main?" + query;
+			return "redirect:/adminManagement/productManage/specialList?" + query;
 		}
-		
-		model.addAttribute("classify", classify);
 		
 		model.addAttribute("dto", dto);
 		model.addAttribute("query", query);
 		model.addAttribute("page", page);
 		
-		return ".admin.specials.article";
+		return ".adminLeft.product.specialArticle";
 	}
 	
-	@GetMapping("{classify}/update")
-	public String updateForm(@PathVariable int classify,
+	@GetMapping("specialUpdate")
+	public String updateForm(
 			@RequestParam long specialNum,
 			@RequestParam String page,
 			Model model) throws Exception {
@@ -180,19 +173,18 @@ public class SpecialsManageController {
 		SpecialsManage dto = service.findById(specialNum);
 
 		if (dto == null) {
-			return "redirect:/admin/specials/" + classify + "/main?page=" + page;
+			return "redirect:/adminManagement/productManage/specialList?page=" + page;
 		}
 		
-		model.addAttribute("classify", classify);
 		model.addAttribute("dto", dto);
 		model.addAttribute("page", page);		
-		model.addAttribute("mode", "update");
+		model.addAttribute("mode", "specialUpdate");
 		
-		return ".admin.specials.write";
+		return ".adminLeft.product.specialWrite";
 	}
 
-	@PostMapping("{classify}/update")
-	public String updateSubmit(@PathVariable int classify,
+	@PostMapping("specialUpdate")
+	public String updateSubmit(
 			SpecialsManage dto,
 			@RequestParam String page,
 			HttpSession session,
@@ -206,11 +198,11 @@ public class SpecialsManageController {
 		} catch (Exception e) {
 		}
 		
-		return "redirect:/admin/specials/" + classify + "/main?page=" + page;
+		return "redirect:/adminManagement/productManage/specialList?page=" + page;
 	}
 	
-	@GetMapping("{classify}/delete")
-	public String delete(@PathVariable int classify,
+	@GetMapping("specialDelete")
+	public String delete(
 			@RequestParam(defaultValue = "1") int state,
 			@RequestParam long specialNum,
 			@RequestParam String page,
@@ -236,14 +228,14 @@ public class SpecialsManageController {
 		} catch (Exception e) {
 		}
 
-		return "redirect:/admin/specials/" + classify + "/main?" + query;
+		return "redirect:/adminManagement/productManage/specialList?" + query;
 	}	
 	
 	// 특가/기획전에  상품 등록
 	// AJAX - JSON
-	@PostMapping("{classify}/productInsert")
+	@PostMapping("specialProductInsert")
 	@ResponseBody
-	public Map<String, Object> productInsert(@PathVariable int classify,
+	public Map<String, Object> productInsert(
 			SpecialsDetailManage dto) throws Exception {
 
 		String state = "true";
@@ -258,11 +250,11 @@ public class SpecialsManageController {
 		return model;
 	}
 
-	// 특가/기획전에 등록된 상품 목록
+	// 특가에 등록되어있는 상품 목록
 	// AJAX - JSON
-	@GetMapping("{classify}/productList")
+	@GetMapping("specialProductList")
 	@ResponseBody
-	public Map<String, Object> productList(@PathVariable int classify,
+	public Map<String, Object> productList(
 			@RequestParam long specialNum,
 			@RequestParam(value = "pageNo", defaultValue = "1") int current_page) throws Exception {
 		
@@ -302,9 +294,9 @@ public class SpecialsManageController {
 
 	// 특가/기획전에  상품 등록
 	// AJAX - JSON
-	@PostMapping("{classify}/productUpdate")
+	@PostMapping("specialProductUpdate")
 	@ResponseBody
-	public Map<String, Object> productUpdate(@PathVariable int classify,
+	public Map<String, Object> productUpdate(
 			SpecialsDetailManage dto) throws Exception {
 
 		String state = "true";
@@ -321,9 +313,9 @@ public class SpecialsManageController {
 	
 	// 특가/기획전에 등록된 상품 삭제
 	// AJAX - JSON
-	@PostMapping("{classify}/productDelete")
+	@PostMapping("specialProductDelete")
 	@ResponseBody
-	public Map<String, Object> productDelete(@PathVariable int classify,
+	public Map<String, Object> productDelete(
 			@RequestParam long detailNum) throws Exception {
 
 		String state = "true";
@@ -340,15 +332,15 @@ public class SpecialsManageController {
 
 	// 특가/기획전에 등록할 상품 검색
 	// AJAX - JSON
-	@GetMapping("{classify}/productSearch")
+	@GetMapping("specialProductSearch")
 	@ResponseBody
-	public Map<String, Object> productSearch(@PathVariable int classify,
+	public Map<String, Object> productSearch(
 			@RequestParam long specialNum,
 			@RequestParam String schType,
 			@RequestParam String kwd) throws Exception {
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("classify", classify);
+		
 		map.put("specialNum", specialNum);
 		map.put("schType", schType);
 		map.put("kwd", kwd);

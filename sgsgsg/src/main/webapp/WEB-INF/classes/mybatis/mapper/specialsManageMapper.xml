@@ -3,9 +3,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sgsg.dra.admin.mapper.SpecialsManageMapper">
 	<insert id="insertSpecials" parameterType="com.sgsg.dra.admin.domain.SpecialsManage">
-		INSERT INTO specials(specialNum, classify, subject, content, imageFilename, 
+		INSERT INTO specials(specialNum, subject, content, imageFilename, 
 		        startDate, endDate, showSpecial, reg_date) VALUES (
-				specials_seq.NEXTVAL, #{classify}, #{subject}, #{content}, #{imageFilename}, 
+				SPECIALS_SEQ.NEXTVAL, #{subject}, #{content}, #{imageFilename}, 
 				TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI:SS'), 
 				TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI:SS'), #{showSpecial}, SYSDATE)
 	</insert>
@@ -27,7 +27,6 @@
 		SELECT NVL(COUNT(*), 0)
 		FROM specials
 		<where>
-			classify = #{classify}
 			<choose>
 				<when test="state == 1">
 					AND (startDate &lt;= SYSDATE AND endDate &gt;= SYSDATE)
@@ -46,7 +45,7 @@
 	</select>
 	
 	<select id="listSpecials" parameterType="map" resultType="com.sgsg.dra.admin.domain.SpecialsManage">
-		SELECT s.specialNum, classify, subject, imageFilename, 
+		SELECT s.specialNum, subject, imageFilename, 
 		        TO_CHAR(startDate, 'YYYY-MM-DD HH24:MI') startDate, 
 		        TO_CHAR(endDate, 'YYYY-MM-DD HH24:MI') endDate, showSpecial, 
 		        TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, NVL(productCount, 0) productCount
@@ -57,7 +56,6 @@
 			GROUP BY specialNum
 		) t ON s.specialNum = t.specialNum
 		<where>
-			classify = #{classify}
 			<choose>
 				<when test="state == 1">
 					AND (startDate &lt;= SYSDATE AND endDate &gt;= SYSDATE)
@@ -78,7 +76,7 @@
 	</select>
 	
 	<select id="findById" parameterType="Long" resultType="com.sgsg.dra.admin.domain.SpecialsManage">
-		SELECT specialNum, classify, subject, content, imageFilename, 
+		SELECT specialNum, subject, content, imageFilename, 
 		        TO_CHAR(startDate, 'YYYY-MM-DD HH24:MI') startDate, 
 		        TO_CHAR(endDate, 'YYYY-MM-DD HH24:MI') endDate,
 		        showSpecial, reg_date
@@ -133,16 +131,16 @@
 	</delete>
 	
 	<select id="specialsProductSearch" parameterType="map" resultType="com.sgsg.dra.admin.domain.SpecialsDetailManage">
-		SELECT productNum, productName, productShow, classify
+		SELECT productNum, productName, productShow
 		FROM product
-		WHERE classify = #{classify} AND productShow = 1 AND 
+		WHERE productShow = 1 AND 
 			<if test="kwd != null and kwd != '' ">
 				<choose>
 					<when test="schType == 'productNum'">
 					    productNum = #{kwd} AND
 					</when>
 					<otherwise>
-						INSTR(productName, #{kwd}) &gt; 0 AND 		
+						(INSTR(productName, #{kwd}) &gt; 0 OR INSTR(search_word, #{kwd}) &gt; 0) AND		
 					</otherwise>
 				</choose>
 			</if>
