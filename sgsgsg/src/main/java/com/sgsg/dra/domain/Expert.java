@@ -1,14 +1,14 @@
 package com.sgsg.dra.domain;
 
 public class Expert {
-	public String userId;
-	public String license1;
-	public String license2;
-	public String license3;
-	public String career1;
-	public String career2;
-	public String career3;
-	public String exposed_content;
+	private String userId;
+	private String license1;
+	private String license2;
+	private String license3;
+	private String career1;
+	private String career2;
+	private String career3;
+	private String exposed_content;
 	
 	public String getUserId() {
 		return userId;
