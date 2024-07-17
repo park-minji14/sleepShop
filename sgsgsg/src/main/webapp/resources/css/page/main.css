@@ -161,8 +161,6 @@
 	right: 0;
 }
 
-
-
 .product-item {
 	/* border: 1px solid #e0e0e0; */
 	border-radius: 8px;
@@ -271,8 +269,6 @@ main .inner {
 	color: #ff3d71;
 }
 
-
-
 /*메인 스와이프*/
 
 .swiper-slide img {
@@ -320,7 +316,7 @@ margin: 0 auto;
 }
 
 :root {
-  --header-height: 60px; 
+/*   --header-height: 74px;  */
   --nav-height: 40px; 
 }
 
@@ -331,10 +327,7 @@ margin: 0 auto;
 }
 
 
-/* 기존 CSS 유지 */
-
-
-
+/* -------------   기존 CSS 유지---------------- */
 
 /* 추가 및 수정 CSS */
 .product-item {
@@ -377,7 +370,7 @@ margin: 0 auto;
 @media (max-width: 1200px) {
     .product-item {
         width: calc(33.33% - 20px);
-        height: 400px;
+        height: 300px;
     }
 }
 
@@ -455,26 +448,26 @@ height: 300px
 }
 
 
-  .product {
-    text-align: center;
-    margin-bottom: 30px;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(43, 169, 209, 0.1);
-    transition: transform 0.3s ease;
-  }
-  .product:hover {
-    transform: translateY(-5px);
-  }
-  .countdown-container {
-    background-color: var(--main-color);
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 6px rgba(43, 169, 209, 0.2);
-  }
+.product {
+  text-align: center;
+  margin-bottom: 30px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(43, 169, 209, 0.1);
+  transition: transform 0.3s ease;
+}
+.product:hover {
+  transform: translateY(-5px);
+}
+.countdown-container {
+  background-color: var(--main-color);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 6px rgba(43, 169, 209, 0.2);
+}
   .countdown {
     font-size: 36px;
     font-weight: bold;
@@ -635,12 +628,11 @@ height: 300px
     background-color: #0d6efd;
     height: 100px;
     position: relative;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 .timedeal-logo {
     position: absolute;
     top: 20px;
-    left: 250px;
     color: white;
     font-size: 28px;
     font-weight: bold;
@@ -693,4 +685,68 @@ height: 300px
 }
 .bg-danger {
     background-color: #0d6efd !important;
+}
+
+.pagination {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50px;
+    padding: 5px;
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+page-navigation{
+	text-align: center;
+}
+
+.pagination .page-item:first-child .page-link,
+.pagination .page-item:last-child .page-link {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin: 0 5px;
+    background-color: #f8f9fa;
+    border: none;
+    color: #6c757d;
+}
+
+.pagination .page-item:not(:first-child):not(:last-child) .page-link {
+    border: none;
+    background-color: transparent;
+    color: #6c757d;
+    font-weight: bold;
+    padding: 0.5rem 0.8rem;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination .page-link:focus {
+    box-shadow: none;
+}
+
+.pagination .page-link:hover {
+    background-color: #e9ecef;
+}
+
+.timedeal-header:before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100px;
+    background: #0d6efd;
+    position: absolute;
+    top: 100%;
 }

@@ -33,6 +33,7 @@ body {
 .logo {
 	font-weight: bold;
 	font-size: 50px;
+	max-height: 64px;
 	font-family: GmarketSansMedium;
 }
 
@@ -74,13 +75,23 @@ body {
 	border-color: #35c5f0;
 	outline: none;
 }
-
+.search-button{
+	position: absolute;
+	top: 50%;
+	right: 10px;
+	transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    margin-top: 2px;
+}
 .search-bar .bi-search {
+	/* 
 	position: absolute;
 	right: 10px;
 	top: 50%;
-	transform: translateY(-50%);
+	transform: translateY(-50%); */
 	color: #888;
+	 font-size: 23px;
 }
 
 .user-icons {
@@ -403,9 +414,10 @@ body {
 .inner {
 	max-width: 1200px;
 	margin: 0 auto;
-	display: flex;
-	justify-content: space-between;
+	/* display: flex;
+	justify-content: space-between; */
 	width: 100%;
+	flex-wrap: wrap;
 }
 
 
@@ -417,6 +429,12 @@ body {
   right: 0;
   z-index: 9999;
   background-color: rgba(255, 255, 255, 1);
+  padding-top: 10px;
+}
+
+.fixed-header .inner {
+    display: flex;
+    justify-content: space-between;
 }
 
 .fixed-nav {
@@ -429,7 +447,7 @@ body {
 }
 
 :root {
-  --header-height: 60px; 
+  --header-height: 74px; 
 }
 
 :root {
@@ -617,3 +635,8 @@ input[type=number] {
 a{
 	text-decoration: none; !important;
 }
+
+ main{
+    margin-bottom: 60px;
+}
+

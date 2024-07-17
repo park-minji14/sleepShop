@@ -215,8 +215,10 @@
 
 <!-- 특가섹션 -->
 	<div class="timedeal-header">
-		<div class="timedeal-logo">⚡오늘의 특가</div>
-		<div class="timedeal-timer" id="timer">23:59:59</div>
+		<div class="inner">
+			<div class="timedeal-logo">⚡오늘의 특가</div>
+			<div class="timedeal-timer" id="timer">23:59:59</div>
+		</div>
 	</div>
 	<div class="container">
 		<div class="inner">
@@ -267,7 +269,7 @@
 								alt="${product.productName}"> <span class="product-info">
 									<span>${product.productName}</span> <span class="discount">
 										${product.discountRate}% <span class="price"> <fmt:formatNumber
-												value="${product.price}" pattern="#,###원" />
+												value="${product.price * (1 - product.discountRate / 100)}" pattern="#,###원" />
 									</span>
 								</span> <span class="rating"> ★ ${product.score} <span
 										class="review-count">리뷰 ${product.reviewCount}</span>
