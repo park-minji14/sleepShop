@@ -306,7 +306,8 @@ element.style {
 	margin-top: 30px;
 }
 
-
+.hover { cursor: pointer; }
+.hover: hover {	color: #0d6efd; }
 </style>
 
 <div class="inner">
@@ -340,6 +341,18 @@ element.style {
 	</div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="myPageDialogModal" tabindex="-1" aria-labelledby="myPageDialogModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="myPageDialogModalLabel">마이페이지</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body"></div>
+		</div>
+	</div>
+</div>
 
 	<script>
 		function login() {
@@ -469,15 +482,21 @@ element.style {
 			
 			ajaxFun(url, 'post', formData, 'json', fn);
 	  }
-	
 	  
+	  function detialsInquiry(num, pageNo) { // 문의 상세 보기
+			let url = '${pageContext.request.contextPath}/inquiry/article';
+			
+			const fn = function(data) {
+				$('.tab-content').html(data);
+			};
+			
+			ajaxFun(url, 'get', {num:num, pageNo:pageNo}, 'text', fn);
+	  }
 	  
-	  
-	  
-	  function inquiryDetials(num) { // 문의 상세 보기
+	  function deleteInquiry(num, pageNo) { // 문의 삭제
 		  
 	  }
-	
+	  
 	</script>
 	
 	

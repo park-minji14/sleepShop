@@ -44,7 +44,7 @@
 											<div class="cont" >
 												<div class="date">${fn:substring(dto.created_date,0,10)}</div>
 												<div class="inquiry">${dto.category}</div>
-												<div class="subject" onclick="inquiryDetials('${dto.num}')" >${dto.title}</div>
+												<div class="subject hover" onclick="detialsInquiry('${dto.num}', '${pageNo}')" >${dto.title}</div>
 												<div class="answer">
 													${ empty dto.response_date ? "답변대기":"답변완료"}
 												</div>

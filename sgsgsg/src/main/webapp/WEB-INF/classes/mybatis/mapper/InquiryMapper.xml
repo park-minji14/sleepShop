@@ -60,7 +60,7 @@
 
 	<!-- 글 보기 -->
 	<select id="findById" resultType="com.sgsg.dra.domain.Inquiry" parameterType="Long">
-		SELECT num, created_date, category, title, response_date, content, response_content, userId, userId2
+		SELECT num, created_date, category, title, response_date, content, response_content, i.userId, i.userId2
 		FROM inquiry i
 		JOIN member1 m ON i.userId=m.userId
 		LEFT OUTER JOIN member1 a ON i.userId2 = a.userId
@@ -72,8 +72,6 @@
 	<delete id="deleteInquiry" parameterType="Long">
 		DELETE FROM inquiry WHERE num = #{num}
 	</delete>
-	
-
 
 
 </mapper>

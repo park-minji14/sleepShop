@@ -1,12 +1,12 @@
 package com.sgsg.dra.controller;
 
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,40 +111,37 @@ public class InquiryController {
 		return model;
 	}
 	
-	
 	// 글보기
+	// AJAX-리스트:Text 	
 	@GetMapping("article")
 	public String article(@RequestParam long num,
-			@RequestParam String page,
+			@RequestParam String pageNo,
 			@RequestParam(defaultValue = "all") String schType,
 			@RequestParam(defaultValue = "") String kwd,
+			HttpServletResponse resp,
 			HttpSession session,
 			Model model) throws Exception {
 
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		kwd = URLDecoder.decode(kwd, "utf-8");
 
-		String query = "page=" + page;
-		if (kwd.length() != 0) {
-			query += "&schType=" + schType + "&kwd=" + URLEncoder.encode(kwd, "UTF-8");
-		}
-		
 		Inquiry dto = service.findById(num);
 		if (dto == null) {
-			return "redirect:/inquiry/list?" + query;
+			resp.sendError(410);
+			return null;
 		}
 
 		if ( !info.getUserId().equals(dto.getUserId()) ) {
-			return "redirect:/inquiry/list?" + query;
+			resp.sendError(402);
+			return null;
 		}
 
 		model.addAttribute("dto", dto);
-		model.addAttribute("page", page);
+		model.addAttribute("pageNo", pageNo);
 		model.addAttribute("schType", schType);
 		model.addAttribute("kwd", kwd);
-		model.addAttribute("query", query);
 
-		return "/mypage/oneTooneDetails";
+		return "mypage/oneTooneDetails";
 	}
 	
 	// 삭제

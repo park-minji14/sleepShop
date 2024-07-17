@@ -1,6 +1,6 @@
-package com.sgsg.dra.domain;
+package com.sgsg.dra.admin.domain;
 
-public class Inquiry {
+public class InquiryManage {
 	private long num;
 	private String title;
 	private String content;
@@ -10,6 +10,7 @@ public class Inquiry {
 	private String userId;
 	private String userId2;
 	private String category;
+	
 	
 	public long getNum() {
 		return num;
@@ -66,6 +67,5 @@ public class Inquiry {
 		this.category = category;
 	}
 	
-
+	
 }
-
