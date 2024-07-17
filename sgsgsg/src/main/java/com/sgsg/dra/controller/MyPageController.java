@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping(value ="/mypage/*")
 public class MyPageController {
-	
 	// 메인화면
 	@GetMapping("main")
 	public String main() {
@@ -27,7 +26,7 @@ public class MyPageController {
 		return "mypage/point";
 	}
 	
-	//마이 리뷰
+	// 마이 리뷰
 	@GetMapping("review")
 	public String review() {
 		return "mypage/review";
@@ -38,21 +37,6 @@ public class MyPageController {
 	public String recentProduct() {
 		return "mypage/recentProduct";
 	}
-	
-	//1:1문의
-	@GetMapping("oneToone")
-	public String oneToone() {
-		return "mypage/oneToone";
-	}
-	
-	//1:1문의 상세페이지
-	@GetMapping("oneTooneDetails")
-	public String oneTooneDetails() {
-		
-		return ".mypage.oneTooneDetails";
-	}
-	
-	
 	
 	// 찜한 상품
 	@GetMapping("wishlist")

@@ -19,6 +19,7 @@ public class Delivery {
 	private String destMemo;
 	private String orderNum;
 	private int count;
+	private int insertDest;
 	
 	public String getUserId() {
 		return userId;
@@ -121,5 +122,11 @@ public class Delivery {
 	}
 	public void setCount(int count) {
 		this.count = count;
+	}
+	public int getInsertDest() {
+		return insertDest;
+	}
+	public void setInsertDest(int insertDest) {
+		this.insertDest = insertDest;
 	}
 }

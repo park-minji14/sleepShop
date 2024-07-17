@@ -225,7 +225,6 @@ body {
 }
 
 
-
 td.date {
     color: #888 !important;
     font-family: 'Poppins' !important;
@@ -259,7 +258,6 @@ td.date {
 	display: flex;
 	font-size: 18px;
 }
-
 
 
 .cont {
@@ -303,9 +301,10 @@ element.style {
 	margin: 100px;
 }
 
-
-
-
+.cont {
+	margin-bottom: 30px;
+	margin-top: 30px;
+}
 
 
 </style>
@@ -395,6 +394,13 @@ element.style {
 				let url = "${pageContext.request.contextPath}/mypage/" + tab;
 				let selector = ".tab-content";
 				
+				if(tab === "oneToone") {
+					// 1:1 문의
+					listInquiry(1);
+					return;
+				}
+				
+				
 				const fn = function(data){
 					$(selector).html(data);
 				};
@@ -432,3 +438,47 @@ element.style {
 			});
 		});
 	</script>
+	
+	<script>
+	  // 1:1 문의 -----------------
+	  function listInquiry(page) { // 리스트
+		  let url = "${pageContext.request.contextPath}/inquiry/list";
+		  let selector = ".tab-content";
+		  
+		  const fn = function(data){
+				$(selector).html(data);
+			};
+			ajaxFun(url, "get", {pageNo:page}, "text", fn);
+	  }
+	  
+	  function inquiryModalOpen() { // 등록 모달창
+		  $('#inquiryModal').modal('show');
+	  }
+	
+	  function inquirySave() { // 문의 등록
+			let url = '${pageContext.request.contextPath}/inquiry/write';
+			let formData = $('form[name=inquiryForm]').serialize();
+			
+			const fn = function(data) {
+				$('form[name=inquiryForm]')[0].reset();
+				
+				$('#inquiryModal').modal('hide');
+				
+				listInquiry(1);
+			};
+			
+			ajaxFun(url, 'post', formData, 'json', fn);
+	  }
+	
+	  
+	  
+	  
+	  
+	  function inquiryDetials(num) { // 문의 상세 보기
+		  
+	  }
+	
+	</script>
+	
+	
+	

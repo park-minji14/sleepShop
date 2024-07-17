@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.sgsg.dra.mapper.ExpertMapper">
+    <select id="getExpertProfile" parameterType="String" resultType="com.sgsg.dra.domain.Expert">
+        SELECT userId, license, career, exposed_content
+        FROM expert_mypage
+        WHERE userId = #{userId}
+    </select>
+    
+    
+    <update id="updateExpertProfile" parameterType="com.sgsg.dra.domain.Expert">
+        UPDATE expert_mypage
+        SET license=#{license}, career=#{career}, exposed_content=#{exposed_content}
+        WHERE userId = #{userId}
+    </update>
+</mapper>

@@ -130,7 +130,7 @@
 	</select>
 	
 	<!-- 배송지 추가 -->
-	<insert id="insertDest" parameterType="map">
+	<insert id="insertDest" parameterType="com.sgsg.dra.domain.Delivery">
 		INSERT INTO MEMBER_DELIVERY(DESTINATIONNUM, RECIPIENTNAME, DEFAULTDEST, TEL, ZIP,
 			REG_DATE, MOD_DATE, ADDR1, ADDR2, DESTMEMO, USERID)
 		VALUES (member_delivery_seq.nextval, #{recipientName}, #{defaultDest},
@@ -140,19 +140,19 @@
 	<!-- 배송지 중 기본 배송지 검색 또는 insert시 같은 주소가 있는지 검색(할 예정) -->
 	<select id="findByDest" parameterType="String" resultType="com.sgsg.dra.domain.Delivery">
 		SELECT DESTINATIONNUM, RECIPIENTNAME, DEFAULTDEST, TEL, ZIP, REG_DATE, MOD_DATE,
-			ADDR1, ADDR2, DESTMEMO, USERID
+			ADDR1, ADDR2, DESTMEMO, USERID, NVL(COUNT(*), 0) COUNT
 		FROM MEMBER_DELIVERY 
 		WHERE USERID = #{userId} AND DEFAULTDEST = 1
+		GROUP BY DESTINATIONNUM, RECIPIENTNAME, DEFAULTDEST, TEL, ZIP, REG_DATE, MOD_DATE,
+			ADDR1, ADDR2, DESTMEMO, USERID
 	</select>
 	
 	<!-- 사용자의 모든 배송지 출력 -->
 	<select id="selectAllDest" parameterType="String" resultType="com.sgsg.dra.domain.Delivery">
 		SELECT DESTINATIONNUM, RECIPIENTNAME, DEFAULTDEST, TEL, ZIP, REG_DATE, MOD_DATE,
-			ADDR1, ADDR2, DESTMEMO, USERID, NVL(COUNT(*), 0) count
+			ADDR1, ADDR2, DESTMEMO, USERID
 			FROM MEMBER_DELIVERY
 			WHERE USERID = #{userId}
-            GROUP BY DESTINATIONNUM, RECIPIENTNAME, DEFAULTDEST, TEL, ZIP, REG_DATE, MOD_DATE,
-			ADDR1, ADDR2, DESTMEMO, USERID
 	</select>
 	
 	<!-- 사용자가 기본 배송지를 재설정할 경우 다른 배송지를 기본 배송지가 아니게 -->
@@ -161,16 +161,16 @@
 	</update>
 	
 	<!-- 배송지 수정 -->
-	<update id="updateDest" parameterType="map">
+	<update id="updateDest" parameterType="com.sgsg.dra.domain.Delivery">
 		UPDATE MEMBER_DELIVERY SET RECIPIENTNAME=#{recipientName}, DEFAULTDEST=#{defaultDest},
-			TEL=#{tel}, ZIP=#{zip}, REG_DATE=#{reg_date}, MOD_DATE=#{mod_date}, ADDR1=#{addr1},
+			TEL=#{tel}, ZIP=#{zip}, MOD_DATE=sysdate, ADDR1=#{addr1},
 			ADDR2=#{addr2}, DESTMEMO=#{destMemo}
 		WHERE DESTINATIONNUM = #{destinationNum}
 	</update>
 	
 	<!-- 배송지 삭제 -->
-	<delete id="deleteDest" parameterType="Integer">
-		DELETE FROM MEMBER_DELIVERY WHERE DESTINATIONNUM = #{destinationNum}
+	<delete id="deleteDest" parameterType="map">
+		DELETE FROM MEMBER_DELIVERY WHERE DESTINATIONNUM = #{destinationNum} AND USERID = #{userId}
 	</delete>
 	
 	

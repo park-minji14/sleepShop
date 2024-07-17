@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sgsg.dra.domain.Delivery;
@@ -116,7 +117,8 @@ public class OrderController {
 	}
 	
 	@PostMapping("paymentOk")
-	public String paymentSubmit(Order dto,
+	public String paymentSubmit(Order order,
+			Delivery delivery,
 			@RequestParam(defaultValue = "buy") String mode,
 			RedirectAttributes reAttr,
 			HttpSession session) {
@@ -125,24 +127,28 @@ public class OrderController {
 
 		try {
 			
-			dto.setUserId(info.getUserId());
-			dto.setOrderState(OrderState.ORDERSTATEINFO[1]);
+			order.setUserId(info.getUserId());
+			order.setOrderState(OrderState.ORDERSTATEINFO[1]);
 			
-			orderService.insertOrder(dto);
+			delivery.setUserId(info.getUserId());
+			
+			orderService.insertOrder(order);
 			
 			if(mode.equals("cart") || mode.equals("item")) {
 				// 구매 상품에 대한 장바구니 비우기
 				Map<String, Object> map = new HashMap<String, Object>();
-				String gubun = mode.equals("cart") ? "list" : "item";
+				//String gubun = mode.equals("cart") ? "list" : "item";
 				
-				map.put("gubun", gubun);
+				map.put("gubun", "list");
 				map.put("userId", info.getUserId());
-				map.put("stockNum", dto.getStockNums());
+				map.put("stockNum", order.getStockNums());
 				
 				cartService.deleteCart(map);
-			} 
+			}
 			
-			String p = String.format("%,d", dto.getPayment());
+			orderService.upsert(delivery);
+			
+			String p = String.format("%,d", order.getPayment());
 			
 			StringBuilder sb = new StringBuilder();
 			sb.append(info.getUserName() + "님 상품을 구매해 주셔서 감사 합니다.<br>");
@@ -172,7 +178,6 @@ public class OrderController {
 	}
 	
 	@GetMapping("allDest")
-	@RequestMapping
 	public String selectAllDest(HttpSession session, Model model) throws Exception {
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
 		
@@ -184,5 +189,29 @@ public class OrderController {
 		
 		return "order/destList";
 	}
+	
+	@PostMapping("deleteDest")
+	@ResponseBody
+	public Map<String, Object> deleteDest(Long destinationNum, HttpSession session) throws Exception{
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		String state = "false";
+
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("userId", info.getUserId());
+			map.put("destinationNum", destinationNum);
+			
+			state = "true";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		
+		model.put("state", state);
+		
+		return model;
+	}
+	
 	
 }

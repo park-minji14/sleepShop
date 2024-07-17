@@ -63,6 +63,26 @@
 }
 
 
+@keyframes btncolor {
+	0% {}
+	100% {background: #35c5f0; color: white; transform: translateY(4px);}
+}
+
+
+.profile-update {
+	width: 110px;
+	height: 40px;
+	background-color: white;
+	border-radius: 10px;
+	border: 2px solid #35c5f0;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
+}
+
+.profile-update:hover {
+	animation: btncolor 0.3s forwards;
+}
+
+
 @keyframes show {
 	0% {opacity: 0; transform: translateX(-8px);}
 	100% {opacity: 1; transform: translateX(0px);}
@@ -86,7 +106,7 @@
 				style="width: 200px; height: 200px; border-radius: 100px;">
 				<br>
 				<div>
-					<span style="font-size: 32px;">@sample</span> 
+					<span style="font-size: 32px;">@${dto.userId}</span> 
 				</div>
 				<div class="experience-bar-container">
                     <div class="experience-bar"></div>
@@ -133,6 +153,10 @@
 		<div class="expert-style2">
 			<span style="font-size: 22px;">전문가 샘플 자기소개입니다.</span>
 		</div>
+		
+		<div>
+            <button class="profile-update" onclick="location.href='${pageContext.request.contextPath}/expert/editprofile?userId=${dto.userId}';">프로필 수정</button>
+        </div>
 		
 	</div>
 </div>
