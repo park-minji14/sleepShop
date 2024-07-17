@@ -32,4 +32,9 @@ public class ExpertServiceImpl implements ExpertService {
     public int getAnswerCount(String userId) {
         return expertMapper.getAnswerCount(userId);
     }
+    
+    @Override
+    public int getAcceptedAnswerCount(String userId) {
+        return expertMapper.getAcceptedAnswerCount(userId);
+    }
 }

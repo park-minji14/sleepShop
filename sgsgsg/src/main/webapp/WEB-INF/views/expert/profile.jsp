@@ -83,6 +83,17 @@
 }
 
 
+.profile-update2 {
+	width: 110px;
+	height: 40px;
+	background-color: white;
+	border-radius: 10px;
+	border: 2px solid #35c5f0;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
+}
+
+
+
 @keyframes show {
 	0% {opacity: 0; transform: translateX(-8px);}
 	100% {opacity: 1; transform: translateX(0px);}
@@ -142,19 +153,26 @@
 		            <span style="font-size: 30px; display: block;">답변 채택률</span>
 		        </div>
 		        <div>
-		        	<span id="acceptance-rate" style="font-size: 40px; display: block; color: #B70000;">0%</span>
+		        	<span id="acceptance-rate" style="font-size: 40px; display: block; color: #B70000;">${acceptanceRate}%</span>
 		        </div>
 			</div>
 			
 		</div>
 		
 		<div class="expert-style2">
-			<span style="font-size: 22px;">${dto.exposed_content}</span>
+			<span style="font-size: 22px; margin: 10px;">${dto.exposed_content}</span>
+		</div>  
+        
+        <div>
+	        <c:choose>
+				<c:when test="${sessionScope.member.userId==dto.userId || sessionScope.member.membership>90}">
+					<button class="profile-update" onclick="location.href='${pageContext.request.contextPath}/expert/editprofile?userId=${dto.userId}';">프로필 수정</button>
+				</c:when>
+				<c:otherwise>
+					&nbsp;
+				</c:otherwise>
+			</c:choose>
 		</div>
-		
-		<div>
-            <button class="profile-update" onclick="location.href='${pageContext.request.contextPath}/expert/editprofile?userId=${dto.userId}';">프로필 수정</button>
-        </div>
 		
 	</div>
 </div>
@@ -162,7 +180,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', (event) => {
-    const targetRate = 66.7;
+    const targetRate = parseFloat("${acceptanceRate}");
     const targetCount = ${answerCount};
     const duration = 700;
     const incrementRate = targetRate / (duration / 10);

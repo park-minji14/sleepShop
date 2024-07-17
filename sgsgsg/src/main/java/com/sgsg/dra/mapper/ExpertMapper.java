@@ -14,4 +14,6 @@ public interface ExpertMapper {
     public void updateExpertProfile(Expert dto);
     
     public int getAnswerCount(String userId);
+    
+    public int getAcceptedAnswerCount(String userId);
 }

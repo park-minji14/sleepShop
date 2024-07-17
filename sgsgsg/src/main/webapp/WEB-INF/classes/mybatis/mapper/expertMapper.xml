@@ -26,4 +26,12 @@
         WHERE userId = #{userId}
     </select>
     
+    
+    <select id="getAcceptedAnswerCount" parameterType="String" resultType="int">
+        SELECT COUNT(*) 
+        FROM sleep_clinic_answer a
+        JOIN sleep_clinic_answer_like l ON a.answer_num = l.answer_num
+        WHERE a.userId = #{userId} AND l.pickup = 1
+    </select>
+    
 </mapper>

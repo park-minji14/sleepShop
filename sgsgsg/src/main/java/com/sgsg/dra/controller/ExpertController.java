@@ -23,17 +23,23 @@ public class ExpertController {
     	
         Expert dto = null;
         int answerCount = 0;
-        
+        int acceptedAnswerCount = 0;
+        double acceptanceRate = 0.0;
 		try {
 			dto = expertService.getExpertProfile(userId);
-			answerCount = expertService.getAnswerCount(userId);
-					
+            answerCount = expertService.getAnswerCount(userId);
+            acceptedAnswerCount = expertService.getAcceptedAnswerCount(userId);
+            if (answerCount > 0) {
+                acceptanceRate = ((double) acceptedAnswerCount / answerCount) * 100;
+            }
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
         
         model.addAttribute("dto", dto);
         model.addAttribute("answerCount", answerCount);
+        model.addAttribute("acceptedAnswerCount", acceptedAnswerCount);
+        model.addAttribute("acceptanceRate", String.format("%.1f", acceptanceRate));
         
         return ".expert.profile";
     }
