@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sgsg.dra.domain.Delivery;
+import com.sgsg.dra.domain.Member;
 import com.sgsg.dra.domain.Order;
 import com.sgsg.dra.domain.Product;
 import com.sgsg.dra.domain.SessionInfo;
@@ -50,8 +51,10 @@ public class OrderController {
 		}
 		
 		try {
+			Member orderUser = orderService.findByOrderUser(info.getUserId());
 			Delivery delivery = orderService.findByDest(info.getUserId());
 			String orderNum = orderService.productOrderNumber();
+			
 			String productOrderName = "";
 			int totalProduct = 0; // 상품합
 			int deliveryCharge = 0; // 배송비
@@ -96,6 +99,7 @@ public class OrderController {
 			deliveryCharge = totalProduct >= 200000 ? 0 : deliveryCharge;
 			totalPayment = totalProduct - totalDiscountPrice + deliveryCharge;
 			
+			model.addAttribute("orderUser", orderUser);
 			model.addAttribute("defaultDest", delivery);
 			model.addAttribute("productList", productList);
 			model.addAttribute("productOrderName", productOrderName);

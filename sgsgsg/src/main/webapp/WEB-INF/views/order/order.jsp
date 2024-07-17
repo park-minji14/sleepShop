@@ -39,11 +39,12 @@ input[type="checkbox"]{
 
 </style>
 
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script type="text/javascript">
 function sendOk() {
 	const f = document.paymentForm;
 	
-	f.destinationNum.value = Number(f.destinationNum.value);
+	
 	if(! $('.destBox .recipientName').text()){
 		f.recipientName.value = $('.destBox .recipientName').val() ?? $('.destBox .recipientName').text();
 	}
@@ -107,8 +108,45 @@ function sendOk() {
 	buyer_addr = buyer_addr.trim();
 	let buyer_postcode = "${orderUser.zip}"; // 구매자 우편번호
 	
+	/*
 	// 결제 API로 결제 진행
+	var IMP = window.IMP;
+	IMP.init("imp키");
 	
+	
+	IMP.request_pay({
+		pg : 'html5_inicis.INIpayTest', // 테스트 시 html5_inicis.INIpayTest 기재 
+		pay_method : 'card',
+		merchant_uid: merchant_uid, // 상점에서 생성한 고유 주문번호
+		name : productName,
+		amount : f.payment.value,                           // 금액
+		buyer_email : buyer_email,
+		buyer_name : buyer_name,
+		buyer_tel : buyer_tel,   // 필수 파라미터
+		buyer_addr : buyer_addr,
+		buyer_postcode : buyer_postcode,
+	}, function(resp) { // callback
+			if(resp.success) {
+				
+				let pg_tid = resp.pg_tid.replace('StdpayCARDINIpayTest','').slice(0, -5);
+				
+				f.payMethod.value = resp.pay_method;
+				f.cardName.value = resp.card_name;
+				f.authNumber.value = resp.apply_num;
+				f.authDate.value = pg_tid;
+				
+				
+				f.action = "${pageContext.request.contextPath}/order/paymentOk"
+				f.submit();
+				
+				alert('success...');
+				console.log(resp);
+			} else {
+				alert('fail...');
+				console.log(resp);
+			}
+	});
+	*/
 	
 	
 	// 결제가 성공한 경우 ------------------------
@@ -347,7 +385,7 @@ $(function() {
 			$('#directDest').removeClass('show');
 		}
 		if(e.target.id==="mainDI"){
-			$('input[name=destinationNum]').val('');
+			$('input[name=destinationNum]').val('0');
 			info.find('.fade').addClass('show');
 		}
 		
@@ -383,6 +421,31 @@ $(function() {
 			$('.destBox .zip').text($tr.find('.zip').text());
 			
 			$('#changeDestModal').modal("hide");
+		});
+		
+		$('.deleteDest').click(function() {
+			let destNum = $('.changeDest-list input[type=radio]:checked').attr('data-destnum');
+			let url = '${pageContext.request.contextPath}/order/deleteDest';
+			
+			$.ajax({
+				url: url,
+				method: "post",
+				data: destNum,
+				dataType: "json",
+				success: function(data) {
+					
+				},
+				error: function(jqXHR) {
+	                if(jqXHR.status === 403) {
+	                	location.href = '${pageContext.request.contextPath}/member/login';
+	                    return false;
+	                } else if(jqXHR.status === 400) {
+	                    alert('요청 처리가 실패 했습니다.');
+	                    return false;
+	                }
+	            }
+			});
+			
 		});
 	});
 	

@@ -3,9 +3,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sgsg.dra.admin.mapper.OrderManageMapper">
 	
+	<sql id="where-list">
+		<choose>
+			<when test="schType == 'orderNum' ">
+			   ( po.orderNum  = #{kwd} )
+			</when>
+			<when test="schType == 'invoiceNumber' ">
+			   ( invoiceNumber  = #{kwd} )
+			</when>
+			<when test="schType == 'orderDate' ">
+			   ( TO_CHAR(orderDate, 'YYYYMMDD') = #{kwd}
+		          OR TO_CHAR(orderDate, 'YYYY-MM-DD') = #{kwd} )
+			</when>
+			<when test="schType == 'userName'">
+			    INSTR(userName, #{kwd}) &gt; 0
+			</when>
+		</choose>
+	</sql>
+	
 	<!-- 주문 목록 가지고 오기 -->
 	<select id="listOrder" resultType="com.sgsg.dra.domain.Order">
-		SELECT PRODUCTORDERNAME, ORDERNUM, o.USERID, USERNAME, ISSUE_ID, TO_CHAR(ORDERDATE, 'YYYY-MM-DD HH24:MI:SS') ORDERDATE, TOTALMONEY, USEDSAVED,
+		SELECT PRODUCTORDERNAME, ORDERNUM, o.USERID, USERNAME, ISSUE_ID,
+			TO_CHAR(ORDERDATE, 'YYYY-MM-DD HH24:MI:SS') ORDERDATE, TOTALMONEY, USEDSAVED,
 			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENTNAME,
 			o.TEL, o.ZIP, o.ADDR1, o.ADDR2, DESTMEMO
 		FROM PRODUCTORDER o
@@ -13,10 +32,28 @@
 		ORDER BY ORDERNUM DESC
 	</select>
 	
-	<select id="findById">
-		
+	<select id="findById" parameterType="String" resultType="com.sgsg.dra.domain.Order">
+		SELECT PRODUCTORDERNAME, po.ORDERNUM, po.USERID, m.USERNAME, ISSUE_ID,
+			TO_CHAR(ORDERDATE, 'YYYY-MM-DD HH24:MI:SS') ORDERDATE, TOTALMONEY, USEDSAVED, 
+			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENTNAME,
+			po.TEL, po.ZIP, po.ADDR1, po.ADDR2, po.DESTMEMO, PAYMETHOD, CARDNAME,
+			AUTHNUMBER, AUTHDATE
+        FROM PRODUCTORDER po
+        LEFT OUTER JOIN MEMBER1 m ON po.USERID = m.USERID
+        LEFT OUTER JOIN payDetail pd ON po.orderNum = pd.orderNum
+        WHERE po.ORDERNUM = #{orderNum}
 	</select>
 	
-	
+	<select id="findByOrderDetails" parameterType="String" resultType="com.sgsg.dra.domain.Order">
+		SELECT od.orderNum, od.orderDetailNum, od.qty, od.price, od.salePrice, od.productMoney, od.savedMoney,
+			ps.productNum, ps.detailNum, ps.detailNum2, p.productName, p.optionCount,
+			d1.optionValue, d2.optionValue optionValue2
+		FROM orderDetail od
+        JOIN PRODUCTSTOCK ps ON od.STOCKNUM=ps.STOCKNUM
+		JOIN PRODUCT p ON ps.productNum = p.productNum
+		LEFT OUTER JOIN optionDetail d1 ON ps.detailNum = d1.detailNum
+		LEFT OUTER JOIN optionDetail d2 ON ps.detailNum2 = d2.detailNum
+		WHERE od.orderNum = #{orderNum}
+	</select>
 	
 </mapper>

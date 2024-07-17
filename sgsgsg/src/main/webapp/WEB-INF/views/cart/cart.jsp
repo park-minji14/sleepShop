@@ -173,14 +173,13 @@ function ajaxFun(url, method, formData, dataType, fn, file = false) {
             },
             error: function(jqXHR) {
                 if(jqXHR.status === 403) {
-                    login();
+                	location.href = '${pageContext.request.contextPath}/member/login';
                     return false;
                 } else if(jqXHR.status === 400) {
                     alert('요청 처리가 실패 했습니다.');
                     return false;
                 }
                 
-                console.log(jqXHR.responseText);
             }
     };
     

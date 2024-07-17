@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sgsg.dra.domain.Delivery;
+import com.sgsg.dra.domain.Member;
 import com.sgsg.dra.domain.Order;
 import com.sgsg.dra.domain.Product;
 import com.sgsg.dra.domain.UserPoint;
@@ -20,4 +21,7 @@ public interface OrderService {
 	public void deleteDest(Map<String, Object> map) throws Exception;
 	
 	public UserPoint findByUserPoint(String userId) throws Exception;
+	
+	public Member findByOrderUser(String userId) throws Exception;
+	
 }

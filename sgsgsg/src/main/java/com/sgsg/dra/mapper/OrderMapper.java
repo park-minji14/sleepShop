@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sgsg.dra.domain.Delivery;
+import com.sgsg.dra.domain.Member;
 import com.sgsg.dra.domain.Order;
 import com.sgsg.dra.domain.Product;
 import com.sgsg.dra.domain.UserPoint;
@@ -27,5 +28,7 @@ public interface OrderMapper {
 	
 	public void insertUserPoint(UserPoint userPoint) throws SQLException;
 	public UserPoint findByUserPoint(String userId) throws SQLException;
+	
+	public Member findByOrderUser(String userId) throws SQLException;
 	
 }

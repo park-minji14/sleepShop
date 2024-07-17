@@ -1,5 +1,6 @@
 package com.sgsg.dra.admin.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,32 @@ public class OrderManageServiceImpl implements OrderManageService {
 			throw e;
 		}
 		return orderList;
+	}
+
+	@Override
+	public Order findById(String orderNum) throws SQLException {
+		Order dto = null;
+		
+		try {
+			dto = mapper.findById(orderNum);
+		} catch (Exception e) {
+			throw e;
+		}
+		
+		return dto;
+	}
+
+	@Override
+	public List<Order> findByOrderDetails(String orderNum) throws SQLException {
+		List<Order> list = null;
+		
+		try {
+			list = mapper.findByOrderDetails(orderNum);
+		} catch (Exception e) {
+			throw e;
+		}
+		
+		return list;
 	}
 
 }

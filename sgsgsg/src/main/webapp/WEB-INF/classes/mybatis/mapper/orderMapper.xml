@@ -173,6 +173,14 @@
 		DELETE FROM MEMBER_DELIVERY WHERE DESTINATIONNUM = #{destinationNum} AND USERID = #{userId}
 	</delete>
 	
+	<!-- 구매자 정보 -->
+	<select id="findByOrderUser" parameterType="String" resultType="com.sgsg.dra.domain.Member">
+		SELECT m1.memberIdx, membership, m1.userId, userName, tel, zip, addr1, addr2, email
+		FROM member1 m1
+		JOIN member2 m2 ON m1.userId=m2.userId
+		WHERE userId = #{userId} AND enabled != 0
+	</select>
+	
 	
 
 </mapper>

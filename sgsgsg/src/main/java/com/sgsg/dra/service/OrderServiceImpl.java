@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sgsg.dra.domain.Delivery;
+import com.sgsg.dra.domain.Member;
 import com.sgsg.dra.domain.Order;
 import com.sgsg.dra.domain.Product;
 import com.sgsg.dra.domain.UserPoint;
@@ -185,6 +186,18 @@ public class OrderServiceImpl implements OrderService {
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+
+	@Override
+	public Member findByOrderUser(String userId) throws Exception {
+		Member member = null;
+		
+		try {
+			member = mapper.findByOrderUser(userId);
+		} catch (Exception e) {
+			throw e;
+		}
+		return member;
 	}
 
 

@@ -11,4 +11,8 @@ import com.sgsg.dra.domain.Order;
 public interface OrderManageMapper {
 	public List<Order> listOrder() throws SQLException;
 	
+	public Order findById(String orderNum) throws SQLException;
+	public List<Order> findByOrderDetails(String orderNum) throws SQLException;
+	
+	
 }
