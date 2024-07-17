@@ -27,5 +27,10 @@ public interface ProductMapper {
 	public List<Product> listOptionDetail(long optionNum);
 	public List<Product> listOptionDetailStock(Map<String, Object> map);
 	
+	public Product getCategoryById(long categoryNum);
+	
+	public List<Product> searchProducts(Map<String, Object> map);
+	public int searchProductsCount(Map<String, Object> map);
+	
 	
 }

@@ -181,14 +181,34 @@
 		ORDER BY s.detailNum, s.detailNum2
 	</select>
 	
-<select id="getCategoryById" parameterType="Long" resultType="com.sgsg.dra.domain.Product">
-    SELECT categoryNum, categoryName, categoryImage
-    FROM PRODUCT_CATEGORY
-    WHERE categoryNum = #{categoryNum} AND use = 1
+<!--상품검색(상품명,내용,검색어) -->
+<select id="searchProducts" parameterType="map" resultType="com.sgsg.dra.domain.Product">
+    SELECT * FROM (
+        SELECT p.*, ROWNUM AS rn
+        FROM (
+            SELECT DISTINCT p.*
+            FROM PRODUCT p
+            <where>
+                <if test="searchTerm != null and searchTerm != ''">
+                    INSTR(LOWER(REPLACE(p.SEARCH_WORD, ' ', '')), LOWER(REPLACE(#{searchTerm}, ' ', ''))) &gt; 0
+                    OR LOWER(p.PRODUCTNAME) LIKE LOWER('%' || #{searchTerm} || '%')
+                    OR LOWER(p.CONTENT) LIKE LOWER('%' || #{searchTerm} || '%')
+                </if>
+            </where>
+            ORDER BY p.PRODUCTNUM DESC
+        ) p
+        WHERE ROWNUM &lt;= #{offset} + #{size}
+    )
+    WHERE rn &gt; #{offset}
 </select>
-    
-<!-- 
-	<select id="listProduct" parameterType="map"></select>
-	-->
+
+<select id="searchProductsCount" parameterType="map" resultType="int">
+    SELECT COUNT(DISTINCT p.PRODUCTNUM)
+    FROM PRODUCT p
+    WHERE INSTR(LOWER(REPLACE(p.SEARCH_WORD, ' ', '')), LOWER(REPLACE(#{searchTerm}, ' ', ''))) > 0
+       OR LOWER(p.PRODUCTNAME) LIKE LOWER('%' || #{searchTerm} || '%')
+       OR LOWER(p.CONTENT) LIKE LOWER('%' || #{searchTerm} || '%')
+</select>
+
 	
 </mapper>

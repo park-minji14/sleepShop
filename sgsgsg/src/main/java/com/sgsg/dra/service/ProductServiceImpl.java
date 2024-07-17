@@ -1,6 +1,7 @@
 package com.sgsg.dra.service;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -143,5 +144,49 @@ public class ProductServiceImpl implements ProductService  {
 		return list;
 	}
 
+    @Override
+    public Product getCategoryById(long categoryNum) {
+        Product category = null;
+        try {
+            category = mapper.getCategoryById(categoryNum);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return category;
+    }
 
+    @Override
+    public List<Product> getProductsByCategory(long categoryNum) {
+        List<Product> list = null;
+        try {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("categoryNum", categoryNum);
+            list = mapper.listProduct(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public List<Product> searchProducts(Map<String, Object> map) {
+        List<Product> list = null;
+        try {
+            list = mapper.searchProducts(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    @Override
+    public int searchProductsCount(Map<String, Object> map) {
+        int count = 0;
+        try {
+            count = mapper.searchProductsCount(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 }

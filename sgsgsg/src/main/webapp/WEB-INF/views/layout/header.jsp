@@ -10,9 +10,17 @@
 			<li onclick="updateSubMenu('쇼핑')">쇼핑</li>
 			<li class="active" onclick="updateSubMenu('커뮤니티')">커뮤니티</li>
 		</ul>
+		<%-- <form action="${pageContext.request.contextPath}/product/search"
+			method="get" id="searchForm"> --%>
+			<!-- <div class="bottom-section"> -->
 		<div class="search-bar">
-			<i class="bi bi-search"></i> <input type="text" placeholder="쇼핑 검색">
+			<input type="text" id="searchInput" placeholder="쇼핑 검색">
+			<button onclick="performSearch()" class="search-button">
+				<i class="bi bi-search"></i>
+			</button>
 		</div>
+		<!-- </div> -->
+		<!-- </form> -->
 		<div class="user-icons">
 			<span class="me-4"><img
 				src="https://img.icons8.com/fluent-systems-regular/60/000000/like--v1.png"
@@ -75,15 +83,22 @@
 										</span>
 									</div>
 									<ul class="menu-list">
-										<li><img
-											src="https://img.icons8.com/ios/50/000000/purchase-order.png"
-											alt="구매 내역" style="width: 20px; height: 20px;"> 구매 내역</li>
-										<li><img
-											src="https://img.icons8.com/ios/50/000000/like.png" alt="좋아요"
-											style="width: 20px; height: 20px;"> 좋아요</li>
-										<li><img
+										<li><a
+											href="${pageContext.request.contextPath}/mypage/main"
+											style="text-decoration: none; color: inherit;"> <img
+												src="https://img.icons8.com/ios/50/000000/like.png"
+												alt="마이페이지" style="width: 20px; height: 20px;"> 마이페이지
+										</a></li>
+										<li><a
+											href="${pageContext.request.contextPath}/mypage/myshop"
+											style="text-decoration: none; color: inherit;"> <img
+												src="https://img.icons8.com/ios/50/000000/purchase-order.png"
+												alt="구매 내역" style="width: 20px; height: 20px;"> 구매 내역
+										</a></li>
+										<li><a
 											src="https://img.icons8.com/ios/50/000000/settings.png"
-											alt="설정" style="width: 20px; height: 20px;"> 설정</li>
+											alt="설정" style="text-decoration: none; color: inherit;">
+												설정</a></li>
 									</ul>
 								</c:otherwise>
 							</c:choose>
@@ -106,7 +121,7 @@
 			<ul class="sub-menu" id="subMenu">
 				<li class="active">홈</li>
 				<li>수면클리닉</li>
-				<li>질문과답변</li>
+				<li>공지사항</li>
 				<li>이벤트</li>
 				<li class="sub-menu-search">
 					<div class="popular-search">
@@ -228,7 +243,8 @@
 			'커뮤니티': [
 				{text: '홈', url: '${pageContext.request.contextPath}/'}, 
 				{text: '수면클리닉', url: '${pageContext.request.contextPath}/clinic/list'}, 
-				{text: '질문과답변', url: '${pageContext.request.contextPath}/'}, 
+				{text: '공지사항', url: '${pageContext.request.contextPath}/notice/list'}, 
+				{text: 'FAQ', url: '${pageContext.request.contextPath}/faq/list'}, 
 				{text: '이벤트', url: '${pageContext.request.contextPath}/'}
 			]
 		};
@@ -258,5 +274,13 @@
 			$(this).addClass('active');
 		});
 	}
+	
+	
+	function performSearch() {
+	    var searchTerm = document.getElementById('searchInput').value;
+	    var searchUrl = '${pageContext.request.contextPath}/product/search?searchTerm=' + searchTerm;
+	    window.location.href = searchUrl;
+	}
+	
 </script>
 
