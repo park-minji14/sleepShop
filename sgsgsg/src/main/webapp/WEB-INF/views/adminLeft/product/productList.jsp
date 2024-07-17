@@ -102,7 +102,7 @@
                			<tr>
                         <td><input type="checkbox"></td>
                         <td>
-                        	<img src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}" alt="상품 이미지" width="50" height="50"> 
+                        	<img src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}" alt="상품 이미지" width="50"> 
                         </td>
                         <td>${dto.productNum}</td>
                         <td>${dto.productName}</td>
@@ -166,7 +166,7 @@ $(function(){
 });
 
 function sendProductNum(button) {
-	console.log(button.getAttribute('data-parentNum'));
+    console.log(button.getAttribute('data-parentNum'));
     const productNum = button.getAttribute('data-productNum');
     const parentNum = button.getAttribute('data-parentNum');
     const f = document.createElement('form');
@@ -193,13 +193,17 @@ function sendProductNum(button) {
     
     document.body.appendChild(f);
     
-    if(bType === 'btnUpdate'){
-    f.action = '${pageContext.request.contextPath}/adminManagement/productManage/productUpdate';
+    if (bType === 'btnUpdate') {
+        f.action = '${pageContext.request.contextPath}/adminManagement/productManage/productUpdate';
+        f.submit();
     } else if (bType === 'btnDelete') {
-    f.action = '${pageContext.request.contextPath}/adminManagement/productManage/productDelete';
+        if (confirm('삭제는 복구 되지 않습니다.')) {
+            f.action = '${pageContext.request.contextPath}/adminManagement/productManage/productDelete';
+            f.submit();
+        } else {
+            document.body.removeChild(f);
+        }
     }
-    
-    f.submit();
 }
 
 function ajaxFun(url, method, formData, dataType, fn, file = false) {

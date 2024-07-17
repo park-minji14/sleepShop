@@ -160,38 +160,6 @@ $(function(){
 	});
 });
 
-/* function sendProductNum(button) {
-	console.log(button.getAttribute('data-parentNum'));
-    const productNum = button.getAttribute('data-productNum');
-    const parentNum = button.getAttribute('data-parentNum');
-    const f = document.createElement('form');
-    const bType = button.id;
-    f.method = 'get';
-    
-    const productNumInput = document.createElement('input');
-    productNumInput.type = 'hidden';
-    productNumInput.name = 'productNum';
-    productNumInput.value = productNum;
-    f.appendChild(productNumInput);
-    
-    const pageNumInput = document.createElement('input');
-    pageNumInput.type = 'hidden';
-    pageNumInput.name = 'pageNo';
-    pageNumInput.value = '${pageNo}';
-    f.appendChild(pageNumInput);
-    
-    document.body.appendChild(f);
-    
-    if(bType === 'btnArticle'){
-   	f.method= 'post';
-    f.action = '${pageContext.request.contextPath}/adminManagement/productManage/productStockArticle';
-    } else if (bType === 'btnUpdate') {
-    f.action = '${pageContext.request.contextPath}/adminManagement/productManage/productStockUpdate';
-    }
-    
-    f.submit();
-}
- */
 $(function(){
 	$('.btn-productStock').click(function(){
 		// 재고 관리 대화상자
