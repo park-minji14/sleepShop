@@ -424,7 +424,7 @@ $(function() {
 		});
 		
 		$('.deleteDest').click(function() {
-			let destNum = $('.changeDest-list input[type=radio]:checked').attr('data-destnum');
+			let destNum = "destinationNum="+ $('.changeDest-list input[type=radio]:checked').attr('data-destnum');
 			let url = '${pageContext.request.contextPath}/order/deleteDest';
 			
 			$.ajax({
@@ -433,7 +433,9 @@ $(function() {
 				data: destNum,
 				dataType: "json",
 				success: function(data) {
-					
+					if(data.state === 'true'){
+						$('.changeDest-list input[type=radio]:checked').closest('tr').remove();
+					}
 				},
 				error: function(jqXHR) {
 	                if(jqXHR.status === 403) {

@@ -205,6 +205,8 @@ public class OrderController {
 			map.put("userId", info.getUserId());
 			map.put("destinationNum", destinationNum);
 			
+			orderService.deleteDest(map);
+			
 			state = "true";
 		} catch (Exception e) {
 			e.printStackTrace();
