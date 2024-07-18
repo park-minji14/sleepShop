@@ -14,10 +14,10 @@
             <a class="nav-link" href="#">상품문의</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">FAQ</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/supportManage/faq">FAQ</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">공지사항</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/noticeManage/noticeList">공지사항</a>
         </li>
     </ul>
 </nav>
