@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sgsg.dra.domain.Product;
 import com.sgsg.dra.domain.SessionInfo;
 import com.sgsg.dra.service.CartService;
+import com.sgsg.dra.state.OrderState2;
 
 @Controller
 @RequestMapping("/cart/*")
@@ -40,6 +41,12 @@ public class CartController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		OrderState2 state2 = OrderState2.결제완료;
+		System.out.println(state2);
+		System.out.println(state2.name());
+		System.out.println(state2.ordinal());
+		System.out.println(OrderState2.valueOf("입금대기"));
 		
 		return ".cart.cart";
 	}

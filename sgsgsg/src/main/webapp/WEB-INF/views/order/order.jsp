@@ -95,7 +95,8 @@ function sendOk() {
 	let authNumber = "1234567890"; // 승인번호
 	let authDate = ""; // 승인 날짜
 	// toISOString() : "YYYY-MM-DDTHH:mm:ss.sssZ" 형식
-	authDate = new Date().toISOString().replace('T', ' ').slice(0, -5); // YYYY-MM-DD HH:mm:ss
+	const koreaNow = new Date((new Date()).getTime() + 1000 * 60 * 60 * 9)
+	authDate = koreaNow.toISOString().replace('T', ' ').slice(0, -5); // YYYY-MM-DD HH:mm:ss
 
 	// 결제 API에 요청할 파라미터
 	let payment = f.payment.value; // 결제할 금액
@@ -163,7 +164,7 @@ function sendOk() {
 }
 </script>
 
-<div class="container">
+<div class="container" style="position: relative; background-color: #f5f5f5; width: 100%; max-width: 100%;">
 	<div class="body-container">	
 		<div class="body-title">
 			<h3><i class="bi bi-receipt-cutoff"></i> 주문/결제 </h3>
