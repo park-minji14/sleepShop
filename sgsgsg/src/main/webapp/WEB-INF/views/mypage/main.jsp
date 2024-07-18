@@ -330,10 +330,6 @@ element.style {
 			
 			<li class="nav-item"><a class="nav-link" id="settings-tab"
 				data-bs-toggle="tab" href="#settings" aria-controls="settings">설정</a></li>
-			<c:if test="${sessionScope.member.membership > 50}">
-			<li class="nav-item"><a class="nav-link" id="expert-tab"
-				data-bs-toggle="tab" href="#expert" aria-controls="expert">전문가 프로필</a></li>
-			</c:if>
 		</ul>
 
 		<!-- 탭 컨텐츠 -->
