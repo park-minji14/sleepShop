@@ -5,7 +5,7 @@
 <style type="text/css">
 body {
     font-family: 'Pretendard-Regular', sans-serif;
-    background-color: #f8f9fa;
+   /*  background-color: #f8f9fa; */
 }
 
 /* 헤더 부분 꾸미기 */
