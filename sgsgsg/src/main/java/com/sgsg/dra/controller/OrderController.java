@@ -132,7 +132,7 @@ public class OrderController {
 		try {
 			
 			order.setUserId(info.getUserId());
-			order.setOrderState(OrderState.ORDERSTATEINFO[1]);
+			order.setOrderState(OrderState.PAYMENT_COMPLETED.getKorean());
 			
 			delivery.setUserId(info.getUserId());
 			
@@ -141,7 +141,6 @@ public class OrderController {
 			if(mode.equals("cart") || mode.equals("item")) {
 				// 구매 상품에 대한 장바구니 비우기
 				Map<String, Object> map = new HashMap<String, Object>();
-				//String gubun = mode.equals("cart") ? "list" : "item";
 				
 				map.put("gubun", "list");
 				map.put("userId", info.getUserId());

@@ -55,27 +55,30 @@
 			<table class="table table-borderless mb-1">
 				<tr>
 					<td width="50%">
-						<c:if test="${order.orderState}">
+						<c:if test="${order.orderStateNum < 3}">
 							<button type="button" class="btn btn-light btn-cancel-order" data-orderNum="${order.orderNum}">판매취소</button>
 						</c:if>
 					</td>
 					<td class="text-end">
-						<c:if test="${order.orderState}">
+						<c:if test="${order.orderStateNum == 1}">
 							<button type="button" class="btn btn-light btn-prepare-order" data-orderNum="${order.orderNum}">발송처리</button>
 						</c:if>
 					
 						<div class="row justify-content-end delivery-update-area">
-							<c:if test="${order.orderState && order.orderState}">
+							<c:if test="${order.orderStateNum > 1 && order.orderStateNum < 5}">
 								<div class="col-auto">
 									<select class="form-select delivery-select">
-										<option value="2" ${order.orderState }>발송준비</option>
+										<option value="2" ${order.orderStateNum==2?"selected":"" }>발송준비</option>
+										<option value="3" ${order.orderStateNum==3?"selected":"" }>배송시작</option>
+										<option value="4" ${order.orderStateNum==4?"selected":"" }>배송중</option>
+										<option value="5" ${order.orderStateNum==5?"selected":"" }>배송완료</option>
 									</select>
 								</div>
 								<div class="col-auto">
 									<button type="button" class="btn btn-light btn-delivery-order" data-orderNum="${order.orderNum}" data-orderState="${order.orderState}">배송변경</button>
 								</div>
 							</c:if>
-							<c:if test="${order.orderState}">
+							<c:if test="${order.orderStateNum == 5}">
 								<div class="col-auto">
 									<label>배송완료 일자 : ${order.orderStateDate}</label>
 								</div>
@@ -127,7 +130,7 @@
 							<td>${dto.qty}</td>
 							<td><fmt:formatNumber value="${dto.productMoney}"/></td>
 							<td><fmt:formatNumber value="${dto.savedMoney}"/></td>
-							<td>${order.orderState}</td>
+							<td>${order.orderStateNum == 1? "상품준비중":order.orderState}</td>
 							<td>
 								<span class="orderDetailStatus-update" 
 										data-orderNum="${order.orderNum}" 

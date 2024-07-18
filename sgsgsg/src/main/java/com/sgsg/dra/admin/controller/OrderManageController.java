@@ -19,8 +19,8 @@ public class OrderManageController {
 	@Autowired
 	private OrderManageService service;
 	
-	@RequestMapping("main")
-	public String productManage(Model model) throws Exception {
+	@RequestMapping("order")
+	public String orderManage(Model model) throws Exception {
 		try {
 			List<Order> orderList = service.listOrder();
 			
@@ -31,10 +31,10 @@ public class OrderManageController {
 		}
 		
 		
-		return ".adminLeft.order.main";
+		return ".adminLeft.order.order";
 	}
 	
-	@GetMapping("detail/info")
+	@GetMapping("order/detail")
 	public String detail(
 			@RequestParam String orderNum,
 			Model model) throws Exception{
@@ -49,4 +49,16 @@ public class OrderManageController {
 	}
 	
 	
+	
+	@RequestMapping("delivery")
+	public String deliveryManage(Model model) throws Exception {
+		try {
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return ".adminLeft.order.delivery";
+	}
 }

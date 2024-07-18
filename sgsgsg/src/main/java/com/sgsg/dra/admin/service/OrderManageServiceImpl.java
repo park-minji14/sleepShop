@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.sgsg.dra.admin.mapper.OrderManageMapper;
 import com.sgsg.dra.domain.Order;
+import com.sgsg.dra.state.OrderState;
 
 @Service
 public class OrderManageServiceImpl implements OrderManageService {
@@ -32,6 +33,9 @@ public class OrderManageServiceImpl implements OrderManageService {
 		
 		try {
 			dto = mapper.findById(orderNum);
+			if(dto != null) {
+				dto.setOrderStateNum(OrderState.fromKorean(dto.getOrderState()).ordinal());
+			}
 		} catch (Exception e) {
 			throw e;
 		}
