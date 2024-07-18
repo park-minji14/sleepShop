@@ -14,7 +14,7 @@
 </style>
 
 
-<div class="container">
+<div class="container" style="position: relative; background-color: #f5f5f5; width: 100%; max-width: 100%;">
 	<div class="body-container">
 		<form class="cart-body" name="cartForm" method="post">
 			<div class="cart-header">

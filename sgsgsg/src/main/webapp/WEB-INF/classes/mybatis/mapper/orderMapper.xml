@@ -14,18 +14,17 @@
 	<!-- 주문 추가 -->
 	<insert id="insertOrder" parameterType="map">
 		INSERT INTO PRODUCTORDER(ORDERNUM, USERID, ISSUE_ID, ORDERDATE, TOTALMONEY, USEDSAVED,
-			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENTNAME,
+			DELIVERYCHARGE, PAYMENT, ORDERSTATE, RECIPIENTNAME,
 			TEL, ZIP, ADDR1, ADDR2, DESTMEMO, PRODUCTORDERNAME)
 		VALUES (#{orderNum}, #{userId}, #{issue_id, jdbcType=VARCHAR}, sysdate,
-			#{totalMoney},  #{usedSaved}, #{deliveryCharge}, #{payment}, #{orderState}, sysdate,
-			#{cancelAmount, jdbcType=VARCHAR}, #{recipientName}, #{tel}, #{zip}, #{addr1}, #{addr2},
-			#{destMemo}, #{productOrderName})
+			#{totalMoney},  #{usedSaved}, #{deliveryCharge}, #{payment}, #{orderState}, #{recipientName},
+			#{tel}, #{zip}, #{addr1}, #{addr2}, #{destMemo}, #{productOrderName})
 	</insert>
 	
 	<!-- 결제 내역 등록 -->
 	<insert id="insertPayDetail" parameterType="com.sgsg.dra.domain.Order">
 		INSERT INTO payDetail(orderNum, payMethod, cardName, authNumber, authDate) 
-			VALUES (#{orderNum}, #{payMethod}, #{cardName}, #{authNumber}, TO_DATE(#{authDate}, 'YYYY-MM-DD HH24:MI:SS') )
+			VALUES (#{orderNum}, #{payMethod}, #{cardName}, #{authNumber}, TO_DATE(#{authDate}, 'YYYY-MM-DD HH24:MI:SS'))
 	</insert>
 	
 	<!-- 주문 상세 추가 -->
@@ -117,7 +116,7 @@
 	<!-- 포인트 사용 -->
 	<insert id="insertUserPoint" parameterType="com.sgsg.dra.domain.UserPoint">
 		INSERT INTO POINT_HISTORY(NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, USERID, ORDERNUM)
-			values(POINT_HISTORY_seq.nextval, ${change_points}, #{reason}, sysdate, #{remain_points}, #{userId}, #{orderNum, jdbcType=INTEGER})
+			values(POINT_HISTORY_seq.nextval, ${change_points}, #{reason}, sysdate, #{remain_points}, #{userId}, #{orderNum, jdbcType=VARCHAR})
 	</insert>
 	
 	<!-- 마지막 포인트 조회 -->
