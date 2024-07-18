@@ -3,7 +3,7 @@
 .unique-container-fluid {
     display: flex;
     flex-direction: row;
-    height: 100vh;  /* 전체 화면 높이로 설정 */
+    height: 100%;  /* 전체 화면 높이로 설정 */
 }
 
 .unique-sidebar {

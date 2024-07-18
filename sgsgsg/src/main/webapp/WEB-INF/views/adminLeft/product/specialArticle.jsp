@@ -136,8 +136,8 @@ function deleteOk() {
 <div class="modal fade modal-lg" id="prodectSaveModal" aria-labelledby="prodectSaveModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="prodectSaveModalLabel">${classify==200 ? "오늘의 특가" : "기획전"} 상품</h5>
+			<div class="modal-header" style="background-color: #eee;">
+				<h5 class="modal-title" id="prodectSaveModalLabel">특가 상품</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body pt-1 saveProduct-form">
@@ -188,6 +188,8 @@ function deleteOk() {
 		</div>
 	</div>
 </div>
+
+
 
 <!-- 상품 검색 대화상자 -->
 <div class="modal fade" id="prodectSearchModal" tabindex="-1" aria-labelledby="searchModalLabel"

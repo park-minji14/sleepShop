@@ -4,7 +4,12 @@
 
 <style type="text/css">
 .body-container {
-	max-width: 1000px;
+	max-width: 900px;
+}
+
+.body-write-main {
+	padding: 7px;
+	border: 4px solid #eee;
 }
 
 .custom-title {
@@ -19,7 +24,6 @@
 }
 
 .table-form tr>td { vertical-align: middle; }
-.table-form tr:first-child { border-top: 2px solid #212529; }
 .table-form tr>td:first-child { text-align: center; }
 .table-form tr>td:nth-child(2) { padding-left: 10px; }
 .table-form textarea { height: 170px; resize: none; }
@@ -142,12 +146,12 @@ function check() {
 
 <div class="mt-4 unique-main-content">
 	<div class="body-container">
-		<h4 class="custom-title mb-0">오늘의 특가</h4>
+		<h4 class="custom-title mb-5">오늘의 특가</h4>
 		
-		<div class="body-main">
+		<div>
 		
 			<form name="specialsForm" method="post" enctype="multipart/form-data">
-				<table class="table mt-5 table-form">
+				<table class="table table-form body-write-main">
 					<tr>
 						<td class="table-light col-sm-2">제목</td>
 						<td>
