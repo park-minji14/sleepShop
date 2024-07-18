@@ -6,11 +6,11 @@
 <style>
 /* 전체 페이지 스타일 */
 body {
-	background-color: #f8f9fa;
+	/* background-color: #f8f9fa; */
 }
 
 .container {
-	background-color: #fff;
+/* 	background-color: #fff; */
 	border-radius: 8px;
 	box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 	padding: 30px;
@@ -330,10 +330,6 @@ element.style {
 			
 			<li class="nav-item"><a class="nav-link" id="settings-tab"
 				data-bs-toggle="tab" href="#settings" aria-controls="settings">설정</a></li>
-			<c:if test="${sessionScope.member.membership > 50}">
-			<li class="nav-item"><a class="nav-link" id="expert-tab"
-				data-bs-toggle="tab" href="#expert" aria-controls="expert">전문가 프로필</a></li>
-			</c:if>
 		</ul>
 
 		<!-- 탭 컨텐츠 -->

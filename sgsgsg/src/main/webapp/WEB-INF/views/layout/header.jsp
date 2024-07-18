@@ -42,7 +42,7 @@
 							</c:when>
 							<c:otherwise>
 								<img
-									src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+									src="https://img.icons8.com/plasticine/100/backago.png" 
 									alt="Profile" class="profile-img"
 									style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
 							</c:otherwise>

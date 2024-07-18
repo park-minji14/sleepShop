@@ -1,8 +1,11 @@
 package com.sgsg.dra.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sgsg.dra.domain.ClinicAnswer;
 import com.sgsg.dra.domain.Expert;
 import com.sgsg.dra.mapper.ExpertMapper;
 
@@ -36,5 +39,11 @@ public class ExpertServiceImpl implements ExpertService {
     @Override
     public int getAcceptedAnswerCount(String userId) {
         return expertMapper.getAcceptedAnswerCount(userId);
+    }
+    
+    
+    @Override
+    public List<ClinicAnswer> getAnswerList(String userId) {
+        return expertMapper.getAnswerList(userId);
     }
 }

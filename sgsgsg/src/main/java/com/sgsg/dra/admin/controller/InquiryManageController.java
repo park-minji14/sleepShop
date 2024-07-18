@@ -14,16 +14,18 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sgsg.dra.admin.domain.InquiryManage;
 import com.sgsg.dra.admin.service.InquiryManageService;
 import com.sgsg.dra.common.MyUtil;
+import com.sgsg.dra.domain.SessionInfo;
 
 
 @Controller
-@RequestMapping("adminManagement/supportManage/*")
+@RequestMapping("/adminManagement/supportManage/*")
 public class InquiryManageController {
 	@Autowired
 	private InquiryManageService service;
@@ -31,6 +33,7 @@ public class InquiryManageController {
 	@Autowired
 	@Qualifier("myUtilGeneral")	
 	private MyUtil myUtil;
+	
 	
 	@RequestMapping("supportList")
 	public String supportList(@RequestParam(value = "page", defaultValue = "1") int current_page,
@@ -75,8 +78,8 @@ public class InquiryManageController {
 		List<InquiryManage> list = service.listInquiry(map);
 
 		String query = "";
-		String listUrl = cp + "/admin/inquiryManage/list";
-		String articleUrl = cp + "/admin/inquiryManage/article?page=" + current_page;
+		String listUrl = cp + "/adminManagement/supportManage/supportList";
+		String articleUrl = cp + "/adminManagement/supportManage/supportArticle?page=" + current_page;
 		if (kwd.length() != 0) {
 			query = "schType=" + schType + "&kwd=" + URLEncoder.encode(kwd, "utf-8");
 		}
@@ -106,7 +109,7 @@ public class InquiryManageController {
 	}
 	
 	
-	
+	//상세페이지
 	@GetMapping("supportArticle")
 	public String supportArticle(@RequestParam long num,
 			@RequestParam String page,
@@ -123,7 +126,7 @@ public class InquiryManageController {
 		
 		InquiryManage dto = service.findById(num);
 		if (dto == null) {
-			return "redirect:/admin/inquiryManage/list?" + query;
+			return "redirect:/adminManagement/inquiryManage/list?" + query;
 		}
 
 		model.addAttribute("dto", dto);
@@ -134,6 +137,88 @@ public class InquiryManageController {
 
 		return ".adminLeft.support.article";
 	}
+	
+	
+	//답변하기
+	@PostMapping("answer")
+	public String answerSubmit(InquiryManage dto, 
+			@RequestParam String page,
+			@RequestParam(defaultValue = "all") String schType,
+			@RequestParam(defaultValue = "") String kwd,
+			HttpSession session) throws Exception {
+
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+		String query = "page=" + page;
+		if (kwd.length() != 0) {
+			query += "&schType=" + schType + "&kwd=" + URLEncoder.encode(kwd, "UTF-8");
+		}
+		
+		try {
+			dto.setUserId2(info.getUserId());
+			service.updateAnswer(dto);
+		} catch (Exception e) {
+		}
+
+		return "redirect:/adminManagement/inquiryManage/list?" + query;
+	}
+	
+	
+	
+	//답변삭제하기
+	@GetMapping("deleteAnswer")
+	public String deleteAnswer(@RequestParam long num,
+			@RequestParam String page,
+			@RequestParam(defaultValue = "all") String schType,
+			@RequestParam(defaultValue = "") String kwd,
+			HttpSession session) throws Exception {
+
+		kwd = URLDecoder.decode(kwd, "utf-8");
+		String query = "page=" + page;
+		if (kwd.length() != 0) {
+			query += "&schType=" + schType + "&kwd=" + URLEncoder.encode(kwd, "UTF-8");
+		}
+		
+		InquiryManage dto = service.findById(num);
+		if (dto != null) {
+			try {
+				service.deleteAnswer(num);
+			} catch (Exception e) {
+			}
+		}
+
+		return "redirect:/adminManagement/inquiryManage/list?" + query;
+	}
+	
+	
+	
+	//삭제하기
+	@GetMapping("delete")
+	public String delete(@RequestParam long num,
+			@RequestParam String page,
+			@RequestParam(defaultValue = "all") String schType,
+			@RequestParam(defaultValue = "") String kwd,
+			HttpSession session) throws Exception {
+
+		kwd = URLDecoder.decode(kwd, "utf-8");
+		String query = "page=" + page;
+		if (kwd.length() != 0) {
+			query += "&schType=" + schType + "&kwd=" + URLEncoder.encode(kwd, "UTF-8");
+		}
+
+		InquiryManage dto = service.findById(num);
+		if (dto != null) {
+			try {
+				service.deleteInquiry(num);
+			} catch (Exception e) {
+			}
+		}
+
+		return "redirect:/adminManagement/supportManage/supportList?" + query;
+	}
+	
+	
+	
 	
 	
 	

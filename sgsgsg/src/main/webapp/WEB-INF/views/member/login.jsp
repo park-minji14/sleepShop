@@ -4,7 +4,7 @@
 
 <style type="text/css">
 
-.container {
+.container-login{
     max-width: 450px;
     width: 90%;
     margin: 60px auto;
@@ -170,7 +170,7 @@ $(document).ready(function() {
 
 </script>
 
-<div class="container">
+<div class="container-login">
     <h1>로그인</h1>
     <ul class="links">
         <li><a href="${pageContext.request.contextPath}/member/member" id="signup">회원가입</a></li>
@@ -179,10 +179,10 @@ $(document).ready(function() {
 
     <form name="loginForm" id="loginForm" action="" method="post">
         <div class="input__block">
-            <input type="text" name="userId" placeholder="아이디" id="userId" value="">
+            <input type="text" name="userId" placeholder="아이디" id="userId" value="JinTaeX">
         </div>
         <div class="input__block">
-            <input type="password" name="userPwd" placeholder="비밀번호" id="userPwd" value="">
+            <input type="password" name="userPwd" placeholder="비밀번호" id="userPwd" value="zz1414!!">
         </div>
         <p class="form-control-plaintext text-center">${message}</p>
         <button class="login__btn" type="button" onclick="sendLogin();">로그인</button>

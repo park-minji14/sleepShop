@@ -7,435 +7,445 @@
 	href="${pageContext.request.contextPath}/resources/css/page/details.css"
 	type="text/css">
 
-<style>
-.pagination {
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 50px;
-    padding: 5px;
-    display: inline-flex;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-page-navigation{
-	text-align: center;
-}
-
-.pagination .page-item:first-child .page-link,
-.pagination .page-item:last-child .page-link {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    margin: 0 5px;
-    background-color: #f8f9fa;
-    border: none;
-    color: #6c757d;
-}
-
-.pagination .page-item:not(:first-child):not(:last-child) .page-link {
-    border: none;
-    background-color: transparent;
-    color: #6c757d;
-    font-weight: bold;
-    padding: 0.5rem 0.8rem;
-}
-
-.pagination .page-item.active .page-link {
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.pagination .page-link:focus {
-    box-shadow: none;
-}
-
-.pagination .page-link:hover {
-    background-color: #e9ecef;
-}
-</style>
-  
-  <div class="container-fluid">
-    <div class="container my-5">
-      <div class="row">
-        <div class="col-md-6" >
-          <div class="product-images d-flex">
-			  <div class="thumbnail-list me-3">
-			    <c:forEach var="image" items="${listFile}" varStatus="status">
-			    <img src="${pageContext.request.contextPath}/uploads/product/${image.img_name}" 
-			         alt="썸네일 ${status.index+1}"
-			         class="img-thumbnail mb-2"
-			         data-main-img="${pageContext.request.contextPath}/uploads/product/${image.img_name}">
-			  </c:forEach>
-			</div>
-			
-		<div class="main-image-container">
-		  <c:choose>
-		    <c:when test="${not empty listFile}">
-		      <img src="${pageContext.request.contextPath}/uploads/product/${listFile[0].img_name}"
-		           class="img-fluid rounded main-image" id="mainImage" alt="메인 상품 이미지">
-		    </c:when>
-		  </c:choose>
-		</div>
-         </div>
-       </div>
-        
-           
-        <div class="col-md-6">
-          <div class="product-info">
-            <h1 class="product-title mb-3">${dto.productName}</h1>
-             <input type="hidden" id="productNum" value="${dto.productNum}">
-            <div class="product-rating mb-3">
-              <i class="bi bi-star-fill text-warning"></i>
-              <i class="bi bi-star-fill text-warning"></i>
-              <i class="bi bi-star-fill text-warning"></i>
-              <i class="bi bi-star-fill text-warning"></i>
-              <i class="bi bi-star-half text-warning"></i>
-              <span class="ms-2 text-muted">${dto.reviewCount}개 리뷰</span>
-            </div>
-            <div class="product-price mb-3">
-              <span class="badge bg-primary me-2">${dto.discountRate}%</span>
-              <span class="fs-3 fw-bold">
-              <fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100)}" pattern="#,###원" />
-              </span>
-             <span class="text-muted text-decoration-line-through">
-              <fmt:formatNumber value="${dto.price}" pattern="#,###원" />
-            </span>
-            </div>
-            <div class="product-benefits mb-3">
-              <p class="text-muted"><i class="bi bi-gift me-2"></i>혜택: ${dto.savedMoney} 적립</p>
-            </div>
-            <div class="delivery-info mb-3">
-              <p class="mb-1"><i class="bi bi-truck me-2"></i>배송비 : ${dto.delivery}</p>
-              <p><i class="bi bi-clock me-2"></i>12:00 까지 결제시 오늘 출발</p>
-              <p><i class="bi bi-box-seam me-2"></i>제주도/도서산간 지역 8,000원</p>
-            </div>
-            
-			<div class="product-options mb-3" data-option-count="${dto.optionCount}" data-stock-num="${dto.stockNum}">
-			    <c:if test="${dto.optionCount > 0}">
-			        <div class="mt-2">
-			            <select class="form-select requiredOption" id="option1" data-option-num="${listOption[0].optionNum}" ${dto.totalStock < 1 ? 'disabled':''}>
-			                <option value="">${listOption[0].optionName} 선택</option>
-			                <c:forEach var="vo" items="${listOptionDetail}">
-			                    <c:if test="${vo.optionValue != prevOptionValue}">
-			                        <option value="${vo.detailNum}" data-stock-num="${vo.stockNum}" data-total-stock="${vo.totalStock}" data-option-value="${vo.optionValue}">
-			                            ${vo.optionValue}
-			                        </option>
-			                        <c:set var="prevOptionValue" value="${vo.optionValue}" />
-			                    </c:if>
-			                </c:forEach>
-			            </select>
-			        </div>
-			    </c:if>
-			    <c:if test="${dto.optionCount > 1}">
-			        <div class="mt-2">
-			            <select class="form-select requiredOption2" id="option2" data-option-num2="${listOption[1].optionNum}" disabled>
-			                <option value="">${listOption[1].optionName} 선택</option>
-			            </select>
-			        </div>
-			    </c:if>
-			</div>
-		</div>
-
-            <div class="quantity-selector d-flex align-items-center mb-3">
-              <button class="btn btn-outline-secondary" id="decreaseQuantity">-</button>
-              <input type="number" class="form-control mx-2" id="quantity" value="1" min="1" style="width: 60px;">
-              <button class="btn btn-outline-secondary" id="increaseQuantity">+</button>
-            </div>
-				<div class="total-price mb-3">
-				    <span class="fs-5">주문금액</span>
-				    <span class="fs-5 fw-bold" id="totalPrice" data-base-price="${dto.price * (1 - dto.discountRate / 100)}">
-				       <fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100)}" pattern="#,###원" />
-				    </span>
-				</div>
-	        <div class="purchase-buttons">
-	            <button class="btn btn-outline-secondary btn-lg me-2 flex-grow-1 btn-gift" id="gift"><i class="bi bi-gift me-2"></i>선물하기</button>
-	            <button class="btn btn-outline-primary btn-lg me-2 flex-grow-1 btn-cart" id="addToCart"><i class="bi bi-cart-plus me-2"></i>장바구니</button>
-	            <button class="btn btn-primary btn-lg flex-grow-1 btn-buy" id="buyNow"><i class="bi bi-bag-check me-2"></i>바로구매</button>
-	            <button class="btn btn-primary btn-lg w-100" id="stockAlert" style="display: none;"><i class="bi bi-bell me-2"></i>재입고 알림 신청</button>
-	        </div>
-          </div>
-        </div>
-      </div>
-      
-   <div class="container mt-5">
-        <!-- 상품 정보 탭 -->
-        <div class="product-tabs mt-5">
-            <ul class="nav nav-tabs" id="productTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button"
-                        role="tab" aria-controls="info" aria-selected="true">상품정보</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button"
-                        role="tab" aria-controls="review" aria-selected="false">리뷰 ${dto.reviewCount}</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="qna-tab" data-bs-toggle="tab" data-bs-target="#qna" type="button" role="tab"
-                        aria-controls="qna" aria-selected="false">문의 ${dto.questionCount}</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="delivery-tab" data-bs-toggle="tab" data-bs-target="#delivery" type="button"
-                        role="tab" aria-controls="delivery" aria-selected="false">배송/환불</button>
-                </li>
-            </ul>
-            <div class="tab-content mb-4" id="productTabsContent">
-                <!-- 상품 정보 탭 내용 -->
-                <div class="tab-pane fade show active mb-4" id="info" role="tabpanel" aria-labelledby="info-tab">
-                    <!-- 상품 상세 정보 -->
-                    <div class="container my-5 px-0">
-                        <div class="row">
-                            <div class="col-12 px-0">
-                                <img src="https://via.placeholder.com/1200x600" alt="상품 상세 이미지" class="img-fluid w-100 mb-4">
-                                <div class="container">
-                                    <h3>상품 설명</h3>
-                                    <p>오마이갓 오마이갓 오마이갓</p>
-                                    <h3>주요 특징</h3>
-                                    	<div >${dto.content}</div>
-                                </div>
-                                <img src="https://via.placeholder.com/1200x800" alt="제품 상세 설명" class="img-fluid w-100 mt-4">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 리뷰 탭 내용 -->
-              <div class="tab-pane fade mb-4" id="review" role="tabpanel" aria-labelledby="review-tab">
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-12">
-                <h3 class="border-bottom pb-2">리뷰 ${dto.reviewCount}</h3>
-            </div>
-        </div>
-        
-        <div class="row mb-3">
-            <div class="col-12">
-                <div class="alert alert-info" role="alert">
-                    <h5 class="alert-heading">
-                        <i class="bi bi-info-circle me-2"></i>
-                        리뷰 안내사항
-                    </h5>
-                    <ul class="mb-0">
-                        <li>구매하신 상품에 대한 정직한 리뷰를 남겨주세요.</li>
-                        <li>상품과 무관한 내용이나 욕설, 비방 등은 삭제될 수 있습니다.</li>
-                        <li>리뷰 작성시 포인트가 적립됩니다.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h2 class="display-4"></h2>
-                        <div class="stars mb-3">
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star-half text-warning"></i>
-                        </div>
-                        <p class="mb-0">${dto.reviewCount} 리뷰 기준</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">구매자 만족도</h5>
-                        <div class="d-flex align-items-center mb-2">
-                            <span class="me-2">뭘쓰지</span>
-                            <div class="progress flex-grow-1" style="height: 10px;">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <span class="ms-2">85%</span>
-                        </div>
-                        <div class="d-flex align-items-center mb-2">
-                            <span class="me-2">뭔그를</span>
-                            <div class="progress flex-grow-1" style="height: 10px;">
-                                <div class="progress-bar bg-info" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <span class="ms-2">75%</span>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <span class="me-2">배송</span>
-                            <div class="progress flex-grow-1" style="height: 10px;">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <span class="ms-2">90%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12">
-                <div class="review-list border p-3 rounded">
-                    <!-- 리뷰 예시 -->
-                    <div class="review-item border-bottom pb-3 mb-3">
-                        <div class="d-flex align-items-center mb-2">
-                            <img src="https://via.placeholder.com/40" alt="User" class="rounded-circle me-2">
-                            <strong>진태만두</strong>
-                            <div class="stars ms-auto">
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star-fill text-warning"></i>
-                            </div>
-                        </div>
-                        <p class="mb-2">2024.06.13 · 새근새근 구매</p>
-                        <div class="review-content">
-                            <p>오예 ...</p>
-                            <img src="https://via.placeholder.com/200x200" alt="Review Image" class="img-fluid mb-2">
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary rounded-pill">
-                            <i class="bi bi-hand-thumbs-up me-1"></i>도움이 돼요
-                        </button>
-                    </div>
-                    <!-- 추가 리뷰 나올 곳 -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
- <!-- 상품문의 탭 내용 -->
-	<div class="tab-pane fade mb-4" id="qna" role="tabpanel" aria-labelledby="qna-tab">
-	    <div class="container">
-	        <div class="row mb-4">
-	            <div class="col-12">
-	                <h3 class="border-bottom pb-2">상품 문의</h3>
-	            </div>
-	        </div>
-	        <div class="row mb-3">
-	            <div class="col-12">
-	                <div class="alert alert-info" role="alert">
-	                    <h5 class="alert-heading">
-	                        <i class="bi bi-info-circle me-2"></i>
-	                        문의 안내사항
-	                    </h5>
-	                    <ul class="mb-0">
-	                        <li>상품과 관련 없는 문의나 욕설, 비방 내용은 답변이 거부될 수 있습니다.</li>
-	                        <li>개인정보가 포함된 문의는 비밀글로 작성해 주세요.</li>
-	                        <li>답변은 영업일 기준 2~3일 내에 등록됩니다.</li>
-	                    </ul>
-	                </div>
-	            </div>
-	        </div>
-			<div class="row">
-				<div class="col-12">
-					<div id="qnaList" class="list-question border p-3 rounded">
-						<!-- 상품문의 리스트 -->
+<div class="container-fluid">
+	<div class="container my-5">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="product-images d-flex">
+					<div class="thumbnail-list me-3">
+						<c:forEach var="image" items="${listFile}" varStatus="status">
+							<img
+								src="${pageContext.request.contextPath}/uploads/product/${image.img_name}"
+								alt="썸네일 ${status.index+1}" class="img-thumbnail mb-2"
+								data-main-img="${pageContext.request.contextPath}/uploads/product/${image.img_name}">
+						</c:forEach>
+					</div>
+					<div class="main-image-container">
+						<c:choose>
+							<c:when test="${not empty listFile}">
+								<img
+									src="${pageContext.request.contextPath}/uploads/product/${listFile[0].img_name}"
+									class="img-fluid rounded main-image" id="mainImage"
+									alt="메인 상품 이미지">
+							</c:when>
+						</c:choose>
 					</div>
 				</div>
 			</div>
-			<div class="row mb-4" style="padding: 0;">
-				<div class="col-12 text-end">
-					<button id="showQnaForm"
-						class="btn btn-outline-dark rounded-pill"
-						data-bs-toggle="modal" data-bs-target="#qnaModal">
-						<i class="bi bi-pencil-square me-2"></i>문의하기
+			<div class="col-md-6">
+				<div class="product-info">
+					<h1
+						class="product-title mb-3 d-flex align-items-start justify-content-between">
+						${dto.productName}
+						<div class="d-flex flex-column align-items-center">
+							<i class="bi bi-bookmark" id="bookmarkIcon"
+								style="font-size: 1.5rem; cursor: pointer;"></i> <span
+								class="bookmark-count" style="font-size: 0.8rem;">3,333</span>
+						</div>
+					</h1>
+					<input type="hidden" id="productNum" value="${dto.productNum}">
+					<div class="product-rating mb-3">
+						<i class="bi bi-star-fill text-warning"></i> <i
+							class="bi bi-star-fill text-warning"></i> <i
+							class="bi bi-star-fill text-warning"></i> <i
+							class="bi bi-star-fill text-warning"></i> <i
+							class="bi bi-star-half text-warning"></i> <span
+							class="ms-2 text-muted">${dto.reviewCount}개 리뷰</span>
+					</div>
+					<div class="product-price mb-3">
+						<span class="badge bg-primary me-2">${dto.discountRate}%</span> <span
+							class="fs-3 fw-bold"> <fmt:formatNumber
+								value="${dto.price * (1 - dto.discountRate / 100)}"
+								pattern="#,###원" />
+						</span> <span class="text-muted text-decoration-line-through"> <fmt:formatNumber
+								value="${dto.price}" pattern="#,###원" />
+						</span>
+					</div>
+					<div class="product-benefits mb-3">
+						<p class="text-muted">
+							<i class="bi bi-gift me-2"></i>혜택: ${dto.savedMoney} 적립
+						</p>
+					</div>
+					<div class="delivery-info mb-3">
+						<p class="mb-1">
+							<i class="bi bi-truck me-2"></i>배송비 : ${dto.delivery}
+						</p>
+						<p>
+							<i class="bi bi-clock me-2"></i>12:00 까지 결제시 오늘 출발
+						</p>
+						<p>
+							<i class="bi bi-box-seam me-2"></i>제주도/도서산간 지역 8,000원
+						</p>
+					</div>
+					<!-- 옵션 -->
+					<div class="product-options mb-3"
+						data-option-count="${dto.optionCount}"
+						data-stock-num="${dto.stockNum}">
+						<c:if test="${dto.optionCount > 0}">
+							<div class="mt-2">
+								<select class="form-select requiredOption" id="option1"
+									data-option-num="${listOption[0].optionNum}"
+									${dto.totalStock < 1 ? 'disabled':''}>
+									<option value="">${listOption[0].optionName}선택</option>
+									<c:forEach var="vo" items="${listOptionDetail}">
+										<c:if test="${vo.optionValue != prevOptionValue}">
+											<option value="${vo.detailNum}"
+												data-stock-num="${vo.stockNum}"
+												data-total-stock="${vo.totalStock}"
+												data-option-value="${vo.optionValue}">
+												${vo.optionValue}</option>
+											<c:set var="prevOptionValue" value="${vo.optionValue}" />
+										</c:if>
+									</c:forEach>
+								</select>
+							</div>
+						</c:if>
+						<c:if test="${dto.optionCount > 1}">
+							<div class="mt-2">
+								<select class="form-select requiredOption2" id="option2"
+									data-option-num2="${listOption[1].optionNum}" disabled>
+									<option value="">${listOption[1].optionName}선택</option>
+								</select>
+							</div>
+						</c:if>
+					</div>
+				</div>
+
+				<div class="quantity-selector d-flex align-items-center mb-3">
+					<button class="btn btn-outline-secondary" id="decreaseQuantity">-</button>
+					<input type="number" class="form-control mx-2" id="quantity"
+						value="1" min="1" style="width: 60px;">
+					<button class="btn btn-outline-secondary" id="increaseQuantity">+</button>
+				</div>
+				<div class="total-price mb-3">
+					<span class="fs-5">주문금액</span> <span class="fs-5 fw-bold"
+						id="totalPrice"
+						data-base-price="${dto.price * (1 - dto.discountRate / 100)}">
+						<fmt:formatNumber
+							value="${dto.price * (1 - dto.discountRate / 100)}"
+							pattern="#,###원" />
+					</span>
+				</div>
+				<div class="purchase-buttons">
+					<button
+						class="btn btn-outline-secondary btn-lg me-2 flex-grow-1 btn-gift"
+						id="gift">
+						<i class="bi bi-gift me-2"></i>선물하기
+					</button>
+					<button
+						class="btn btn-outline-primary btn-lg me-2 flex-grow-1 btn-cart"
+						id="addToCart">
+						<i class="bi bi-cart-plus me-2"></i>장바구니
+					</button>
+					<button class="btn btn-primary btn-lg flex-grow-1 btn-buy"
+						id="buyNow">
+						<i class="bi bi-bag-check me-2"></i>바로구매
+					</button>
+					<button class="btn btn-primary btn-lg w-100" id="stockAlert"
+						style="display: none;">
+						<i class="bi bi-bell me-2"></i>재입고 알림 신청
 					</button>
 				</div>
 			</div>
 		</div>
 	</div>
-                <!-- 배송/환불 탭 내용 -->
-                <div class="tab-pane fade mb-4" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
-                    <h2 style="padding-bottom: 30px;">배송/교환/환불</h2>
 
-                    <div class="policy-card">
-                        <h5><i class="bi bi-truck"></i> 배송</h5>
-                        <table>
-                            <tr>
-                                <th>배송</th>
-                                <td>일반택배</td>
-                            </tr>
-                            <tr>
-                                <th>배송비</th>
-                                <td>${dto.delivery}</td>
-                            </tr>
-                            <tr>
-                                <th>도서산간 추가 배송비</th>
-                                <td>3,000원</td>
-                            </tr>
-                            <tr>
-                                <th>배송불가 지역</th>
-                                <td>배송불가 지역이 없습니다.</td>
-                            </tr>
-                        </table>
-                    </div>
+	<div class="container mt-5">
+		<!-- 상품 정보 탭 -->
+		<div class="product-tabs mt-5">
+			<ul class="nav nav-tabs" id="productTabs" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button class="nav-link active" id="info-tab" data-bs-toggle="tab"
+						data-bs-target="#info" type="button" role="tab"
+						aria-controls="info" aria-selected="true">상품정보</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="review-tab" data-bs-toggle="tab"
+						data-bs-target="#review" type="button" role="tab"
+						aria-controls="review" aria-selected="false">리뷰
+						${dto.reviewCount}</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="qna-tab" data-bs-toggle="tab"
+						data-bs-target="#qna" type="button" role="tab" aria-controls="qna"
+						aria-selected="false">문의 ${dto.questionCount}</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="delivery-tab" data-bs-toggle="tab"
+						data-bs-target="#delivery" type="button" role="tab"
+						aria-controls="delivery" aria-selected="false">배송/환불</button>
+				</li>
+			</ul>
+			<div class="tab-content mb-4" id="productTabsContent">
+				<!-- 상품 정보 탭 내용 -->
+				<div class="tab-pane fade show active mb-4" id="info"
+					role="tabpanel" aria-labelledby="info-tab">
+					<!-- 상품 상세 정보 -->
+					<div class="container my-5 px-0">
+						<div class="row">
+							<div class="col-12 px-0">
+								<img src="https://via.placeholder.com/1200x600" alt="상품 상세 이미지"
+									class="img-fluid w-100 mb-4">
+								<div class="container">
+									<h3>상품 설명</h3>
+									<p>오마이갓 오마이갓 오마이갓</p>
+									<h3>주요 특징</h3>
+									<div>${dto.content}</div>
+								</div>
+								<img src="https://via.placeholder.com/1200x800" alt="제품 상세 설명"
+									class="img-fluid w-100 mt-4">
+							</div>
+						</div>
+					</div>
+				</div>
 
-                    <div class="policy-card">
-                        <h5><i class="bi bi-arrow-repeat"></i> 교환/환불</h5>
-                        <table>
-                            <tr>
-                                <th>반품 배송비</th>
-                                <td>3,000원 (최초 배송비가 무료인 경우 6,000원 부과)</td>
-                            </tr>
-                            <tr>
-                                <th>교환 배송비</th>
-                                <td>6,000원</td>
-                            </tr>
-                            <tr>
-                                <th>보내실 곳</th>
-                                <td>쌍용교육센터</td>
-                            </tr>
-                        </table>
-                    </div>
+				<!-- 리뷰 탭 내용 -->
+				<div class="tab-pane fade mb-4" id="review" role="tabpanel"
+					aria-labelledby="review-tab">
+					<div class="container">
+						<div class="row mb-4">
+							<div class="col-12">
+								<h3 class="border-bottom pb-2">리뷰 ${dto.reviewCount}</h3>
+							</div>
+						</div>
 
-                    <div class="policy-card">
-                        <h5><i class="bi bi-clock-history"></i> 반품/교환 사유에 따른 요청 가능 기간</h5>
-                        <div class="policy-list">
-                            <ol>
-                                <li>구매자 단순 변심은 상품 수령 후 7일 이내</li>
-                                <li>표시/광고와 상이, 계약내용과 다르게 이행된 경우 상품 수령 후 3개월 이내, 그 사실을 안 날 또는 알 수 있었던 날부터 30일 이내</li>
-                            </ol>
-                        </div>
-                    </div>
+						<div class="row mb-3">
+							<div class="col-12">
+								<div class="alert alert-info" role="alert">
+									<h5 class="alert-heading">
+										<i class="bi bi-info-circle me-2"></i> 리뷰 안내사항
+									</h5>
+									<ul class="mb-0">
+										<li>구매하신 상품에 대한 정직한 리뷰를 남겨주세요.</li>
+										<li>상품과 무관한 내용이나 욕설, 비방 등은 삭제될 수 있습니다.</li>
+										<li>리뷰 작성시 포인트가 적립됩니다.</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="row mb-4">
+							<div class="col-md-6">
+								<div class="card">
+									<div class="card-body text-center">
+										<h2 class="display-4"></h2>
+										<div class="stars mb-3">
+											<i class="bi bi-star-fill text-warning"></i> <i
+												class="bi bi-star-fill text-warning"></i> <i
+												class="bi bi-star-fill text-warning"></i> <i
+												class="bi bi-star-fill text-warning"></i> <i
+												class="bi bi-star-half text-warning"></i>
+										</div>
+										<p class="mb-0">${dto.reviewCount}리뷰기준</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="card">
+									<div class="card-body">
+										<h5 class="card-title">구매자 만족도</h5>
+										<div class="d-flex align-items-center mb-2">
+											<span class="me-2">뭘쓰지</span>
+											<div class="progress flex-grow-1" style="height: 10px;">
+												<div class="progress-bar bg-success" role="progressbar"
+													style="width: 85%;" aria-valuenow="85" aria-valuemin="0"
+													aria-valuemax="100"></div>
+											</div>
+											<span class="ms-2">85%</span>
+										</div>
+										<div class="d-flex align-items-center mb-2">
+											<span class="me-2">뭔그를</span>
+											<div class="progress flex-grow-1" style="height: 10px;">
+												<div class="progress-bar bg-info" role="progressbar"
+													style="width: 75%;" aria-valuenow="75" aria-valuemin="0"
+													aria-valuemax="100"></div>
+											</div>
+											<span class="ms-2">75%</span>
+										</div>
+										<div class="d-flex align-items-center">
+											<span class="me-2">배송</span>
+											<div class="progress flex-grow-1" style="height: 10px;">
+												<div class="progress-bar bg-warning" role="progressbar"
+													style="width: 90%;" aria-valuenow="90" aria-valuemin="0"
+													aria-valuemax="100"></div>
+											</div>
+											<span class="ms-2">90%</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 
-                    <div class="policy-card">
-                        <h5><i class="bi bi-x-circle"></i> 반품/교환 불가능 사유</h5>
-                        <div class="policy-list">
-                            <ol>
-                                <li>반품 요청 기간이 지난 경우</li>
-                                <li>구매자의 책임 있는 사유로 상품 등이 멸실 또는 훼손된 경우</li>
-                                <li>포장을 개봉하였으나 포장이 훼손되어 상품 가치가 현저히 상실된 경우</li>
-                                <li>구매자의 사용 또는 일부 소비에 의해 상품의 가치가 현저히 감소한 경우</li>
-                                <li>시간이 경과되어 재판매가 곤란할 정도로 상품 등의 가치가 현저히 감소한 경우</li>
-                                <li>복제가 가능한 상품의 포장이 훼손된 경우</li>
-                            </ol>
-                        </div>
-                    </div>
+						<div class="row">
+							<div class="col-12">
+								<div class="review-list border p-3 rounded">
+									<!-- 리뷰 예시 -->
+									<div class="review-item border-bottom pb-3 mb-3">
+										<div class="d-flex align-items-center mb-2">
+											<img src="https://via.placeholder.com/40" alt="User"
+												class="rounded-circle me-2"> <strong>진태만두</strong>
+											<div class="stars ms-auto">
+												<i class="bi bi-star-fill text-warning"></i> <i
+													class="bi bi-star-fill text-warning"></i> <i
+													class="bi bi-star-fill text-warning"></i> <i
+													class="bi bi-star-fill text-warning"></i> <i
+													class="bi bi-star-fill text-warning"></i>
+											</div>
+										</div>
+										<p class="mb-2">2024.06.13 · 새근새근 구매</p>
+										<div class="review-content">
+											<p>오예 ...</p>
+											<img src="https://via.placeholder.com/200x200"
+												alt="Review Image" class="img-fluid mb-2">
+										</div>
+										<button class="btn btn-sm btn-outline-secondary rounded-pill">
+											<i class="bi bi-hand-thumbs-up me-1"></i>도움이 돼요
+										</button>
+									</div>
+									<!-- 추가 리뷰 나올 곳 -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 
-                    <div class="policy-card">
-                        <h5><i class="bi bi-cash"></i> 환불 정책</h5>
-                        <div class="policy-list">
-                            <ul>
-                                <li>신청 기간: 상품 수령 후 7일 이내 (미사용, 미개봉 상품에 한함)</li>
-                                <li>환불 방법: 마이페이지 또는 고객센터를 통해 신청</li>
-                                <li>환불 금액: 상품 구매가 + 배송비 (단, 무료배송 상품이 아닌 경우 초기 배송비 제외)</li>
-                                <li>환불 처리 기간: 상품 회수 확인 후 3영업일 이내</li>
-                                <li>환불 배송비: 고객 변심의 경우 왕복 배송비 고객 부담, 상품 하자 시 판매자 부담</li>
-                                <li>사용/개봉 상품: 훼손 정도에 따라 환불 금액 차감될 수 있음</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
+				<!-- 상품문의 탭 내용 -->
+				<div class="tab-pane fade mb-4" id="qna" role="tabpanel"
+					aria-labelledby="qna-tab">
+					<div class="container">
+						<div class="row mb-4">
+							<div class="col-12">
+								<h3 class="border-bottom pb-2">상품 문의</h3>
+							</div>
+						</div>
+						<div class="row mb-3">
+							<div class="col-12">
+								<div class="alert alert-info" role="alert">
+									<h5 class="alert-heading">
+										<i class="bi bi-info-circle me-2"></i> 문의 안내사항
+									</h5>
+									<ul class="mb-0">
+										<li>상품과 관련 없는 문의나 욕설, 비방 내용은 답변이 거부될 수 있습니다.</li>
+										<li>개인정보가 포함된 문의는 비밀글로 작성해 주세요.</li>
+										<li>답변은 영업일 기준 2~3일 내에 등록됩니다.</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12">
+								<div id="qnaList" class="list-question border p-3 rounded">
+									<!-- 상품문의 리스트 -->
+								</div>
+							</div>
+						</div>
+						<div class="row mb-4" style="padding: 0;">
+							<div class="col-12 text-end">
+								<button id="showQnaForm"
+									class="btn btn-outline-dark rounded-pill"
+									data-bs-toggle="modal" data-bs-target="#qnaModal">
+									<i class="bi bi-pencil-square me-2"></i>문의하기
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 배송/환불 탭 내용 -->
+				<div class="tab-pane fade mb-4" id="delivery" role="tabpanel"
+					aria-labelledby="delivery-tab">
+					<h2 style="padding-bottom: 30px;">배송/교환/환불</h2>
+
+					<div class="policy-card">
+						<h5>
+							<i class="bi bi-truck"></i> 배송
+						</h5>
+						<table>
+							<tr>
+								<th>배송</th>
+								<td>일반택배</td>
+							</tr>
+							<tr>
+								<th>배송비</th>
+								<td>${dto.delivery}</td>
+							</tr>
+							<tr>
+								<th>도서산간 추가 배송비</th>
+								<td>3,000원</td>
+							</tr>
+							<tr>
+								<th>배송불가 지역</th>
+								<td>배송불가 지역이 없습니다.</td>
+							</tr>
+						</table>
+					</div>
+
+					<div class="policy-card">
+						<h5>
+							<i class="bi bi-arrow-repeat"></i> 교환/환불
+						</h5>
+						<table>
+							<tr>
+								<th>반품 배송비</th>
+								<td>3,000원 (최초 배송비가 무료인 경우 6,000원 부과)</td>
+							</tr>
+							<tr>
+								<th>교환 배송비</th>
+								<td>6,000원</td>
+							</tr>
+							<tr>
+								<th>보내실 곳</th>
+								<td>쌍용교육센터</td>
+							</tr>
+						</table>
+					</div>
+
+					<div class="policy-card">
+						<h5>
+							<i class="bi bi-clock-history"></i> 반품/교환 사유에 따른 요청 가능 기간
+						</h5>
+						<div class="policy-list">
+							<ol>
+								<li>구매자 단순 변심은 상품 수령 후 7일 이내</li>
+								<li>표시/광고와 상이, 계약내용과 다르게 이행된 경우 상품 수령 후 3개월 이내, 그 사실을 안 날
+									또는 알 수 있었던 날부터 30일 이내</li>
+							</ol>
+						</div>
+					</div>
+
+					<div class="policy-card">
+						<h5>
+							<i class="bi bi-x-circle"></i> 반품/교환 불가능 사유
+						</h5>
+						<div class="policy-list">
+							<ol>
+								<li>반품 요청 기간이 지난 경우</li>
+								<li>구매자의 책임 있는 사유로 상품 등이 멸실 또는 훼손된 경우</li>
+								<li>포장을 개봉하였으나 포장이 훼손되어 상품 가치가 현저히 상실된 경우</li>
+								<li>구매자의 사용 또는 일부 소비에 의해 상품의 가치가 현저히 감소한 경우</li>
+								<li>시간이 경과되어 재판매가 곤란할 정도로 상품 등의 가치가 현저히 감소한 경우</li>
+								<li>복제가 가능한 상품의 포장이 훼손된 경우</li>
+							</ol>
+						</div>
+					</div>
+					<div class="policy-card">
+						<h5>
+							<i class="bi bi-cash"></i> 환불 정책
+						</h5>
+						<div class="policy-list">
+							<ul>
+								<li>신청 기간: 상품 수령 후 7일 이내 (미사용, 미개봉 상품에 한함)</li>
+								<li>환불 방법: 마이페이지 또는 고객센터를 통해 신청</li>
+								<li>환불 금액: 상품 구매가 + 배송비 (단, 무료배송 상품이 아닌 경우 초기 배송비 제외)</li>
+								<li>환불 처리 기간: 상품 회수 확인 후 3영업일 이내</li>
+								<li>환불 배송비: 고객 변심의 경우 왕복 배송비 고객 부담, 상품 하자 시 판매자 부담</li>
+								<li>사용/개봉 상품: 훼손 정도에 따라 환불 금액 차감될 수 있음</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <%--문의하기 모달 --%>
 <div class="modal fade" id="qnaModal" tabindex="-1" aria-labelledby="qnaModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -639,7 +649,10 @@ page-navigation{
   </div>
 </div>
 
+
 <script type="text/javascript">
+
+//-------------------전역 범위 ajax 선언-------------------// 
 function ajaxFun(url, method, query, dataType, fn) {
     console.log("ajaxFun 호출됨:", url, method, dataType);
     $.ajax({
@@ -661,6 +674,7 @@ function ajaxFun(url, method, query, dataType, fn) {
     });
 }
 
+//-------------------DOM 로드 완료 후 실행-------------------//
 $(document).ready(function () {
     // 기본 변수들 선언
     const basePrice = parseFloat($('#totalPrice').data('base-price'));
@@ -685,12 +699,13 @@ $(document).ready(function () {
     });
 
     // 가격 유효성 검사
-    if (isNaN(basePrice)) {
+/*     if (isNaN(basePrice)) {
         console.error('기본 가격이 유효하지 않습니다.');
         return;
     }
-    console.log('기본 가격:', basePrice);
+    console.log('기본 가격:', basePrice); */
 
+    
     // 가격 업데이트 함수
     function updatePrice(quantity) {
         const totalPrice = basePrice * quantity;
@@ -817,9 +832,6 @@ $(document).ready(function () {
                 }
             });
 
-            console.log("두 번째 옵션 업데이트 완료"); // 디버깅 로그
-            console.log("두 번째 옵션 HTML:", $secondOption.html()); // 디버깅 로그
-
             $secondOption.prop('disabled', false);
         });
     }
@@ -835,12 +847,107 @@ $(document).ready(function () {
     onOptionChange("#option1", "#option2", ${dto.salePrice});
     onOptionChange("#scrollOption1", "#scrollOption2", ${dto.salePrice});
     
-	 function buyQuantity(stockNum, salePrice, detailNum, detailNum2) {
-        console.log("구매 수량 함수 호출:", { stockNum, salePrice, detailNum, detailNum2 }); 
+ 	 function buyQuantity(stockNum, salePrice, detailNum, detailNum2) {
+        console.log("구매 수량 함수 호출:", { stockNum, salePrice, detailNum, detailNum2 });  
+    }  
+
+//----------------------구매하기---------------------//
+   $('#buyNow, #scrollBuyButton').click(function () {
+        console.log('구매 버튼 클릭:', this.id);
         
-    } 
+        let stockNum, qty, option1, option2;
+        let optionCount = $('.product-options').data('option-count');
+
+        // 클릭된 버튼에 따라 옵션 값  가져옴
+        if (this.id === 'scrollBuyButton') {
+            stockNum = $('#scrollOptionArea').data('stock-num');
+            qty = $('#scrollQuantity').val();
+            option1 = $('#scrollOption1').val();
+            option2 = $('#scrollOption2').val();
+        } else {
+            stockNum = $('.product-options').data('stock-num');
+            qty = $('#quantity').val();
+            option1 = $('#option1').val();
+            option2 = $('#option2').val();
+        }
+        
+        console.log('선택된 옵션:', { stockNum, qty, option1, option2, optionCount });
+
+        // 옵션 선택 확인
+        if (optionCount >= 1 && !option1) {
+            showToast('첫 번째 옵션을 선택해주세요.');
+            return;
+        }
+        if (optionCount == 2 && !option2) {
+            showToast('두 번째 옵션을 선택해주세요.');
+            return;
+        }
+        
+        // stockNum이 없는 경우
+        if (!stockNum) {
+            showToast('옵션을 모두 선택해주세요.');
+            return;
+        }
+        
+        // URL 생성
+        let url = "${pageContext.request.contextPath}/order/payment";
+        let query = "?stockNum=" + stockNum + "&qty=" + qty;
+        
+        // 옵션 정보 추가
+        if (option1) query += "&option1=" + option1;
+        if (option2) query += "&option2=" + option2;
+        
+        console.log('생성된 URL:', url + query);
+
+        // 토스트 메시지 표시 후 페이지 이동
+        showToast('구매 페이지로 이동합니다.', function() {
+            location.href = url + query;
+        });
+    });
+
+    function showToast(message, callback) {
+        $('#cartToast .toast-body').text(message);
+        $('#cartToast').toast('show');
+        
+        if (callback) {
+            $('#cartToast').on('hidden.bs.toast', function () {
+                callback();
+                $('#cartToast').off('hidden.bs.toast');
+            });
+        }
+    }
+
+    //---------------동기화-----------------//
+    function syncOptions() {
+        console.log('syncOptions 함수 호출됨');
+        $('#scrollOption1').val($('#option1').val());
+        $('#scrollOption2').val($('#option2').val());
+        $('#scrollQuantity').val($('#quantity').val());
+        let stockNum = $('.product-options').data('stock-num');
+        $('#scrollOptionArea').data('stock-num', stockNum);
+        console.log('동기화된 값들:', {
+            option1: $('#scrollOption1').val(),
+            option2: $('#scrollOption2').val(),
+            quantity: $('#scrollQuantity').val(),
+            stockNum: stockNum
+        });
+        updateScrollInfo(); // 기존 함수 호출
+    }
+    
+    // 메인 옵션이 변경될 때마다 동기화
+    $('#option1, #option2, #quantity').change(syncOptions);
+
+    // 스크롤 옵션 변경 시에도 동기화
+    $('#scrollOption1, #scrollOption2, #scrollQuantity').change(function() {
+        console.log('스크롤 옵션 변경됨');
+        let id = $(this).attr('id');
+        let mainId = id.replace('scroll', '').toLowerCase();
+        $('#' + mainId).val($(this).val()).trigger('change');
+    });
+
+    
  
-//장바구니 
+  //----------------------장바구니---------------------//
 $(function() {
     $('#addToCart, #scrollAddToCart').click(function() {
         console.log('장바구니 버튼 클릭됨');
@@ -924,12 +1031,10 @@ $(function() {
     }
 });
 
-
     // 구매 버튼
-    $('#buyNow, #scrollBuyButton').click(function () {
+/*     $('#buyNow, #scrollBuyButton').click(function () {
         console.log('구매 버튼 클릭');
-        alert('구매 페이지로 이동합니다.');
-    });
+    }); */
 
     // 재입고 알림
     $('#stockAlert').click(function () {
@@ -937,7 +1042,7 @@ $(function() {
         alert('재입고 시 알림을 보내드리겠습니다.');
     });
 
-    // 채팅 관련 함수
+//----------------------채팅---------------------//
     function addMessage(message, isUser = false) {
         const messageClass = isUser ? 'user-message' : 'agent-message';
         const messageElement = document.createElement('div');
@@ -1034,7 +1139,8 @@ $(function() {
     updateProductInfoBottom();
     updatePrice($('#quantity').val());
     
-
+    
+  //----------------------상품문의---------------------//
 
 function updateGuideText() {
     var selectedType = $('input[name="qnaType"]:checked').val();
@@ -1146,7 +1252,6 @@ $('#submitQna').click(function() {
     }
     
     let formData = new FormData(f);
-    
     // 여러 파일 추가
     for (let i = 0; i < files.length; i++) {
         formData.append('file', files[i]);
@@ -1172,8 +1277,6 @@ $('#submitQna').click(function() {
             $("#qnaModal").modal("hide");
             
             alert('문의가 성공적으로 등록되었습니다.');
-            // 문의 목록 새로고침 (필요시 구현)
-            // listQuestion(1);
         } else {
             alert('문의 등록에 실패했습니다. 다시 시도해주세요.');
         }
@@ -1183,7 +1286,11 @@ $('#submitQna').click(function() {
     listQuestion(1);
 });
 
-//상품 리스트 출력
+//-------------------DOM 로드 완료 후 실행 끝-------------------//
+
+
+//-------------------상품문의 리스트 / 등록 -------------------//
+
 function listQuestion(page) {
     let productNum = '${dto.productNum}';
     let url = '${pageContext.request.contextPath}/question/list';
@@ -1196,7 +1303,6 @@ function listQuestion(page) {
 }
 
     
-//상품 문의 
 function printQuestion(data) {
     console.log('Data to be processed:', data);
     let dataCount = data.dataCount;

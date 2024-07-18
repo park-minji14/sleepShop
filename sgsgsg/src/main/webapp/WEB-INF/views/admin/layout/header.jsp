@@ -32,11 +32,6 @@ body {
     gap: 15px;
 }
 
-/* 검색창 스타일링 */
-.search-container {
-    position: relative;
-    width: 250px;
-}
 
 .search-bar {
     width: 100%;
@@ -99,10 +94,6 @@ body {
 }
 </style>
 
-<!-- 최상단 정보 바 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
 <header class="admin-header">
     <h1 class="logo-text">새근새근</h1>
     <div class="header-info">
@@ -144,7 +135,7 @@ body {
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/supportManage/supportList">
                         <img src="https://img.icons8.com/ios/24/ffffff/customer-support.png" alt="고객센터" class="me-1">
                         고객센터
                     </a>

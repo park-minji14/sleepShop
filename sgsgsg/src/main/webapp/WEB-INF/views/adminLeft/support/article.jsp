@@ -65,10 +65,8 @@ function sendAnswerOk() {
 }
 </script>
 
-<div class="body-container">
-    <div class="body-title">
-		<h2><i class="fa-solid fa-person-circle-question"></i> 1:1 문의 </h2>
-    </div>
+<div class="mt-4">
+  
     
     <div class="body-main">
 
@@ -78,7 +76,7 @@ function sendAnswerOk() {
 					<td colspan="2" style="padding: 10px 0 0 0;">
 						<div class="row-flex">
 							<div class="left-item left-question">Q.</div>
-							<div class="right-item right-question">${dto.subject}</div>
+							<div class="right-item right-question">${dto.title}</div>
 						</div>
 					</td>
 				</tr>
@@ -88,14 +86,14 @@ function sendAnswerOk() {
 				</tr>
 				<tr>
 					<td width="50%" align="left">
-						작성자 : ${dto.userName}(${dto.userId})
+						작성자 : ${dto.userId}(${dto.userId})
 					</td>
 					<td width="50%" align="right">
-						문의일자 : ${dto.reg_date}
+						문의일자 : ${dto.created_date}
 					</td>
 				</tr>
 				
-				<tr style="${not empty dto.answer ? 'border: none;':''}">
+				<tr style="${not empty dto.response_date ? 'border: none;':''}">
 					<td colspan="2" valign="top" height="150">
 						${dto.content}
 					</td>
@@ -103,29 +101,29 @@ function sendAnswerOk() {
 			</tbody>
 		</table>
 		
-		<c:if test="${not empty dto.answer}">
+		<c:if test="${not empty dto.response_date}">
 			<table class="table table-border table-article" style="margin-top: 0;">
 				<tbody>
 					<tr style="border: none;">
 						<td colspan="2" style="padding: 0 0 0 0;">
 							<div class="row-flex">
 								<div class="left-item left-answer">A.</div>
-								<div class="right-item right-answer">${dto.subject}</div>
+								<div class="right-item right-answer">${dto.title}</div>
 							</div>
 						</td>
 					</tr>
 					<tr>
 						<td width="50%" align="left">
-							담당자 : ${dto.answerName}
+							담당자 : ${dto.userId2}
 						</td>
 						<td width="50%" align="right">
-							답변일자 :  ${dto.answer_date}
+							답변일자 :  ${dto.response_date}
 						</td>
 					</tr>
 					
 					<tr>
 						<td colspan="2" valign="top" height="150">
-							${dto.answer}
+							${dto.response_content}
 						</td>
 					</tr>
 				</tbody>
@@ -136,18 +134,18 @@ function sendAnswerOk() {
 			<tr>
 				<td width="50%" align="left">
 					<button type="button" class="btn" onclick="deleteInquiry('${dto.num}');">질문삭제</button>
-					<c:if test="${not empty dto.answer}">
+					<c:if test="${not empty dto.response_date}">
 						<button type="button" class="btn" onclick="deleteAnswer('${dto.num}');">답변삭제</button>
 					</c:if>
 				</td>
 			
 				<td align="right">
-					<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/admin/inquiryManage/list?${query}';">리스트</button>
+					<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/adminManagement/supportManage/supportList?${query}';">리스트</button>
 				</td>
 			</tr>
 		</table>
 		
-		<c:if test="${empty dto.answer}">
+		<c:if test="${empty dto.response_date}">
 			<div class="reply">
 				<form name="answerForm" method="post">
 					<div class='form-header'>
