@@ -6,7 +6,7 @@
 <style>
 /* 전체 페이지 스타일 */
 body {
-	background-color: #f8f9fa;
+	/* background-color: #f8f9fa; */
 }
 
 .container {
