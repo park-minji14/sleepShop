@@ -59,6 +59,14 @@ window.addEventListener("load", function() {
 
     function isNumber(event) {
         event.target.value = event.target.value.replace(/[^0-9]/g, '');
+        
+        const value = parseInt(event.target.value, 10);
+        const MAX_INT = 2147483647;
+
+        if (value > MAX_INT) {
+            event.target.value = MAX_INT;
+            alert(`입력값이 너무 큽니다.`);
+        }
     }
 
     stockGrater.addEventListener("input", isNumber);
@@ -100,7 +108,7 @@ window.addEventListener("load", function() {
 				        </div>
 				    </div>
 		            <div class="d-flex justify-content-end mt-4">
-		                <button type="reset" class="btn btn-secondary me-2">초기화</button>
+		                <button type="reset" class="btn btn-secondary me-2" onclick="location.href='${pageContext.request.contextPath}/adminManagement/productManage/stockList'">초기화</button>
 		                <button type="submit" class="btn btn-primary">검색</button>
 		            </div>
 				</div>

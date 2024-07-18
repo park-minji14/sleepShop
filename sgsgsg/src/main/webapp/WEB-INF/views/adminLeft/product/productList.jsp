@@ -70,6 +70,14 @@ window.addEventListener("load", function() {
 
     function isNumber(event) {
         event.target.value = event.target.value.replace(/[^0-9]/g, '');
+        
+        const value = parseInt(event.target.value, 10);
+        const MAX_INT = 2147483647;
+
+        if (value > MAX_INT) {
+            event.target.value = MAX_INT;
+            alert(`입력값이 너무 큽니다.`);
+        }
     }
 
     priceMin.addEventListener("input", isNumber);
