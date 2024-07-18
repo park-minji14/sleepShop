@@ -62,19 +62,34 @@ public class InquiryManageServiceImpl implements InquiryManageService{
 
 	@Override
 	public void updateAnswer(InquiryManage dto) throws Exception {
-		// TODO Auto-generated method stub
+		try {
+			mapper.updateAnswer(dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 		
 	}
 
 	@Override
 	public void deleteAnswer(long num) throws Exception {
-		// TODO Auto-generated method stub
+		try {
+			mapper.deleteAnswer(num);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 		
 	}
 
 	@Override
 	public void deleteInquiry(long num) throws Exception {
-		// TODO Auto-generated method stub
+		try {
+			mapper.deleteInquiry(num);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 		
 	}
 
