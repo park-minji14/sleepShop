@@ -63,6 +63,20 @@
 }
 </style>
 
+<script type="text/javascript">
+window.addEventListener("load", function() {
+    const priceMin = document.getElementById("priceMin");
+    const priceMax = document.getElementById("priceMax");
+
+    function isNumber(event) {
+        event.target.value = event.target.value.replace(/[^0-9]/g, '');
+    }
+
+    priceMin.addEventListener("input", isNumber);
+    priceMax.addEventListener("input", isNumber);
+});
+</script>
+
     <div class="mt-4">
         <!-- 검색 필터 -->
         <form class="mb-4 ">

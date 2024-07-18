@@ -312,7 +312,8 @@ public class ProductManageController {
 			@RequestParam(defaultValue = "0") long parentNum,
 			@RequestParam(defaultValue = "0") long categoryNum,
 			@RequestParam(defaultValue = "") String kwd,
-			@RequestParam(defaultValue = "0") int stock,
+			@RequestParam(defaultValue = "0") int stockLess,
+			@RequestParam(defaultValue = "0") int stockGrater,
 			HttpServletRequest req,
 			Model model) throws Exception {
 		
@@ -337,7 +338,8 @@ public class ProductManageController {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		map.put("stock", stock);
+		map.put("stockLess", stockLess);
+		map.put("stockGrater", stockGrater);
 		map.put("kwd", kwd);
 		map.put("parentNum", parentNum);
 		map.put("categoryNum", categoryNum);
@@ -359,6 +361,29 @@ public class ProductManageController {
 		List<ProductManage> list = service.listProductForStock(map);
 		
 		String listUrl = cp + "/adminManagement/productManage/stockList";
+		String query = "";
+
+		if (kwd != null && !kwd.isEmpty()) {
+		    query += "kwd=" + kwd + "&";
+		}
+		if (parentNum != 0) {
+		    query += "parentNum=" + parentNum + "&";
+		    System.out.println(parentNum);
+		}
+		if (categoryNum != 0) {
+		    query += "categoryNum=" + categoryNum + "&";
+		}
+		if (stockLess != 0) {
+		    query += "stockLess=" + stockLess + "&";
+		}
+		if (stockGrater != 0) {
+		    query += "stockGrater=" + stockGrater + "&";
+		}
+		if (!query.isEmpty() && query.endsWith("&")) {
+		    query = query.substring(0, query.length() - 1);
+		}
+		
+		listUrl += "?" + query;
 		
 		String paging = myUtil.pagingUrl(current_page, total_page, listUrl);
 		

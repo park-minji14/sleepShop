@@ -250,8 +250,17 @@
         p.productName, p.classify, p.price, p.discountRate, p.savedMoney, 
         p.delivery, p.optionCount, p.thumbnail, p.productShow, 
         TO_CHAR(p.reg_date, 'YYYY-MM-DD'), TO_CHAR(p.update_date, 'YYYY-MM-DD'), p.search_word
-    <if test="stock != 0">
-        HAVING NVL(SUM(ps.totalStock), 0) &lt;= #{stock}
+    <if test="stockLess != 0 or stockGrater != 0">
+        HAVING 
+        <if test="stockLess != 0">
+            NVL(SUM(ps.totalStock), 0) &lt;= #{stockLess}
+        </if>
+        <if test="stockLess != 0 and stockGrater != 0">
+            AND 
+        </if>
+        <if test="stockGrater != 0">
+            NVL(SUM(ps.totalStock), 0) &gt;= #{stockGrater}
+        </if>
     </if>
     ORDER BY p.productNum DESC
     OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
@@ -270,8 +279,11 @@
         <if test="kwd != null and kwd != ''">
             (INSTR(productName, #{kwd}) &gt; 0 OR INSTR(search_word, #{kwd}) &gt; 0)
         </if>
-        <if test="stock != 0">
-        	AND NVL(ps.totalStock, 0) &lt;= #{stock}
+        <if test="stockLess != 0">
+        	AND NVL(ps.totalStock, 0) &lt;= #{stockLess}
+        </if>
+        <if test="stockGrater != 0">
+        	AND NVL(ps.totalStock, 0) &gt;= #{stockGrater}
         </if>
         <if test="parentNum != 0">
             AND <include refid="category-search"/>

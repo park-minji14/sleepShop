@@ -51,46 +51,62 @@
     color: #F44336;
 }
 </style>
+
+<script type="text/javascript">
+window.addEventListener("load", function() {
+    const stockGrater = document.getElementById("stockGrater");
+    const stockLess = document.getElementById("stockLess");
+
+    function isNumber(event) {
+        event.target.value = event.target.value.replace(/[^0-9]/g, '');
+    }
+
+    stockGrater.addEventListener("input", isNumber);
+    stockLess.addEventListener("input", isNumber);
+});
+</script>
     <div class="mt-4">
         <!-- 검색 필터 -->
         <form class="mb-4 " name="searchForm" action="${pageContext.request.contextPath}/adminManagement/productManage/stockList">
         
-        	<div class="border border-secondary-subtle p-3">
-	            <div class="row mb-3">
-	                <div class="col">
-	                    <label for="searchKeyword" class="form-label">검색어</label>
-						<input type="text" name="kwd" id="searchKeyword" class="form-control" placeholder="키워드 입력">
-	                </div>
-	                <div class="col">
-	                    <label for="stock" class="form-label">전체상품재고</label>
-	                    <input type="text" name = "stock" id="stock" class="form-control" placeholder="개 이하">
-	                </div>
-	                <div class="col">
-	                    <label for="category" class="form-label">상위카테고리</label>
-						<select name="parentNum" class="form-select">
-							<option value="">카테고리 선택</option>
-							<c:forEach var="vo" items="${listCategory}">
-								<option value="${vo.categoryNum}" ${parentNum==vo.categoryNum?"selected":""}>${vo.categoryName}</option>
-							</c:forEach>
-						</select>
-	                </div>
-	                <div class="col">
-	                    <label for="subCategory" class="form-label">하위카테고리</label>
-						<select name="categoryNum" class="form-select">
-							<option value="">하위 카테고리 선택</option>
-						</select>
-	                </div>
-	            </div>
-	            
-	            <div class="d-flex justify-content-end">
-	                <button type="reset" class="btn btn-secondary me-2">초기화</button>
-	                <button type="submit" class="btn btn-primary">검색</button>
-	            </div>
-	            
+				<div class="border border-secondary-subtle p-3">
+				    <div class="row g-2">
+				        <div class="col">
+				            <label for="searchKeyword" class="form-label">검색어</label>
+				            <input type="text" name="kwd" id="searchKeyword" class="form-control form-control-sm" placeholder="키워드 입력">
+				        </div>
+				        <div class="col">
+				            <label for="stockGrater" class="form-label">재고(이상)</label>
+				            <input type="text" name="stockGrater" id="stockGrater" class="form-control form-control-sm" placeholder="개 이상">
+				        </div>
+				        <div class="col">
+				            <label for="stockLess" class="form-label">재고(이하)</label>
+				            <input type="text" name="stockLess" id="stockLess" class="form-control form-control-sm" placeholder="개 이하">
+				        </div>
+				        <div class="col">
+				            <label for="category" class="form-label">상위카테고리</label>
+				            <select name="parentNum" class="form-select form-select-sm">
+				                <option value="">카테고리 선택</option>
+				                <c:forEach var="vo" items="${listCategory}">
+				                    <option value="${vo.categoryNum}" ${parentNum==vo.categoryNum?"selected":""}>${vo.categoryName}</option>
+				                </c:forEach>
+				            </select>
+				        </div>
+				        <div class="col">
+				            <label for="subCategory" class="form-label">하위카테고리</label>
+				            <select name="categoryNum" class="form-select form-select-sm">
+				                <option value="">하위 카테고리 선택</option>
+				            </select>
+				        </div>
+				    </div>
+		            <div class="d-flex justify-content-end mt-4">
+		                <button type="reset" class="btn btn-secondary me-2">초기화</button>
+		                <button type="submit" class="btn btn-primary">검색</button>
+		            </div>
+				</div>
             
-            </div>
-            
-        </form>
+        	</form>
+        </div>
         
        	<div class="page-navigation">
 			${dataCount == 0 ? "등록된 상품이 없습니다." : paging}
