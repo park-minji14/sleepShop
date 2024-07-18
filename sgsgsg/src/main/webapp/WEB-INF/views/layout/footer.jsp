@@ -12,7 +12,7 @@
                 <p>쌍용강북교육센터의 열정적인 개발자들이 만든 프로젝트입니다.</p>
                 <a href="#" class="btn btn-outline-info btn-sm">프로젝트 상세 정보</a>
                 <div class="saegun-footer-academy mt-3">
-                    <h5>쌍용강북교육센터</h5>
+                    <h5 style="color:#fff;">쌍용강북교육센터</h5>
                 </div>
             </div>
             <div class="col-lg-4 mb-3">
