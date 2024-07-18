@@ -132,7 +132,7 @@ public class OrderController {
 		try {
 			
 			order.setUserId(info.getUserId());
-			order.setOrderState(OrderState.PAYMENT_COMPLETED.getKorean());
+			order.setOrderState(OrderState.PAYMENT_COMPLETED.ordinal());
 			
 			delivery.setUserId(info.getUserId());
 			

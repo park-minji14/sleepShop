@@ -2,6 +2,7 @@ package com.sgsg.dra.admin.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,13 @@ public class OrderManageServiceImpl implements OrderManageService {
 	private OrderManageMapper mapper;
 	
 	@Override
-	public List<Order> listOrder() throws Exception {
+	public List<Order> listOrder(Map<String, Object> map) throws Exception {
 		List<Order> orderList = null;
 		try {
-			orderList = mapper.listOrder();
+			orderList = mapper.listOrder(map);
+			for (Order order : orderList) {
+				order.setOrderStateInfo(OrderState.fromInt(order.getOrderState()).getKorean());
+			}
 		} catch (Exception e) {
 			throw e;
 		}
@@ -33,9 +37,9 @@ public class OrderManageServiceImpl implements OrderManageService {
 		
 		try {
 			dto = mapper.findById(orderNum);
-			if(dto != null) {
-				dto.setOrderStateNum(OrderState.fromKorean(dto.getOrderState()).ordinal());
-			}
+			
+			dto.setOrderStateInfo(OrderState.fromInt(dto.getOrderState()).getKorean());
+			
 		} catch (Exception e) {
 			throw e;
 		}
@@ -53,6 +57,18 @@ public class OrderManageServiceImpl implements OrderManageService {
 			throw e;
 		}
 		
+		return list;
+	}
+
+	@Override
+	public List<Order> selectDeliveryCompanyList() throws Exception {
+		List<Order> list = null;
+		
+		try {
+			list = mapper.selectDeliveryCompanyList();
+		} catch (Exception e) {
+			throw e;
+		}
 		return list;
 	}
 

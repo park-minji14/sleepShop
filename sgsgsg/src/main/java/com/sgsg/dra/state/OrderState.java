@@ -28,4 +28,13 @@ public enum OrderState {
         throw new IllegalArgumentException("Unknown status: " + korean);
     }
     
+    public static OrderState fromInt(int num) {
+    	 for (OrderState status : values()) {
+             if (status.ordinal() == num) {
+                 return status;
+             }
+         }
+    	 throw new IllegalArgumentException("Unknown status: " + num);
+	}
+    
 }

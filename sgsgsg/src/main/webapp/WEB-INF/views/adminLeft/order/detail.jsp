@@ -17,7 +17,7 @@
 					<td class="table-light" width="105">주문일자</td>
 					<td width="150">${order.orderDate}</td>
 					<td class="table-light" width="110">주문상태</td>
-					<td width="150">${order.orderState}</td>
+					<td width="150">${order.orderStateInfo}</td>
 				</tr>
 				<tr>
 					<td class="table-light">총금액</td>
@@ -35,9 +35,9 @@
 					<td class="table-light">배송비</td>
 					<td class="text-primary"><fmt:formatNumber value="${order.deliveryCharge}"/></td>
 					<td class="table-light">배송업체</td>
-					<td></td>
+					<td>${dto.deliveryName}</td>
 					<td class="table-light">송장번호</td>
-					<td></td>
+					<td>${dto.invoiceNumber}</td>
 					<td class="table-light">상태변경일</td>
 					<td>${order.orderStateDate}</td>
 				</tr>
@@ -55,30 +55,30 @@
 			<table class="table table-borderless mb-1">
 				<tr>
 					<td width="50%">
-						<c:if test="${order.orderStateNum < 3}">
+						<c:if test="${order.orderState < 3}">
 							<button type="button" class="btn btn-light btn-cancel-order" data-orderNum="${order.orderNum}">판매취소</button>
 						</c:if>
 					</td>
 					<td class="text-end">
-						<c:if test="${order.orderStateNum == 1}">
+						<c:if test="${order.orderState == 1}">
 							<button type="button" class="btn btn-light btn-prepare-order" data-orderNum="${order.orderNum}">발송처리</button>
 						</c:if>
 					
 						<div class="row justify-content-end delivery-update-area">
-							<c:if test="${order.orderStateNum > 1 && order.orderStateNum < 5}">
+							<c:if test="${order.orderState > 1 && order.orderState < 5}">
 								<div class="col-auto">
 									<select class="form-select delivery-select">
-										<option value="2" ${order.orderStateNum==2?"selected":"" }>발송준비</option>
-										<option value="3" ${order.orderStateNum==3?"selected":"" }>배송시작</option>
-										<option value="4" ${order.orderStateNum==4?"selected":"" }>배송중</option>
-										<option value="5" ${order.orderStateNum==5?"selected":"" }>배송완료</option>
+										<option value="2" ${order.orderState==2?"selected":"" }>발송준비</option>
+										<option value="3" ${order.orderState==3?"selected":"" }>배송시작</option>
+										<option value="4" ${order.orderState==4?"selected":"" }>배송중</option>
+										<option value="5" ${order.orderState==5?"selected":"" }>배송완료</option>
 									</select>
 								</div>
 								<div class="col-auto">
 									<button type="button" class="btn btn-light btn-delivery-order" data-orderNum="${order.orderNum}" data-orderState="${order.orderState}">배송변경</button>
 								</div>
 							</c:if>
-							<c:if test="${order.orderStateNum == 5}">
+							<c:if test="${order.orderState == 5}">
 								<div class="col-auto">
 									<label>배송완료 일자 : ${order.orderStateDate}</label>
 								</div>
@@ -109,7 +109,7 @@
 						<th width="100">주문총금액</th>
 						<th width="90">적립금</th>
 						<th width="110">주문상태</th>
-						<th width="60">변경</th>
+						<th width="60" style="display: none;">변경</th>
 					</tr>
 				</thead>
 				
@@ -130,8 +130,8 @@
 							<td>${dto.qty}</td>
 							<td><fmt:formatNumber value="${dto.productMoney}"/></td>
 							<td><fmt:formatNumber value="${dto.savedMoney}"/></td>
-							<td>${order.orderStateNum == 1? "상품준비중":order.orderState}</td>
-							<td>
+							<td>${order.orderState == 1? "상품준비중":order.orderStateInfo}</td>
+							<td style="display: none;">
 								<span class="orderDetailStatus-update" 
 										data-orderNum="${order.orderNum}" 
 										data-orderState="${order.orderState}"
@@ -156,3 +156,47 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" id="prepareDialogModal" tabindex="-1" aria-labelledby="prepareDialogModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="prepareDialogModalLabel">발송처리</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body pt-1">
+				<form class="row text-center" name="invoiceNumberForm">
+					<div class="col-auto p-1">
+						<select name="deliveryName" class="form-select">
+							<c:forEach var="vo" items="${deliveryCompanyList}">
+								<option>${vo.deliveryName}</option>
+							</c:forEach>
+						</select>
+					</div>
+					<div class="col p-1">
+						<input name="invoiceNumber" type="text" class="form-control" placeholder="송장번호입력">
+					</div>
+					<div class="col-auto p-1">
+						<input type="hidden" name="orderNum" value="">
+						<input type="hidden" name="orderState" value="2">
+						<button type="button" class="btn btnInvoiceNumberOk">변경완료</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+	$("body").on("click", ".btn-prepare-order",function(){
+		let orderNum = $(this).attr("data-orderNum");
+		
+		document.invoiceNumberForm.orderNum.value = orderNum;
+		
+		$("#prepareDialogModal").modal("show");
+	});
+});
+
+
+</script>

@@ -22,14 +22,30 @@
 	</sql>
 	
 	<!-- 주문 목록 가지고 오기 -->
-	<select id="listOrder" resultType="com.sgsg.dra.domain.Order">
-		SELECT PRODUCTORDERNAME, ORDERNUM, o.USERID, USERNAME, ISSUE_ID,
+	<select id="listOrder" parameterType="map" resultType="com.sgsg.dra.domain.Order">
+		SELECT PRODUCTORDERNAME, ORDERNUM, po.USERID, USERNAME, ISSUE_ID,
 			TO_CHAR(ORDERDATE, 'YYYY-MM-DD HH24:MI:SS') ORDERDATE, TOTALMONEY, USEDSAVED,
 			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENTNAME,
-			o.TEL, o.ZIP, o.ADDR1, o.ADDR2, DESTMEMO
-		FROM PRODUCTORDER o
-		JOIN MEMBER1 m ON o.USERID = m.USERID
+			po.TEL, po.ZIP, po.ADDR1, po.ADDR2, DESTMEMO
+		FROM PRODUCTORDER po
+		JOIN MEMBER1 m ON po.USERID = m.USERID
+		<where>
+			<if test="kwd != null and kwd != '' ">
+                <include refid="where-list"/>
+            </if>
+		</where>
 		ORDER BY ORDERNUM DESC
+	</select>
+	
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		select nvl(count(*), 0) count
+		from PRODUCTORDER po
+		JOIN MEMBER1 m ON po.USERID = m.USERID
+		<where>
+			<if test="kwd != null and kwd != '' ">
+                <include refid="where-list"/>
+            </if>
+		</where>
 	</select>
 	
 	<select id="findById" parameterType="String" resultType="com.sgsg.dra.domain.Order">
@@ -37,10 +53,11 @@
 			TO_CHAR(ORDERDATE, 'YYYY-MM-DD HH24:MI:SS') ORDERDATE, TOTALMONEY, USEDSAVED, 
 			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENTNAME,
 			po.TEL, po.ZIP, po.ADDR1, po.ADDR2, po.DESTMEMO, PAYMETHOD, CARDNAME,
-			AUTHNUMBER, AUTHDATE
+			AUTHNUMBER, AUTHDATE, DELIVERYNAME, INVOICENUMBER, STATUS_CODE
         FROM PRODUCTORDER po
         LEFT OUTER JOIN MEMBER1 m ON po.USERID = m.USERID
         LEFT OUTER JOIN payDetail pd ON po.orderNum = pd.orderNum
+        LEFT OUTER JOIN DELIVERY d on po.orderNum = d.orderNum
         WHERE po.ORDERNUM = #{orderNum}
 	</select>
 	
@@ -55,5 +72,12 @@
 		LEFT OUTER JOIN optionDetail d2 ON ps.detailNum2 = d2.detailNum
 		WHERE od.orderNum = #{orderNum}
 	</select>
+	
+	<select id="selectDeliveryCompanyList" resultType="com.sgsg.dra.domain.Order">
+		SELECT DELIVERYNAME, COMPANYNUM
+		FROM DELIVERYCOMPANY
+	</select>
+	
+	<!-- DELIVERYNUM, DELIVERYNAME, INVOICENUMBER, STATUS_CODE, COMPANYNUM -->
 	
 </mapper>

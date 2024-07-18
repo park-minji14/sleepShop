@@ -28,8 +28,8 @@ public class Order {
 	private int qty;
 	private int productMoney;
 	private long cancelAmount;
-	private int orderStateNum;
-	private String orderState;
+	private String orderStateInfo;
+	private int orderState;
 	private String orderStateDate;
 	
 	// 쿠폰
@@ -82,6 +82,12 @@ public class Order {
 	private String cardName;
 	private String authNumber;
 	private String authDate;
+	
+	private long deliveryNum;
+	private String deliveryName;
+	private String invoiceNumber;
+	private String status_code;
+	private long companyNum;
 	
 	
 	public long getProductNum() {
@@ -222,16 +228,16 @@ public class Order {
 	public void setCancelAmount(long cancelAmount) {
 		this.cancelAmount = cancelAmount;
 	}
-	public int getOrderStateNum() {
-		return orderStateNum;
+	public String getOrderStateInfo() {
+		return orderStateInfo;
 	}
-	public void setOrderStateNum(int orderStateNum) {
-		this.orderStateNum = orderStateNum;
+	public void setOrderStateInfo(String orderStateInfo) {
+		this.orderStateInfo = orderStateInfo;
 	}
-	public String getOrderState() {
+	public int getOrderState() {
 		return orderState;
 	}
-	public void setOrderState(String orderState) {
+	public void setOrderState(int orderState) {
 		this.orderState = orderState;
 	}
 	public String getOrderStateDate() {
@@ -479,6 +485,36 @@ public class Order {
 	}
 	public void setAuthDate(String authDate) {
 		this.authDate = authDate;
+	}
+	public long getDeliveryNum() {
+		return deliveryNum;
+	}
+	public void setDeliveryNum(long deliveryNum) {
+		this.deliveryNum = deliveryNum;
+	}
+	public String getDeliveryName() {
+		return deliveryName;
+	}
+	public void setDeliveryName(String deliveryName) {
+		this.deliveryName = deliveryName;
+	}
+	public String getInvoiceNumber() {
+		return invoiceNumber;
+	}
+	public void setInvoiceNumber(String invoiceNumber) {
+		this.invoiceNumber = invoiceNumber;
+	}
+	public String getStatus_code() {
+		return status_code;
+	}
+	public void setStatus_code(String status_code) {
+		this.status_code = status_code;
+	}
+	public long getCompanyNum() {
+		return companyNum;
+	}
+	public void setCompanyNum(long companyNum) {
+		this.companyNum = companyNum;
 	}
 	
 }
