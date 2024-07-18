@@ -128,36 +128,34 @@
 		
         <!-- 상품 목록 -->
         <div class="table-responsive">
-            <table class="table table-striped table-bordered">
+            <table class="table">
                 <thead>
                     <tr>
-                        <th>선택</th>
-                        <th>이미지</th>
-                        <th>상품코드</th>
+                        <th width="70">순번</th>
+                        <th width="120">이미지</th>
+                        <th width="90">상품코드</th>
                         <th>상품명</th>
-                        <th>카테고리</th>
-                        <th>전체재고</th>
-                        <th>최근수정일</th>
-                        <th colspan="2">관리</th>
+                        <th width="100">카테고리</th>
+                        <th width="100">전체재고</th>
+                        <th width="120">최근수정일</th>
+                        <th>관리</th>
                     </tr>
                 </thead>
                 <tbody>
                		<!-- 상품 진열할 곳 -->
                		<c:forEach var="dto" items="${list}" varStatus="status">
-               			<tr>
-                        <td><input type="checkbox"></td>
-                        <td>
-                        	<img src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}" alt="상품 이미지" width="50" height="50"> 
-                        </td>
-                        <td>${dto.productNum}</td>
-                        <td>${dto.productName}</td>
-                        <td>${dto.categoryName}</td>
-                        <td>${dto.totalStock}</td>
-                        <td>${dto.update_date}</td>
-                        <td><button type="button" class="btn btn-sm btn-primary btn-productStock" id="btnArticle" data-productNum="${dto.productNum}" data-optionCount="${dto.optionCount}">상세보기</button></td>
-                        <td><button type="button" class="btn btn-sm btn-danger" id="btnUpdate" data-productNum="${dto.productNum}" onclick="sendProductNum(this)">재고수정</button></td>
-                    </tr>
-                    
+	            		<tr>
+	                        <td>${dataCount-(page-1)*size-status.index}</td>
+	                        <td>
+	                        	<img src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}" alt="상품 이미지" width="50" height="50"> 
+	                        </td>
+	                        <td>${dto.productNum}</td>
+	                        <td>${dto.productName}</td>
+	                        <td>${dto.categoryName}</td>
+	                        <td>${dto.totalStock}</td>   
+	                        <td>${dto.update_date}</td>
+	                        <td><button type="button" class="btn btn-sm btn-primary btn-productStock" id="btnArticle" data-productNum="${dto.productNum}" data-optionCount="${dto.optionCount}">재고관리</button></td>
+	                    </tr>
                		</c:forEach>
                     
                 </tbody>

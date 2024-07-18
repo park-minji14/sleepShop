@@ -56,7 +56,6 @@
 
     <div class="mt-4">
         <!-- 검색 필터 -->
-                <!-- 검색 필터 -->
         <form class="mb-4 ">
         	<div class="border border-secondary-subtle p-3">
 	            <div class="row mb-3">
@@ -133,7 +132,7 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>선택</th>
+                    <th>순번</th>
                     <th>이미지</th>
                     <th>상품코드</th>
                     <th>상품명</th>
@@ -150,7 +149,7 @@
             <tbody>
                 <c:forEach var="dto" items="${list}" varStatus="status">
                     <tr>
-                        <td><input type="checkbox"></td>
+                        <td>${dataCount-(page-1)*size-status.index}</td>
                         <td>
                             <img src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}" alt="상품 이미지" width="50" height="50">
                         </td>

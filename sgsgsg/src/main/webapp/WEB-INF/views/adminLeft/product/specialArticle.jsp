@@ -7,8 +7,46 @@
 	max-width: 1000px;
 }
 
+.custom-title {
+	max-width: 140px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #fff; 
+    background-color: #3d3d4f; 
+    padding: 10px 20px; 
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.j-detail-content {
+    white-space: pre-line; 
+    line-height: 1.6; 
+    font-size: 16px;
+    color: #333;
+}
+
+.j-container-box {
+    border: 1px solid #dee2e6; 
+    border-radius: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 15px;
+    padding-bottom: 5px;
+    background-color: #eee; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    margin-bottom: 10px;
+}
+
 .special-img { width: 100%; max-height: 130px; }
 
+.table {
+    background-color: #ffffff;
+}
+.table thead th {
+    background-color: #3949ab;
+    color: #ffffff;
+    border-color: #303f9f;
+}
 .table-list thead > tr > th { padding-top: 10px; padding-bottom: 10px; }
 .table-list tbody > tr { vertical-align: middle; }
 .table-list tbody tr > td { text-align: center; }
@@ -29,55 +67,54 @@ function deleteOk() {
 }
 </script>
 
-<div class="container">
+<div class="mt-4 unique-main-content">
 	<div class="body-container">
-		<div class="body-title">
-			<h3><i class="bi bi-app"></i> ${classify==200 ? "오늘의 특가" : "기획전"} </h3>
-		</div>
+
+		<h4 class="custom-title mb-0">오늘의 특가</h4>
 		
 		<div class="body-main p-3">
-			<div class="row p-3 ms-1 me-1 bg-light rounded">
-				<div class="col-4 border rounded p-1">
-					<img class="rounded special-img" src="${pageContext.request.contextPath}/uploads/specials/${dto.imageFilename}">
-				</div>
-				<div class="col align-self-center">
-					<h3 class="mb-2">
-						${dto.subject}
-					</h3>
-					<div class="mb-2">
-						기간 : ${dto.startDate} ~ ${dto.endDate} 
-					</div>
-					<div>
-						등록일 : ${dto.reg_date} 
-					</div>
-				</div>
-			</div>
-			
-			<div class="mt-2 mb-2">
-				${dto.content}
+			<div class="j-container-box">
+			    <div class="row p-3 ms-1 me-1 bg-light rounded">
+			        <div class="col-4 border rounded p-1">
+			            <img class="rounded special-img" src="${pageContext.request.contextPath}/uploads/specials/${dto.imageFilename}">
+			        </div>
+			        <div class="col align-self-center">
+			            <h3 class="mb-2">${dto.subject}</h3>
+			            <div class="mb-2">
+			                기간 : ${dto.startDate} ~ ${dto.endDate}
+			            </div>
+			            <div>
+			                등록일 : ${dto.reg_date}
+			            </div>
+			        </div>
+			    </div>
+			    
+			    <div class="j-detail-content">
+			        ${dto.content}
+			    </div>
 			</div>
 			
 			<div class="row mb-2">
 				<div class="col">
 					<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/adminManagement/productManage/specialUpdate?specialNum=${dto.specialNum}&page=${page}';">수정</button>
 					<button type="button" class="btn btn-light btn-specialsDelete" onclick="deleteOk();">삭제</button>
+					<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/adminManagement/productManage/specialList?${query}';">리스트</button>
 				</div>
 				<div class="col text-end">
-					<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/adminManagement/productManage/specialList?${query}';">리스트</button>
 				</div>
 			</div>
 			
 			<hr>
 			
 			<div class="pt-4">
-				<h4 class="pb-2">등록 상품</h4>
 				
+				<h4 class="pb-2">특가 상품</h4>
 				<div class="pb-2 text-end">
 					<button type="button" class="btn btn-light btn-append">상품등록</button>
 				</div>
 				<table class="table table-border table-list">
 					<thead>
-						<tr class="border-top border-dark table-light text-center">
+						<tr class="text-center">
 							<th width="130">상품코드</th>
 							<th>상품명</th>
 							<th width="80">출력순서</th>

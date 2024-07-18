@@ -302,7 +302,7 @@ public class ProductManageServiceImpl implements ProductManageService {
 				dto.getDetailNums().add(detailNum);
 			}
 
-			// 옵션2 -----
+			// 옵션2
 			if(dto.getOptionCount() > 1) {
 				//  옵션2가 없는 상태에서 옵션2를 추가한 경우
 				parentNum = dto.getOptionNum(); // 옵션1 옵션번호 
