@@ -5,7 +5,7 @@
 <nav class="sidebar">
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link active" href="#">주문 및 배송관리</a>
+            <a class="nav-link active" href="${pageContext.request.contextPath}/adminManagement/orderManage/order">주문관리</a>
         </li>
 		<li class="nav-item">
             <a class="nav-link toggleSubMenu" href="#">예시1 <span class="jArrow"></span></a>
@@ -22,7 +22,7 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">예시2</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/orderManage/delivery">배송관리</a>
         </li>
 		<li class="nav-item">
             <a class="nav-link toggleSubMenu" href="#">예시3 <span class="jArrow"></span></a>

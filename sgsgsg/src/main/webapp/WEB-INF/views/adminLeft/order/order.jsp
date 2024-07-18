@@ -28,6 +28,7 @@
 	    		<th>주문일</th>
 	    		<th>주문상태</th>
 	    		<th>결제금액</th>
+	    		<th>변경</th>
     		</tr>
     	</thead>
     	<tbody>
@@ -39,6 +40,7 @@
     			<td>${dto.orderDate}</td>
     			<td>${dto.orderState}</td>
     			<td><fmt:formatNumber value="${dto.payment}" pattern="#,###" />원</td>
+    			<td><a href="${pageContext.request.contextPath}/adminManagement/orderManage/order/detail?orderNum=${dto.orderNum}">상태변경</a></td>
     		</tr>
     	</c:forEach>
     	</tbody>

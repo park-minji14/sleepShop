@@ -129,7 +129,7 @@ body {
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/orderManage/main">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/orderManage/order">
                         <img src="https://img.icons8.com/ios/24/ffffff/purchase-order.png" alt="주문관리" class="me-1">
                         주문 및 배송 관리
                     </a>

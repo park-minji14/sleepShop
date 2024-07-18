@@ -28,6 +28,7 @@ public class Order {
 	private int qty;
 	private int productMoney;
 	private long cancelAmount;
+	private int orderStateNum;
 	private String orderState;
 	private String orderStateDate;
 	
@@ -220,6 +221,12 @@ public class Order {
 	}
 	public void setCancelAmount(long cancelAmount) {
 		this.cancelAmount = cancelAmount;
+	}
+	public int getOrderStateNum() {
+		return orderStateNum;
+	}
+	public void setOrderStateNum(int orderStateNum) {
+		this.orderStateNum = orderStateNum;
 	}
 	public String getOrderState() {
 		return orderState;
