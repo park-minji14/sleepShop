@@ -120,7 +120,7 @@
 
 <script>
 let currentSlide = 1;
-const totalSlides = 4;
+const totalSlides = 5;
 
 function showSlide(n) {
     const slides = document.getElementsByClassName('slide');
@@ -183,37 +183,46 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		
 		<div id="slide1" class="slide active show-slide">
 			<div class="apply-q-style">
-				경력을 입력하세요.
+				본인의 소개를 간단하게 작성해보세요.
 			</div>
 			<div class="apply-a-style">
-				<input type="text" name="apply-answer1" class="input-style" value="" placeholder="예) xx수면의원 n년 근무 등">  
+				<input type="text" name="apply-answer1" class="input-style" value="">  
 			</div>
 		</div>
 		
 		<div id="slide2" class="slide show-slide">
 			<div class="apply-q-style">
-				취득 자격증을 입력하세요.
+				경력을 입력하세요.
 			</div>
 			<div class="apply-a-style">
-				<input type="text" name="apply-answer2" class="input-style" value="" placeholder="예) 심리운동사자격증 등">  
+				<input type="text" name="apply-answer2" class="input-style" value="" placeholder="예) xx수면의원 n년 근무 등">  
 			</div>
 		</div>
 		
 		<div id="slide3" class="slide show-slide">
 			<div class="apply-q-style">
-				질문자에 대한 자신의 답변 방식을 간단하게 말해보세요.
+				취득 자격증을 입력하세요.
 			</div>
 			<div class="apply-a-style">
-				<input type="text" name="apply-answer3" class="input-style" value="" placeholder="예) 간단명료하게 요점만 설명한다 등">  
+				<input type="text" name="apply-answer3" class="input-style" value="" placeholder="예) 심리운동사자격증 등">  
 			</div>
 		</div>
 		
 		<div id="slide4" class="slide show-slide">
 			<div class="apply-q-style">
-				샘플 질문입니다.
+				질문자에 대한 자신의 답변 방식을 간단하게 말해보세요.
 			</div>
 			<div class="apply-a-style">
-				<input type="text" name="apply-answer4" class="input-style" value="">  
+				<input type="text" name="apply-answer4" class="input-style" value="" placeholder="예) 간단명료하게 요점만 설명한다 등">  
+			</div>
+		</div>
+		
+		<div id="slide5" class="slide show-slide">
+			<div class="apply-q-style">
+				수면클리닉 전문가가 된 후 향후 계획을 말해보세요.
+			</div>
+			<div class="apply-a-style">
+				<input type="text" name="apply-answer5" class="input-style" value="">  
 			</div>
 		</div>
 		
