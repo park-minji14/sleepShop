@@ -83,10 +83,17 @@ public class MemberManageServiceImpl implements MemberManageService {
 			e.printStackTrace(); // 예외 발생 시 스택 트레이스 출력
 			throw e; // 예외 다시 던지기
 		}
-
 	}
 
-	
+	@Override
+	public void updateAuthority(Map<String, Object> map) throws Exception {
+		try {
+			mapper.updateAuthority(map);
+		} catch (Exception e) {
+			e.printStackTrace(); // 예외 발생 시 스택 트레이스 출력
+			throw e; // 예외 다시 던지기
+		}
+	}
 	
 	
 }

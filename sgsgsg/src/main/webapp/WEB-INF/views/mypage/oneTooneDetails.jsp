@@ -12,8 +12,8 @@
 					<input type="radio" id="option4" name="category" value="돌아가기" class="radio-input" ${category == '돌아가기' ? 'checked' : ''} onclick="listInquiry('${pageNo}')" >
 				        <label for="option4" class="radio-label" style="width: 150px; text-align: center; font-size: 20px;">돌아가기</label>
 					
-					<input type="radio" id="option4" name="category" value="삭제" style="float: right;" class="radio-input" ${category == '삭제' ? 'checked' : ''} onclick="deleteInquiry('${dto.num}', '${pageNo}')" >
-				        <label for="option4" class="radio-label" style="width: 150px; text-align: center; font-size: 20px;">삭제</label>
+					<input type="radio" id="option5" name="category2" value="삭제" style="float: right;" class="radio-input" ${category == '삭제' ? 'checked' : ''} onclick="deleteInquiry('${dto.num}', '${pageNo}')" >
+				        <label for="option5" class="radio-label" style="width: 150px; text-align: center; font-size: 20px;">삭제</label>
 						
 					<div class="table-style6">
 							<div>

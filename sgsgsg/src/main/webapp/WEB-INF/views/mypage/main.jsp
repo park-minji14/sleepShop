@@ -489,11 +489,26 @@ element.style {
 			ajaxFun(url, 'get', {num:num, pageNo:pageNo}, 'text', fn);
 	  }
 	  
-	  function deleteInquiry(num, pageNo) { // 문의 삭제
-		  
-	  }
 	  
+	  function deleteInquiry(num, pageNo) { // 문의 삭제
+		  if(confirm("문의를 삭제 하시겠습니까 ?")) {
+				
+				let url = "${pageContext.request.contextPath}/inquiry/delete";
+				const fn = function(data) {
+					listInquiry(pageNo);
+				};
+				
+				ajaxFun(url, 'post', {num:num}, 'JSON', fn);
+			}
+	  }
 	</script>
+	
+	
+	<script>
+	  // 포인트 -----------------
+	  
+ 	</script>
+
 	
 	
 	

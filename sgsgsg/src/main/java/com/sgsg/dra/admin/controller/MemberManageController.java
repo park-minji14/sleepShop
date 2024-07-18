@@ -133,5 +133,9 @@ public class MemberManageController {
 
 		return ".adminLeft.member.details";
 	}
+	
+	
+	
+	
 
 }
