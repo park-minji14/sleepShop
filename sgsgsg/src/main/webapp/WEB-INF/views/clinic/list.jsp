@@ -51,11 +51,11 @@
 
 
 
-.container {
+/* .container {
     display: flex;
     justify-content: center;
     align-items: center;
-}
+} */
 
 .radio-container {
     display: flex;
@@ -148,6 +148,13 @@
   transform: rotateX(-90deg);
 }
 
+/*추가*/
+.container-clinic {
+  display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -226,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	</section>
 
 
-<div class="container">
+<div class="container-clinic">
 	<div>
 		<br> 
 		<div class="body-title">
@@ -326,6 +333,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		</div>
 	</div>
 </div>
-<br><br><hr>
+<!-- <br><br><hr>
 </body>
-</html>	   
+</html>	    -->
