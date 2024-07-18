@@ -19,6 +19,7 @@ public interface ProductManageService {
 	public List<ProductManage> listSubCategory(long parentNum);
 	
 	public int dataCount(Map<String, Object> map);
+	public int dataCountStockList(Map<String, Object> map);
 	public List<ProductManage> listProduct(Map<String, Object> map);
 	public List<ProductStockManage> listProductStock(Map<String, Object> map);
 	public List<ProductManage> listProductForStock(Map<String, Object> map);

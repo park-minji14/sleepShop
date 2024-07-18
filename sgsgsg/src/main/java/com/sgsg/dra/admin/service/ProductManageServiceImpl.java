@@ -482,4 +482,16 @@ public class ProductManageServiceImpl implements ProductManageService {
 		return dto;
 	}
 
+	@Override
+	public int dataCountStockList(Map<String, Object> map) {
+		int result = 0;
+		
+		try {
+			result = mapper.dataCountStockList(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 }

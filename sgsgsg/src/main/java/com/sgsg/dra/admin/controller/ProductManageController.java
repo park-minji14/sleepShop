@@ -81,7 +81,7 @@ public class ProductManageController {
 		
 		List<ProductManage> listCategory = service.listCategory();
 		/*
-		//listCategory 안써서 안넣어도 됨
+		//listSubCategory 안써서 안넣어도 됨
 		List<ProductManage> listSubCategory = null;
 		if(parentNum == 0 && listCategory.size() !=0) {
 			parentNum = listCategory.get(0).getCategoryNum();
@@ -311,6 +311,8 @@ public class ProductManageController {
 			@RequestParam(value = "page", defaultValue = "1") int current_page,
 			@RequestParam(defaultValue = "0") long parentNum,
 			@RequestParam(defaultValue = "0") long categoryNum,
+			@RequestParam(defaultValue = "") String kwd,
+			@RequestParam(defaultValue = "0") int stock,
 			HttpServletRequest req,
 			Model model) throws Exception {
 		
@@ -321,6 +323,8 @@ public class ProductManageController {
 		int dataCount;
 		
 		List<ProductManage> listCategory = service.listCategory();
+		/*
+		//listCategory 안써서 안넣어도 됨
 		List<ProductManage> listSubCategory = null;
 		if(parentNum == 0 && listCategory.size() !=0) {
 			parentNum = listCategory.get(0).getCategoryNum();
@@ -329,15 +333,21 @@ public class ProductManageController {
 		if(categoryNum == 0 && listSubCategory.size() != 0) {
 			categoryNum = listSubCategory.get(0).getCategoryNum();
 		}
+		*/
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		dataCount = service.dataCount(map);
+		map.put("stock", stock);
+		map.put("kwd", kwd);
+		map.put("parentNum", parentNum);
+		map.put("categoryNum", categoryNum);
+		
+		dataCount = service.dataCountStockList(map);
+		
 		total_page = myUtil.pageCount(dataCount, size);
 		if(current_page > total_page) {
 			current_page = total_page;
 		}
-		
 		int offset = (current_page - 1) * size;
 		if(offset < 0) {
 			offset = 0;
@@ -353,10 +363,13 @@ public class ProductManageController {
 		String paging = myUtil.pagingUrl(current_page, total_page, listUrl);
 		
 		model.addAttribute("listCategory", listCategory);
-		model.addAttribute("listSubCategory", listSubCategory);
 		model.addAttribute("list", list);
+		
+		model.addAttribute("page", current_page);
+		model.addAttribute("total_page", total_page);
 		model.addAttribute("dataCount", dataCount);
 		model.addAttribute("paging", paging);
+		model.addAttribute("size", size);
 		
 		return ".adminLeft.product.stockList";
 	}

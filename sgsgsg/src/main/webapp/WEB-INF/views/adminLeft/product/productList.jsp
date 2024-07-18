@@ -55,11 +55,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px; /* 버튼들 사이에 적절한 여백을 줍니다. */
+    margin-top: 20px;
 }
 .button-group {
     display: flex;
-    gap: 10px; /* 버튼들 사이의 간격을 조정할 수 있습니다. */
+    gap: 10px;
 }
 </style>
 
@@ -85,9 +85,6 @@
 	                    <label for="subCategory" class="form-label">하위카테고리</label>
 						<select name="categoryNum" class="form-select">
 							<option value="">하위 카테고리 선택</option>
-							<c:forEach var="vo" items="${listSubCategory}">
-								<option value="${vo.categoryNum}" ${dto.categoryNum==vo.categoryNum?"selected":""}>${vo.categoryName}</option>
-							</c:forEach>
 						</select>
 	                </div>
 	            </div>
@@ -140,9 +137,9 @@
         </form>
         
         
-       	<div class="page-navigation mt-3">
-			${dataCount == 0 ? "등록된 상품이 없습니다." : paging}
-		</div>
+    <div class="page-navigation mt-3">
+		${dataCount == 0 ? "등록된 상품이 없습니다." : paging}
+	</div>
     <!-- 상품 목록 -->
 	<div class="col-auto pt-2 text-end">
 		${dataCount}개(${page}/${total_page} 페이지)
@@ -184,36 +181,36 @@
                             </div>
                         </td>
                         <td>
-					    <c:choose>
-					        <c:when test="${dto.parentNum == 1}">
-					            침구
-					        </c:when>
-					        <c:when test="${dto.parentNum == 2}">
-					            가전
-					        </c:when>
-					        <c:when test="${dto.parentNum == 3}">
-					            의류
-					        </c:when>
-					        <c:when test="${dto.parentNum == 4}">
-					            향초
-					        </c:when>
-					        <c:when test="${dto.parentNum == 5}">
-					            조명
-					        </c:when>
-					        <c:when test="${dto.parentNum == 6}">
-					            영양제
-					        </c:when>
-					        <c:when test="${dto.parentNum == 7}">
-					            수면용품
-					        </c:when>
-					        <c:when test="${dto.parentNum == 8}">
-					            졸음방지용품
-					        </c:when>
-					        <c:otherwise>
-					            ${dto.parentNum}
-					        </c:otherwise>
-					    </c:choose>
-					</td>
+						    <c:choose>
+						        <c:when test="${dto.parentNum == 1}">
+						            침구
+						        </c:when>
+						        <c:when test="${dto.parentNum == 2}">
+						            가전
+						        </c:when>
+						        <c:when test="${dto.parentNum == 3}">
+						            의류
+						        </c:when>
+						        <c:when test="${dto.parentNum == 4}">
+						            향초
+						        </c:when>
+						        <c:when test="${dto.parentNum == 5}">
+						            조명
+						        </c:when>
+						        <c:when test="${dto.parentNum == 6}">
+						            영양제
+						        </c:when>
+						        <c:when test="${dto.parentNum == 7}">
+						            수면용품
+						        </c:when>
+						        <c:when test="${dto.parentNum == 8}">
+						            졸음방지용품
+						        </c:when>
+						        <c:otherwise>
+						            ${dto.parentNum}
+						        </c:otherwise>
+						    </c:choose>
+						</td>
                         <td>${dto.categoryName}</td>
                         <td>${dto.update_date}</td>
 						<td>

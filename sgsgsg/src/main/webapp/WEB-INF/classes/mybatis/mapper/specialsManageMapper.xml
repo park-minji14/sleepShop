@@ -97,7 +97,7 @@
 		DELETE FROM specials WHERE specialNum = #{specialNum}
 	</delete>
 
-	<!-- 오늘의 특가/기획전의 상품 등록, 수정, 리스트 -->
+	<!-- 오늘의 특가의 상품 등록, 수정, 리스트 -->
 	<insert id="insertSpecialsDetail" parameterType="com.sgsg.dra.admin.domain.SpecialsManage">
 		INSERT INTO specialsDetail(detailNum, specialNum, productNum, displayOrder, 
 		        showDetail) VALUES (specialsDetail_seq.NEXTVAL, 

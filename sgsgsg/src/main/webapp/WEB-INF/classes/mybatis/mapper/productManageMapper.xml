@@ -153,7 +153,7 @@
 
 <!-- 전체 상품의 개수(TODO: 일반/특가 에 따라 갖고오는거 다르게 구현할 예정)-->
 <select id="dataCount" parameterType="map" resultType="Integer">
-	Select NVL(COUNT(*), 0)
+	SELECT NVL(COUNT(*), 0)
 	From product p
 	Join PRODUCT_CATEGORY pc On p.categoryNum = pc.categoryNum
 	    <where>
@@ -227,25 +227,92 @@
 	WHERE stockNum = #{stockNum}
 </update>
 
-<select id="listProductForStock" parameterType="map"
-	resultType="com.sgsg.dra.admin.domain.ProductManage">
-	SELECT 
-	    p.productNum, pc.Parent_categoryNum as ParentNum, p.categoryNum, pc.categoryName, p.productName, 
-	    p.classify, p.price, p.discountRate, p.savedMoney, p.delivery, p.optionCount,
-	    p.thumbnail, p.productShow, TO_CHAR(p.reg_date, 'YYYY-MM-DD') as reg_date, 
-	    TO_CHAR(p.update_date, 'YYYY-MM-DD') as update_date,  p.search_word, 
-	    NVL(SUM(ps.totalStock), 0) as totalstock
-	FROM 
-	    product p
-	JOIN PRODUCT_CATEGORY pc ON p.categoryNum = pc.categoryNum
-	LEFT OUTER JOIN productStock ps ON p.productNum = ps.productNum
-	GROUP BY p.productNum, pc.Parent_categoryNum, p.categoryNum, pc.categoryName, 
-	    p.productName, p.classify, p.price, p.discountRate, p.savedMoney, 
-	    p.delivery, p.optionCount,p.thumbnail, p.productShow, 
-	    TO_CHAR(p.reg_date, 'YYYY-MM-DD'), TO_CHAR(p.update_date, 'YYYY-MM-DD'), p.search_word
-	ORDER BY p.productNum DESC
-	OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+<select id="listProductForStock" parameterType="map" resultType="com.sgsg.dra.admin.domain.ProductManage">
+    SELECT 
+        p.productNum, pc.Parent_categoryNum as ParentNum, p.categoryNum, pc.categoryName, p.productName, 
+        p.classify, p.price, p.discountRate, p.savedMoney, p.delivery, p.optionCount,
+        p.thumbnail, p.productShow, TO_CHAR(p.reg_date, 'YYYY-MM-DD') as reg_date, 
+        TO_CHAR(p.update_date, 'YYYY-MM-DD') as update_date, p.search_word, 
+        NVL(SUM(ps.totalStock), 0) as totalstock
+    FROM 
+        product p
+    JOIN PRODUCT_CATEGORY pc ON p.categoryNum = pc.categoryNum
+    LEFT OUTER JOIN productStock ps ON p.productNum = ps.productNum
+    <where>
+        <if test="kwd != null and kwd != ''">
+            (INSTR(p.productName, #{kwd}) &gt; 0 OR INSTR(p.search_word, #{kwd}) &gt; 0)
+        </if>
+        <if test="parentNum != 0">
+            AND <include refid="category-search"/>
+        </if>
+    </where>
+    GROUP BY p.productNum, pc.Parent_categoryNum, p.categoryNum, pc.categoryName, 
+        p.productName, p.classify, p.price, p.discountRate, p.savedMoney, 
+        p.delivery, p.optionCount, p.thumbnail, p.productShow, 
+        TO_CHAR(p.reg_date, 'YYYY-MM-DD'), TO_CHAR(p.update_date, 'YYYY-MM-DD'), p.search_word
+    <if test="stock != 0">
+        HAVING NVL(SUM(ps.totalStock), 0) &lt;= #{stock}
+    </if>
+    ORDER BY p.productNum DESC
+    OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 </select>
+
+<select id="dataCountStockList" parameterType="map" resultType="Integer">
+    SELECT NVL(COUNT(*), 0)
+    FROM product p
+    JOIN PRODUCT_CATEGORY pc ON p.categoryNum = pc.categoryNum
+    LEFT JOIN (
+        SELECT productNum, SUM(totalStock) as totalStock
+        FROM productStock
+        GROUP BY productNum
+    ) ps ON p.productNum = ps.productNum
+	    <where>
+        <if test="kwd != null and kwd != ''">
+            (INSTR(productName, #{kwd}) &gt; 0 OR INSTR(search_word, #{kwd}) &gt; 0)
+        </if>
+        <if test="stock != 0">
+        	AND NVL(ps.totalStock, 0) &lt;= #{stock}
+        </if>
+        <if test="parentNum != 0">
+            AND <include refid="category-search"/>
+        </if>
+    </where>
+</select>
+
+<!-- 시도해보기 전 쿼리
+<select id="dataCountStockList" parameterType="map" resultType="Integer">
+	SELECT NVL(COUNT(*), 0)
+	FROM product p
+	JOIN PRODUCT_CATEGORY pc ON p.categoryNum = pc.categoryNum
+	LEFT JOIN (
+	 SELECT productNum, SUM(totalStock) as totalStock
+	 FROM productStock
+	 GROUP BY productNum
+	) ps ON p.productNum = ps.productNum
+	    <where>
+        <if test="kwd != null and kwd != ''">
+            (INSTR(productName, #{kwd}) &gt; 0 OR INSTR(search_word, #{kwd}) &gt; 0)
+        </if>
+        <if test="stock != 0">
+        	AND ps.totalStock &gt;= #{stock}
+        </if>
+        <if test="parentNum != 0">
+            AND <include refid="category-search"/>
+        </if>
+    </where>
+</select>
+-->
+
+<!-- 
+	SELECT p.*, pc.*, ps.totalStock
+	FROM product p
+	JOIN PRODUCT_CATEGORY pc ON p.categoryNum = pc.categoryNum
+	LEFT JOIN (
+	 SELECT productNum, SUM(totalStock) as totalStock
+	 FROM productStock
+	 GROUP BY productNum
+	) ps ON p.productNum = ps.productNum
+ -->
 
 <select id="listProductStock" parameterType="map" resultType="com.sgsg.dra.admin.domain.ProductStockManage">
 	SELECT p.productNum, p.productName, 

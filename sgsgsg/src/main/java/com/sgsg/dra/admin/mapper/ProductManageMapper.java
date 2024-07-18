@@ -28,6 +28,7 @@ public interface ProductManageMapper {
 	public List<ProductManage> listProduct(Map<String, Object> map);
 
 	public int dataCount(Map<String, Object> map);
+	public int dataCountStockList(Map<String, Object> map);
 
 	public List<ProductManage> findByidOption(long productNum);
 	public List<ProductManage> listProductFile(long productNum);
