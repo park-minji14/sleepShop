@@ -117,7 +117,7 @@
 
 
 .btn3 {
-	width: 180px;
+	width: 280px; 
 	height: 60px;
 	background-color: white;
 	border-radius: 10px;
@@ -131,7 +131,7 @@
 
 
 .btn4 {
-	width: 180px;
+	width: 280px;
 	height: 60px;
 	background-color: white;
 	border-radius: 10px;
@@ -230,7 +230,7 @@
 						<button type="button" class="btn1" onclick="location.href='${pageContext.request.contextPath}/clinic/update?num=${dto.question_id}&page=${page}';">수정</button>
 					</c:when> 
 					<c:otherwise> 
-						<button type="button" class="btn2" disabled>수정</button>
+						<!-- <button type="button" class="btn2" disabled>수정</button> -->
 					</c:otherwise>
 				</c:choose>
 						
@@ -239,7 +239,7 @@
 						<button type="button" class="btn1" onclick="deleteClinic();">삭제</button>
 					</c:when>
 					<c:otherwise>
-						<button type="button" class="btn2" disabled>삭제</button>
+						<!-- <button type="button" class="btn2" disabled>삭제</button> -->
 					</c:otherwise>
 				</c:choose>
 				    			
@@ -255,7 +255,7 @@
 				<button class="btn3" onclick="location.href='${pageContext.request.contextPath}/clinic/writeanswer?num=${dto.question_id}&page=${page}';">답 변 하 기</button> 
 			</c:when>
 			<c:otherwise>
-				<button class="btn4" disabled>답 변 하 기</button>
+				<button class="btn4" disabled>전문가가 되어 답변을 달아보세요!</button>
 			</c:otherwise>
 		</c:choose>
 		</div>
