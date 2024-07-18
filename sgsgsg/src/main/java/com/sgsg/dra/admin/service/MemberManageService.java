@@ -13,6 +13,6 @@ public interface MemberManageService {
 	public MemberManage findById(Long memberIdx);
 	
 	public void updateMembership(Map<String, Object> map) throws Exception;
-	
+	public void updateAuthority(Map<String, Object> map) throws Exception;
 	
 }

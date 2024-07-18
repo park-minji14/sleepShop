@@ -145,6 +145,34 @@ public class InquiryController {
 	}
 	
 	// 삭제
+	@ResponseBody
+	@PostMapping("delete")
+	public Map<String, Object>  delete(@RequestParam long num,
+			HttpSession session) throws Exception {
+
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+		String state = "false";
+		
+		Inquiry dto = service.findById(num);
+		if (dto != null) {
+			if (info.getUserId().equals(dto.getUserId()) ) {
+				try {
+					service.deleteInquiry(num);
+					
+					state = "true";
+					
+				} catch (Exception e) {
+				
+				}
+			}
+		}
+
+		Map<String, Object> model = new HashMap<>();
+		model.put("state", state);
+		
+		return model;
+	}
 	
 	
 }

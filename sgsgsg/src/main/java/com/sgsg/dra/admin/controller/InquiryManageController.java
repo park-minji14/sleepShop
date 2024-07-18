@@ -126,7 +126,7 @@ public class InquiryManageController {
 		
 		InquiryManage dto = service.findById(num);
 		if (dto == null) {
-			return "redirect:/adminManagement/inquiryManage/list?" + query;
+			return "redirect:/adminManagement/supportManage/supportList?" + query;
 		}
 
 		model.addAttribute("dto", dto);
@@ -140,7 +140,7 @@ public class InquiryManageController {
 	
 	
 	//답변하기
-	@PostMapping("answer")
+	@PostMapping("supportAnswer")
 	public String answerSubmit(InquiryManage dto, 
 			@RequestParam String page,
 			@RequestParam(defaultValue = "all") String schType,
@@ -160,7 +160,7 @@ public class InquiryManageController {
 		} catch (Exception e) {
 		}
 
-		return "redirect:/adminManagement/inquiryManage/list?" + query;
+		return "redirect:/adminManagement/supportManage/supportList?" + query;
 	}
 	
 	
@@ -187,13 +187,13 @@ public class InquiryManageController {
 			}
 		}
 
-		return "redirect:/adminManagement/inquiryManage/list?" + query;
+		return "redirect:/adminManagement/supportManage/supportList?" + query;
 	}
 	
 	
 	
 	//삭제하기
-	@GetMapping("delete")
+	@GetMapping("supportDelete")
 	public String delete(@RequestParam long num,
 			@RequestParam String page,
 			@RequestParam(defaultValue = "all") String schType,
@@ -211,6 +211,7 @@ public class InquiryManageController {
 			try {
 				service.deleteInquiry(num);
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 

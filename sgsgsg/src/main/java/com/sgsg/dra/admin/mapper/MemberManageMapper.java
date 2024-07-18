@@ -7,7 +7,6 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.sgsg.dra.admin.domain.MemberManage;
-import com.sgsg.dra.domain.Member;
 
 @Mapper
 public interface MemberManageMapper {
@@ -18,5 +17,5 @@ public interface MemberManageMapper {
 	public MemberManage findById(Long memberIdx);
 
 	public void updateMembership(Map<String, Object> map) throws SQLException;
-	public void updateAuthority(Member dto) throws SQLException;	
+	public void updateAuthority(Map<String, Object> map) throws SQLException;	
 }

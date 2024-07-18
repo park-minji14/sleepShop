@@ -39,7 +39,7 @@
 function deleteInquiry(num) {
 	if(confirm("문의를 삭제 하시겠습니까 ?")) {
 		let query = "num="+num+"&${query}";
-		let url = "${pageContext.request.contextPath}/admin/inquiryManage/delete?"+query;
+		let url = "${pageContext.request.contextPath}/adminManagement/supportManage/supportDelete?"+query;
 		location.href = url;
 	}
 }
@@ -47,20 +47,20 @@ function deleteInquiry(num) {
 function deleteAnswer(num) {
 	if(confirm("답변을 삭제 하시겠습니까 ?")) {
 		let query = "num="+num+"&${query}";
-		let url = "${pageContext.request.contextPath}/admin/inquiryManage/deleteAnswer?"+query;
+		let url = "${pageContext.request.contextPath}/adminManagement/supportManage/supportDeleteAnswer?"+query;
 		location.href = url;
 	}
 }
 
 function sendAnswerOk() {
 	const f = document.answerForm;
-	if(!f.answer.value.trim()) {
+	if(!f.response_content.value.trim()) {
 		alert("답변을 입력 하세요");
 		f.answer.focus();
 		return;
 	}
 	
-	f.action = "${pageContext.request.contextPath}/admin/inquiryManage/answer";
+	f.action = "${pageContext.request.contextPath}/adminManagement/supportManage/supportAnswer";
 	f.submit();
 }
 </script>
@@ -86,14 +86,14 @@ function sendAnswerOk() {
 				</tr>
 				<tr>
 					<td width="50%" align="left">
-						작성자 : ${dto.userId}(${dto.userId})
+						작성자 : ${dto.userId}
 					</td>
 					<td width="50%" align="right">
 						문의일자 : ${dto.created_date}
 					</td>
 				</tr>
 				
-				<tr style="${not empty dto.response_date ? 'border: none;':''}">
+				<tr style="${not empty dto.response_content ? 'border: none;':''}">
 					<td colspan="2" valign="top" height="150">
 						${dto.content}
 					</td>
@@ -101,7 +101,7 @@ function sendAnswerOk() {
 			</tbody>
 		</table>
 		
-		<c:if test="${not empty dto.response_date}">
+		<c:if test="${not empty dto.response_content}">
 			<table class="table table-border table-article" style="margin-top: 0;">
 				<tbody>
 					<tr style="border: none;">
@@ -145,7 +145,7 @@ function sendAnswerOk() {
 			</tr>
 		</table>
 		
-		<c:if test="${empty dto.response_date}">
+		<c:if test="${empty dto.response_content}">
 			<div class="reply">
 				<form name="answerForm" method="post">
 					<div class='form-header'>
@@ -155,7 +155,7 @@ function sendAnswerOk() {
 					<table class="table reply-form">
 						<tr>
 							<td>
-								<textarea class='form-control' name='answer'></textarea>
+								<textarea class='form-control' name='response_content'></textarea>
 							</td>
 						</tr>
 						<tr>

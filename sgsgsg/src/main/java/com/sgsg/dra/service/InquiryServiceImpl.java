@@ -55,7 +55,12 @@ public class InquiryServiceImpl implements InquiryService {
 
 	@Override
 	public void deleteInquiry(long num) throws Exception {
-		// TODO Auto-generated method stub
+		try {
+			mapper.deleteInquiry(num);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 		
 	}
 

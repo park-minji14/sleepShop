@@ -23,6 +23,11 @@ public class MyPageController {
 	// 포인트
 	@GetMapping("point")
 	public String point() {
+		// 서비스에서내 트인트 리스트 가져오기
+		
+		
+		
+		
 		return "mypage/point";
 	}
 	
