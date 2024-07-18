@@ -51,7 +51,16 @@
 .status-icon.hidden {
     color: #F44336;
 }
-
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px; /* 버튼들 사이에 적절한 여백을 줍니다. */
+}
+.button-group {
+    display: flex;
+    gap: 10px; /* 버튼들 사이의 간격을 조정할 수 있습니다. */
+}
 </style>
 
     <div class="mt-4">
@@ -61,12 +70,12 @@
 	            <div class="row mb-3">
 	                <div class="col">
 	                    <label for="searchKeyword" class="form-label">검색어</label>
-						<input type="text" id="searchKeyword" class="form-control" placeholder="키워드 입력">
+						<input type="text" name="kwd" id="searchKeyword" class="form-control" placeholder="키워드 입력" value="${kwd}">
 	                </div>
 	                <div class="col">
 	                    <label for="category" class="form-label">카테고리</label>
 						<select name="parentNum" class="form-select">
-							<option value="">카테고리 선택</option>
+							<option value="">상위 카테고리 선택</option>
 							<c:forEach var="vo" items="${listCategory}">
 								<option value="${vo.categoryNum}" ${parentNum==vo.categoryNum?"selected":""}>${vo.categoryName}</option>
 							</c:forEach>
@@ -83,51 +92,61 @@
 	                </div>
 	            </div>
 	            
-	            <div class="row mb-3">
-	                <div class="col">
-	                    <label for="stock" class="form-label">상품재고</label>
-	                    <input type="text" id="stock" class="form-control" placeholder="개 이상 ~ 개 이하">
-	                </div>
-	                <div class="col">
-	                    <label for="priceRange" class="form-label">상품가격</label>
-	                    <input type="text" id="priceRange" class="form-control" placeholder="원 이상 ~ 원 이하">
-	                </div>
-	            </div>
-	            
-	            <div class="row mb-3">
+		        <div class="row mb-3">
+		            <div class="col">
+		                <label for="priceMin" class="form-label">최소 가격</label>
+		                <input type="text" name="priceMin" id="priceMin" class="form-control" placeholder="원 이상" value="${priceMin}">
+		            </div>
+		            <div class="col">
+		                <label for="priceMax" class="form-label">최대 가격</label>
+		                <input type="text" name="priceMax" id="priceMax" class="form-control" placeholder="원 이하" value="${priceMax}">
+		            </div>
+		            
 	                <div class="col">
 	                    <label class="form-label">판매여부</label>
 	                    <div>
-	                        <div class="form-check form-check-inline">
-	                            <input class="form-check-input" type="radio" name="saleStatus" id="allStatus" value="all" checked>
-	                            <label class="form-check-label" for="allStatus">전체</label>
-	                        </div>
-	                        <div class="form-check form-check-inline">
-	                            <input class="form-check-input" type="radio" name="saleStatus" id="activeStatus" value="active">
-	                            <label class="form-check-label" for="activeStatus">진열</label>
-	                        </div>
-	                        <div class="form-check form-check-inline">
-	                            <input class="form-check-input" type="radio" name="saleStatus" id="outOfStockStatus" value="outOfStock">
-	                            <label class="form-check-label" for="outOfStockStatus">숨김</label>
-	                        </div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="productShow" id="allStatus" value="2" ${dto.productShow == 2 ? 'checked' : ''}>
+								<label class="form-check-label" for="allStatus">전체</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="productShow" id="activeStatus" value="1" ${dto.productShow == 1 ? 'checked' : ''}>
+								<label class="form-check-label" for="activeStatus">진열</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="productShow" id="outOfStockStatus" value="0" ${dto.productShow == 0 ? 'checked' : ''}>
+								<label class="form-check-label" for="outOfStockStatus">숨김</label>
+							</div>
 	                    </div>
 	                </div>
-	            </div>
-	            
-		            <div class="d-flex justify-content-end">
-		                <button type="reset" class="btn btn-secondary me-2">초기화</button>
-		                <button type="submit" class="btn btn-primary">검색</button>
-		            </div>
+	                
+	                <div class="row mb-3">
+					    <div class="col">
+					        <small class="text-muted">가격 검색은 정가 기준입니다</small>
+					    </div>
+					</div>
+		        </div>
+		        
+				<div class="button-row">
+				    <button class="btn btn-success"><a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/productManage/productWrite">+ 상품 등록</a></button>
+				    <div class="button-group">
+				        <button type="reset" class="btn btn-secondary" onclick="location.href='${pageContext.request.contextPath}/adminManagement/productManage/productList'">초기화</button>
+				        <button type="submit" class="btn btn-primary">검색</button>
+				    </div>
+				</div>
             
             </div>
             
         </form>
         
-        <button class="btn btn-success mt-3"><a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/productManage/productWrite">+ 상품 등록</a></button>
+        
        	<div class="page-navigation mt-3">
 			${dataCount == 0 ? "등록된 상품이 없습니다." : paging}
 		</div>
     <!-- 상품 목록 -->
+	<div class="col-auto pt-2 text-end">
+		${dataCount}개(${page}/${total_page} 페이지)
+	</div>
     <div class="table-responsive mt-3">
         <table class="table table-hover">
             <thead>
@@ -136,7 +155,8 @@
                     <th>이미지</th>
                     <th>상품코드</th>
                     <th>상품명</th>
-                    <th>카테고리</th>
+                    <th>상위카테고리</th>
+                    <th>하위카테고리</th>
                     <th>최근수정일</th>
                     <th>진열</th>
                     <th>정가</th>
@@ -163,6 +183,37 @@
                                 재고: [재고 정보 추가 필요]
                             </div>
                         </td>
+                        <td>
+					    <c:choose>
+					        <c:when test="${dto.parentNum == 1}">
+					            침구
+					        </c:when>
+					        <c:when test="${dto.parentNum == 2}">
+					            가전
+					        </c:when>
+					        <c:when test="${dto.parentNum == 3}">
+					            의류
+					        </c:when>
+					        <c:when test="${dto.parentNum == 4}">
+					            향초
+					        </c:when>
+					        <c:when test="${dto.parentNum == 5}">
+					            조명
+					        </c:when>
+					        <c:when test="${dto.parentNum == 6}">
+					            영양제
+					        </c:when>
+					        <c:when test="${dto.parentNum == 7}">
+					            수면용품
+					        </c:when>
+					        <c:when test="${dto.parentNum == 8}">
+					            졸음방지용품
+					        </c:when>
+					        <c:otherwise>
+					            ${dto.parentNum}
+					        </c:otherwise>
+					    </c:choose>
+					</td>
                         <td>${dto.categoryName}</td>
                         <td>${dto.update_date}</td>
 						<td>
@@ -170,8 +221,11 @@
 						        <c:when test="${dto.productShow == 1}">
 						            <p>진열</p>
 						        </c:when>
-						        <c:otherwise>
+						        <c:when test="${dto.productShow == 0}">
 						            <p>숨김</p>
+						        </c:when>
+						        <c:otherwise>
+						            <p>조회불가</p>
 						        </c:otherwise>
 						    </c:choose>
 						</td>

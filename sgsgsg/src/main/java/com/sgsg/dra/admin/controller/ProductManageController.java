@@ -1,6 +1,7 @@
 package com.sgsg.dra.admin.controller;
 
 import java.io.File;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,10 @@ public class ProductManageController {
 			@RequestParam(value = "page", defaultValue = "1") int current_page,
 			@RequestParam(defaultValue = "0") long parentNum,
 			@RequestParam(defaultValue = "0") long categoryNum,
+			@RequestParam(defaultValue = "2") int productShow,
+			@RequestParam(defaultValue = "") String kwd,
+			@RequestParam(defaultValue = "0") int priceMin,
+			@RequestParam(defaultValue = "0") int priceMax,
 			HttpServletRequest req,
 			Model model) throws Exception {
 		
@@ -46,17 +51,17 @@ public class ProductManageController {
 		int total_page;
 		int dataCount;
 		
-		List<ProductManage> listCategory = service.listCategory();
-		List<ProductManage> listSubCategory = null;
-		if(parentNum == 0 && listCategory.size() !=0) {
-			parentNum = listCategory.get(0).getCategoryNum();
-		}
-		listSubCategory = service.listSubCategory(parentNum);
-		if(categoryNum == 0 && listSubCategory.size() != 0) {
-			categoryNum = listSubCategory.get(0).getCategoryNum();
+		if (req.getMethod().equalsIgnoreCase("GET")) {
+			kwd = URLDecoder.decode(kwd, "UTF-8");
 		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("parentNum", parentNum);
+		map.put("categoryNum", categoryNum);
+		map.put("productShow", productShow);
+		map.put("kwd", kwd);
+	    map.put("priceMin", priceMin);
+	    map.put("priceMax", priceMax);
 		
 		dataCount = service.dataCount(map);
 		total_page = myUtil.pageCount(dataCount, size);
@@ -74,15 +79,54 @@ public class ProductManageController {
 		
 		List<ProductManage> list = service.listProduct(map);
 		
+		List<ProductManage> listCategory = service.listCategory();
+		/*
+		//listCategory 안써서 안넣어도 됨
+		List<ProductManage> listSubCategory = null;
+		if(parentNum == 0 && listCategory.size() !=0) {
+			parentNum = listCategory.get(0).getCategoryNum();
+		}
+		listSubCategory = service.listSubCategory(parentNum);
+		if(categoryNum == 0 && listSubCategory.size() != 0) {
+			categoryNum = listSubCategory.get(0).getCategoryNum();
+		}
+		*/
+		
 		String listUrl = cp + "/adminManagement/productManage/productList";
+		String query = "";
+
+		if (kwd != null && !kwd.isEmpty()) {
+		    query += "kwd=" + kwd + "&";
+		}
+		if (parentNum != 0) {
+		    query += "parentNum=" + parentNum + "&";
+		    System.out.println(parentNum);
+		}
+		if (categoryNum != 0) {
+		    query += "categoryNum=" + categoryNum + "&";
+		}
+		if (priceMin != 0) {
+		    query += "priceMin=" + priceMin + "&";
+		}
+		if (priceMax != 0) {
+		    query += "priceMax=" + priceMax + "&";
+		}
+		if (productShow != -1) {
+			query += "productShow=" + productShow;
+		}
+		
+		listUrl += "?" + query;
 		
 		String paging = myUtil.pagingUrl(current_page, total_page, listUrl);
 		
 		model.addAttribute("listCategory", listCategory);
-		model.addAttribute("listSubCategory", listSubCategory);
 		model.addAttribute("list", list);
+		
 		model.addAttribute("dataCount", dataCount);
+		model.addAttribute("size", size);
 		model.addAttribute("paging", paging);
+		model.addAttribute("total_page", total_page);
+		model.addAttribute("page", current_page);
 		
 		return ".adminLeft.product.productList";
 	}
