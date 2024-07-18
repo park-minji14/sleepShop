@@ -37,6 +37,18 @@
 			</if>
 		</where>   
 	</select>
+	
+	
+	<!-- 글보기 -->
+	<select id="findById" resultType="com.sgsg.dra.admin.domain.InquiryManage" parameterType="Long">
+		SELECT num, created_date, category, title, response_date, content, response_content, i.userId
+		FROM inquiry i
+		JOIN member1 m ON i.userId=m.userId
+		LEFT OUTER JOIN member1 a ON i.userId2 = a.userId
+		WHERE num = #{num}
+	</select>
+	
+	
 
 	<!-- 글리스트 -->
     <select id="listInquiry" parameterType="map" resultType="com.sgsg.dra.admin.domain.InquiryManage">
@@ -47,5 +59,31 @@
 		ORDER BY num DESC
 		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 	</select>
+	
+	
+	<!-- 답변 달기 -->
+	<update id="updateAnswer" parameterType="com.sgsg.dra.admin.domain.InquiryManage">
+		UPDATE inquiry SET userId2 = #{userId2}, response_content = #{response_content}, response_date = SYSDATE
+		WHERE num = #{num}
+	</update>
+	
+	
+	<!-- 답변 삭제 -->
+	<update id="deleteAnswer" parameterType="Long">
+		UPDATE inquiry SET userId2 = NULL, response_content = NULL, response_date = NULL
+		WHERE num = #{num}
+	</update>
+	
+	
+	<!-- 삭제 -->
+	<delete id="deleteInquiry" parameterType="Long">
+		DELETE FROM inquiry WHERE num = #{num}
+	</delete>
+	
+	
+	
+	
+	
+	
 	
 </mapper>
