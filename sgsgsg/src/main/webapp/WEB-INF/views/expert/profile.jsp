@@ -157,9 +157,9 @@
             <div class="expert-text" style="margin-left: 50px; margin-top: 30px;">
                 <span style="font-size: 32px; display: block;">취득 자격증</span>
                 <div class="certificates show-slide">
-                        <span style="font-size: 18px; display: block; border: 2px solid #B7F0B1; border-radius: 20px; background: #B7F0B1; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- ${dto.license1}</span>
-                        <span style="font-size: 18px; display: block; border: 2px solid #B7F0B1; border-radius: 20px; background: #B7F0B1; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- ${dto.license2}</span>
-                        <span style="font-size: 18px; display: block; border: 2px solid #B7F0B1; border-radius: 20px; background: #B7F0B1; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- ${dto.license3}</span>
+                        <span style="font-size: 18px; display: block; border: 2px solid #B7F0B1; border-radius: 20px; background: #B7F0B1; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;<i class="bi bi-calendar2-check-fill"></i> ${dto.license1}</span>
+                        <span style="font-size: 18px; display: block; border: 2px solid #B7F0B1; border-radius: 20px; background: #B7F0B1; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;<i class="bi bi-calendar2-check-fill"></i> ${dto.license2}</span>
+                        <span style="font-size: 18px; display: block; border: 2px solid #B7F0B1; border-radius: 20px; background: #B7F0B1; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;<i class="bi bi-calendar2-check-fill"></i> ${dto.license3}</span>
                 </div>
                 <div class="additional-text" style="margin-top: 40px;">
                     <span style="font-size: 30px; display: block;">답변 갯수</span>
@@ -171,9 +171,9 @@
             <div class="expert-text" style="margin-left: 30px; margin-top: 30px; padding-left: 30px;">
                 <span style="font-size: 32px; display: block;">경력 사항</span>
                 <div class="additional-info show-slide">
-                    <span style="font-size: 18px; display: block; border: 2px solid #ADD8E6; border-radius: 20px; background: #ADD8E6; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- ${dto.career1}</span>
-                    <span style="font-size: 18px; display: block; border: 2px solid #ADD8E6; border-radius: 20px; background: #ADD8E6; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- ${dto.career2}</span>
-                    <span style="font-size: 18px; display: block; border: 2px solid #ADD8E6; border-radius: 20px; background: #ADD8E6; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;-- ${dto.career3}</span>
+                    <span style="font-size: 18px; display: block; border: 2px solid #ADD8E6; border-radius: 20px; background: #ADD8E6; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;<i class="bi bi-building-fill"></i> ${dto.career1}</span>
+                    <span style="font-size: 18px; display: block; border: 2px solid #ADD8E6; border-radius: 20px; background: #ADD8E6; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;<i class="bi bi-building-fill"></i> ${dto.career2}</span>
+                    <span style="font-size: 18px; display: block; border: 2px solid #ADD8E6; border-radius: 20px; background: #ADD8E6; width: 300px; padding-top: 5px; margin-top: 15px;">&nbsp;<i class="bi bi-building-fill"></i> ${dto.career3}</span>
                 </div>
                 <div class="additional-text" style="margin-top: 40px;">
                     <span style="font-size: 30px; display: block;">답변 채택률</span>
