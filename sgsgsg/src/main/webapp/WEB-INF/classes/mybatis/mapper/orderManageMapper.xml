@@ -35,6 +35,7 @@
             </if>
 		</where>
 		ORDER BY ORDERNUM DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 	</select>
 	
 	<select id="dataCount" parameterType="map" resultType="Integer">
@@ -48,6 +49,7 @@
 		</where>
 	</select>
 	
+	<!-- 주문 정보 -->
 	<select id="findById" parameterType="String" resultType="com.sgsg.dra.domain.Order">
 		SELECT PRODUCTORDERNAME, po.ORDERNUM, po.USERID, m.USERNAME, ISSUE_ID,
 			TO_CHAR(ORDERDATE, 'YYYY-MM-DD HH24:MI:SS') ORDERDATE, TOTALMONEY, USEDSAVED, 
@@ -61,6 +63,7 @@
         WHERE po.ORDERNUM = #{orderNum}
 	</select>
 	
+	<!-- 주문 상세 정보 -->
 	<select id="findByOrderDetails" parameterType="String" resultType="com.sgsg.dra.domain.Order">
 		SELECT od.orderNum, od.orderDetailNum, od.qty, od.price, od.salePrice, od.productMoney, od.savedMoney,
 			ps.productNum, ps.detailNum, ps.detailNum2, p.productName, p.optionCount,
@@ -73,11 +76,22 @@
 		WHERE od.orderNum = #{orderNum}
 	</select>
 	
+	<!-- 배송사 목록 -->
 	<select id="selectDeliveryCompanyList" resultType="com.sgsg.dra.domain.Order">
 		SELECT DELIVERYNAME, COMPANYNUM
 		FROM DELIVERYCOMPANY
 	</select>
 	
-	<!-- DELIVERYNUM, DELIVERYNAME, INVOICENUMBER, STATUS_CODE, COMPANYNUM -->
+	<!-- 배송 등록 -->
+	<insert id="insertDelivery" parameterType="map">
+		INSERT INTO DELIVERY(DELIVERYNUM, orderNum, companyNum, DELIVERYNAME, INVOICENUMBER, STATUS_CODE)
+			VALUES(DELIVERY_seq.nextval, #{orderNum}, #{companyNum}, #{deliveryName}, #{invoiceNumber}, #{status_code})
+	</insert>
+	
+	<!-- 주문 상태 변경 -->
+	<update id="updateOrderState" parameterType="map">
+		update orderDetail set ORDERSTATE=${orderState}, ORDERSTATEDATE=sysdate where orderNum=#{orderNum}
+	</update>
+	
 	
 </mapper>

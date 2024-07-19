@@ -45,20 +45,39 @@ function sendOk() {
 	const f = document.paymentForm;
 	
 	
-	if(! $('.destBox .recipientName').text()){
-		f.recipientName.value = $('.destBox .recipientName').val() ?? $('.destBox .recipientName').text();
+	if($('.destBox .recipientName').text() && 
+			($('.destBox .recipientName').val().trim() === '' || ! $('.destBox .recipientName').val().trim())){
+		f.recipientName.value = $('.destBox .recipientName').text();
+	} else {
+		f.recipientName.value = $('.destBox .recipientName').val().trim();
 	}
-	if(! $('.destBox .addr1').text()){
-		f.addr1.value = $('.destBox .addr1').val() ?? $('.destBox .addr1').text();
+	
+	if($('.destBox .addr1').text() && 
+			($('.destBox .addr1').val().trim() === '' || ! $('.destBox .addr1').val().trim())){
+		f.addr1.value = $('.destBox .addr1').text();
+	} else {
+		f.addr1.value = $('.destBox .addr1').val().trim();
 	}
-	if(! $('.destBox .addr2').text()){
-		f.addr2.value = $('.destBox .addr2').val() ?? $('.destBox .addr2').text();
+	
+	if($('.destBox .addr2').text() && 
+			($('.destBox .addr2').val().trim() === '' || ! $('.destBox .addr2').val().trim())){
+		f.addr2.value = $('.destBox .addr2').text();
+	} else {
+		f.addr2.value = $('.destBox .addr2').val().trim();
 	}
-	if(! $('.destBox .zip').text()){
-		f.zip.value = $('.destBox .zip').val() ?? $('.destBox .zip').text();
+	
+	if($('.destBox .zip').text() && 
+			($('.destBox .zip').val().trim() === '' || ! $('.destBox .zip').val().trim())){
+		f.zip.value = $('.destBox .zip').text();
+	} else {
+		f.zip.value = $('.destBox .zip').val().trim();
 	}
-	if(! $('.destBox .tel').text()){
-		f.tel.value = $('.destBox .tel').val() ?? $('.destBox .tel').text();
+	
+	if($('.destBox .tel').text() && 
+			($('.destBox .tel').val().trim() === '' || ! $('.destBox .tel').val().trim())){
+		f.tel.value = $('.destBox .tel').text();
+	} else {
+		f.tel.value = $('.destBox .tel').val().trim();
 	}
 	
 	/*
@@ -343,11 +362,10 @@ function sendOk() {
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script type="text/javascript">
 $(function() {
+	let isDefault = ${not empty defaultDest};
 	$('input[name=mainDest]').change(function(e) {
-		let isDefault = "${not empty defaultDest}";
-		
 		let out="";
-		if(! isDefault || e.target.id==="mainDI"){
+		if(e.target.id==="mainDI"){
 			out = '<input class="form-control recipientName" placeholder="이름">';
 			out += '<input class="form-control mt-2 addr1" placeholder="기본주소 (우편번호 검색을 해주세요)" readonly>';
 			out += '<input class="form-control mt-2 zip" placeholder="우편번호" readonly>';
@@ -365,7 +383,10 @@ $(function() {
 			out += '	</label>';
 			out += '</span>';
 		} else {
-			out = '<div class="fw-semibold recipientName">${defaultDest.recipientName} (기본 배송지)</div>';
+			out = '<div class="fw-semibold">';
+			out += '	<span class="recipientName">${defaultDest.recipientName}</span>';
+			out += '	<span class="isDefault">${defaultDest.defaultDest == 1? "(기본배송지)":""}</span>';
+			out += '</div>';
 			out += '<span class="mt-2 addr1">${defaultDest.addr1}</span> ';
 			out += '(<span class="pt-2 zip">${defaultDest.zip}</span>)';
 			out += '<div class="pt-2 addr2">${defaultDest.addr2}</div>';
@@ -391,7 +412,7 @@ $(function() {
 		}
 		
 	});
-	mainCD.click();
+	isDefault ? mainCD.click() : mainDI.click();
 	
 	$('#changeDest').on('click', function() {
 		$('.changeDest-list').load('${pageContext.request.contextPath}/order/allDest');
@@ -410,7 +431,10 @@ $(function() {
 			
 			let name = $tr.find('.recipientName').text();
 			if(dest.attr('data-default')==1){
-				name += " (기본 배송지)";
+				$('.destBox .isDefault').css("display", "block");
+				//name += " (기본 배송지)";
+			} else {
+				$('.destBox .isDefault').css("display", "none");
 			}
 			
 			$('input[name=destinationNum]').val(dest.attr('data-destnum'));
@@ -418,7 +442,7 @@ $(function() {
 			$('.destBox .addr1').text($tr.find('.addr1').text());
 			$('.destBox .addr2').text($tr.find('.addr2').text());
 			$('.destBox .tel').text($tr.find('.tel').text());
-			$('.destBox .destMemo').text($tr.find('.destMemo').text());
+			$('.destBox input[name=destMemo]').val($tr.find('.destMemo').text());
 			$('.destBox .zip').text($tr.find('.zip').text());
 			
 			$('#changeDestModal').modal("hide");
