@@ -34,6 +34,10 @@ public class MyPageController {
 	// 마이 리뷰
 	@GetMapping("review")
 	public String review() {
+		
+		
+		
+		
 		return "mypage/review";
 	}
 		
@@ -48,6 +52,7 @@ public class MyPageController {
 	public String wishlist() {
 		return "mypage/wishlist";
 	}
+	
+	
 
 }
-

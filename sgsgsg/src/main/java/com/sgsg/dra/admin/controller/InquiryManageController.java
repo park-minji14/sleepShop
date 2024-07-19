@@ -166,7 +166,7 @@ public class InquiryManageController {
 	
 	
 	//답변삭제하기
-	@GetMapping("deleteAnswer")
+	@GetMapping("supportDeleteAnswer")
 	public String deleteAnswer(@RequestParam long num,
 			@RequestParam String page,
 			@RequestParam(defaultValue = "all") String schType,

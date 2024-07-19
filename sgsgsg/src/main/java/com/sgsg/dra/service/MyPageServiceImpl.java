@@ -1,5 +1,9 @@
 package com.sgsg.dra.service;
 
-public class MyPageServiceImpl {
 
+public class MyPageServiceImpl {
+	
+	
+	
+	
 }
