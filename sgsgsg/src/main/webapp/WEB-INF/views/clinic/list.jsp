@@ -199,6 +199,9 @@ document.addEventListener('DOMContentLoaded', function () {
 		  }, 
 	  });
 	 });
+	 
+	 
+	
 
 </script>
 
@@ -212,10 +215,18 @@ document.addEventListener('DOMContentLoaded', function () {
 		<div class="container slide-container swiper-container">
 			<div class="swiper-wrapper">
 				<div class="slide-container swiper-slide">
-					<a href="${pageContext.request.contextPath}/expertapply/apply">
-					<img src="${pageContext.request.contextPath}/uploads/etc/expert.png"
-						alt="수면클리닉 배너 1"> 
-					</a>
+				<c:choose>
+					<c:when test="${sessionScope.member.membership > 70}">
+						<img src="${pageContext.request.contextPath}/uploads/etc/expert.png"
+							alt="수면클리닉 배너 1">
+					</c:when>
+					<c:otherwise>
+						<a href="${pageContext.request.contextPath}/expertapply/apply">
+						<img src="${pageContext.request.contextPath}/uploads/etc/expert.png"
+							alt="수면클리닉 배너 1"> 
+						</a>
+					</c:otherwise>
+				</c:choose>
 				</div>  
 				<div class="slide-container swiper-slide">
 					<img src="${pageContext.request.contextPath}/uploads/etc/doctor.png"

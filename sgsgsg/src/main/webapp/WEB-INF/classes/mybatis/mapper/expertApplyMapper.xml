@@ -4,16 +4,16 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.sgsg.dra.mapper.ExpertApplyMapper">
-    <insert id="insertExpertApply">
+    <insert id="insertExpertApply" parameterType="com.sgsg.dra.domain.ExpertApply">
         INSERT INTO expert_request_list (apply_num, userId, content1, content2, content3, content4, content5, reg_date)
-        VALUES (expert_request_list_seq.NEXTVAL, #{userId}, #{content1}, #{content2}, #{content3}, #{content4}, #{content5}, #{reg_date})
+        VALUES (expert_request_list_seq.NEXTVAL, #{userId}, #{content1}, #{content2}, #{content3}, #{content4}, #{content5}, sysdate)
     </insert>
 
-    <select id="selectExpertApplyById" resultType="com.sgsg.dra.domain.ExpertApply">
+    <select id="selectExpertApply" resultType="com.sgsg.dra.domain.ExpertApply">
         SELECT * FROM expert_request_list WHERE apply_num = #{apply_num}
     </select>
 
-    <select id="selectAllExpertApplies" resultType="com.sgsg.dra.domain.ExpertApply">
+    <select id="listExpertApply" resultType="com.sgsg.dra.domain.ExpertApply">
         SELECT * FROM expert_request_list
     </select>
 

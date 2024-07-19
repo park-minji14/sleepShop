@@ -1,6 +1,7 @@
 package com.sgsg.dra.controller;
 
 import com.sgsg.dra.domain.ExpertApply;
+import com.sgsg.dra.domain.SessionInfo;
 import com.sgsg.dra.service.ExpertApplyService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/expertapply/*")
@@ -24,9 +27,17 @@ public class ExpertApplyController {
     }
 
     @PostMapping("apply")
-    public String submitApplyForm(@ModelAttribute ExpertApply expertApply) {
-        expertApplyService.applyExpert(expertApply);
-        // return "redirect:/expertapply/submit";
+    public String submitApplyForm(ExpertApply dto, HttpSession session, Model model) {
+    	
+    	SessionInfo info = (SessionInfo)session.getAttribute("member");
+    	
+    	try {
+    		dto.setUserId(info.getUserId());
+    		expertApplyService.insertExpertApply(dto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         return ".expertapply.submit";
     }
 
