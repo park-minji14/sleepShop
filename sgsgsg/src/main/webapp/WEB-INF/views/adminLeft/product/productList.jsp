@@ -146,25 +146,26 @@ window.addEventListener("load", function() {
 					</div>
 		        </div>
 		        
-				<div class="button-row">
-				    <button class="btn btn-success"><a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/productManage/productWrite">+ 상품 등록</a></button>
-				    <div class="button-group">
-				        <button type="reset" class="btn btn-secondary" onclick="location.href='${pageContext.request.contextPath}/adminManagement/productManage/productList'">초기화</button>
-				        <button type="submit" class="btn btn-primary">검색</button>
-				    </div>
-				</div>
+		    <div class="d-flex justify-content-end">
+		        <button type="reset" class="btn btn-secondary me-2" onclick="location.href='${pageContext.request.contextPath}/adminManagement/productManage/productList'">초기화</button>
+		        <button type="submit" class="btn btn-primary">검색</button>
+		    </div>
             
             </div>
             
         </form>
         
         
-    <div class="page-navigation mt-3">
-		${dataCount == 0 ? "등록된 상품이 없습니다." : paging}
-	</div>
-    <!-- 상품 목록 -->
-	<div class="col-auto pt-2 text-end">
-		${dataCount}개(${page}/${total_page} 페이지)
+	<div class="d-flex justify-content-between align-items-center mt-3">
+	    <div class="col-auto">
+	        <button class="btn btn-success"><a class="nav-link text-white" href="${pageContext.request.contextPath}/adminManagement/productManage/productWrite">+ 상품 등록</a></button>
+	    </div>
+	    <div class="page-navigation text-center">
+	        ${dataCount == 0 ? "등록된 상품이 없습니다." : paging}
+	    </div>
+	    <div class="col-auto text-end">
+	        ${dataCount}개(${page}/${total_page} 페이지)
+	    </div>
 	</div>
     <div class="table-responsive mt-3">
         <table class="table table-hover">

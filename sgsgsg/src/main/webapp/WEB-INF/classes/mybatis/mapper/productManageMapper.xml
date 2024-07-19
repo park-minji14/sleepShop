@@ -234,8 +234,7 @@
         p.thumbnail, p.productShow, TO_CHAR(p.reg_date, 'YYYY-MM-DD') as reg_date, 
         TO_CHAR(p.update_date, 'YYYY-MM-DD') as update_date, p.search_word, 
         NVL(SUM(ps.totalStock), 0) as totalstock
-    FROM 
-        product p
+    FROM product p
     JOIN PRODUCT_CATEGORY pc ON p.categoryNum = pc.categoryNum
     LEFT OUTER JOIN productStock ps ON p.productNum = ps.productNum
     <where>

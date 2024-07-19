@@ -161,6 +161,8 @@ public class ProductManageController {
 		} catch (Exception e) {
 		}
 		
+		//String url = "redirect:/adminManagement/productManage/productList?";
+		
 		return "redirect:/adminManagement/productManage/productList";
 	}
 	

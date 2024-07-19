@@ -116,14 +116,23 @@ window.addEventListener("load", function() {
         	</form>
         </div>
         
-       	<div class="page-navigation">
-			${dataCount == 0 ? "등록된 상품이 없습니다." : paging}
+		<div class="d-flex justify-content-between align-items-center mt-3">
+		    <!-- 왼쪽 빈 영역 -->
+		    <div class="col-auto"></div>
+		
+		    <!-- 가운데 -->
+		    <div class="col-auto flex-grow-1 text-center">
+		        <div class="page-navigation">
+		            ${dataCount == 0 ? "등록된 상품이 없습니다." : paging}
+		        </div>
+		    </div>
+		
+		    <!-- 우측 -->
+		    <div class="col-auto text-end">
+		        ${dataCount}개 (${page}/${total_page} 페이지)
+		    </div>
 		</div>
 		
-        <!-- 상품 목록 -->
-       	<div class="col-auto pt-2 text-end">
-		${dataCount}개(${page}/${total_page} 페이지)
-		</div>
         <div class="table-responsive">
             <table class="table">
                 <thead>
