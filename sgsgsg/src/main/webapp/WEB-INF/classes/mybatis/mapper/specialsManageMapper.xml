@@ -5,7 +5,7 @@
 	<insert id="insertSpecials" parameterType="com.sgsg.dra.admin.domain.SpecialsManage">
 		INSERT INTO specials(specialNum, subject, content, imageFilename, 
 		        startDate, endDate, showSpecial, reg_date) VALUES (
-				SPECIALS_SEQ.NEXTVAL, #{subject}, #{content}, #{imageFilename}, 
+				SPECIALS_SEQ.NEXTVAL, #{subject}, #{content}, #{imageFilename, jdbcType=VARCHAR}, 
 				TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI:SS'), 
 				TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI:SS'), #{showSpecial}, SYSDATE)
 	</insert>
@@ -13,7 +13,7 @@
 	<sql id="where-list">
 		<if test="schType=='all' ">
 			( INSTR(subject, #{kwd}) &gt; 0
-				OR DBMS_LOB.INSTR(content, #{kw}) &gt; 0 )
+				OR DBMS_LOB.INSTR(content, #{kwd}) &gt; 0 )
 		</if>
 		<if test="schType=='subject' ">
 			INSTR(subject, #{kwd}) &gt; 0
