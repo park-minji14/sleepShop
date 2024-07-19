@@ -4,7 +4,7 @@
 <mapper namespace="com.sgsg.dra.admin.mapper.InquiryManageMapper">
 	<sql id="where-list">
 		<if test="schType=='all' ">
-			( INSTR(subject, #{kwd}) &gt; 0 
+			( INSTR(title, #{kwd}) &gt; 0 
 				OR INSTR(content, #{kwd}) &gt; 0 )
 		</if>
 		<if test="schType=='title'">
@@ -13,15 +13,13 @@
 		<if test="schType=='content'">
 			DBMS_LOB.INSTR(content, #{kwd}) &gt; 0 
 		</if>
-		<if test="schType=='userName'">
-			userName=#{kwd}
-		</if>
+		
 		<if test="schType=='userId'">
 			INSTR(i.userId, #{kwd}) = 1
 		</if>
-		<if test="schType=='reg_data'">
-			( TO_CHAR(i.reg_date, 'YYYY-MM-DD') = #{kwd}
-				OR TO_CHAR(i.reg_date, 'YYYYMMDD') = #{kwd} )
+		<if test="schType=='created_date'">
+			( TO_CHAR(i.created_date, 'YYYY-MM-DD') = #{kwd}
+				OR TO_CHAR(i.created_date, 'YYYYMMDD') = #{kwd} )
 		</if>
 	</sql>
 	
@@ -41,7 +39,7 @@
 	
 	<!-- 글보기 -->
 	<select id="findById" resultType="com.sgsg.dra.admin.domain.InquiryManage" parameterType="Long">
-		SELECT num, created_date, category, title, response_date, content, response_content, i.userId
+		SELECT num, created_date, category, title, response_date, content, response_content, i.userId, i.userId2
 		FROM inquiry i
 		JOIN member1 m ON i.userId=m.userId
 		LEFT OUTER JOIN member1 a ON i.userId2 = a.userId

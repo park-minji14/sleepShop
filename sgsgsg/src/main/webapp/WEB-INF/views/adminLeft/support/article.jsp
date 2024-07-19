@@ -114,7 +114,7 @@ function sendAnswerOk() {
 					</tr>
 					<tr>
 						<td width="50%" align="left">
-							담당자 : ${dto.userId2}
+							담당자 :  ${dto.userId2}
 						</td>
 						<td width="50%" align="right">
 							답변일자 :  ${dto.response_date}
