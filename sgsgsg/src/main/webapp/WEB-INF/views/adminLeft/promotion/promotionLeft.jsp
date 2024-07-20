@@ -4,42 +4,29 @@
 
 <nav class="sidebar">
     <ul class="nav flex-column">
-        <li class="nav-item">
+        <li class="nav-item" >
             <a class="nav-link active" href="#">프로모션 및 이벤트 관리</a>
         </li>
-		<li class="nav-item">
-            <a class="nav-link toggleSubMenu" href="#">예시1 <span class="jArrow"></span></a>
-            <ul class="nav flex-column submenu">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">하위 예시1-1</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">하위 예시1-2</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">하위 예시1-3</a>
-                </li>
-            </ul>
+		<li class="nav-item" data-category="all">
+            <a class="nav-link active" href="${pageContext.request.contextPath}/promotion/main">전체 이벤트</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">예시2</a>
+        <li class="nav-item" data-category="progress">
+            <a class="nav-link" href="#">진행중인 이벤트</a>
         </li>
-		<li class="nav-item">
-            <a class="nav-link toggleSubMenu" href="#">예시3 <span class="jArrow"></span></a>
-            <ul class="nav flex-column submenu">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">하위 예시3-1</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">하위 예시3-2</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">하위 예시3-3</a>
-                </li>
-            </ul>
+		<li class="nav-item" data-category="winner">
+            <a class="nav-link" href="#">당첨자 발표</a>
+        </li>
+        <li class="nav-item" data-category="ended">
+            <a class="nav-link" href="#">종료된 이벤트</a>
+        </li>
+        <li class="nav-item" data-category="upcoming">
+            <a class="nav-link" href="#">진행 예정인 이벤트</a>
         </li>
     </ul>
 </nav>
+
+
+
 
 <script>
 $(function() {
