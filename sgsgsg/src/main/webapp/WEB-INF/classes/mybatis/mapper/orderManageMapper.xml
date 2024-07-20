@@ -88,10 +88,48 @@
 			VALUES(DELIVERY_seq.nextval, #{orderNum}, #{companyNum}, #{deliveryName}, #{invoiceNumber}, #{status_code})
 	</insert>
 	
+	<!-- 배송상태 변경 -->
+	<update id="updateDeliveryState" parameterType="mao">
+		update DELIVERY set status_code=#{status_code} where DELIVERYNUM = #{deliveryNum}
+	</update>
+	
 	<!-- 주문 상태 변경 -->
 	<update id="updateOrderState" parameterType="map">
-		update orderDetail set ORDERSTATE=${orderState}, ORDERSTATEDATE=sysdate where orderNum=#{orderNum}
+		update productOrder set ORDERSTATE=#{orderState}, ORDERSTATEDATE=sysdate, CANCELAMOUNT=#{cancelAmount, jdbcType=INTEGER} where orderNum=#{orderNum}
 	</update>
+	
+	<!-- 판매취소 -->
+	<!-- 판매취소는 사용자 요청시 인서트? -->
+	<insert id="canceleOrder" >
+		insert into ORDER_CANCELLATION(orderNum, CANCEL_DATE, CANCEL_REASON, PROCESS_DATE)
+			values(#{orderNum}, #{cancel_date}, #{cancel_reason}, #{process_date})
+	</insert>
+	
+	<!-- 판매 취소시 사용한 포인트 돌려주기 -->
+	<insert id="canceleUesdPoint" parameterType="map">
+		INSERT INTO POINT_HISTORY (
+			NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, USERID, orderNum
+		)
+		SELECT
+			POINT_HISTORY_SEQ.NEXTVAL,
+			-(SELECT CHANGE_POINTS
+			 FROM POINT_HISTORY
+			 WHERE orderNum = #{orderNum}),
+			#{reason},
+			SYSDATE,
+			COALESCE((
+				SELECT REMAIN_POINTS
+				FROM POINT_HISTORY
+				WHERE USERID = #{userId}
+				ORDER BY CHANGE_DATE DESC
+				FETCH FIRST 1 ROWS ONLY
+			), 0) - (SELECT CHANGE_POINTS
+					FROM POINT_HISTORY
+					WHERE orderNum = #{orderNum}),
+			#{userId},
+			#{orderNum}
+		FROM DUAL
+	</insert>
 	
 	
 </mapper>

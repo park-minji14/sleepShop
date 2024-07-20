@@ -43,7 +43,7 @@
 						<div class="checkbox-wrap">
 							<input type="checkbox" name="stockNum" value="${dto.stockNum}" class="checkbox">
 						</div>
-						<a class="item-link" href="${pageContext.request.contextPath}/product/details/${dto.productNum}">
+						<a class="item-link" href="${pageContext.request.contextPath}/product/details?productNum=${dto.productNum}">
 							<span class="item-img">
 								<img alt="상품 이미지" src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}">
 							</span>
@@ -196,9 +196,6 @@ function deleteProduct($box) {
 	if(! confirm('해당 상품을 삭제하시겠습니까?')){
 		return;
 	}
-	const f = document.cartForm;
-	f.action = "${pageContext.request.contextPath}/cart/deleteCart";
-	f.submit();
 	
 	let url = "${pageContext.request.contextPath}/cart/deleteCartItem";
 	let stockNum = parseInt($box.find('input[name="stockNum"]').val());
