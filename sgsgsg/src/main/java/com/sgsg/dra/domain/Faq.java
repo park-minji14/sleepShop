@@ -1,7 +1,7 @@
 package com.sgsg.dra.domain;
 
 public class Faq {
-	private int faq_Num;
+	private Long faq_Num;
 	private String question;
 	private String answer;
 	private String created_Date;
@@ -10,10 +10,10 @@ public class Faq {
 	private String category;
 	private String userId;
 	
-	public int getFaq_Num() {
+	public Long getFaq_Num() {
 		return faq_Num;
 	}
-	public void setFaq_Num(int faq_Num) {
+	public void setFaq_Num(Long faq_Num) {
 		this.faq_Num = faq_Num;
 	}
 	public String getQuestion() {

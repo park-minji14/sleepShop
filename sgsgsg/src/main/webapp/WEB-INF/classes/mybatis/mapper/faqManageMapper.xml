@@ -4,10 +4,10 @@
 <mapper namespace="com.sgsg.dra.admin.mapper.FaqManageMapper">
 
    <!-- FAQ 입력 -->
-    <insert id="insertFAQ" parameterType="com.sgsg.dra.domain.Faq">
-        INSERT INTO FAQ (FAQ_NUM, QUESTION, ANSWER, CREATED_DATE, USERID, CATEGORY)
-        VALUES (FAQ_SEQ.NEXTVAL, #{question}, #{answer}, SYSDATE, #{userId}, #{category})
-    </insert>
+<insert id="insertFAQ" parameterType="com.sgsg.dra.domain.Faq">
+    INSERT INTO FAQ (FAQ_NUM, QUESTION, ANSWER, CREATED_DATE, UPDATED_DATE, USERID, CATEGORY, IS_ACTIVE)
+    VALUES (FAQ_SEQ.NEXTVAL, #{question}, #{answer}, SYSDATE, SYSDATE, #{userId}, #{category}, #{is_Active})
+</insert>
 
 <!-- FAQ 수정 -->
 <update id="updateFAQ" parameterType="com.sgsg.dra.domain.Faq">
@@ -15,7 +15,8 @@
     SET QUESTION = #{question},
         ANSWER = #{answer},
         UPDATED_DATE = SYSDATE,
-        CATEGORY = #{category}
+        CATEGORY = #{category},
+        IS_ACTIVE = #{is_Active}
     WHERE FAQ_NUM = #{faq_Num}
 </update>
 
@@ -27,11 +28,13 @@
 <!-- FAQ 리스트 출력 -->
 <select id="listFAQ" parameterType="map" resultType="com.sgsg.dra.domain.Faq">
      SELECT FAQ_NUM, QUESTION, ANSWER, 
+            CREATED_DATE,
+            UPDATED_DATE,
             CASE 
                 WHEN UPDATED_DATE IS NOT NULL THEN UPDATED_DATE 
                 ELSE CREATED_DATE 
             END AS DISPLAY_DATE, 
-            CATEGORY, IS_ACTIVE
+            CATEGORY, IS_ACTIVE, USERID
      FROM FAQ
      WHERE IS_ACTIVE = 1
      <if test="category != null and category != ''">
@@ -39,6 +42,30 @@
      </if>
      ORDER BY FAQ_NUM DESC
  </select>
+ 
+ <!-- 관리자용 FAQ 리스트 출력 (모든 FAQ 포함) -->
+<select id="listAllFAQ" parameterType="map" resultType="com.sgsg.dra.domain.Faq">
+     SELECT FAQ_NUM, QUESTION, ANSWER, 
+            CREATED_DATE,
+            UPDATED_DATE,
+            CASE 
+                WHEN UPDATED_DATE IS NOT NULL THEN UPDATED_DATE 
+                ELSE CREATED_DATE 
+            END AS DISPLAY_DATE, 
+            CATEGORY, IS_ACTIVE, USERID
+     FROM FAQ
+     <if test="category != null and category != ''">
+         WHERE CATEGORY = #{category}
+     </if>
+     ORDER BY FAQ_NUM DESC
+ </select>
+ 
+ <!--관리자용 FAQ 수정 삭제 -->
+ <select id="getFaqById" parameterType="Long" resultType="com.sgsg.dra.domain.Faq">
+    SELECT FAQ_NUM, QUESTION, ANSWER, CREATED_DATE, UPDATED_DATE, CATEGORY, IS_ACTIVE, USERID
+    FROM FAQ
+    WHERE FAQ_NUM = #{faqNum}
+</select>
 
     
 </mapper>
