@@ -750,11 +750,12 @@ function ajaxFun(url, method, query, dataType, fn) {
             alert("오류가 발생했습니다: " + textStatus);
         }
     });
-}const productNum = ${dto.productNum};
+}
+
+const productNum = ${dto.productNum};
 
 function updateButtonState(stockNum, totalStock, optionCount) {
-    console.log("updateButtonState called with stockNum:", stockNum, "totalStock:", totalStock, "optionCount:", optionCount);
-
+ 
     const hasStock = totalStock > 0;
     const option1Selected = $('#option1').val() !== '';
     const option2Selected = optionCount === 2 ? $('#option2').val() !== '' : true;
@@ -786,7 +787,6 @@ function updateButtonState(stockNum, totalStock, optionCount) {
     }
 }
 function buyQuantity(stockNum, salePrice, detailNum, detailNum2) {
-    console.log("구매 수량 함수 호출:", { stockNum, salePrice, detailNum, detailNum2 });  
     const $productOptions = $('.product-options');
     $productOptions.data('stock-num', stockNum);
     let optionCount = $productOptions.data('option-count');
@@ -798,7 +798,6 @@ $(document).ready(function () {
     $('#optionButtons').show();
     $('#stockAlert').hide();
 	
-    console.log("문서 로드 완료, 옵션 초기화 시작");
     let optionCount = $('.product-options').data('option-count');
     console.log("옵션 개수:", optionCount);
 
@@ -1011,9 +1010,7 @@ function handleOptionSelection(stockNum, totalStock, detailNum, detailNum2, sale
 
 
 //----------------------------
-   function showCuteToast(message) {
-       console.log("Showing cute toast:", message);
-       
+   function showCuteToast(message) {    
        // 토스트 본문 업데이트
        $('#cuteToast .toast-body').html(message);
        
@@ -1024,14 +1021,12 @@ function handleOptionSelection(stockNum, totalStock, detailNum, detailNum2, sale
 
    // 재입고 알림 버튼 클릭 이벤트
    $('#stockAlert').on('click', function() {
-       console.log("Stock alert button clicked");
        showCuteToast('재입고되면 깨워드릴게요! 😴💤 달달한 꿈 꾸세요~');
    });
    
    
   //------------------------------------------ 구매하기
   $('#buyNow, #scrollBuyButton').click(function () {
-      console.log('구매 버튼 클릭:', this.id);
       
       let stockNum, qty, option1, option2;
       let optionCount = $('.product-options').data('option-count');
@@ -1048,8 +1043,6 @@ function handleOptionSelection(stockNum, totalStock, detailNum, detailNum2, sale
           option1 = $('#option1').val();
           option2 = $('#option2').val();
       }
-      
-      console.log('선택된 옵션:', { stockNum, qty, option1, option2, optionCount });
 
       // 옵션이 있는 경우에만 체크
       if (optionCount > 0) {
@@ -1140,30 +1133,38 @@ function syncOptions() {
 
     // 스크롤 옵션 변경 시에도 동기화
     $('#scrollOption1, #scrollOption2, #scrollQuantity').change(function() {
-        console.log('스크롤 옵션 변경됨');
         let id = $(this).attr('id');
         let mainId = id.replace('scroll', '').toLowerCase();
         $('#' + mainId).val($(this).val()).trigger('change');
     });
 
 // -----------------------------장바구니-----------------------------//
-$(function() {
-    $('#addToCart, #scrollAddToCart').click(function() {
-        console.log('장바구니 버튼 클릭됨');
-        
-        let stockNum = $('.product-options').data('stock-num');
-        let qty = $('#quantity').val();
-        let optionCount = $('.product-options').data('option-count');
-        
-        if (optionCount > 0 && !stockNum) {
-            showToast('옵션을 선택해주세요.');
-            return;
-        }
-        
-        if (!stockNum) {
-            showToast('상품 정보를 불러올 수 없습니다.');
-            return;
-        }
+	$('#addToCart, #scrollAddToCart').click(function() {
+	    
+	    let stockNum = $('.product-options').data('stock-num');
+	    let qty = $('#quantity').val();
+	    let optionCount = $('.product-options').data('option-count');
+	    
+	    // 옵션이 있는 경우 선택 여부 확인
+	    if (optionCount > 0) {
+	        let option1 = $('#option1').val();
+	        let option2 = $('#option2').val();
+	        
+	        if (!option1) {
+	            showToast('첫 번째 옵션을 선택해주세요.');
+	            return;
+	        }
+	        
+	        if (optionCount == 2 && !option2) {
+	            showToast('두 번째 옵션을 선택해주세요.');
+	            return;
+	        }
+	    }
+	    
+	    if (!stockNum) {
+	        showToast('상품 정보를 불러올 수 없습니다.');
+	        return;
+	    }
         
         let url = "${pageContext.request.contextPath}/cart/insertCart";
         let query = {
@@ -1189,7 +1190,6 @@ $(function() {
                 }
             },
             error: function(xhr, status, error) {
-                console.error("에이작스 오류:", error);
                 showToast("장바구니 추가 중 오류가 발생했습니다.");
             }
         });
@@ -1245,19 +1245,22 @@ $(function() {
         function updateStockNum() {
             let option1 = $('#option1').val();
             let option2 = $('#option2').val();
+            let optionCount = $('.product-options').data('option-count');
             
-            if (option1 && (option2 || $('.product-options').data('option-count') == 1)) {
-                let selectedOption = $('#option1').find(':selected');
-                let stockNum = selectedOption.data('stock-num');
-                if (!stockNum && $('#option2').length) {
-                    selectedOption = $('#option2').find(':selected');
-                    stockNum = selectedOption.data('stock-num');
+            if (optionCount > 0) {
+                if (optionCount == 1 && option1) {
+                    let selectedOption = $('#option1').find(':selected');
+                    let stockNum = selectedOption.data('stock-num');
+                    $('.product-options').data('stock-num', stockNum);
+                } else if (optionCount == 2 && option1 && option2) {
+                    let selectedOption = $('#option2').find(':selected');
+                    let stockNum = selectedOption.data('stock-num');
+                    $('.product-options').data('stock-num', stockNum);
+                } else {
+                    $('.product-options').data('stock-num', null);
                 }
-                $('.product-options').data('stock-num', stockNum);
-                console.log("Updated Stock Number:", stockNum);
-            }
+            }            
         }
-    });
 
 //----------------------------- 채팅---------------------------//
     function addMessage(message, isUser = false) {
@@ -1347,7 +1350,6 @@ $(function() {
     // 윈도우 이벤트
     $(window).scroll(toggleScrollOption);
     $(window).resize(function() {
-        console.log('창 크기 변경');
         updateProductInfoBottom();
         toggleScrollOption();
     });
@@ -1359,7 +1361,6 @@ $(function() {
     // 상품문의
     function updateGuideText() {
         var selectedType = $('input[name="qnaType"]:checked').val();
-        console.log('선택된 유형:', selectedType);
         var guideText = '';
         switch(selectedType) {
             case '상품':
@@ -1380,12 +1381,10 @@ $(function() {
             default:
                 guideText = '문의 유형을 선택해주세요.';
         }
-        console.log('설정할 가이드 텍스트:', guideText);
         
         var $textarea = $('#qnaContent');
         if ($textarea.length) {
             $textarea.attr('placeholder', guideText);
-            console.log('가이드 텍스트 설정 완료');
         } else {
             console.error('#qnaContent 요소를 찾을 수 없습니다.');
         }
@@ -1393,7 +1392,6 @@ $(function() {
 
     // 문의 유형 변경 시 이벤트 핸들러
     $(document).on('change', 'input[name="qnaType"]', function() {
-        console.log('문의 유형 변경:', $(this).val());
         updateGuideText();
     });
 
@@ -1442,7 +1440,6 @@ $(function() {
 
     // 문의하기 제출 버튼 클릭 시
     $('#submitQna').click(function() {
-        console.log("문의하기 제출 버튼 클릭");
         const f = document.getElementById('qnaForm');
         let content = $('#qnaContent').val().trim();
         
@@ -1518,13 +1515,11 @@ function listQuestion(page) {
 
     
 function printQuestion(data) {
-    console.log('Data to be processed:', data);
     let dataCount = data.dataCount;
     $('.title-qnaCount').html('(' + dataCount + ')');
     let out = '';
     if (Array.isArray(data.list)) {
         for (let item of data.list) {
-        	console.log('Item:', item); 
             let userName = item.userName || '';
             let question = item.question || '';
             let questionDate = item.question_Date || '';
