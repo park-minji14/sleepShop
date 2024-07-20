@@ -86,7 +86,7 @@ public class Order {
 	private long deliveryNum;
 	private String deliveryName;
 	private String invoiceNumber;
-	private String status_code;
+	private int status_code;
 	private long companyNum;
 	
 	
@@ -504,10 +504,10 @@ public class Order {
 	public void setInvoiceNumber(String invoiceNumber) {
 		this.invoiceNumber = invoiceNumber;
 	}
-	public String getStatus_code() {
+	public int getStatus_code() {
 		return status_code;
 	}
-	public void setStatus_code(String status_code) {
+	public void setStatus_code(int status_code) {
 		this.status_code = status_code;
 	}
 	public long getCompanyNum() {
