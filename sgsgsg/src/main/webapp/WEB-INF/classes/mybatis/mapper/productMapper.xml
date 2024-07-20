@@ -36,66 +36,53 @@
 	<!-- 상품 상세정보 가져오기 -->
 	<!--상품번호,카테고리번호,분류(일반,기획),상품노출여부,상품이름,가격,포인트,옵션개수,할인율,배송비,썸네일이미지,내용,등록날짜,총 재고,리뷰점수,  -->
 	<!-- 리뷰개수,질문개수,시작날짜,종료날짜,특별노출여부,판매개수 -->
-	<select id="findById" parameterType="Long"
-		resultType="com.sgsg.dra.domain.Product">
-		SELECT p.productNum, p.categoryNum, p.classify,
-		p.productShow,
-		c.categoryName,
-		p.productName, p.price, p.savedMoney,
-		p.optionCount, p.discountRate, p.delivery,
-		p.thumbnail, p.content,
-		p.reg_date, NVL(ps.totalStock, 0)
-		totalStock,NVL(t.score, 0) score,
-		NVL(t.reviewCount, 0) reviewCount, NVL(pi.questionCount, 0)
-		questionCount,
-		TO_CHAR(s.startDate, 'YYYY-MM-DD HH24:MI') startDate,
-		TO_CHAR(s.endDate, 'YYYY-MM-DD HH24:MI') endDate,
-		NVL(s.showSpecial,
-		-1) showSpecial,
-		NVL(pc.saleCount, 0) saleCount
-		FROM product p
-		JOIN
-		PRODUCT_CATEGORY c ON p.categoryNum = c.categoryNum
-		LEFT OUTER JOIN (
-		SELECT productNum, NVL(SUM(totalStock), 0) totalStock
-		FROM productStock
-		GROUP BY productNum
-		) ps ON p.productNum = ps.productNum
-		LEFT OUTER JOIN
-		specialsDetail d ON p.productNum = d.productNum
-		LEFT OUTER JOIN
-		specials s ON d.specialNum = s.specialNum
-		LEFT OUTER JOIN (
-		SELECT
-		ps.productNum, ROUND(AVG(pr.score), 1) score, COUNT(*) reviewCount
-		FROM ORDERDETAIL od
-		JOIN PRODUCT_REVIEW pr ON od.ORDERDETAILNUM =
-		pr.ORDERDETAILNUM
-		JOIN productStock ps ON od.STOCKNUM = ps.STOCKNUM
-		WHERE pr.showReview = 1 AND pr.locked = 0
-		GROUP BY ps.productNum
-		) t ON
-		p.productNum = t.productNum
-		LEFT OUTER JOIN (
-		SELECT productNum,
-		COUNT(*) questionCount
-		FROM PRODUCT_INQUIRY
-		WHERE showQuestion = 1 AND
-		locked = 1
-		GROUP BY productNum
-		) pi ON p.productNum = pi.productNum
-		LEFT
-		OUTER JOIN (
-		SELECT ps.productNum, COUNT(*) saleCount
-		FROM ORDERDETAIL
-		od
-		JOIN productStock ps ON od.STOCKNUM = ps.STOCKNUM
-		GROUP BY
-		ps.productNum
-		) pc ON p.productNum = pc.productNum
-		WHERE p.productShow =
-		1 AND p.productNum = #{productNum}
-	</select>
+<select id="findById" parameterType="Long" resultType="com.sgsg.dra.domain.Product">
+    SELECT p.productNum, p.categoryNum, p.classify,
+           p.productShow, c.categoryName, p.productName, p.price, p.savedMoney,
+           p.optionCount, p.discountRate, p.delivery, p.thumbnail, p.content,
+           p.reg_date, NVL(ps.totalStock, 0) totalStock, NVL(t.score, 0) score,
+           NVL(t.reviewCount, 0) reviewCount, NVL(pi.questionCount, 0) questionCount,
+           s.startDate, s.endDate, s.showSpecial,
+           NVL(pc.saleCount, 0) saleCount,
+           NVL(ps.stockNum, 0) AS stockNum  <!-- 추가된 부분 -->
+    FROM product p
+    JOIN PRODUCT_CATEGORY c ON p.categoryNum = c.categoryNum
+    LEFT OUTER JOIN (
+        SELECT productNum, NVL(SUM(totalStock), 0) totalStock, MIN(stockNum) AS stockNum  <!-- 수정된 부분 -->
+        FROM productStock
+        GROUP BY productNum
+    ) ps ON p.productNum = ps.productNum
+    LEFT OUTER JOIN (
+        SELECT productNum, 
+               MIN(TO_CHAR(s.startDate, 'YYYY-MM-DD HH24:MI')) as startDate,
+               MIN(TO_CHAR(s.endDate, 'YYYY-MM-DD HH24:MI')) as endDate,
+               MIN(NVL(s.showSpecial, -1)) as showSpecial
+        FROM specialsDetail d
+        JOIN specials s ON d.specialNum = s.specialNum
+        GROUP BY productNum
+    ) s ON p.productNum = s.productNum
+    LEFT OUTER JOIN (
+        SELECT ps.productNum, ROUND(AVG(pr.score), 1) score, COUNT(*) reviewCount
+        FROM ORDERDETAIL od
+        JOIN PRODUCT_REVIEW pr ON od.ORDERDETAILNUM = pr.ORDERDETAILNUM
+        JOIN productStock ps ON od.STOCKNUM = ps.STOCKNUM
+        WHERE pr.showReview = 1 AND pr.locked = 0
+        GROUP BY ps.productNum
+    ) t ON p.productNum = t.productNum
+    LEFT OUTER JOIN (
+        SELECT productNum, COUNT(*) questionCount
+        FROM PRODUCT_INQUIRY
+        WHERE showQuestion = 1 AND locked = 1
+        GROUP BY productNum
+    ) pi ON p.productNum = pi.productNum
+    LEFT OUTER JOIN (
+        SELECT ps.productNum, COUNT(*) saleCount
+        FROM ORDERDETAIL od
+        JOIN productStock ps ON od.STOCKNUM = ps.STOCKNUM
+        GROUP BY ps.productNum
+    ) pc ON p.productNum = pc.productNum
+    WHERE p.productShow = 1 AND p.productNum = #{productNum}
+</select>
 	
 	<!-- 상품 이미지 조회 -->
  <select id="listProductFile" parameterType="Long"
@@ -150,36 +137,23 @@
 		WHERE optionNum = #{optionNum}
 		ORDER BY detailNum	</select>
 	
-	<!-- 재고 있는 사풍 조회-->
-	<select id="listOptionDetailStock" parameterType="map" resultType="com.sgsg.dra.domain.Product">
-		SELECT s.stockNum, s.productNum, s.detailNum, s.detailNum2, s.totalStock,
-		o1.optionNum, o1.optionName,
-		o2.optionNum AS optionNum2, o2.optionName AS optionName2,
-		d1.detailNum, d1.optionValue,
-		d2.detailNum AS detailNum2, d2.optionValue AS optionValue2
-		FROM (
-		SELECT stockNum, productNum, detailNum, detailNum2, totalStock
-		FROM productStock
-		WHERE productNum = #{productNum}  
-		<if test="detailNum != null and detailNum != 0">
-				AND detailNum = #{detailNum}
-    		</if>
-		) s
-		LEFT OUTER JOIN (
-		SELECT productNum, optionNum, optionName, PARENTNUM 
-		FROM PRODUCT_OPTION 
-		WHERE productNum = #{productNum} AND PARENTNUM IS NULL
-		) o1 ON s.productNum = o1.productNum
-		LEFT OUTER JOIN (
-		SELECT optionNum, optionName, PARENTNUM
-		FROM PRODUCT_OPTION
-		WHERE productNum = #{productNum} AND PARENTNUM IS NOT NULL
-		) o2 ON o1.optionNum = o2.PARENTNUM
-		LEFT OUTER JOIN optionDetail d1 ON s.detailNum = d1.detailNum
-		LEFT OUTER JOIN optionDetail d2 ON s.detailNum2 = d2.detailNum
-		WHERE NVL(s.totalStock, 0) &gt; 0
-		ORDER BY s.detailNum, s.detailNum2
-	</select>
+<select id="listOptionDetailStock" parameterType="map" resultType="com.sgsg.dra.domain.Product">
+    SELECT s.stockNum, s.productNum, s.detailNum, s.detailNum2, s.totalStock,
+           o1.optionNum, o1.optionName,
+           o2.optionNum AS optionNum2, o2.optionName AS optionName2,
+           d1.detailNum, d1.optionValue,
+           d2.detailNum AS detailNum2, d2.optionValue AS optionValue2
+    FROM productStock s
+    LEFT JOIN PRODUCT_OPTION o1 ON s.productNum = o1.productNum AND o1.PARENTNUM IS NULL
+    LEFT JOIN PRODUCT_OPTION o2 ON o1.optionNum = o2.PARENTNUM
+    LEFT JOIN optionDetail d1 ON s.detailNum = d1.detailNum
+    LEFT JOIN optionDetail d2 ON s.detailNum2 = d2.detailNum
+    WHERE s.productNum = #{productNum}
+    <if test="detailNum != null">
+        AND s.detailNum = #{detailNum}
+    </if>
+    ORDER BY s.detailNum, s.detailNum2
+</select>
 	
 <!--상품검색(상품명,내용,검색어) -->
 <select id="searchProducts" parameterType="map" resultType="com.sgsg.dra.domain.Product">

@@ -6,7 +6,6 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/page/details.css"
 	type="text/css">
-
 <div class="container-fluid">
 	<div class="container my-5">
 		<div class="row">
@@ -80,34 +79,45 @@
 					<!-- 옵션 -->
 					<div class="product-options mb-3"
 						data-option-count="${dto.optionCount}"
-						data-stock-num="${dto.stockNum}">
-						<c:if test="${dto.optionCount > 0}">
-							<div class="mt-2">
-								<select class="form-select requiredOption" id="option1"
-									data-option-num="${listOption[0].optionNum}"
-									${dto.totalStock < 1 ? 'disabled':''}>
-									<option value="">${listOption[0].optionName}선택</option>
-									<c:forEach var="vo" items="${listOptionDetail}">
-										<c:if test="${vo.optionValue != prevOptionValue}">
-											<option value="${vo.detailNum}"
-												data-stock-num="${vo.stockNum}"
-												data-total-stock="${vo.totalStock}"
-												data-option-value="${vo.optionValue}">
-												${vo.optionValue}</option>
-											<c:set var="prevOptionValue" value="${vo.optionValue}" />
-										</c:if>
-									</c:forEach>
-								</select>
-							</div>
-						</c:if>
-						<c:if test="${dto.optionCount > 1}">
-							<div class="mt-2">
-								<select class="form-select requiredOption2" id="option2"
-									data-option-num2="${listOption[1].optionNum}" disabled>
-									<option value="">${listOption[1].optionName}선택</option>
-								</select>
-							</div>
-						</c:if>
+						data-stock-num="${dto.stockNum}"
+						data-total-stock="${dto.totalStock}">
+						<c:choose>
+							<c:when test="${dto.optionCount == 0}">
+								<!-- 단품 상품인 경우 -->
+								<p>단품 상품 (재고: ${dto.totalStock})</p>
+							</c:when>
+							<c:otherwise>
+								<!-- 옵션이 있는 상품인 경우 -->
+								<c:if test="${dto.optionCount > 0}">
+									<div class="mt-2">
+										<select class="form-select requiredOption" id="option1"
+											data-option-num="${listOption[0].optionNum}"
+											${dto.totalStock < 1 ? 'disabled':''}>
+											<option value="">${listOption[0].optionName}선택</option>
+											<c:forEach var="vo" items="${listOptionDetail}">
+												<c:if test="${vo.optionValue != prevOptionValue}">
+													<option value="${vo.detailNum}"
+														data-stock-num="${vo.stockNum}"
+														data-total-stock="${vo.totalStock}"
+														data-option-value="${vo.optionValue}">
+														${vo.optionValue}${dto.optionCount == 1 ? ' (재고 '.concat(vo.totalStock).concat(')') : ''}
+													</option>
+													<c:set var="prevOptionValue" value="${vo.optionValue}" />
+												</c:if>
+											</c:forEach>
+										</select>
+									</div>
+								</c:if>
+								<c:if test="${dto.optionCount > 1}">
+									<div class="mt-2">
+										<select class="form-select requiredOption2" id="option2"
+											data-option-num2="${listOption[1].optionNum}">
+											<option value="">${listOption[1].optionName}선택</option>
+										</select>
+									</div>
+								</c:if>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 
@@ -127,24 +137,61 @@
 					</span>
 				</div>
 				<div class="purchase-buttons">
-					<button
-						class="btn btn-outline-secondary btn-lg me-2 flex-grow-1 btn-gift"
-						id="gift">
-						<i class="bi bi-gift me-2"></i>선물하기
-					</button>
-					<button
-						class="btn btn-outline-primary btn-lg me-2 flex-grow-1 btn-cart"
-						id="addToCart">
-						<i class="bi bi-cart-plus me-2"></i>장바구니
-					</button>
-					<button class="btn btn-primary btn-lg flex-grow-1 btn-buy"
-						id="buyNow">
-						<i class="bi bi-bag-check me-2"></i>바로구매
-					</button>
-					<button class="btn btn-primary btn-lg w-100" id="stockAlert"
-						style="display: none;">
-						<i class="bi bi-bell me-2"></i>재입고 알림 신청
-					</button>
+					<c:choose>
+						<c:when test="${dto.optionCount == 0}">
+							<!-- 단품 상품인 경우 -->
+							<div id="singleProductButtons">
+								<c:choose>
+									<c:when test="${dto.totalStock > 0}">
+										<!-- 재고가 있는 경우 -->
+										<button
+											class="btn btn-outline-secondary btn-lg me-2 flex-grow-1 btn-gift"
+											id="gift">
+											<i class="bi bi-gift me-2"></i>선물하기
+										</button>
+										<button
+											class="btn btn-outline-primary btn-lg me-2 flex-grow-1 btn-cart"
+											id="addToCart">
+											<i class="bi bi-cart-plus me-2"></i>장바구니
+										</button>
+										<button class="btn btn-primary btn-lg flex-grow-1 btn-buy"
+											id="buyNow">
+											<i class="bi bi-bag-check me-2"></i>바로구매
+										</button>
+									</c:when>
+									<c:otherwise>
+										<!-- 재고가 없는 경우 -->
+										<button class="btn btn-primary btn-lg w-100" id="stockAlert">
+											<i class="bi bi-bell me-2"></i>재입고 알림 신청
+										</button>
+									</c:otherwise>
+								</c:choose>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<!-- 옵션이 있는 상품인 경우 -->
+							<div id="optionButtons">
+								<button
+									class="btn btn-outline-secondary btn-lg me-2 flex-grow-1 btn-gift"
+									id="gift">
+									<i class="bi bi-gift me-2"></i>선물하기
+								</button>
+								<button
+									class="btn btn-outline-primary btn-lg me-2 flex-grow-1 btn-cart"
+									id="addToCart">
+									<i class="bi bi-cart-plus me-2"></i>장바구니
+								</button>
+								<button class="btn btn-primary btn-lg flex-grow-1 btn-buy"
+									id="buyNow">
+									<i class="bi bi-bag-check me-2"></i>바로구매
+								</button>
+							</div>
+							<button class="btn btn-primary btn-lg w-100" id="stockAlert"
+								style="display: none;">
+								<i class="bi bi-bell me-2"></i>재입고 알림 신청
+							</button>
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 		</div>
@@ -508,14 +555,36 @@
     </div>
   </div>
 </div>
-    <!-- 스크롤 시 나타나는 옵션 선택 영역 -->
+<!-- 스크롤 시 나타나는 옵션 선택 영역 -->
 <div id="scrollOptionArea" class="scroll-option-area">
   <h6 class="mb-2" id="scrollProductName">${dto.productName}</h6>
   <p class="mb-2">가격: <span id="scrollProductPrice"><fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100)}" pattern="#,###원" /></span></p>
-
+  
   <c:choose>
     <c:when test="${dto.optionCount == 0}">
       <p>단품</p>
+      <c:choose>
+        <c:when test="${dto.totalStock > 0}">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span>수량:</span>
+            <div class="input-group" style="width: 120px;">
+              <button class="btn btn-outline-secondary btn-sm" id="scrollDecreaseQuantity">-</button>
+              <input type="number" class="form-control form-control-sm" id="scrollQuantity" value="1" min="1" style="text-align: center;">
+              <button class="btn btn-outline-secondary btn-sm" id="scrollIncreaseQuantity">+</button>
+            </div>
+          </div>
+          <p class="mb-2">총 가격: <span id="scrollTotalPrice"><fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100)}" pattern="#,###원" /></span></p>
+          <div class="d-flex justify-content-between" id="scrollButtonArea">
+            <button class="btn btn-outline-primary btn-sm flex-grow-1 me-2" id="scrollAddToCart">장바구니</button>
+            <button class="btn btn-primary btn-sm flex-grow-1" id="scrollBuyButton">구매하기</button>
+          </div>
+        </c:when>
+        <c:otherwise>
+          <button class="btn btn-primary btn-sm w-100" id="scrollStockAlert">
+            재입고 알림 신청
+          </button>
+        </c:otherwise>
+      </c:choose>
     </c:when>
     <c:when test="${dto.optionCount == 1}">
       <select class="form-select mb-2 requiredOption" id="scrollOption1" data-option-num="${listOption[0].optionNum}" ${dto.totalStock < 1 ? 'disabled':''}>
@@ -525,7 +594,7 @@
                   data-stock-num="${vo.stockNum}" 
                   data-total-stock="${vo.totalStock}" 
                   data-option-value="${vo.optionValue}">
-            ${vo.optionValue}${vo.totalStock < 5 ? ' 재고 - ' + vo.totalStock : ''}
+            ${vo.optionValue} ${vo.totalStock > 0 ? '재고 '.concat(vo.totalStock) : '재입고 알림 신청'}
           </option>
         </c:forEach>
       </select>
@@ -544,19 +613,24 @@
     </c:when>
   </c:choose>
 
-  <div class="d-flex justify-content-between align-items-center mb-2">
-    <span>수량:</span>
-    <div class="input-group" style="width: 120px;">
-      <button class="btn btn-outline-secondary btn-sm" id="scrollDecreaseQuantity">-</button>
-      <input type="number" class="form-control form-control-sm" id="scrollQuantity" value="1" min="1" style="text-align: center;">
-      <button class="btn btn-outline-secondary btn-sm" id="scrollIncreaseQuantity">+</button>
+ <c:if test="${dto.optionCount > 0}">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <span>수량:</span>
+      <div class="input-group" style="width: 120px;">
+        <button class="btn btn-outline-secondary btn-sm" id="scrollDecreaseQuantity">-</button>
+        <input type="number" class="form-control form-control-sm" id="scrollQuantity" value="1" min="1" style="text-align: center;">
+        <button class="btn btn-outline-secondary btn-sm" id="scrollIncreaseQuantity">+</button>
+      </div>
     </div>
-  </div>
-  <p class="mb-2">총 가격: <span id="scrollTotalPrice"><fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100)}" pattern="#,###원" /></span></p>
-  <div class="d-flex justify-content-between">
-    <button class="btn btn-outline-primary btn-sm flex-grow-1 me-2" id="scrollAddToCart">장바구니</button>
-    <button class="btn btn-primary btn-sm flex-grow-1" id="scrollBuyButton">구매하기</button>
-  </div>
+    <p class="mb-2">총 가격: <span id="scrollTotalPrice"><fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100)}" pattern="#,###원" /></span></p>
+    <div class="d-flex justify-content-between" id="scrollButtonArea">
+      <button class="btn btn-outline-primary btn-sm flex-grow-1 me-2" id="scrollAddToCart">장바구니</button>
+      <button class="btn btn-primary btn-sm flex-grow-1" id="scrollBuyButton">구매하기</button>
+    </div>
+    <button class="btn btn-primary btn-sm w-100" id="scrollStockAlert" style="display: none;">
+      재입고 알림 신청
+    </button>
+  </c:if>
 </div>
 
 
@@ -634,23 +708,27 @@
     <div class="toast-body">
     </div>
   </div>
-  <div class="toast" id="cartConfirmToast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
+	<div class="toast" id="cartConfirmToast" role="alert" aria-live="assertive" aria-atomic="true">
+	  <div class="toast-header">
+	    <strong class="me-auto">알림</strong>
+	    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+	  </div>
+	  <div class="toast-body">
+	    <!--자바스크립트로 채움 -->
+	  </div>
+	</div>
+  <div class="toast cute-toast" id="cuteToast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-pink text-white">
       <strong class="me-auto">알림</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
-    <div class="toast-body">
-      장바구니로 이동하시겠습니까?
-      <div class="mt-2 pt-2 border-top">
-        <button type="button" class="btn btn-primary btn-sm" id="goToCartBtn">이동</button>
-        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">취소</button>
-      </div>
+    <div class="toast-body bg-light-pink">
     </div>
   </div>
 </div>
-
-
 <script type="text/javascript">
+
+/* let optionCount = ${dto.optionCount}; */
 
 //-------------------전역 범위 ajax 선언-------------------// 
 function ajaxFun(url, method, query, dataType, fn) {
@@ -672,17 +750,87 @@ function ajaxFun(url, method, query, dataType, fn) {
             alert("오류가 발생했습니다: " + textStatus);
         }
     });
-}
+}const productNum = ${dto.productNum};
 
+function updateButtonState(stockNum, totalStock, optionCount) {
+    console.log("updateButtonState called with stockNum:", stockNum, "totalStock:", totalStock, "optionCount:", optionCount);
+
+    const hasStock = totalStock > 0;
+    const option1Selected = $('#option1').val() !== '';
+    const option2Selected = optionCount === 2 ? $('#option2').val() !== '' : true;
+    const allOptionsSelected = (optionCount === 0) || (option1Selected && option2Selected);
+
+    if (optionCount === 0) {
+        // 단품 상품인 경우
+        $('#singleProductButtons .btn-gift, #singleProductButtons .btn-cart, #singleProductButtons .btn-buy').toggle(hasStock);
+        $('#stockAlert').toggle(!hasStock);
+    } else {
+        // 옵션이 있는 경우
+        $('#optionButtons').show();
+        $('#stockAlert').hide();
+
+        if (allOptionsSelected) {
+            if (hasStock) {
+                $('#optionButtons').show();
+                $('#stockAlert').hide();
+            } else {
+                $('#optionButtons').hide();
+                $('#stockAlert').show();
+            }
+        }
+
+        // 옵션 2개일 때 두 번째 옵션 활성화/비활성화
+        if (optionCount === 2) {
+            $('#option2').prop('disabled', !option1Selected);
+        }
+    }
+}
+function buyQuantity(stockNum, salePrice, detailNum, detailNum2) {
+    console.log("구매 수량 함수 호출:", { stockNum, salePrice, detailNum, detailNum2 });  
+    const $productOptions = $('.product-options');
+    $productOptions.data('stock-num', stockNum);
+    let optionCount = $productOptions.data('option-count');
+    let totalStock = $productOptions.data('total-stock');
+    updateButtonState(stockNum, totalStock, optionCount);
+}
 //-------------------DOM 로드 완료 후 실행-------------------//
 $(document).ready(function () {
+    $('#optionButtons').show();
+    $('#stockAlert').hide();
+	
+    console.log("문서 로드 완료, 옵션 초기화 시작");
+    let optionCount = $('.product-options').data('option-count');
+    console.log("옵션 개수:", optionCount);
+
+    if (optionCount > 0) {
+        console.log("onOptionChange 함수 호출");
+        onOptionChange("#option1", optionCount > 1 ? "#option2" : null, ${dto.salePrice});
+        onOptionChange("#scrollOption1", optionCount > 1 ? "#scrollOption2" : null, ${dto.salePrice});
+    }
+	
+    // 여기서 optionCount를 재할당합니다 (let 키워드 제거)
+    optionCount = $('.product-options').data('option-count') || 0;
+    let stockNum = $('.product-options').data('stock-num') || 0;
+    let totalStock = $('.product-options').data('total-stock');
+    if (typeof totalStock === 'undefined' || totalStock === null) {
+        totalStock = 0;
+    }
+
+    console.log('옵션 개수:', optionCount);
+    console.log('초기 재고 번호:', stockNum);
+    console.log('초기 총 재고:', totalStock);
+
+    updateButtonState(stockNum, totalStock, optionCount);
+    
+   
+	
     // 기본 변수들 선언
     const basePrice = parseFloat($('#totalPrice').data('base-price'));
     const $scrollOptionArea = $('#scrollOptionArea');
     const $productInfo = $('.product-info');
     let productInfoBottom = 0;
-    let isOutOfStock = false;
     let lastScrollTop = $(window).scrollTop();
+    let isOutOfStock = false;
 
     // 채팅 관련 변수들
     const $chatToggle = $('#chat-toggle');
@@ -698,14 +846,6 @@ $(document).ready(function () {
         $('#mainImage').attr('src', mainImgSrc);
     });
 
-    // 가격 유효성 검사
-/*     if (isNaN(basePrice)) {
-        console.error('기본 가격이 유효하지 않습니다.');
-        return;
-    }
-    console.log('기본 가격:', basePrice); */
-
-    
     // 가격 업데이트 함수
     function updatePrice(quantity) {
         const totalPrice = basePrice * quantity;
@@ -721,20 +861,26 @@ $(document).ready(function () {
     }
 
     // 스크롤 옵션 토글
-    function toggleScrollOption() {
-        const currentScrollTop = $(window).scrollTop();
-        if (currentScrollTop === lastScrollTop) return;
+function toggleScrollOption() {
+    const currentScrollTop = $(window).scrollTop();
+    if (currentScrollTop === lastScrollTop) return;
 
-        lastScrollTop = currentScrollTop;
-        if (isOutOfStock) {
-            $scrollOptionArea.hide();
-        } else if (currentScrollTop > productInfoBottom) {
-            $scrollOptionArea.addClass('visible');
-            updateScrollInfo();
-        } else {
-            $scrollOptionArea.removeClass('visible');
-        }
+    lastScrollTop = currentScrollTop;
+    updateStockStatus(); 
+    if (isOutOfStock) {
+        $scrollOptionArea.hide();
+    } else if (currentScrollTop > productInfoBottom) {
+        $scrollOptionArea.addClass('visible');
+        updateScrollInfo();
+    } else {
+        $scrollOptionArea.removeClass('visible');
     }
+}
+    
+function updateStockStatus() {
+    let totalStock = $('.product-options').data('total-stock');
+    isOutOfStock = totalStock <= 0;
+}
 
     // 상품 정보 위치 업데이트
     function updateProductInfoBottom() {
@@ -759,135 +905,169 @@ $(document).ready(function () {
         updatePrice(quantity);
     });
 
-    const productNum = ${dto.productNum};
-    const optionCount = ${dto.optionCount};
 
-    // 옵션 선택 이벤트 핸들러
+
+ //----------------------- 옵션 변경 이벤트 처리하기----------------//
     function onOptionChange(firstOptionSelector, secondOptionSelector, salePrice) {
+        // 첫 번째 옵션 변경 시 이벤트
         $(firstOptionSelector).change(function() {
             let detailNum = $(this).val();
+            
             if (!detailNum) {
                 resetSecondOption(secondOptionSelector);
+                updateButtonState(0, 0, $('.product-options').data('option-count'));
                 return false;
             }
-
-            console.log("선택된 첫 번째 옵션:", detailNum); // 디버깅 로그
-
-            // 옵션이 1개인 경우
-            if (optionCount === 1) {
+            
+            if (secondOptionSelector) {
+                loadSecondOption(detailNum, secondOptionSelector);
+            } else {
                 let stockNum = $(this).find(":selected").data("stock-num");
+                let totalStock = $(this).find(":selected").data("total-stock");
+                updateButtonState(stockNum, totalStock, 1);
                 buyQuantity(stockNum, salePrice, detailNum, 0);
-                return false;
             }
-
-            // 옵션이 2개인 경우
-            loadSecondOption(detailNum, secondOptionSelector);
         });
 
-        $(secondOptionSelector).change(function() {
-            if (!$(this).val()) {
-                return false;
-            }
-
-            let detailNum = $(firstOptionSelector).val();
-            let detailNum2 = $(this).val();
-
-            console.log("선택된 두 번째 옵션:", detailNum2); // 디버깅 로그
-
-            let stockNum = $(this).find(":selected").data("stock-num");
-            buyQuantity(stockNum, salePrice, detailNum, detailNum2);
-        });
-    }
-
-    // 두 번째 옵션 로드 함수
-    function loadSecondOption(detailNum, secondOptionSelector) {
-        const $secondOption = $(secondOptionSelector);
-        $secondOption.find('option:gt(0)').remove();
-
-        console.log("두 번째 옵션 업데이트 시작"); // 디버깅 로그
-
-        let url = "${pageContext.request.contextPath}/product/listOptionDetailStock";
-        $.get(url, { productNum: productNum, detailNum: detailNum }, function(data) {
-            $(data).each(function(index, item) {
-                let detailNum2 = item.detailNum2;
-                let optionValue2 = item.optionValue2;
-                let stockNum = item.stockNum;
-                let totalStock = item.totalStock;
-
-                console.log("옵션 데이터:", { detailNum2, optionValue2, stockNum, totalStock }); // 디버깅 로그
-
-                if (optionValue2) {
-                    let optionText = optionValue2;
-                    if (totalStock < 5) {
-                        optionText += ` - 재고 ${totalStock}`;
-                    }
-
-                    console.log($secondOption)
-                    $secondOption.append("<option value="+detailNum2 
-                        +" data-option-value=" + optionValue2 + 
-                        " data-stock-num=" + stockNum + 
-                        " data-total-stock="+totalStock+">"
-                        + optionText 
-                    +"</option>");
+        // 두 번째 옵션 있을 때 변경 이벤트
+        if (secondOptionSelector) {
+            $(secondOptionSelector).change(function() {
+                let selectedOption = $(this).find(':selected');
+                if (!selectedOption.val() || selectedOption.prop('disabled')) {
+                    return false;
                 }
+                let detailNum = $(firstOptionSelector).val();
+                let detailNum2 = selectedOption.val();
+                let stockNum = selectedOption.data("stock-num");
+                let totalStock = selectedOption.data("total-stock");
+                updateButtonState(stockNum, totalStock, 2);
+                buyQuantity(stockNum, salePrice, detailNum, detailNum2);
             });
+        }
+    }
+//-----------------------상품 옵션 2단계 로딩 함수--------------------//
 
+// 두 번째 옵션 불러오기
+
+// 두 번째 옵션 불러오기
+function loadSecondOption(detailNum, secondOptionSelector) {
+    const $secondOption = $(secondOptionSelector);
+    $secondOption.find('option:gt(0)').remove();
+    $secondOption.prop('disabled', true);
+    let url = "${pageContext.request.contextPath}/product/listOptionDetailStock";
+    let params = { productNum: productNum, detailNum: detailNum };
+
+    $.ajax({
+        url: url,
+        type: "GET",
+        data: params,
+        dataType: "json",
+        success: function(data) {
+            if (data && data.length > 0) {
+                data.forEach(function(item) {
+                    let optionText = item.optionValue2;
+                    if (item.totalStock <= 0) {
+                        optionText += ' (품절)\u2003\🔔재입고 알림 신청';
+                    } else {
+                        optionText += " (재고 " + item.totalStock + ")";
+                    }
+                    let $option = $('<option>', {
+                        value: item.detailNum2,
+                        'data-option-value': item.optionValue2,
+                        'data-stock-num': item.stockNum,
+                        'data-total-stock': item.totalStock,
+                        text: optionText,
+                        disabled: item.totalStock <= 0
+                    });
+                    $secondOption.append($option);
+                });
+            } else {
+                $secondOption.append('<option value="">옵션 없음</option>');
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            $secondOption.append('<option value="">옵션 로드 실패</option>');
+        },
+        complete: function() {
             $secondOption.prop('disabled', false);
-        });
+        }
+    });
+}
+//옵션 텍스트 생성 함수
+/* function createOptionText(optionValue, totalStock) {
+    if (totalStock <= 0) {
+        return `${optionValue} (품절)     🔔재입고 알림 신청`;
     }
+    return `${optionValue} (재고 ${totalStock})`;
+} */
+//옵션 선택 처리 함수
+function handleOptionSelection(stockNum, totalStock, detailNum, detailNum2, salePrice, optionCount) {
+    // 버튼 상태 업데이트 (구매 가능 여부 등)
+    updateButtonState(stockNum, totalStock, optionCount);
 
-    // 두 번째 옵션 초기화 함수
-    function resetSecondOption(secondOptionSelector) {
-        const $secondOption = $(secondOptionSelector);
-        $secondOption.find('option:gt(0)').remove();
-        $secondOption.prop('disabled', true);
-    }
+    // 구매 수량 관련 정보 처리
+    buyQuantity(stockNum, salePrice, detailNum, detailNum2 || 0);
+}
 
-    // 옵션 선택 이벤트 핸들러 설정
-    onOptionChange("#option1", "#option2", ${dto.salePrice});
-    onOptionChange("#scrollOption1", "#scrollOption2", ${dto.salePrice});
-    
- 	 function buyQuantity(stockNum, salePrice, detailNum, detailNum2) {
-        console.log("구매 수량 함수 호출:", { stockNum, salePrice, detailNum, detailNum2 });  
-    }  
 
-//----------------------구매하기---------------------//
-   $('#buyNow, #scrollBuyButton').click(function () {
-        console.log('구매 버튼 클릭:', this.id);
-        
-        let stockNum, qty, option1, option2;
-        let optionCount = $('.product-options').data('option-count');
+//----------------------------
+   function showCuteToast(message) {
+       console.log("Showing cute toast:", message);
+       
+       // 토스트 본문 업데이트
+       $('#cuteToast .toast-body').html(message);
+       
+       // Bootstrap 토스트 초기화 및 표시
+       var cuteToast = new bootstrap.Toast(document.getElementById('cuteToast'));
+       cuteToast.show();
+   }
 
-        // 클릭된 버튼에 따라 옵션 값  가져옴
-        if (this.id === 'scrollBuyButton') {
-            stockNum = $('#scrollOptionArea').data('stock-num');
-            qty = $('#scrollQuantity').val();
-            option1 = $('#scrollOption1').val();
-            option2 = $('#scrollOption2').val();
-        } else {
-            stockNum = $('.product-options').data('stock-num');
-            qty = $('#quantity').val();
-            option1 = $('#option1').val();
-            option2 = $('#option2').val();
-        }
-        
-        console.log('선택된 옵션:', { stockNum, qty, option1, option2, optionCount });
+   // 재입고 알림 버튼 클릭 이벤트
+   $('#stockAlert').on('click', function() {
+       console.log("Stock alert button clicked");
+       showCuteToast('재입고되면 깨워드릴게요! 😴💤 달달한 꿈 꾸세요~');
+   });
+   
+   
+  //------------------------------------------ 구매하기
+  $('#buyNow, #scrollBuyButton').click(function () {
+      console.log('구매 버튼 클릭:', this.id);
+      
+      let stockNum, qty, option1, option2;
+      let optionCount = $('.product-options').data('option-count');
 
-        // 옵션 선택 확인
-        if (optionCount >= 1 && !option1) {
-            showToast('첫 번째 옵션을 선택해주세요.');
-            return;
-        }
-        if (optionCount == 2 && !option2) {
-            showToast('두 번째 옵션을 선택해주세요.');
-            return;
-        }
+      // 클릭된 버튼에 따라 옵션 값  가져옴
+      if (this.id === 'scrollBuyButton') {
+          stockNum = $('#scrollOptionArea').data('stock-num');
+          qty = $('#scrollQuantity').val();
+          option1 = $('#scrollOption1').val();
+          option2 = $('#scrollOption2').val();
+      } else {
+          stockNum = $('.product-options').data('stock-num');
+          qty = $('#quantity').val();
+          option1 = $('#option1').val();
+          option2 = $('#option2').val();
+      }
+      
+      console.log('선택된 옵션:', { stockNum, qty, option1, option2, optionCount });
+
+      // 옵션이 있는 경우에만 체크
+      if (optionCount > 0) {
+          if (!option1) {
+              showToast('첫 번째 옵션을 선택해주세요.');
+              return;
+          }
+          if (optionCount == 2 && !option2) {
+              showToast('두 번째 옵션을 선택해주세요.');
+              return;
+          }
+      }
         
         // stockNum이 없는 경우
-        if (!stockNum) {
+        /* if (!stockNum) {
             showToast('옵션을 모두 선택해주세요.');
             return;
-        }
+        } */
         
         // URL 생성
         let url = "${pageContext.request.contextPath}/order/payment";
@@ -917,23 +1097,44 @@ $(document).ready(function () {
         }
     }
 
-    //---------------동기화-----------------//
-    function syncOptions() {
-        console.log('syncOptions 함수 호출됨');
-        $('#scrollOption1').val($('#option1').val());
-        $('#scrollOption2').val($('#option2').val());
-        $('#scrollQuantity').val($('#quantity').val());
-        let stockNum = $('.product-options').data('stock-num');
-        $('#scrollOptionArea').data('stock-num', stockNum);
-        console.log('동기화된 값들:', {
-            option1: $('#scrollOption1').val(),
-            option2: $('#scrollOption2').val(),
-            quantity: $('#scrollQuantity').val(),
-            stockNum: stockNum
-        });
-        updateScrollInfo(); // 기존 함수 호출
+    // 동기화
+function syncOptions() {
+    console.log('syncOptions 함수 호출됨');
+    let option1Val = $('#option1').val();
+    let option2Val = $('#option2').val();
+    $('#scrollOption1').val(option1Val);
+    $('#scrollOption2').val(option2Val);
+    $('#scrollQuantity').val($('#quantity').val());
+    
+    let stockNum = 0;
+    let totalStock = 0;
+    let optionCount = $('.product-options').data('option-count');
+
+    if (optionCount === 2 && option2Val) {
+        let selectedOption = $('#option2').find(':selected');
+        stockNum = selectedOption.data('stock-num') || 0;
+        totalStock = selectedOption.data('total-stock') || 0;
+    } else if (option1Val) {
+        let selectedOption = $('#option1').find(':selected');
+        stockNum = selectedOption.data('stock-num') || 0;
+        totalStock = selectedOption.data('total-stock') || 0;
     }
     
+    $('#scrollOptionArea').data('stock-num', stockNum);
+    $('.product-options').data('stock-num', stockNum);
+    $('.product-options').data('total-stock', totalStock);
+
+    console.log('동기화된 값들:', {
+        option1: option1Val,
+        option2: option2Val,
+        quantity: $('#scrollQuantity').val(),
+        stockNum: stockNum,
+        totalStock: totalStock,
+        optionCount: optionCount
+    });
+    updateScrollInfo();
+    updateButtonState(stockNum, totalStock, optionCount);
+}
     // 메인 옵션이 변경될 때마다 동기화
     $('#option1, #option2, #quantity').change(syncOptions);
 
@@ -945,29 +1146,29 @@ $(document).ready(function () {
         $('#' + mainId).val($(this).val()).trigger('change');
     });
 
-    
- 
-  //----------------------장바구니---------------------//
+// -----------------------------장바구니-----------------------------//
 $(function() {
     $('#addToCart, #scrollAddToCart').click(function() {
         console.log('장바구니 버튼 클릭됨');
         
         let stockNum = $('.product-options').data('stock-num');
-        if (!stockNum) {
+        let qty = $('#quantity').val();
+        let optionCount = $('.product-options').data('option-count');
+        
+        if (optionCount > 0 && !stockNum) {
             showToast('옵션을 선택해주세요.');
             return;
         }
         
-        let qty = $('#quantity').val();
-        let option1 = $('#option1').val();
-        let option2 = $('#option2').val();
+        if (!stockNum) {
+            showToast('상품 정보를 불러올 수 없습니다.');
+            return;
+        }
         
         let url = "${pageContext.request.contextPath}/cart/insertCart";
         let query = {
             qty: qty,
-            stockNum: stockNum,
-            option1: option1,
-            option2: option2
+            stockNum: stockNum
         };
         
         $.ajax({
@@ -975,14 +1176,12 @@ $(function() {
             type: "post",
             data: query,
             dataType: "json",
-            
             success: function(data) {
                 let state = data.state;
                 if (state === "duplicate") {
                     showToast('이미 장바구니에 들어있는 상품입니다');
                 } else if (state === "true") {
-                    showToast('장바구니에 상품이 추가되었습니다');
-                    showConfirmToast();
+                    showCartConfirmToast();
                 } else if (state === "login") {
                     showToast('로그인이 필요합니다.');
                 } else {
@@ -990,7 +1189,7 @@ $(function() {
                 }
             },
             error: function(xhr, status, error) {
-                console.error("에지작스 오류!");
+                console.error("에이작스 오류:", error);
                 showToast("장바구니 추가 중 오류가 발생했습니다.");
             }
         });
@@ -1001,48 +1200,66 @@ $(function() {
         $('#cartToast').toast('show');
     }
 
-    function showConfirmToast() {
+    function showCartConfirmToast() {
+        $('#cartConfirmToast .toast-body').html(`
+                🛒 상품을 장바구니에 담았어요!<br>
+                지금 확인해 보시겠어요?
+            <div class="mt-2 pt-2 border-top">
+                <button type="button" class="btn btn-primary btn-sm goToCartBtn">이동</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">취소</button>
+            </div>
+        `);
         $('#cartConfirmToast').toast('show');
     }
 
-    $('#goToCartBtn').click(function() {
+    // 이벤트 위임을 사용하여 동적으로 생성된 버튼에 대한 클릭 이벤트 처리
+    $(document).on('click', '.goToCartBtn', function() {
         location.href = '${pageContext.request.contextPath}/cart/list';
     });
+    updateStockStatus();
 
-    // 옵션 변경 시 stockNum 업뎃
-    $('.requiredOption, .requiredOption2').change(function() {
-        updateStockNum();
-    });
+    // 나머지 코드...
 
-    function updateStockNum() {
-        let option1 = $('#option1').val();
-        let option2 = $('#option2').val();
-        
-        if (option1 && (option2 || $('.product-options').data('option-count') == 1)) {
-            let selectedOption = $('#option1').find(':selected');
-            let stockNum = selectedOption.data('stock-num');
-            if (!stockNum && $('#option2').length) {
-                selectedOption = $('#option2').find(':selected');
-                stockNum = selectedOption.data('stock-num');
+
+    //-----------------------------장바구니-----------------------------//
+
+	function showToast(message, isConfirm = false) {
+	    if (isConfirm) {
+	        $('#cartConfirmToast .toast-body').html(message);
+	        $('#cartConfirmToast').toast('show');
+	    } else {
+	        $('#cartToast .toast-body').text(message);
+	        $('#cartToast').toast('show');
+	    }
+	}
+        $('#goToCartBtn').click(function() {
+            location.href = '${pageContext.request.contextPath}/cart/list';
+        });
+
+        // 옵션 변경 시 stockNum 업뎃
+        $('.requiredOption, .requiredOption2').change(function() {
+        	updateStockStatus();
+            updateStockNum();
+        });
+
+        function updateStockNum() {
+            let option1 = $('#option1').val();
+            let option2 = $('#option2').val();
+            
+            if (option1 && (option2 || $('.product-options').data('option-count') == 1)) {
+                let selectedOption = $('#option1').find(':selected');
+                let stockNum = selectedOption.data('stock-num');
+                if (!stockNum && $('#option2').length) {
+                    selectedOption = $('#option2').find(':selected');
+                    stockNum = selectedOption.data('stock-num');
+                }
+                $('.product-options').data('stock-num', stockNum);
+                console.log("Updated Stock Number:", stockNum);
             }
-            $('.product-options').data('stock-num', stockNum);
-            console.log("Updated Stock Number:", stockNum);
         }
-    }
-});
-
-    // 구매 버튼
-/*     $('#buyNow, #scrollBuyButton').click(function () {
-        console.log('구매 버튼 클릭');
-    }); */
-
-    // 재입고 알림
-    $('#stockAlert').click(function () {
-        console.log('재입고 알림 신청');
-        alert('재입고 시 알림을 보내드리겠습니다.');
     });
 
-//----------------------채팅---------------------//
+//----------------------------- 채팅---------------------------//
     function addMessage(message, isUser = false) {
         const messageClass = isUser ? 'user-message' : 'agent-message';
         const messageElement = document.createElement('div');
@@ -1139,149 +1356,146 @@ $(function() {
     updateProductInfoBottom();
     updatePrice($('#quantity').val());
     
-    
-  //----------------------상품문의---------------------//
-
-function updateGuideText() {
-    var selectedType = $('input[name="qnaType"]:checked').val();
-    console.log('선택된 유형:', selectedType);
-    var guideText = '';
-    switch(selectedType) {
-        case '상품':
-            guideText = '상품에 대해 궁금하신 내용을 자세히 적어주세요.';
-            break;
-        case '배송':
-            guideText = '배송 관련 문의 사항을 적어주세요.';
-            break;
-        case '반품/교환':
-            guideText = '반품 또는 교환 사유를 자세히 적어주세요.';
-            break;
-        case '환불':
-            guideText = '환불 사유와 원하시는 처리 방법을 적어주세요.';
-            break;
-        case '기타':
-            guideText = '문의 사항을 자세히 적어주세요.';
-            break;
-        default:
-            guideText = '문의 유형을 선택해주세요.';
-    }
-    console.log('설정할 가이드 텍스트:', guideText);
-    
-    var $textarea = $('#qnaContent');
-    if ($textarea.length) {
-        $textarea.attr('placeholder', guideText);
-        console.log('가이드 텍스트 설정 완료');
-    } else {
-        console.error('#qnaContent 요소를 찾을 수 없습니다.');
-    }
-}
-
-// 문의 유형 변경 시 이벤트 핸들러
-$(document).on('change', 'input[name="qnaType"]', function() {
-    console.log('문의 유형 변경:', $(this).val());
-    updateGuideText();
-});
-
-   // 모달이 열릴 때 초기 가이드 텍스트 설정
-   $('#qnaModal').on('shown.bs.modal', function () {
-       updateGuideText();
-   });
-
-// 문의하기 버튼 클릭 시
-   $('#showQnaForm').click(function(){
-       $("#qnaModal").modal("show");
-   });
-
-   // 파일 선택 시
-   $('#qnaFile').on('change', function() {
-       var files = this.files;
-       updateFileList(files);
-   });
-
-// 파일 목록 업데이트 함수
-function updateFileList(files) {
-    $('#fileList').empty();
-    if (files.length > 5) {
-        alert('최대 5개의 파일만 선택할 수 있습니다.');
-        $('#qnaFile').val('');
-        return;
-    }
-    for (var i = 0; i < files.length; i++) {
-        $('#fileList').append('<p>' + files[i].name + ' <button type="button" class="btn btn-sm btn-danger remove-file" data-index="' + i + '">삭제</button></p>');
-    }
-}
-
-// 파일 삭제 버튼 클릭 시
-$(document).on('click', '.remove-file', function() {
-    var index = $(this).data('index');
-    var files = $('#qnaFile')[0].files;
-    var newFileList = new DataTransfer();
-    for (var i = 0; i < files.length; i++) {
-        if (i !== index) {
-            newFileList.items.add(files[i]);
+    // 상품문의
+    function updateGuideText() {
+        var selectedType = $('input[name="qnaType"]:checked').val();
+        console.log('선택된 유형:', selectedType);
+        var guideText = '';
+        switch(selectedType) {
+            case '상품':
+                guideText = '상품에 대해 궁금하신 내용을 자세히 적어주세요.';
+                break;
+            case '배송':
+                guideText = '배송 관련 문의 사항을 적어주세요.';
+                break;
+            case '반품/교환':
+                guideText = '반품 또는 교환 사유를 자세히 적어주세요.';
+                break;
+            case '환불':
+                guideText = '환불 사유와 원하시는 처리 방법을 적어주세요.';
+                break;
+            case '기타':
+                guideText = '문의 사항을 자세히 적어주세요.';
+                break;
+            default:
+                guideText = '문의 유형을 선택해주세요.';
         }
-    }
-    $('#qnaFile')[0].files = newFileList.files;
-    updateFileList($('#qnaFile')[0].files);
-});
-
-
-// 문의하기 제출 버튼 클릭 시
-$('#submitQna').click(function() {
-    console.log("문의하기 제출 버튼 클릭");
-    const f = document.getElementById('qnaForm');
-    let content = $('#qnaContent').val().trim();
-    
-    if (!content) {
-        alert("문의 내용을 입력하세요.");
-        $('#qnaContent').focus();
-        return false;
-    }
-    
-    let files = $('#qnaFile')[0].files;
-    if (files.length > 5) {
-        alert("이미지는 최대 5개까지 가능합니다.");
-        return false;
-    }
-    
-    let productNum = $('#productNum').val();
-    if (!productNum) {
-        console.error("상품 번호가 없습니다.");
-        alert("상품 정보를 불러올 수 없습니다. 페이지를 새로고침 후 다시 시도해주세요.");
-        return false;
-    }
-    
-    let formData = new FormData(f);
-    // 여러 파일 추가
-    for (let i = 0; i < files.length; i++) {
-        formData.append('file', files[i]);
-        console.log('File ' + i + ':', files[i].name);
-    }
-    
-    formData.append('secret', $('#qnaPrivate').is(':checked') ? 0 : 1);
-    formData.append('inquiryType', $('input[name=qnaType]:checked').val());
-    formData.append('productNum', productNum);
-    
-    // FormData 내용 로깅 (디버깅용)
-    for (let pair of formData.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
-    }
-    
-    let url = "${pageContext.request.contextPath}/question/write";
-    console.log("요청 URL:", url);
-    
-    ajaxFun(url, "POST", formData, "json", function(data) {
-        console.log("서버 응답:", data);
-        if(data.state === "true") {
-            f.reset();
-            $("#qnaModal").modal("hide");
-            
-            alert('문의가 성공적으로 등록되었습니다.');
+        console.log('설정할 가이드 텍스트:', guideText);
+        
+        var $textarea = $('#qnaContent');
+        if ($textarea.length) {
+            $textarea.attr('placeholder', guideText);
+            console.log('가이드 텍스트 설정 완료');
         } else {
-            alert('문의 등록에 실패했습니다. 다시 시도해주세요.');
+            console.error('#qnaContent 요소를 찾을 수 없습니다.');
         }
+    }
+
+    // 문의 유형 변경 시 이벤트 핸들러
+    $(document).on('change', 'input[name="qnaType"]', function() {
+        console.log('문의 유형 변경:', $(this).val());
+        updateGuideText();
     });
-});
+
+    // 모달이 열릴 때 초기 가이드 텍스트 설정
+    $('#qnaModal').on('shown.bs.modal', function () {
+        updateGuideText();
+    });
+
+    // 문의하기 버튼 클릭 시
+    $('#showQnaForm').click(function(){
+        $("#qnaModal").modal("show");
+    });
+
+    // 파일 선택 시
+    $('#qnaFile').on('change', function() {
+        var files = this.files;
+        updateFileList(files);
+    });
+
+    // 파일 목록 업데이트 함수
+    function updateFileList(files) {
+        $('#fileList').empty();
+        if (files.length > 5) {
+            alert('최대 5개의 파일만 선택할 수 있습니다.');
+            $('#qnaFile').val('');
+            return;
+        }
+        for (var i = 0; i < files.length; i++) {
+            $('#fileList').append('<p>' + files[i].name + ' <button type="button" class="btn btn-sm btn-danger remove-file" data-index="' + i + '">삭제</button></p>');
+        }
+    }
+
+    // 파일 삭제 버튼 클릭 시
+    $(document).on('click', '.remove-file', function() {
+        var index = $(this).data('index');
+        var files = $('#qnaFile')[0].files;
+        var newFileList = new DataTransfer();
+        for (var i = 0; i < files.length; i++) {
+            if (i !== index) {
+                newFileList.items.add(files[i]);
+            }
+        }
+        $('#qnaFile')[0].files = newFileList.files;
+        updateFileList($('#qnaFile')[0].files);
+    });
+
+    // 문의하기 제출 버튼 클릭 시
+    $('#submitQna').click(function() {
+        console.log("문의하기 제출 버튼 클릭");
+        const f = document.getElementById('qnaForm');
+        let content = $('#qnaContent').val().trim();
+        
+        if (!content) {
+            alert("문의 내용을 입력하세요.");
+            $('#qnaContent').focus();
+            return false;
+        }
+        
+        let files = $('#qnaFile')[0].files;
+        if (files.length > 5) {
+            alert("이미지는 최대 5개까지 가능합니다.");
+            return false;
+        }
+        
+        let productNum = $('#productNum').val();
+        if (!productNum) {
+            console.error("상품 번호가 없습니다.");
+            alert("상품 정보를 불러올 수 없습니다. 페이지를 새로고침 후 다시 시도해주세요.");
+            return false;
+        }
+        
+        let formData = new FormData(f);
+        // 여러 파일 추가
+        for (let i = 0; i < files.length; i++) {
+            formData.append('file', files[i]);
+            console.log('File ' + i + ':', files[i].name);
+        }
+        
+        formData.append('secret', $('#qnaPrivate').is(':checked') ? 0 : 1);
+        formData.append('inquiryType', $('input[name=qnaType]:checked').val());
+        formData.append('productNum', productNum);
+        
+        // FormData 내용 로깅 (디버깅용)
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+        
+        let url = "${pageContext.request.contextPath}/question/write";
+        console.log("요청 URL:", url);
+        
+        ajaxFun(url, "POST", formData, "json", function(data) {
+            console.log("서버 응답:", data);
+            if(data.state === "true") {
+                f.reset();
+                $("#qnaModal").modal("hide");
+                
+                alert('문의가 성공적으로 등록되었습니다.');
+            } else {
+                alert('문의 등록에 실패했습니다. 다시 시도해주세요.');
+            }
+        });
+    });
     
     listQuestion(1);
 });

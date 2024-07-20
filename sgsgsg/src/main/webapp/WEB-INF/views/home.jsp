@@ -257,29 +257,32 @@
 			</div>
 		</div>
 		<section class="featured-products">
-			<div class="inner">
-				<h2>꿀잠을 위한 필수 아이템</h2>
-				<div class="product-grid">
-					<c:forEach var="product" items="${list}">
-						<div class="product-item">
-							<a
-								href="${pageContext.request.contextPath}/product/details/${product.productNum}">
-								<img
-								src="${pageContext.request.contextPath}/uploads/product/${product.thumbnail}"
-								alt="${product.productName}"> <span class="product-info">
-									<span>${product.productName}</span> <span class="discount">
-										${product.discountRate}% <span class="price"> <fmt:formatNumber
-												value="${product.price * (1 - product.discountRate / 100)}" pattern="#,###원" />
-									</span>
-								</span> <span class="rating"> ★ ${product.score} <span
-										class="review-count">리뷰 ${product.reviewCount}</span>
-								</span>
-							</span>
-							</a>
-						</div>
-					</c:forEach>
-				</div>
-			</div>
+		    <div class="inner">
+		        <h2>꿀잠을 위한 필수 아이템</h2>
+		        <div class="product-grid">
+		            <c:forEach var="product" items="${list}">
+		                <div class="product-item">
+		                    <a href="${pageContext.request.contextPath}/product/details?productNum=${product.productNum}">
+		                        <img src="${pageContext.request.contextPath}/uploads/product/${product.thumbnail}"
+		                             alt="${product.productName}">
+		                        <span class="product-info">
+		                            <span>${product.productName}</span>
+		                            <span class="discount">
+		                                ${product.discountRate}%
+		                                <span class="price">
+		                                    <fmt:formatNumber value="${product.price * (1 - product.discountRate / 100)}" pattern="#,###원" />
+		                                </span>
+		                            </span>
+		                            <span class="rating">
+		                                ★ ${product.score}
+		                                <span class="review-count">리뷰 ${product.reviewCount}</span>
+		                            </span>
+		                        </span>
+		                    </a>
+		                </div>
+		            </c:forEach>
+		        </div>
+		    </div>
 		</section>
 	</div>
 

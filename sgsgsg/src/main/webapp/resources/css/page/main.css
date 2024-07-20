@@ -330,7 +330,7 @@ margin: 0 auto;
 /* -------------   기존 CSS 유지---------------- */
 
 /* 추가 및 수정 CSS */
-.product-item {
+/* .product-item {
     width: calc(25% - 20px);
     height: 450px;
     margin-bottom: 40px;
@@ -338,7 +338,7 @@ margin: 0 auto;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-}
+} */
 
 .product-item img {
     width: 100%;

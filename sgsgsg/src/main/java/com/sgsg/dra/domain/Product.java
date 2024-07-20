@@ -24,6 +24,17 @@ public class Product {
 	private int optionCount;
 	private String content;
 	private String thumbnail;
+	
+	@Override
+	public String toString() {
+	    return "ProductDTO{" +
+	           "productNum=" + productNum +
+	           ", productName='" + productName + '\'' +
+	           ", optionCount=" + optionCount +
+	           ", stockNum=" + stockNum +
+	           ", totalStock=" + totalStock +
+	           '}';
+	}
 
 	
 	public String getThumbnail() {
@@ -46,9 +57,9 @@ public class Product {
 	private String optionName2;
 	private long parentNum;
 	
-	private long detailNum;
+	private Long detailNum;
 	private String optionValue;
-	private long detailNum2;
+	private Long detailNum2;
 	private String optionValue2;
 	
 	// 재고
@@ -288,11 +299,11 @@ public class Product {
 		this.parentNum = parentNum;
 	}
 
-	public long getDetailNum() {
+	public Long getDetailNum() {
 		return detailNum;
 	}
 
-	public void setDetailNum(long detailNum) {
+	public void setDetailNum(Long detailNum) {
 		this.detailNum = detailNum;
 	}
 
@@ -304,11 +315,11 @@ public class Product {
 		this.optionValue = optionValue;
 	}
 
-	public long getDetailNum2() {
+	public Long getDetailNum2() {
 		return detailNum2;
 	}
 
-	public void setDetailNum2(long detailNum2) {
+	public void setDetailNum2(Long detailNum2) {
 		this.detailNum2 = detailNum2;
 	}
 
