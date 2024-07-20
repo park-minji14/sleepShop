@@ -89,7 +89,7 @@
 	</insert>
 	
 	<!-- 배송상태 변경 -->
-	<update id="updateDeliveryState" parameterType="mao">
+	<update id="updateDeliveryState" parameterType="map">
 		update DELIVERY set status_code=#{status_code} where DELIVERYNUM = #{deliveryNum}
 	</update>
 	
