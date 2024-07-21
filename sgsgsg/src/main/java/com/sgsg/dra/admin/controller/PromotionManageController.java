@@ -144,9 +144,9 @@ public class PromotionManageController {
 		}
 
 		PromotionManage dto = service.findById(num);
-		if (dto == null) {
+		/*if (dto == null) {
 			return "redirect:/promotion/" + category + "/list?" + query;
-		}
+		}*/
 		
 		// 이전 글, 다음 글
 		Map<String, Object> map = new HashMap<String, Object>();

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sgsg.dra.admin.mapper.promotionManageMapper">
+<mapper namespace="com.sgsg.dra.admin.mapper.PromotionManageMapper">
 	<insert id="insertEvent" parameterType="com.sgsg.dra.admin.domain.PromotionManage">
 		INSERT INTO event(event_num, userId, title, content, created_date,
 			startDate, endDate, winningDate, 
@@ -65,8 +65,7 @@
 	
 	<!-- 글 리스트 -->
 	<select id="listEvent" parameterType="map" resultType="com.sgsg.dra.admin.domain.PromotionManage">
-		SELECT e.num, title, showEvent,
-		   TO_CHAR(e.created_date, 'YYYY-MM-DD') created_date,
+		SELECT e.event_num, e.title, e.showEvent, e.created_date,
 		   TO_CHAR(startDate,'YYYY-MM-DD HH24:MI') startDate,
 		   TO_CHAR(endDate, 'YYYY-MM-DD HH24:MI') endDate, 
 		   TO_CHAR(winningDate, 'YYYY-MM-DD HH24:MI') winningDate, winnerNumber
@@ -82,7 +81,7 @@
 				SELECT event_num, COUNT(*) applyCount
 				FROM eventTakers
 				GROUP BY event_num
-			) t ON e.num = t.num
+			) t ON e.event_num = t.event_num
 		</if>
 		<if test="category == 'winner'">
 			LEFT OUTER JOIN (
@@ -108,8 +107,7 @@
 	
 	<!-- 글보기 -->
 	<select id="findById" parameterType="Long" resultType="com.sgsg.dra.admin.domain.PromotionManage">
-		SELECT e.event_num, e.userId, userName, title, content,
-			TO_CHAR(e.created_date, 'YYYY-MM-DD') created_date,
+		SELECT e.event_num, e.userId, e.title, e.content, e.created_date,
 			TO_CHAR(startDate,'YYYY-MM-DD HH24:MI') startDate,
 			TO_CHAR(endDate, 'YYYY-MM-DD HH24:MI') endDate, 
 			TO_CHAR(winningDate, 'YYYY-MM-DD HH24:MI') winningDate, 
@@ -186,7 +184,7 @@
 		FROM eventTakers e
 		JOIN member1 m ON e.userId = m.userId
 		WHERE event_num = #{event_num}
-		ORDER BY created_date ASC
+		ORDER BY reg_date ASC
 	</select>
 	
 	

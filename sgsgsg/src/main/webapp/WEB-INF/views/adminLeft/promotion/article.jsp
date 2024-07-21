@@ -73,10 +73,10 @@ function deleteOk() {
 				<tbody>
 					<tr>
 						<td width="50%" align="left">
-							작성자 : ${dto.userName}
+							작성자 : ${dto.userId}
 						</td>
 						<td width="50%" align="right">
-							조회 / 출력여부 : ${dto.hitCount} / ${dto.showEvent == 1 ? "표시" : "숨김" }
+							출력여부 : ${dto.showEvent == 1 ? "표시" : "숨김" }
 						</td>
 					</tr>
 	
@@ -128,7 +128,7 @@ function deleteOk() {
 						<td colspan="2">
 							이전글 :
 							<c:if test="${not empty prevDto}">
-								<a href="${pageContext.request.contextPath}/adminManagement/promotionManage/${category}/article?${query}&num=${prevDto.num}">${prevDto.title}</a>
+								<a href="${pageContext.request.contextPath}/adminManagement/promotionManage/${category}/article?${query}&num=${prevDto.event_num}">${prevDto.title}</a>
 							</c:if>
 						</td>
 					</tr>
@@ -137,7 +137,7 @@ function deleteOk() {
 						<td colspan="2">
 							다음글 :
 							<c:if test="${not empty nextDto}">
-								<a href="${pageContext.request.contextPath}/adminManagement/promotionManage/${category}/article?${query}&num=${nextDto.num}">${nextDto.title}</a>
+								<a href="${pageContext.request.contextPath}/adminManagement/promotionManage/${category}/article?${query}&num=${nextDto.event_num}">${nextDto.title}</a>
 							</c:if>
 						</td>
 					</tr>
@@ -149,7 +149,7 @@ function deleteOk() {
 					<td width="50%" align="left">
 						<c:choose>
 							<c:when test="${sessionScope.member.userId == dto.userId}">
-				    			<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/adminManagement/promotionManage/${category}/update?num=${dto.num}&page=${page}';">수정</button>
+				    			<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/adminManagement/promotionManage/${category}/update?num=${dto.event_num}&page=${page}';">수정</button>
 				    		</c:when>
 				    		<c:otherwise>
 				    			<button type="button" class="btn" disabled>수정</button>
@@ -332,7 +332,7 @@ $(function(){
 			<table class="table">
 				<tr>
 					<td align="center">
-						<input type="hidden" name="num" value="${dto.num}">
+						<input type="hidden" name="num" value="${dto.event_num}">
 						<input type="hidden" name="winnerNumber" value="${dto.winnerNumber}">
 						<input type="hidden" name="page" value="${page}">
 						<button type="button" class="btn btnSendWinner">당첨자 발표</button>

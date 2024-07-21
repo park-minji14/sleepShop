@@ -5,7 +5,6 @@
 <script>
 
 
-
 </script>
 
 <div id="tab-content" style="padding: 15px 10px 5px; clear: both;">
@@ -36,7 +35,7 @@
 				<tr> 
 					<td>${dataCount - (page-1) * size - status.index}</td>
 					<td class="left">
-						<a href="${articleUrl}&num=${dto.num}">${dto.title}</a>
+						<a href="${articleUrl}&num=${dto.event_num}">${dto.title}</a>
 					</td>
 					<td>${dto.startDate}</td>
 					<td>${dto.endDate}</td>
