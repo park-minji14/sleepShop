@@ -7,6 +7,7 @@
 	href="${pageContext.request.contextPath}/resources/css/page/main.css"
 	type="text/css">
 
+
 <div class="main-content">
 	<section class="main-banner">
 		<div class="swiper-container">
@@ -254,9 +255,12 @@
 					<div class="product-item">
 						<a
 							href="${pageContext.request.contextPath}/product/details?productNum=${product.productNum}">
-							<img
-							src="${pageContext.request.contextPath}/uploads/product/${product.thumbnail}"
-							alt="${product.productName}"> <span class="product-info">
+							<div class="image-wrapper">
+							    <img src="${pageContext.request.contextPath}/uploads/product/${product.thumbnail}"
+							         alt="${product.productName}">
+							    <div class="bookmark" data-product-id="${product.productNum}"></div>
+							</div>
+							 <span class="product-info">
 								<span>${product.productName}</span> <span class="discount">
 									${product.discountRate}% <span class="price"> <fmt:formatNumber
 											value="${product.price * (1 - product.discountRate / 100)}"
@@ -275,6 +279,26 @@
 </div>
 
 <script type="text/javascript">
+
+$(document).ready(function() {
+    $('.bookmark').click(function(e) {
+        e.preventDefault(); // 기본 동작 방지
+        e.stopPropagation(); // 이벤트 버블링 방지
+
+        var $bookmark = $(this);
+        var productId = $bookmark.data('product-id');
+
+        $bookmark.toggleClass('active');
+
+        if ($bookmark.hasClass('active')) { 
+            console.log('Bookmark added for product ID:', productId);
+        } else {
+           
+            console.log('Bookmark removed for product ID:', productId);
+        }
+    });
+});
+
 	document.addEventListener('DOMContentLoaded', () => {
 	    initProductSlider();
 	    initSwiper();
