@@ -16,18 +16,24 @@ public class ExpertApplyServiceImpl implements ExpertApplyService {
     private ExpertApplyMapper expertApplyMapper;
 
     @Override
-    public void applyExpert(ExpertApply expertApply) {
-        expertApplyMapper.insertExpertApply(expertApply);
+    public void insertExpertApply(ExpertApply dto) throws Exception {
+    	try {
+    		expertApplyMapper.insertExpertApply(dto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
     }
 
     @Override
-    public ExpertApply getExpertApplyById(long apply_num) {
-        return expertApplyMapper.selectExpertApplyById(apply_num);
+    public ExpertApply selectExpertApply(long apply_num) {
+        return expertApplyMapper.selectExpertApply(apply_num);
     }
 
     @Override
-    public List<ExpertApply> getAllExpertApplies() {
-        return expertApplyMapper.selectAllExpertApplies();
+    public List<ExpertApply> listExpertApply() {
+        return expertApplyMapper.listExpertApply();
     }
 
 

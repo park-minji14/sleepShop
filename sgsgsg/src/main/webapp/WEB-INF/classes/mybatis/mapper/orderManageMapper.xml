@@ -35,6 +35,7 @@
             </if>
 		</where>
 		ORDER BY ORDERNUM DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 	</select>
 	
 	<select id="dataCount" parameterType="map" resultType="Integer">
@@ -48,6 +49,7 @@
 		</where>
 	</select>
 	
+	<!-- 주문 정보 -->
 	<select id="findById" parameterType="String" resultType="com.sgsg.dra.domain.Order">
 		SELECT PRODUCTORDERNAME, po.ORDERNUM, po.USERID, m.USERNAME, ISSUE_ID,
 			TO_CHAR(ORDERDATE, 'YYYY-MM-DD HH24:MI:SS') ORDERDATE, TOTALMONEY, USEDSAVED, 
@@ -61,6 +63,7 @@
         WHERE po.ORDERNUM = #{orderNum}
 	</select>
 	
+	<!-- 주문 상세 정보 -->
 	<select id="findByOrderDetails" parameterType="String" resultType="com.sgsg.dra.domain.Order">
 		SELECT od.orderNum, od.orderDetailNum, od.qty, od.price, od.salePrice, od.productMoney, od.savedMoney,
 			ps.productNum, ps.detailNum, ps.detailNum2, p.productName, p.optionCount,
@@ -73,11 +76,60 @@
 		WHERE od.orderNum = #{orderNum}
 	</select>
 	
+	<!-- 배송사 목록 -->
 	<select id="selectDeliveryCompanyList" resultType="com.sgsg.dra.domain.Order">
 		SELECT DELIVERYNAME, COMPANYNUM
 		FROM DELIVERYCOMPANY
 	</select>
 	
-	<!-- DELIVERYNUM, DELIVERYNAME, INVOICENUMBER, STATUS_CODE, COMPANYNUM -->
+	<!-- 배송 등록 -->
+	<insert id="insertDelivery" parameterType="map">
+		INSERT INTO DELIVERY(DELIVERYNUM, orderNum, companyNum, DELIVERYNAME, INVOICENUMBER, STATUS_CODE)
+			VALUES(DELIVERY_seq.nextval, #{orderNum}, #{companyNum}, #{deliveryName}, #{invoiceNumber}, #{status_code})
+	</insert>
+	
+	<!-- 배송상태 변경 -->
+	<update id="updateDeliveryState" parameterType="map">
+		update DELIVERY set status_code=#{status_code} where DELIVERYNUM = #{deliveryNum}
+	</update>
+	
+	<!-- 주문 상태 변경 -->
+	<update id="updateOrderState" parameterType="map">
+		update productOrder set ORDERSTATE=#{orderState}, ORDERSTATEDATE=sysdate, CANCELAMOUNT=#{cancelAmount, jdbcType=INTEGER} where orderNum=#{orderNum}
+	</update>
+	
+	<!-- 판매취소 -->
+	<!-- 판매취소는 사용자 요청시 인서트? -->
+	<insert id="canceleOrder" >
+		insert into ORDER_CANCELLATION(orderNum, CANCEL_DATE, CANCEL_REASON, PROCESS_DATE)
+			values(#{orderNum}, #{cancel_date}, #{cancel_reason}, #{process_date})
+	</insert>
+	
+	<!-- 판매 취소시 사용한 포인트 돌려주기 -->
+	<insert id="canceleUesdPoint" parameterType="map">
+		INSERT INTO POINT_HISTORY (
+			NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, USERID, orderNum
+		)
+		SELECT
+			POINT_HISTORY_SEQ.NEXTVAL,
+			-(SELECT CHANGE_POINTS
+			 FROM POINT_HISTORY
+			 WHERE orderNum = #{orderNum}),
+			#{reason},
+			SYSDATE,
+			COALESCE((
+				SELECT REMAIN_POINTS
+				FROM POINT_HISTORY
+				WHERE USERID = #{userId}
+				ORDER BY CHANGE_DATE DESC
+				FETCH FIRST 1 ROWS ONLY
+			), 0) - (SELECT CHANGE_POINTS
+					FROM POINT_HISTORY
+					WHERE orderNum = #{orderNum}),
+			#{userId},
+			#{orderNum}
+		FROM DUAL
+	</insert>
+	
 	
 </mapper>

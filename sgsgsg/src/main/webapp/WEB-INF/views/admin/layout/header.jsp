@@ -147,7 +147,7 @@ body {
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/promotionManage/main">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/promotionManage/list">
                         <img src="https://img.icons8.com/ios/24/ffffff/gift.png" alt="프로모션" class="me-1">
                         프로모션 및 이벤트
                     </a>

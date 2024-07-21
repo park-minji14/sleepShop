@@ -11,6 +11,7 @@ import com.sgsg.dra.domain.Order;
 @Mapper
 public interface OrderManageMapper {
 	public List<Order> listOrder(Map<String, Object> map) throws SQLException;
+	public int dataCount(Map<String, Object> map) throws SQLException;
 	
 	public Order findById(String orderNum) throws SQLException;
 	public List<Order> findByOrderDetails(String orderNum) throws SQLException;

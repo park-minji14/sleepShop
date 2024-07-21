@@ -7,8 +7,10 @@ import java.util.List;
 
 @Mapper
 public interface ExpertApplyMapper {
-    void insertExpertApply(ExpertApply expertApply);
-    ExpertApply selectExpertApplyById(long apply_num);
-    List<ExpertApply> selectAllExpertApplies();
-    void deleteExpertApply(long apply_num);
+	public void insertExpertApply(ExpertApply dto) throws Exception;
+	
+    public ExpertApply selectExpertApply(long apply_num);
+    public List<ExpertApply> listExpertApply();
+    
+    public void deleteExpertApply(long apply_num);
 }

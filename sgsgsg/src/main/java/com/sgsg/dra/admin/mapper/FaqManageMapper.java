@@ -20,6 +20,12 @@ public interface FaqManageMapper {
     // FAQ 삭제
 	public void deleteFAQ(Long faqNum) throws SQLException;
 
-    // FAQ 리스트 출력
+    // FAQ 전체 리스트 출력
+	public List<Faq> listAllFAQ(Map<String, Object> map) throws SQLException;
+	
 	public List<Faq> listFAQ(Map<String, Object> map) throws SQLException;
+	
+	// 특정 ID의 FAQ 가져오기
+    public Faq getFaqById(Long faqNum) throws SQLException;
+	
 }

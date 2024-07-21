@@ -7,10 +7,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("adminManagement/promotionManage/*")
 public class PromotionManageController {
 
-	@RequestMapping("main")
+	@RequestMapping("list")
 	public String promotionManage() {
 
-		return ".adminLeft.promotion.main";
+		return ".adminLeft.promotion.list";
+	}
+	
+	
+	@RequestMapping("write")
+	public String promotionManageWrite() {
+
+		return ".adminLeft.promotion.write";
 	}
 
 }

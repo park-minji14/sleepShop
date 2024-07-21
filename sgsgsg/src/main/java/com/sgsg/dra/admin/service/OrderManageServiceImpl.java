@@ -30,6 +30,18 @@ public class OrderManageServiceImpl implements OrderManageService {
 		}
 		return orderList;
 	}
+	
+	@Override
+	public int dataCount(Map<String, Object> map) throws Exception {
+		int result = 0;
+		try {
+			result = mapper.dataCount(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 
 	@Override
 	public Order findById(String orderNum) throws SQLException {

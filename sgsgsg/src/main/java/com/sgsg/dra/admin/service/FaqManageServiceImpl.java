@@ -16,10 +16,9 @@ public class FaqManageServiceImpl implements FaqManageService {
     @Autowired
     private FaqManageMapper mapper;
 
-
-
     @Override
     public void insertFAQ(Faq faq) throws SQLException {
+
         try {
             mapper.insertFAQ(faq);
         } catch (Exception e) {
@@ -53,5 +52,25 @@ public class FaqManageServiceImpl implements FaqManageService {
 	        e.printStackTrace();
 	        throw e;
 	    }
+	}
+
+	@Override
+	public List<Faq> listAllFAQ(Map<String, Object> map) throws Exception {
+		try {
+			return mapper.listAllFAQ(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	@Override
+	public Faq getFaqById(Long faqNum) throws Exception {
+		try {
+			return mapper.getFaqById(faqNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 }

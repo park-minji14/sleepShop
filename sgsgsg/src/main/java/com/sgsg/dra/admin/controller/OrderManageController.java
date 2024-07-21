@@ -1,6 +1,7 @@
 package com.sgsg.dra.admin.controller;
 
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sgsg.dra.admin.service.OrderManageService;
+import com.sgsg.dra.common.MyUtil;
 import com.sgsg.dra.domain.Order;
 
 @Controller
@@ -24,6 +26,9 @@ public class OrderManageController {
 	
 	@Autowired
 	private OrderManageService service;
+	
+	@Autowired
+	private MyUtil myUtil;
 	
 	@RequestMapping("order")
 	public String orderManage(
@@ -47,10 +52,44 @@ public class OrderManageController {
 			map.put("schType", schType);
 			map.put("kwd", kwd);
 			
+			dataCount = service.dataCount(map);
+			total_page = myUtil.pageCount(dataCount, size);
+			if(current_page > total_page) {
+				current_page = total_page;
+			}
+			
+			int offset = (current_page - 1) * size;
+			if(offset <0) offset = 0;
+			
+			map.put("offset", offset);
+			map.put("size", size);
+			
 			List<Order> orderList = service.listOrder(map);
+			
+			String cp = req.getContextPath();
+			String listUrl = cp + "/adminManagement/orderManage/order";
+			String articleUrl = cp + "/adminManagement/orderManage/order/detail?page="+current_page;
+			String query="";
+			if(kwd.length() != 0) {
+				query = "schType=" + schType + "&kwd=" + URLEncoder.encode(kwd, "utf-8");
+			}
+			if(query.length() != 0) {
+				listUrl += "?"+ query;
+				articleUrl += "&" + query;
+			}
+			
+			String paging = myUtil.paging(current_page, total_page, listUrl);
 			
 			model.addAttribute("schType", schType);
 			model.addAttribute("kwd", kwd);
+			
+			model.addAttribute("dataCount", dataCount);
+			model.addAttribute("page", current_page);
+			model.addAttribute("total_page", total_page);
+			model.addAttribute("size", size);
+			
+			model.addAttribute("paging", paging);
+			model.addAttribute("articleUrl", articleUrl);
 			
 			model.addAttribute("orderList", orderList);
 			
@@ -96,6 +135,8 @@ public class OrderManageController {
 		
 		return map;
 	}
+	
+	
 	
 	
 	@RequestMapping("delivery")

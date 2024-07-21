@@ -97,7 +97,7 @@
 		</div>
 		<div class="mt-3 p-3">
 			
-			<table class="table board-list order-detail-list">
+			<table class="table board-list order-detail-list text-center">
 				<thead class="table-light">
 					<tr>
 						<th width="80">상세번호</th>
@@ -133,20 +133,20 @@
 							<td>${order.orderState == 1? "상품준비중":order.orderStateInfo}</td>
 							<td style="display: none;">
 								<span class="orderDetailStatus-update" 
-										data-orderNum="${order.orderNum}" 
-										data-orderState="${order.orderState}"
-										data-usedSaved="${order.usedSaved}"
-										data-userId="${order.userId}"
-										data-payment="${order.payment}"
-										data-orderDate="${order.orderDate}"
-										data-productMoney="${dto.productMoney}"
-										data-orderDetailNum="${dto.orderDetailNum}"
-										data-productNum="${dto.productNum}"
-										data-optionCount="${dto.optionCount}"
-										data-detailNum="${dto.detailNum}"
-										data-detailNum2="${dto.detailNum2}"
-										data-savedMoney="${dto.savedMoney}"
-										data-qty="${dto.qty}">수정</span>
+									data-orderNum="${order.orderNum}" 
+									data-orderState="${order.orderState}"
+									data-usedSaved="${order.usedSaved}"
+									data-userId="${order.userId}"
+									data-payment="${order.payment}"
+									data-orderDate="${order.orderDate}"
+									data-productMoney="${dto.productMoney}"
+									data-orderDetailNum="${dto.orderDetailNum}"
+									data-productNum="${dto.productNum}"
+									data-optionCount="${dto.optionCount}"
+									data-detailNum="${dto.detailNum}"
+									data-detailNum2="${dto.detailNum2}"
+									data-savedMoney="${dto.savedMoney}"
+									data-qty="${dto.qty}">수정</span>
 							</td>
 						</tr>
 					</c:forEach>

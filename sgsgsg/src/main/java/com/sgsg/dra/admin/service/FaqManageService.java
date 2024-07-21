@@ -14,4 +14,9 @@ public interface FaqManageService {
     public void updateFAQ(Faq faq) throws Exception;
     
     public void deleteFAQ(Long faqNum) throws Exception;
+    
+    public List<Faq> listAllFAQ(Map<String, Object> map) throws Exception;
+    
+    public Faq getFaqById(Long faqNum) throws Exception;
+    
 }

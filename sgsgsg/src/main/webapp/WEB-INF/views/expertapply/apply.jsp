@@ -257,13 +257,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			</div>
 		</div>
 		
-		
+	<form id="expertapply" action="${pageContext.request.contextPath}/expertapply/apply" method="post">
 		<div id="slide2" class="slide active show-slide">
 			<div class="apply-q-style">
 				본인의 소개를 간단하게 작성해보세요.
 			</div>
 			<div class="apply-a-style">
-				<input type="text" name="apply-answer2" class="input-style" value="${dto.content1}">  
+				<input type="text" name="content1" class="input-style" value="${dto.content1}">  
 			</div>
 		</div>
 		
@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 				경력을 입력하세요.
 			</div>
 			<div class="apply-a-style">
-				<input type="text" name="apply-answer3" class="input-style" value="${dto.content2}" placeholder="예) xx수면의원 n년 근무 등">  
+				<input type="text" name="content2" class="input-style" value="${dto.content2}" placeholder="예) xx수면의원 n년 근무 등">  
 			</div>
 		</div>
 		
@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 				취득 자격증을 입력하세요.
 			</div>
 			<div class="apply-a-style">
-				<input type="text" name="apply-answer4" class="input-style" value="${dto.content3}" placeholder="예) 심리운동사자격증 등">  
+				<input type="text" name="content3" class="input-style" value="${dto.content3}" placeholder="예) 심리운동사자격증 등">  
 			</div>
 		</div>
 		
@@ -290,7 +290,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 				질문자에 대한 자신의 답변 방식을 간단하게 말해보세요.
 			</div>
 			<div class="apply-a-style">
-				<input type="text" name="apply-answer5" class="input-style" value="${dto.content4}" placeholder="예) 간단명료하게 요점만 설명한다 등">  
+				<input type="text" name="content4" class="input-style" value="${dto.content4}" placeholder="예) 간단명료하게 요점만 설명한다 등">  
 			</div>
 		</div>
 		
@@ -299,19 +299,26 @@ document.addEventListener('DOMContentLoaded', (event) => {
 				수면클리닉 전문가가 된 후 향후 계획을 말해보세요.
 			</div>
 			<div class="apply-a-style">
-				<input type="text" name="apply-answer6" class="input-style" value="${dto.content5}">  
+				<input type="text" name="content5" class="input-style" value="${dto.content5}">  
 			</div>
 		</div>
 		
 		<div class="navigation btn-container">
-			<button class="apply-btn" id="prev-btn" onclick="prevSlide()" style="margin: 0 10px;">이전</button> 
-			<button class="apply-btn" id="next-btn" onclick="nextSlide()" style="margin: 0 10px;">다음</button>
-			<button class="apply-submit-btn" id="submit-btn" style="display: none; margin: 0 10px;" onclick="location.href='${pageContext.request.contextPath}/expertapply/submit';">제출하기</button>
+			<button type="button" class="apply-btn" id="prev-btn" onclick="prevSlide()" style="margin: 0 10px;">이전</button> 
+			<button type="button" class="apply-btn" id="next-btn" onclick="nextSlide()" style="margin: 0 10px;">다음</button>
+			<button type="submit" class="apply-submit-btn" id="submit-btn" style="display: none; margin: 0 10px;">제출하기</button>
 		</div>
+	</form>
 			
 		
 	</div>
 </div>
 
+
+
 <div style="height: 200px;"></div>
+
+
+
+
 <br><br><br><br><hr>
