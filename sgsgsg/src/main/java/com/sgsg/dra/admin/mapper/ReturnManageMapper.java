@@ -11,6 +11,7 @@ import com.sgsg.dra.domain.Return;
 @Mapper
 public interface ReturnManageMapper {
 	public void insertReturnRequest(Map<String, Object> map) throws SQLException;
-	public List<Return> listReturnRequest() throws SQLException;
+	public List<Return> listReturnRequest(Map<String, Object> map) throws SQLException;
+	public int dataCount(Map<String, Object> map) throws SQLException;
 	
 }

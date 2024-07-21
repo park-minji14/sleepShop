@@ -115,7 +115,7 @@ public class OrderManageController {
 		model.addAttribute("listDetail", listDetail);
 		model.addAttribute("deliveryCompanyList", deliveryCompanyList);
 		
-		return ".adminLeft.order.detail";
+		return ".adminLeft.order.orderDetail";
 	}
 	
 	@GetMapping("order/deliveryList")

@@ -34,6 +34,10 @@ public class Return {
 	private String optionName;
 	private String optionName2;
 	
+	private int count;
+	private String userId;
+	private String userName;
+	private String detailStatusInfo;
 	
 	public long getReturn_exchange_num() {
 		return return_exchange_num;
@@ -208,6 +212,30 @@ public class Return {
 	}
 	public void setOptionName2(String optionName2) {
 		this.optionName2 = optionName2;
+	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getDetailStatusInfo() {
+		return detailStatusInfo;
+	}
+	public void setDetailStatusInfo(String detailStatusInfo) {
+		this.detailStatusInfo = detailStatusInfo;
 	}
 
 	

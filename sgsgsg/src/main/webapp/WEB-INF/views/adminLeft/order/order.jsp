@@ -25,7 +25,7 @@
 				</div>
     		</div>
     		<div class="d-flex justify-content-end">
-                <button type="reset" class="btn btn-secondary me-2">초기화</button>
+                <button type="reset" class="btn btn-secondary me-2" onclick="location.href='${pageContext.request.contextPath}/adminManagement/orderManage/order'">초기화</button>
                 <button type="submit" class="btn btn-primary">검색</button>
             </div>
     	</div>

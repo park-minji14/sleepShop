@@ -3,6 +3,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sgsg.dra.admin.mapper.ReturnManageMapper">
 
+	<sql id="where-list">
+		<choose>
+			<when test="schType == 'orderNum' ">
+			   ( po.orderNum  = #{kwd} )
+			</when>
+			<when test="schType == 'invoiceNumber' ">
+			   ( invoiceNumber  = #{kwd} )
+			</when>
+			<when test="schType == 'orderDate' ">
+			   ( TO_CHAR(orderDate, 'YYYYMMDD') = #{kwd}
+		          OR TO_CHAR(orderDate, 'YYYY-MM-DD') = #{kwd} )
+			</when>
+			<when test="schType == 'userName'">
+			    INSTR(userName, #{kwd}) &gt; 0
+			</when>
+		</choose>
+	</sql>
+	
 	<!--  -->
 	<insert id="insertReturnRequest" parameterType="map">
 		INSERT INTO RETURN_REQUEST(RETURN_EXCHANGE_NUM, REQUEST_TYPE, REQUEST_DATE, REFUND_AMOUNT,
@@ -12,17 +30,48 @@
 	</insert>
 	
 	<!-- 요청 리스트 -->
-	<select id="listReturnRequest" resultType="com.sgsg.dra.domain.Return">
+	<select id="listReturnRequest" resultType="com.sgsg.dra.domain.Return" parameterType="map">
 		SELECT rr.RETURN_EXCHANGE_NUM, REQUEST_TYPE, REQUEST_DATE, DETAIL_STATUS, rr.ORDERDETAILNUM, REFUND_AMOUNT,
 			REQUEST_REASON, INSPECTION_RESULT, od.ORDERNUM, QTY, ps.STOCKNUM, ps.PRODUCTNUM, PRODUCTNAME, 
 			od.PRICE, od.SALEPRICE, od.PRODUCTMONEY, od.SAVEDMONEY, ps.DETAILNUM, ps.DETAILNUM2, p.OPTIONCOUNT,
-			d1.OPTIONVALUE, d1.OPTIONNUM, d2.OPTIONVALUE as OPTIONVALUE2, d2.OPTIONNUM as OPTIONNUM2
+			d1.OPTIONVALUE, d1.OPTIONNUM, d2.OPTIONVALUE as OPTIONVALUE2, d2.OPTIONNUM as OPTIONNUM2,
+            po.userId, userName, recipientName
 		FROM RETURN_REQUEST rr
 		LEFT OUTER JOIN orderDetail od ON rr.ORDERDETAILNUM = od.ORDERDETAILNUM
 		JOIN productStock ps ON od.stockNum = ps.stockNum
 		JOIN product p ON ps.productNum = p.productNum
 		LEFT OUTER JOIN optionDetail d1 ON ps.detailNum = d1.detailNum
 		LEFT OUTER JOIN optionDetail d2 ON ps.detailNum2 = d2.detailNum
+		LEFT OUTER JOIN productOrder po ON po.ORDERNUM = od.ORDERNUM
+		LEFT OUTER JOIN member1 m ON po.USERID = m.USERID
+		<where>
+			<if test="kwd != null and kwd != '' ">
+                <include refid="where-list"/>
+            </if>
+		</where>
+		ORDER BY rr.RETURN_EXCHANGE_NUM DESC
+		offset #{offset} rows fetch first #{size} rows only
 	</select>
+	
+	<!-- 요청 개수 -->
+	<select id="dataCount" resultType="Integer" parameterType="map">
+		SELECT nvl(count(*), 0) count
+		FROM RETURN_REQUEST rr
+		LEFT OUTER JOIN orderDetail od ON rr.ORDERDETAILNUM = od.ORDERDETAILNUM
+		JOIN productStock ps ON od.stockNum = ps.stockNum
+		JOIN product p ON ps.productNum = p.productNum
+		LEFT OUTER JOIN optionDetail d1 ON ps.detailNum = d1.detailNum
+		LEFT OUTER JOIN optionDetail d2 ON ps.detailNum2 = d2.detailNum
+		LEFT OUTER JOIN productOrder po ON po.ORDERNUM = od.ORDERNUM
+		LEFT OUTER JOIN member1 m ON po.USERID = m.USERID
+		<where>
+			<if test="kwd != null and kwd != '' ">
+                <include refid="where-list"/>
+            </if>
+		</where>
+	</select>
+	
 	<!-- 요청 상세 -->
+	
+	
 </mapper>

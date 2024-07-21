@@ -100,16 +100,16 @@
 			<table class="table board-list order-detail-list text-center">
 				<thead class="table-light">
 					<tr>
-						<th width="80">상세번호</th>
+						<th>상세번호</th>
 						<th>상품명</th>
-						<th width="90">상품가격</th>
-						<th width="90">할인가격</th>
-						<th width="130">옵션</th>
-						<th width="80">주문수량</th>
-						<th width="100">주문총금액</th>
-						<th width="90">적립금</th>
-						<th width="110">주문상태</th>
-						<th width="60" style="display: none;">변경</th>
+						<th>상품가격</th>
+						<th>할인가격</th>
+						<th>옵션</th>
+						<th>주문수량</th>
+						<th>주문총금액</th>
+						<th>적립금</th>
+						<th>주문상태</th>
+						<th style="display: none;">변경</th>
 					</tr>
 				</thead>
 				

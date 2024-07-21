@@ -166,4 +166,12 @@ $(document).ready(function() {
         }
     });
 });
+$(function() {
+	const f = $("form[name='searchForm'] input[name='kwd']");
+	f.keydown(function(e) {
+		if(e.key==='Enter' && f.val().trim()){
+			f.closest("form").submit();
+		}
+	});
+});
 </script>

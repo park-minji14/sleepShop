@@ -29,11 +29,17 @@
 			po.TEL, po.ZIP, po.ADDR1, po.ADDR2, DESTMEMO, INVOICENUMBER, DELIVERYNUM, DELIVERYNAME
 		FROM PRODUCTORDER po
 		JOIN MEMBER1 m ON po.USERID = m.USERID
-		LEFT OUTER JOIN DELIVERY d on po.orderNum = d.orderNum
+		LEFT OUTER JOIN DELIVERY d ON po.orderNum = d.orderNum
 		<where>
+			NOT EXISTS (
+				SELECT 1
+				FROM RETURN_REQUEST rr
+				JOIN ORDERDETAIL od ON rr.ORDERDETAILNUM = od.ORDERDETAILNUM
+				WHERE od.ORDERNUM = po.ORDERNUM
+			)
 			<if test="kwd != null and kwd != '' ">
-                <include refid="where-list"/>
-            </if>
+				AND <include refid="where-list"/>
+			</if>
 		</where>
 		ORDER BY ORDERNUM DESC
 		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
@@ -45,9 +51,15 @@
 		JOIN MEMBER1 m ON po.USERID = m.USERID
 		LEFT OUTER JOIN DELIVERY d on po.orderNum = d.orderNum
 		<where>
+			NOT EXISTS (
+				SELECT 1
+				FROM RETURN_REQUEST rr
+				JOIN ORDERDETAIL od ON rr.ORDERDETAILNUM = od.ORDERDETAILNUM
+				WHERE od.ORDERNUM = po.ORDERNUM
+			)
 			<if test="kwd != null and kwd != '' ">
-                <include refid="where-list"/>
-            </if>
+				AND <include refid="where-list"/>
+			</if>
 		</where>
 	</select>
 	
