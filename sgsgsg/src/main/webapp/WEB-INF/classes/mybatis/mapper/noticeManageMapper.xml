@@ -4,8 +4,72 @@
 <mapper namespace="com.sgsg.dra.admin.mapper.NoticeManageMapper">
 
 <insert id="insertNotice" parameterType="com.sgsg.dra.admin.domain.NoticeManage">
-	Insert Into notice(num, title, content, created_date, updated_date, status, userid)
-	Values(notice_seq.NEXTVAL, #{title}, #{content}, SYSDATE, #{updated_date, jdbcType=VARCHAR}, #{status}, #{userid})
+	Insert Into notice(num, title, content, created_date, updated_date, status, userid, usernickname)
+	Values(notice_seq.NEXTVAL, #{title}, #{content}, SYSDATE, #{updated_date, jdbcType=VARCHAR}, #{status}, #{userid}, #{userNickname})
 </insert>
+
+<select id="listNotice" parameterType="map" resultType="com.sgsg.dra.admin.domain.NoticeManage">
+Select num, title, content, created_date, updated_date, status, userId, userNickname 
+From notice
+<where>
+    <if test="state != null">
+        AND status = #{state}
+    </if>
+    <if test="keyword != null and keyword != ''">
+        <if test="searchType == 'all'">
+            AND (title LIKE '%' || #{keyword} || '%' OR content LIKE '%' || #{keyword} || '%')
+        </if>
+        <if test="searchType == 'title'">
+            AND title LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="searchType == 'content'">
+            AND content LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="searchType == 'writer'">
+            AND usernickname LIKE '%' || #{keyword} || '%'
+        </if>
+    </if>
+</where>
+Order By num desc
+OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+</select>
+
+<select id="dataCount" parameterType="map" resultType="Integer">
+Select NVL(Count(*), 0) From notice
+<where>
+    <if test="state != null">
+        AND status = #{state}
+    </if>
+    <if test="keyword != null and keyword != ''">
+        <if test="searchType == 'all'">
+            AND (title LIKE '%' || #{keyword} || '%' OR content LIKE '%' || #{keyword} || '%')
+        </if>
+        <if test="searchType == 'title'">
+            AND title LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="searchType == 'content'">
+            AND content LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="searchType == 'writer'">
+            AND usernickname LIKE '%' || #{keyword} || '%'
+        </if>
+    </if>
+</where>
+</select>
+
+<select id="findById" parameterType="Integer" resultType="com.sgsg.dra.admin.domain.NoticeManage">
+Select num, title, content, created_date, updated_date, status, userId, userNickname
+From notice
+Where num = #{num}
+</select>
+
+<update id="updateNotice" parameterType="com.sgsg.dra.admin.domain.NoticeManage">
+Update notice Set title = #{title}, content = #{content}, updated_date = #{updated_date, jdbcType=TIMESTAMP}, status = #{status}
+Where num = #{num}
+</update>
+
+<delete id="deleteNotice" parameterType="Long">
+Delete From notice Where num=#{num}
+</delete>
 
 </mapper>

@@ -8,7 +8,14 @@ public class NoticeManage {
 	private String updated_date;
 	private int status;
 	private String userid;
+	private String userNickname;
 	
+	public String getUserNickname() {
+		return userNickname;
+	}
+	public void setUserNickname(String userNickname) {
+		this.userNickname = userNickname;
+	}
 	public String getNum() {
 		return num;
 	}
