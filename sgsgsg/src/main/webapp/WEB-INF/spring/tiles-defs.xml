@@ -56,6 +56,10 @@
         <put-attribute name="left" value="/WEB-INF/views/adminLeft/support/supportLeft.jsp" />
         <put-attribute name="body" value="/WEB-INF/views/adminLeft/support/{1}.jsp" />
     </definition>
+    <definition name=".adminLeft.notice.*" extends=".adminDefaultLayout">
+        <put-attribute name="left" value="/WEB-INF/views/adminLeft/support/supportLeft.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/adminLeft/notice/{1}.jsp" />
+    </definition>
     <definition name=".adminLeft.order.*" extends=".adminDefaultLayout">
         <put-attribute name="left" value="/WEB-INF/views/adminLeft/order/orderLeft.jsp" />
         <put-attribute name="body" value="/WEB-INF/views/adminLeft/order/{1}.jsp" />

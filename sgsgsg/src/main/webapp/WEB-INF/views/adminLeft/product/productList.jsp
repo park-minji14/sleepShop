@@ -95,11 +95,11 @@ window.addEventListener("load", function() {
 	            <div class="row mb-3">
 	                <div class="col">
 	                    <label for="searchKeyword" class="form-label">검색어</label>
-						<input type="text" name="kwd" id="searchKeyword" class="form-control" placeholder="키워드 입력" value="${kwd}">
+						<input type="text" name="kwd" id="searchKeyword" class="form-control form-control-sm" placeholder="키워드 입력" value="${kwd}">
 	                </div>
 	                <div class="col">
 	                    <label for="category" class="form-label">카테고리</label>
-						<select name="parentNum" class="form-select">
+						<select name="parentNum" class="form-select form-select-sm">
 							<option value="">상위 카테고리 선택</option>
 							<c:forEach var="vo" items="${listCategory}">
 								<option value="${vo.categoryNum}" ${parentNum==vo.categoryNum?"selected":""}>${vo.categoryName}</option>
@@ -108,20 +108,20 @@ window.addEventListener("load", function() {
 	                </div>
 	                <div class="col">
 	                    <label for="subCategory" class="form-label">하위카테고리</label>
-						<select name="categoryNum" class="form-select">
+						<select name="categoryNum" class="form-select form-select-sm">
 							<option value="">하위 카테고리 선택</option>
 						</select>
 	                </div>
 	            </div>
 	            
-		        <div class="row mb-3">
+		        <div class="row">
 		            <div class="col">
 		                <label for="priceMin" class="form-label">최소 가격</label>
-		                <input type="text" name="priceMin" id="priceMin" class="form-control" placeholder="원 이상" value="${priceMin}">
+		                <input type="text" name="priceMin" id="priceMin" class="form-control form-control-sm" placeholder="원 이상" value="${priceMin}">
 		            </div>
 		            <div class="col">
 		                <label for="priceMax" class="form-label">최대 가격</label>
-		                <input type="text" name="priceMax" id="priceMax" class="form-control" placeholder="원 이하" value="${priceMax}">
+		                <input type="text" name="priceMax" id="priceMax" class="form-control form-control-sm" placeholder="원 이하" value="${priceMax}">
 		            </div>
 		            
 	                <div class="col">
@@ -142,7 +142,7 @@ window.addEventListener("load", function() {
 	                    </div>
 	                </div>
 	                
-	                <div class="row mb-3">
+	                <div class="row">
 					    <div class="col">
 					        <small class="text-muted">가격 검색은 정가 기준입니다</small>
 					    </div>
@@ -189,54 +189,55 @@ window.addEventListener("load", function() {
                     <th colspan="2" class="text-center">관리</th>
                 </tr>
             </thead>
-<tbody>
-    <c:forEach var="dto" items="${list}" varStatus="status">
-        <tr>
-            <td class="text-center">${dataCount-(page-1)*size-status.index}</td>
-            <td class="text-center">
-                <img src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}" alt="상품 이미지" width="50" height="50">
-            </td>
-            <td class="text-center">${dto.productNum}</td>
-            <td class="product-preview text-center">
-                ${dto.productName}
-                <div class="preview-content">
-                    <strong>${dto.productName}</strong><br>
-                    카테고리: ${dto.categoryName}<br>
-                    가격: <fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100.0)}" type="number" maxFractionDigits="0"/>원<br>
-                    재고: [재고 정보 추가 필요]
-                </div>
-            </td>
-            <td class="text-center">
-                <c:choose>
-                    <c:when test="${dto.parentNum == 1}">침구</c:when>
-                    <c:when test="${dto.parentNum == 2}">가전</c:when>
-                    <c:when test="${dto.parentNum == 3}">의류</c:when>
-                    <c:when test="${dto.parentNum == 4}">향초</c:when>
-                    <c:when test="${dto.parentNum == 5}">조명</c:when>
-                    <c:when test="${dto.parentNum == 6}">영양제</c:when>
-                    <c:when test="${dto.parentNum == 7}">수면용품</c:when>
-                    <c:when test="${dto.parentNum == 8}">졸음방지용품</c:when>
-                    <c:otherwise>${dto.parentNum}</c:otherwise>
-                </c:choose>
-            </td>
-            <td class="text-center">${dto.categoryName}</td>
-            <td class="text-center">${dto.update_date}</td>
-            <td class="text-center">
-                <c:choose>
-                    <c:when test="${dto.productShow == 1}"><span>진열</span></c:when>
-                    <c:when test="${dto.productShow == 0}"><span>숨김</span></c:when>
-                    <c:otherwise><span>조회불가</span></c:otherwise>
-                </c:choose>
-            </td>
-            <td class="text-center"><fmt:formatNumber value="${dto.price}" type="number"/></td>
-            <td class="text-center">${dto.discountRate}%</td>
-            <td class="text-center"><fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100.0)}" type="number" maxFractionDigits="0"/></td>
-            <td class="text-center">${dto.savedMoney}</td>
-            <td class="text-center"><button type="button" class="btn btn-sm btn-primary" id="btnUpdate" data-productNum="${dto.productNum}" data-parentNum="${dto.parentNum}" onclick="sendProductNum(this)">수정</button></td>
-            <td class="text-center"><button type="button" class="btn btn-sm btn-danger" id="btnDelete" data-productNum="${dto.productNum}" onclick="sendProductNum(this)">삭제</button></td>
-        </tr>
-    </c:forEach>
-</tbody>
+            
+			<tbody>
+			    <c:forEach var="dto" items="${list}" varStatus="status">
+			        <tr>
+			            <td class="text-center">${dataCount-(page-1)*size-status.index}</td>
+			            <td class="text-center">
+			                <img src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}" alt="상품 이미지" width="50" height="50">
+			            </td>
+			            <td class="text-center">${dto.productNum}</td>
+			            <td class="product-preview text-center">
+			                ${dto.productName}
+			                <div class="preview-content">
+			                    <strong>${dto.productName}</strong><br>
+			                    카테고리: ${dto.categoryName}<br>
+			                    가격: <fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100.0)}" type="number" maxFractionDigits="0"/>원<br>
+			                    재고: [재고 정보 추가 필요]
+			                </div>
+			            </td>
+			            <td class="text-center">
+			                <c:choose>
+			                    <c:when test="${dto.parentNum == 1}">침구</c:when>
+			                    <c:when test="${dto.parentNum == 2}">가전</c:when>
+			                    <c:when test="${dto.parentNum == 3}">의류</c:when>
+			                    <c:when test="${dto.parentNum == 4}">향초</c:when>
+			                    <c:when test="${dto.parentNum == 5}">조명</c:when>
+			                    <c:when test="${dto.parentNum == 6}">영양제</c:when>
+			                    <c:when test="${dto.parentNum == 7}">수면용품</c:when>
+			                    <c:when test="${dto.parentNum == 8}">졸음방지용품</c:when>
+			                    <c:otherwise>${dto.parentNum}</c:otherwise>
+			                </c:choose>
+			            </td>
+			            <td class="text-center">${dto.categoryName}</td>
+			            <td class="text-center">${dto.update_date}</td>
+			            <td class="text-center">
+			                <c:choose>
+			                    <c:when test="${dto.productShow == 1}"><span>진열</span></c:when>
+			                    <c:when test="${dto.productShow == 0}"><span>숨김</span></c:when>
+			                    <c:otherwise><span>조회불가</span></c:otherwise>
+			                </c:choose>
+			            </td>
+			            <td class="text-center"><fmt:formatNumber value="${dto.price}" type="number"/></td>
+			            <td class="text-center">${dto.discountRate}%</td>
+			            <td class="text-center"><fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100.0)}" type="number" maxFractionDigits="0"/></td>
+			            <td class="text-center">${dto.savedMoney}</td>
+			            <td class="text-center"><button type="button" class="btn btn-sm btn-primary" id="btnUpdate" data-productNum="${dto.productNum}" data-parentNum="${dto.parentNum}" onclick="sendProductNum(this)">수정</button></td>
+			            <td class="text-center"><button type="button" class="btn btn-sm btn-danger" id="btnDelete" data-productNum="${dto.productNum}" onclick="sendProductNum(this)">삭제</button></td>
+			        </tr>
+			    </c:forEach>
+			</tbody>
         </table>
     </div>
         

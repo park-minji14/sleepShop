@@ -403,7 +403,7 @@ $(function(){
             query = "specialNum="+specialNum+"&productNum="+productNum+"&displayOrder="+displayOrder+
                     "&showDetail="+showDetail;
             url = "${pageContext.request.contextPath}/adminManagement/productManage/specialProductInsert";
-		} else { // update
+		} else { //수정
 			let detailNum = $(".saveProduct-form input[name=detailNum]").val();
             query = "productNum="+productNum+"&displayOrder="+displayOrder+
                     "&showDetail="+showDetail+"&detailNum=" + detailNum;
