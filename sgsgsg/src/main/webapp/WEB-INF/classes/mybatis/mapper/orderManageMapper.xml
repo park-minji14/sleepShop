@@ -23,12 +23,13 @@
 	
 	<!-- 주문 목록 가지고 오기 -->
 	<select id="listOrder" parameterType="map" resultType="com.sgsg.dra.domain.Order">
-		SELECT PRODUCTORDERNAME, ORDERNUM, po.USERID, USERNAME, ISSUE_ID,
+		SELECT PRODUCTORDERNAME, po.ORDERNUM, po.USERID, USERNAME, ISSUE_ID,
 			TO_CHAR(ORDERDATE, 'YYYY-MM-DD HH24:MI:SS') ORDERDATE, TOTALMONEY, USEDSAVED,
-			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENTNAME,
-			po.TEL, po.ZIP, po.ADDR1, po.ADDR2, DESTMEMO
+			DELIVERYCHARGE, PAYMENT, po.ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENTNAME,
+			po.TEL, po.ZIP, po.ADDR1, po.ADDR2, DESTMEMO, INVOICENUMBER, DELIVERYNUM, DELIVERYNAME
 		FROM PRODUCTORDER po
 		JOIN MEMBER1 m ON po.USERID = m.USERID
+		LEFT OUTER JOIN DELIVERY d on po.orderNum = d.orderNum
 		<where>
 			<if test="kwd != null and kwd != '' ">
                 <include refid="where-list"/>
@@ -42,6 +43,7 @@
 		select nvl(count(*), 0) count
 		from PRODUCTORDER po
 		JOIN MEMBER1 m ON po.USERID = m.USERID
+		LEFT OUTER JOIN DELIVERY d on po.orderNum = d.orderNum
 		<where>
 			<if test="kwd != null and kwd != '' ">
                 <include refid="where-list"/>
