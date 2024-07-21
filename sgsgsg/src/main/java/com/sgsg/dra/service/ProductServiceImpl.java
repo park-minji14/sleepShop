@@ -189,4 +189,26 @@ public class ProductServiceImpl implements ProductService  {
         }
         return count;
     }
+
+    @Override
+    public Product getCategoryById(Long categoryNum) {
+        Product category = null;
+        try {
+            category = mapper.getCategoryById(categoryNum);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return category;
+    }
+
+    @Override
+    public List<Product> getProductsByCategory(Long categoryNum) {
+        List<Product> products = null;
+        try {
+            products = mapper.getProductsByCategory(categoryNum);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
 }

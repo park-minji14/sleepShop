@@ -184,5 +184,21 @@
        OR LOWER(p.CONTENT) LIKE LOWER('%' || #{searchTerm} || '%')
 </select>
 
+<select id="getCategoryById" parameterType="Long" resultType="com.sgsg.dra.domain.Product">
+    SELECT categoryNum, categoryName, use, displayNo, PARENT_CATEGORYNUM, CATEGORYIMAGE
+    FROM PRODUCT_CATEGORY
+    WHERE categoryNum = #{categoryNum}
+</select>
+
+<select id="getProductsByCategory" parameterType="Long" resultType="com.sgsg.dra.domain.Product">
+    SELECT p.productNum, p.categoryNum, p.productName, p.price, p.savedMoney,
+           p.discountRate, p.optionCount, p.delivery, p.thumbnail
+    FROM PRODUCT p
+    JOIN PRODUCT_CATEGORY c ON p.categoryNum = c.categoryNum
+    WHERE p.productShow = 1
+      AND (c.categoryNum = #{categoryNum} OR c.PARENT_CATEGORYNUM = #{categoryNum})
+    ORDER BY p.productNum DESC
+</select>
+
 	
 </mapper>

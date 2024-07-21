@@ -16,6 +16,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/product/*")
 public class ProductController {
+	
 	@Autowired
 	private ProductService service;
 
@@ -123,34 +124,35 @@ public class ProductController {
 		return ".product.details";
 	}
 
-	@GetMapping("/category/{categoryNum}")
-	public String categoryView(@PathVariable Long categoryNum, @RequestParam(required = false) Long subCategoryNum,
-			Model model) {
-		// 현재 카테고리 정보 가져오기
-		Product category = service.getCategoryById(categoryNum);
+	   @GetMapping("/category")
+	    public String categoryView(@RequestParam Long categoryNum, 
+	                               @RequestParam(required = false) Long subCategoryNum,
+	                               Model model) {
+	        // 현재 카테고리 정보 가져오기
+	        Product category = service.getCategoryById(categoryNum);
 
-		// 메인 카테고리 목록 가져오기
-		List<Product> mainCategories = service.selectCategoryList();
+	        // 메인 카테고리 목록 가져오기
+	        List<Product> mainCategories = service.selectCategoryList();
 
-		// 서브 카테고리 목록 가져오기
-		List<Product> subCategories = service.listSubCategory(categoryNum);
+	        // 서브 카테고리 목록 가져오기
+	        List<Product> subCategories = service.listSubCategory(categoryNum);
 
-		// 해당 카테고리의 상품 목록 가져오기 (서브 카테고리가 선택된 경우 해당 상품만)
-		List<Product> products;
-		if (subCategoryNum != null) {
-			products = service.getProductsByCategory(subCategoryNum);
-		} else {
-			products = service.getProductsByCategory(categoryNum);
-		}
+	        // 해당 카테고리의 상품 목록 가져오기
+	        List<Product> products;
+	        if (subCategoryNum != null) {
+	            products = service.getProductsByCategory(subCategoryNum);
+	        } else {
+	            products = service.getProductsByCategory(categoryNum);
+	        }
 
-		model.addAttribute("category", category);
-		model.addAttribute("mainCategories", mainCategories);
-		model.addAttribute("subCategories", subCategories);
-		model.addAttribute("subCategoryNum", subCategoryNum);
-		model.addAttribute("products", products);
+	        model.addAttribute("category", category);
+	        model.addAttribute("mainCategories", mainCategories);
+	        model.addAttribute("subCategories", subCategories);
+	        model.addAttribute("subCategoryNum", subCategoryNum);
+	        model.addAttribute("products", products);
 
-		return ".product.category";
-	}
+	        return ".product.category";
+	    }
 
 	@GetMapping("/search")
 	public String searchProducts(@RequestParam String searchTerm,
@@ -194,5 +196,30 @@ public class ProductController {
 		}
 
 		return ".product.searchResults";
+	}
+	
+	@GetMapping("/category/products")
+	@ResponseBody
+	public Map<String, Object> getCategoryProducts(
+	        @RequestParam Long categoryNum,
+	        @RequestParam(required = false) Long subCategoryNum) {
+	    
+	    Map<String, Object> response = new HashMap<>();
+
+	    Product category = service.getCategoryById(categoryNum);
+	    List<Product> subCategories = service.listSubCategory(categoryNum);
+	    List<Product> products;
+
+	    if (subCategoryNum != null) {
+	        products = service.getProductsByCategory(subCategoryNum);
+	    } else {
+	        products = service.getProductsByCategory(categoryNum);
+	    }
+
+	    response.put("category", category);
+	    response.put("subCategories", subCategories);
+	    response.put("products", products);
+
+	    return response;
 	}
 }

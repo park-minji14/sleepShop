@@ -40,10 +40,10 @@
         <div class="category-list">
             <c:forEach var="category" items="${categoryList}">
                 <div class="category-item">
-                    <a href="${pageContext.request.contextPath}/product/category/${category.categoryNum}">
-                        <img src="${pageContext.request.contextPath}/uploads/icon/${category.categoryImage}" alt="${category.categoryName}">
-                        <p>${category.categoryName}</p>
-                    </a>
+					<a href="${pageContext.request.contextPath}/product/category?categoryNum=${category.categoryNum}">
+					    <img src="${pageContext.request.contextPath}/uploads/icon/${category.categoryImage}" alt="${category.categoryName}">
+					    <p>${category.categoryName}</p>
+					</a>
                 </div>
             </c:forEach>
         </div>

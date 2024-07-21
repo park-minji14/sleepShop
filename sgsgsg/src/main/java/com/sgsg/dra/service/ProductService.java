@@ -30,7 +30,8 @@ public interface ProductService {
 	public List<Product> searchProducts(Map<String, Object> map);
 	public int searchProductsCount(Map<String, Object> map);
 	
-	
+	public  Product getCategoryById(Long categoryNum);
+	public List<Product> getProductsByCategory(Long categoryNum);
 
 
     }
