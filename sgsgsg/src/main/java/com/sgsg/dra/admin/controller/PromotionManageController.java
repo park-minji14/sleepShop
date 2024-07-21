@@ -122,7 +122,7 @@ public class PromotionManageController {
 		} catch (Exception e) {
 		}
 
-		return "redirect:/adminManagement/PromotionManage/all/list";
+		return "redirect:/adminManagement/promotionManage/all/list";
 	}
 	
 	
@@ -144,16 +144,16 @@ public class PromotionManageController {
 		}
 
 		PromotionManage dto = service.findById(num);
-		/*if (dto == null) {
+		if (dto == null) {
 			return "redirect:/promotion/" + category + "/list?" + query;
-		}*/
+		}
 		
 		// 이전 글, 다음 글
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("category", category);
 		map.put("schType", schType);
 		map.put("kwd", kwd);
-		map.put("num", num);
+		map.put("event_num", num);
 
 		PromotionManage prevDto = service.findByPrev(map);
 		PromotionManage nextDto = service.findByNext(map);
@@ -211,7 +211,7 @@ public class PromotionManageController {
 		} catch (Exception e) {
 		}
 		
-		return "redirect:/adminManagement/PromotionManage/" + category + "/list?page=" + page;
+		return "redirect:/adminManagement/promotionManage/" + category + "/list?page=" + page;
 	}
 	
 	
@@ -236,7 +236,7 @@ public class PromotionManageController {
 			
 		}
 
-		return "redirect:/adminManagement/PromotionManage/" + category + "/list?" + query;
+		return "redirect:/adminManagement/promotionManage/" + category + "/list?" + query;
 	}
 	
 	
@@ -251,7 +251,7 @@ public class PromotionManageController {
 		} catch (Exception e) {
 		}
 		
-		return "redirect:/adminManagement/PromotionManage/winner/list?page=" + page;
+		return "redirect:/adminManagement/promotionManage/winner/list?page=" + page;
 	}
 
 }

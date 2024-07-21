@@ -3,6 +3,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <script>
+function searchList() {
+	const f = document.searchForm;
+	f.submit();
+}
 
 
 </script>
@@ -39,7 +43,7 @@
 					</td>
 					<td>${dto.startDate}</td>
 					<td>${dto.endDate}</td>
-					<td>${category=="winner" ? (dto.winnerCount==0?"예정":"완료") : (dto.winnerNumber == 0 ? "-" : dto.applyCount) }</td>
+					<td style="padding-left: 30px;">${category=="winner" ? (dto.winnerCount==0?"예정":"완료") : (dto.winnerNumber == 0 ? "-" : dto.applyCount) }</td>
 				</tr>
 			</c:forEach>
 		</tbody>
@@ -66,8 +70,8 @@
 					<button type="button" class="btn" onclick="searchList()">검색</button>
 				</form>
 			</td> 
-			<td width="100">
-				<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/adminManagement/promotionManage/${category}/write';">이벤트등록</button>
+			<td>
+				<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/adminManagement/promotionManage/${category}/write';" style="padding-right: 250px;">이벤트등록</button>
 			</td> 
 		</tr>
 	</table>

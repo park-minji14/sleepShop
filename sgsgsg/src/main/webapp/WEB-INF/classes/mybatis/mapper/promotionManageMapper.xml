@@ -107,11 +107,11 @@
 	
 	<!-- 글보기 -->
 	<select id="findById" parameterType="Long" resultType="com.sgsg.dra.admin.domain.PromotionManage">
-		SELECT e.event_num, e.userId, e.title, e.content, e.created_date,
+		SELECT e.event_num, e.userId, userName, title, content,
 			TO_CHAR(startDate,'YYYY-MM-DD HH24:MI') startDate,
 			TO_CHAR(endDate, 'YYYY-MM-DD HH24:MI') endDate, 
 			TO_CHAR(winningDate, 'YYYY-MM-DD HH24:MI') winningDate, 
-			winnerNumber, showEvent, hitCount
+			winnerNumber, showEvent
 		FROM event e
 		JOIN member1 m ON e.userId = m.userId
 		WHERE e.event_num = #{event_num}
@@ -153,7 +153,7 @@
 			<if test="kwd != null and kwd != '' ">
 				AND <include refid="where-list"/>
 			</if>
-			AND ( event_num &lt; #{ event_num})
+			AND (event_num &lt; #{event_num})
 		</where>
 		ORDER BY endDate DESC
 		FETCH FIRST 1 ROWS ONLY
