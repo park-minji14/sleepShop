@@ -35,9 +35,9 @@
 					<td class="table-light">배송비</td>
 					<td class="text-primary"><fmt:formatNumber value="${order.deliveryCharge}"/></td>
 					<td class="table-light">배송업체</td>
-					<td>${dto.deliveryName}</td>
+					<td>${order.deliveryName}</td>
 					<td class="table-light">송장번호</td>
-					<td>${dto.invoiceNumber}</td>
+					<td>${order.invoiceNumber}</td>
 					<td class="table-light">상태변경일</td>
 					<td>${order.orderStateDate}</td>
 				</tr>
@@ -265,9 +265,8 @@ $(function(){
 		
 		const fn = function(data) {
 			if(data.state === "true") {
-				let curUrl = new URL(location.href);
-				let query = curUrl.search.substring(0,curUrl.search.lastIndexOf("&"));
-				url = '${pageContext.request.contextPath}/adminManagement/orderManage/order'+query;
+				let query = new URL(location.href).search;
+				url = url+query;
 				location.href = url;
 			} else {
 				alert("발송처리가 실패 했습니다.");

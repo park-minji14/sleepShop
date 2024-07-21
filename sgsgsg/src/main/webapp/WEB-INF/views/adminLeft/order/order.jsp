@@ -5,10 +5,10 @@
 <div class="mt-4">
     <!-- 메인 콘텐츠 내용 -->
     
-    <form class="mb-4">
+    <form class="mb-4" name="searchForm">
     	<div class="border border-secondary-subtle p-3">
     		<div class="row mb-3">
-    			<div class="col-auto p-1">
+    			<div class="col p-1">
     				<span>카테고리</span>
     				<select name="schType" class="form-select">
 						<option value="orderNum" ${schType=="orderNum"?"selected":""}>주문번호</option>
@@ -17,9 +17,11 @@
 						<option value="orderDate" ${schType=="orderDate"?"selected":""}>주문일</option>
 					</select>
     			</div>
-    			<div class="col-auto p-1">
+    			<div class="col p-1">
     				<span>검색어</span>
 					<input type="text" name="kwd" value="${kwd}" class="form-control">
+				</div>
+				<div class="col p-1">
 				</div>
     		</div>
     		<div class="d-flex justify-content-end">

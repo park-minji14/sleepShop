@@ -69,7 +69,7 @@
 												alt="상품 관리" style="width: 20px; height: 20px;"> 상품 관리
 										</a></li>
 										<li><a
-											href="${pageContext.request.contextPath}/adminManagement/orderManage/main"
+											href="${pageContext.request.contextPath}/adminManagement/orderManage/order"
 											style="text-decoration: none; color: inherit;"> <img
 												src="https://img.icons8.com/color/48/000000/purchase-order.png"
 												alt="주문 관리" style="width: 20px; height: 20px;"> 주문 관리

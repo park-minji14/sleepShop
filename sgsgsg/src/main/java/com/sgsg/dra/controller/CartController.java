@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sgsg.dra.domain.Product;
 import com.sgsg.dra.domain.SessionInfo;
 import com.sgsg.dra.service.CartService;
-import com.sgsg.dra.state.OrderState;
 
 @Controller
 @RequestMapping("/cart/*")
@@ -41,13 +40,6 @@ public class CartController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		OrderState state2 = OrderState.WAITING_PAYMENT;
-		System.out.println(state2); // WAITING_PAYMENT
-		System.out.println(state2.getKorean()); //입금대기
-		System.out.println(state2.ordinal()); //0
-		System.out.println(OrderState.fromKorean("입금대기")); //WAITING_PAYMENT
-		System.out.println(OrderState.fromKorean("입금대기").ordinal()); //0
 		
 		return ".cart.cart";
 	}
