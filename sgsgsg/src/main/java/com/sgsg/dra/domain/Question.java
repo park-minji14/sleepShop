@@ -27,6 +27,8 @@ public class Question {
     private String productName;
 	private long memberIdx;
 	private String userName;
+	
+	private String answerStatus; // 답변 상태 (답변대기, 답변완료)
     
     public long getMemberIdx() {
 		return memberIdx;
@@ -148,5 +150,13 @@ public class Question {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getAnswerStatus() {
+		return answerStatus;
+	}
+
+	public void setAnswerStatus(String answerStatus) {
+		this.answerStatus = answerStatus;
 	}
 }

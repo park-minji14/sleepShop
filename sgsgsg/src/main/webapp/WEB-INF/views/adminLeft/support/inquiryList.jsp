@@ -48,32 +48,42 @@
     <div class="container mt-5">
         <h2 class="text-primary mb-4">상품 문의 관리</h2>
         
-        <table class="table table-hover">
-            <thead class="bg-primary text-white">
-                <tr>
-                    <th>번호</th>
-                    <th>카테고리</th>
-                    <th>상품명</th>
-                    <th>문의 내용</th>
-                    <th>작성자</th>
-                    <th>작성일</th>
-                    <th>상태</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="inquiry-row" data-bs-toggle="modal" data-bs-target="#inquiryModal" data-inquiry-id="1">
-                <!-- dPTl 예시 떼이터.. -->
-                    <td>1</td>
-                    <td>상품</td>
-                    <td>피자먹고싶다</td>
-                    <td>무슨 피자?</td>
-                    <td>박민*지</td>
-                    <td>2024-07-22</td>
-                    <td><span class="badge bg-warning" id="statusBadge1">답변대기</span></td>
-                </tr>         
-            </tbody>
-        </table>
-    </div>
+       <table class="table table-hover">
+    <thead class="bg-primary text-white">
+        <tr>
+            <th>번호</th>
+            <th>카테고리</th>
+            <th>상품명</th>
+            <th>문의 내용</th>
+            <th>작성자</th>
+            <th>작성일</th>
+            <th>상태</th>
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="inquiry" items="${inquiries}">
+            <tr class="inquiry-row" data-bs-toggle="modal" data-bs-target="#inquiryModal" data-inquiry-id="${inquiry.inquiryNum}">
+                <td>${inquiry.inquiryNum}</td>
+                <td>${inquiry.inquiryType}</td>
+                <td>${inquiry.productName}</td>
+                <td>${inquiry.question}</td>
+                <td>${inquiry.userId}</td>
+                <td>${inquiry.question_Date}</td>
+                <td>
+                    <span class="badge ${inquiry.answerStatus == '답변완료' ? 'bg-success' : 'bg-warning'}">
+                        ${inquiry.answerStatus}
+                    </span>
+                </td>
+            </tr>
+        </c:forEach>
+    </tbody>
+</table>
+        
+<!-- 페이징 -->
+<div class="page-navigation">
+    ${paging}
+</div>
+ </div>
 
     <!-- 문의 상세 및 답변 모달 -->
     <div class="modal fade" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
@@ -147,4 +157,88 @@
             </div>
         </div>
     </div>
-   
+<script>
+$(document).ready(function() {
+$('#inquiryModal').on('show.bs.modal', function (event) {
+    var btn = $(event.relatedTarget);
+    var id = btn.data('inquiry-id');
+    var modal = $(this);
+
+    $.ajax({
+        url: 'getInquiry',
+        type: 'GET',
+        data: { inquiryNum: id },
+        success: function(data) {
+            modal.find('#inquiryNumber').text(data.inquiryNum);
+            modal.find('#inquiryCategory').text(data.inquiryType); // 카테고리 표시
+            modal.find('#productName').text(data.productName);
+            modal.find('#inquiryAuthor').text(data.userId);
+            modal.find('#inquiryDate').text(data.question_Date);
+            modal.find('#inquiryStatus').text(data.answerStatus); // 답변 상태 표시
+            modal.find('#inquiryContent').text(data.question);
+
+            var fileList = modal.find('#attachedFilesList');
+            fileList.empty();
+            if (data.filename) {
+                var files = data.filename.split(',');
+                files.forEach(function(file) {
+                    fileList.append('<li>' + file + '</li>');
+                });
+            }
+
+            if (data.answer) {
+                modal.find('#responseContent').text(data.answer);
+                modal.find('#responseDate').text(data.answer_Date);
+                modal.find('#responseSection').show();
+                modal.find('#responseFormSection').hide();
+            } else {
+                modal.find('#responseSection').hide();
+                modal.find('#responseFormSection').show();
+            }
+        },
+        error: function() {
+            alert('Failed to load inquiry.');
+        }
+    });
+});
+
+$('#responseForm').submit(function(e) {
+    e.preventDefault();
+    var id = $('#inquiryModal').find('#inquiryNumber').text();
+    var answer = $('#newResponseContent').val();
+    var answerId = 'admin'; // 아이디를 고정값으로 둬야 하나 고민..
+
+    console.log("Submitting answer for inquiry ID:", id);
+    console.log("Answer content:", answer);
+    console.log("Answerer ID:", answerId);
+
+    $.ajax({
+        url: 'saveAnswer',
+        type: 'POST',
+        data: { 
+            inquiryNum: id,
+            answer: answer,
+            answerId: answerId
+        },
+        success: function(response) {
+            console.log("Server response:", response);
+            if(response.status === 'success') {
+                alert(response.message);
+                $('#inquiryModal').modal('hide');
+                location.reload();
+            } else {
+                alert("Failed to save answer. Server message: " + response.message);
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error("AJAX Error:");
+            console.error("Status:", textStatus);
+            console.error("Error:", errorThrown);
+            console.error("Response Text:", jqXHR.responseText);
+            console.error("Status Code:", jqXHR.status);
+            alert('Failed to save answer. Error: ' + textStatus + '. See console for more details.');
+        	}
+    	});
+	});
+});
+</script>

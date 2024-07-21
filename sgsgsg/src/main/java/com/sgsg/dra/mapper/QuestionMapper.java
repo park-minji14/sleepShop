@@ -23,4 +23,9 @@ public interface QuestionMapper {
 
 	public List<Question>listQuestionFile(long num);
 	public void deleteQuestion(long num) throws SQLException;
+	
+    // 문의 상세 정보 조회
+    public Question getInquiry(int inquiryNum);
+    // 답변 저장
+    public void saveAnswer(Map<String, Object> map) throws SQLException;
 }

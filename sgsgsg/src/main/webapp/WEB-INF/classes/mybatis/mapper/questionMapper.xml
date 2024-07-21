@@ -84,7 +84,7 @@ OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 <select id="listQuestion2" parameterType="map" resultType="com.sgsg.dra.domain.Question">
     SELECT q.INQUIRYNUM, q.USERID, m.USERNAME, q.SECRET, q.QUESTION, q.ANSWER, 
            m2.USERID AS ANSWERID, m2.USERNAME AS ANSWERNAME, 
-           q.PRODUCTNUM, p.PRODUCTNAME, f.FILENAME, q.SHOWQUESTION, q.LOCKED,
+           q.PRODUCTNUM, p.PRODUCTNAME, f.FILENAME, q.SHOWQUESTION, q.LOCKED,q.INQUIRY_TYPE as inquiryType,
            q.QUESTION_DATE, q.ANSWER_DATE
     FROM PRODUCT_INQUIRY q
     JOIN PRODUCT p ON q.PRODUCTNUM = p.PRODUCTNUM 
@@ -145,5 +145,44 @@ OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
         INQUIRYNUM = #{inquiryNum} 
 </delete>
 
+
+<!-- 특정 문의 상세 정보를 조회하는 쿼리 -->
+<!-- INQUIRYNUM을 이용하여 PRODUCT_INQUIRY 테이블에서 해당 문의의 모든 정보를 가져옴 -->
+<select id="getInquiry" parameterType="int" resultType="com.sgsg.dra.domain.Question">
+    SELECT 
+        q.INQUIRYNUM,
+        q.PRODUCTNUM,
+        q.USERID,
+        q.QUESTION,
+        q.ANSWER,
+        q.QUESTION_DATE,
+        q.ANSWER_DATE,
+        q.INQUIRY_TYPE as inquiryType,
+        q.SECRET,
+        q.SHOWQUESTION,
+        q.LOCKED,
+        CASE 
+            WHEN q.ANSWER IS NOT NULL THEN '답변완료'
+            ELSE '답변대기'
+        END AS answerStatus,
+        p.PRODUCTNAME
+    FROM 
+        PRODUCT_INQUIRY q
+    JOIN 
+        PRODUCT p ON q.PRODUCTNUM = p.PRODUCTNUM
+    WHERE 
+        q.INQUIRYNUM = #{inquiryNum}
+</select>
+
+<!-- 특정 문의에 대한 답변을 저장하는 쿼리 -->
+<!-- 답변 내용, 답변 작성 일시, 답변자 ID를 업데이트 -->
+<!-- INQUIRYNUM을 이용하여 특정 문의를 식별하고 업데이트 -->
+<update id="saveAnswer" parameterType="map">
+    UPDATE PRODUCT_INQUIRY 
+    SET ANSWER = #{answer}, 
+        ANSWER_DATE = SYSDATE, 
+        ANSWERID = #{answerId}
+    WHERE INQUIRYNUM = #{inquiryNum}
+</update>
 
 </mapper>
