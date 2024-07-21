@@ -47,24 +47,22 @@
     </select>
 
     <!-- 특가/기획 상품에 포함된 제품 목록 가져오는 쿼리임 -->
-    <select id="listProduct" parameterType="map" resultType="com.sgsg.dra.domain.SpecialsProduct">
-        SELECT p.PRODUCTNUM, p.CATEGORYNUM, c.CATEGORYNAME, p.PRODUCTNAME, p.PRICE, p.SAVEDMONEY, 
-               p.DISCOUNTRATE, p.DELIVERY, p.THUMBNAIL, NVL(pc.SALECOUNT, 0) SALECOUNT
-        FROM SPECIALS s
-        JOIN SPECIALSDETAIL d ON s.SPECIALNUM = d.SPECIALNUM
-        JOIN PRODUCT p ON d.PRODUCTNUM = p.PRODUCTNUM
-        JOIN PRODUCT_CATEGORY c ON p.CATEGORYNUM = c.CATEGORYNUM
-        LEFT OUTER JOIN (
-            SELECT STOCKNUM, SUM(QTY) SALECOUNT
-            FROM ORDERDETAIL
-            GROUP BY STOCKNUM
-        ) pc ON p.PRODUCTNUM = pc.STOCKNUM
-        WHERE p.PRODUCTSHOW = 1 AND s.SHOWSPECIAL = 1 
-            AND (s.STARTDATE &lt;= SYSDATE AND s.ENDDATE &gt;= SYSDATE)
-        <if test="specialNum != null">
-            AND d.SPECIALNUM = #{specialNum}
-        </if>
-        ORDER BY d.DISPLAYORDER DESC, d.DETAILNUM DESC
-        OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
-    </select>
+<select id="listProduct" parameterType="map" resultType="com.sgsg.dra.domain.SpecialsProduct">
+    SELECT p.PRODUCTNUM, p.CATEGORYNUM, c.CATEGORYNAME, p.PRODUCTNAME, p.PRICE, p.SAVEDMONEY, 
+           p.DISCOUNTRATE, p.DELIVERY, p.THUMBNAIL, NVL(pc.SALECOUNT, 0) SALECOUNT
+    FROM SPECIALS s
+    JOIN SPECIALSDETAIL d ON s.SPECIALNUM = d.SPECIALNUM
+    JOIN PRODUCT p ON d.PRODUCTNUM = p.PRODUCTNUM
+    JOIN PRODUCT_CATEGORY c ON p.CATEGORYNUM = c.CATEGORYNUM
+    LEFT OUTER JOIN (
+        SELECT STOCKNUM, SUM(QTY) SALECOUNT
+        FROM ORDERDETAIL
+        GROUP BY STOCKNUM
+    ) pc ON p.PRODUCTNUM = pc.STOCKNUM
+    WHERE p.PRODUCTSHOW = 1 AND s.SHOWSPECIAL = 1 
+        AND (s.STARTDATE &lt;= SYSDATE AND s.ENDDATE &gt;= SYSDATE)
+    AND s.SPECIALNUM = #{specialNum}
+    ORDER BY d.DISPLAYORDER DESC, d.DETAILNUM DESC
+    FETCH FIRST #{size} ROWS ONLY
+</select>
 </mapper>

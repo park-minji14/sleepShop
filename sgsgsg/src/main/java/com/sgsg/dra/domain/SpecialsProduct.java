@@ -1,6 +1,6 @@
 package com.sgsg.dra.domain;
 
-/*이 클래스는 listProduct 쿼리의 결과를 담기 위한 것임.
+/* listProduct 쿼리의 결과를 담기 위한 것임.
 SPECIALS, SPECIALSDETAIL, PRODUCT, PRODUCT_CATEGORY 테이블을 조인한 결과를 표현함.
 특가/기획 상품에 포함된 개별 제품의 정보를 담고 있음 (예: 제품 번호, 카테고리, 제품명, 가격, 할인율 등).*/
 

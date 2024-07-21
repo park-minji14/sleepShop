@@ -213,7 +213,7 @@
 	</section>
 
 
-<!-- 특가섹션 -->
+	<!-- 특가섹션 -->
 	<div class="timedeal-header">
 		<div class="inner">
 			<div class="timedeal-logo">⚡오늘의 특가</div>
@@ -221,72 +221,60 @@
 		</div>
 	</div>
 	<div class="container">
-		<div class="inner">
-			<div class="row timedeal-product-grid">
-				<div class="col-md-4 col-sm-6">
-					<div class="timedeal-product-card position-relative">
-						<div class="timedeal-product-timer"
-							data-end-time="2023-05-15T15:00:00">00:00:00</div>
-						<img src="${pageContext.request.contextPath}/uploads/product/150.png"
-							alt="Product 1" class="timedeal-product-image">
-						<div class="timedeal-product-info">
-							<div class="timedeal-product-title">상품 1</div>
-							<div>
-								<span class="badge bg-danger">40%</span> <span
-									class="fw-bold text-danger">29,900원</span>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4 col-sm-6">
-					<div class="timedeal-product-card position-relative">
-						<div class="timedeal-product-timer"
-							data-end-time="2023-05-15T18:30:00">00:00:00</div>
-						<img src="${pageContext.request.contextPath}/uploads/product/150.png"
-							alt="Product 2" class="timedeal-product-image">
-						<div class="timedeal-product-info">
-							<div class="timedeal-product-title">상품 2</div>
-							<div>
-								<span class="badge bg-danger">30%</span> <span
-									class="fw-bold text-danger">34,900원</span>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- 추가 상품들... -->
-			</div>
-		</div>
-		<section class="featured-products">
-		    <div class="inner">
-		        <h2>꿀잠을 위한 필수 아이템</h2>
-		        <div class="product-grid">
-		            <c:forEach var="product" items="${list}">
-		                <div class="product-item">
-		                    <a href="${pageContext.request.contextPath}/product/details?productNum=${product.productNum}">
-		                        <img src="${pageContext.request.contextPath}/uploads/product/${product.thumbnail}"
-		                             alt="${product.productName}">
-		                        <span class="product-info">
-		                            <span>${product.productName}</span>
-		                            <span class="discount">
-		                                ${product.discountRate}%
-		                                <span class="price">
-		                                    <fmt:formatNumber value="${product.price * (1 - product.discountRate / 100)}" pattern="#,###원" />
-		                                </span>
-		                            </span>
-		                            <span class="rating">
-		                                ★ ${product.score}
-		                                <span class="review-count">리뷰 ${product.reviewCount}</span>
-		                            </span>
-		                        </span>
-		                    </a>
-		                </div>
-		            </c:forEach>
-		        </div>
-		    </div>
-		</section>
+	<div class="inner">
+	    <div class="row timedeal-product-grid">
+	        <c:forEach var="item" items="${specialList}" varStatus="status">
+	            <c:if test="${status.index < 3}">
+	                <div class="col-md-4 col-sm-6"> 
+	                    <a href="${pageContext.request.contextPath}/product/details?productNum=${item.productNum}" >
+	                        <div class="timedeal-product-card position-relative">
+	                            <img src="${pageContext.request.contextPath}/uploads/product/${item.thumbnail}"
+	                                 alt="${item.productName}" class="timedeal-product-image">
+	                            <div class="timedeal-product-info">
+	                                <div class="timedeal-product-title">${item.productName}</div>
+	                                <div class="timedeal-product-price">
+	                                    <span class="original-price">${item.price}원</span>
+	                                    <span class="discount-rate badge bg-danger">${item.discountRate}% 할인</span>
+	                                </div>
+	                                <div class="sale-price fw-bold text-danger">${item.salePrice}원</div>
+	                            </div>
+	                        </div>
+	                    </a>
+	                </div>
+	            </c:if>
+	        </c:forEach>
+	    </div>
 	</div>
 
-	<script type="text/javascript">
+	<section class="featured-products">
+		<div class="inner">
+			<h2>꿀잠을 위한 필수 아이템</h2>
+			<div class="product-grid">
+				<c:forEach var="product" items="${list}">
+					<div class="product-item">
+						<a
+							href="${pageContext.request.contextPath}/product/details?productNum=${product.productNum}">
+							<img
+							src="${pageContext.request.contextPath}/uploads/product/${product.thumbnail}"
+							alt="${product.productName}"> <span class="product-info">
+								<span>${product.productName}</span> <span class="discount">
+									${product.discountRate}% <span class="price"> <fmt:formatNumber
+											value="${product.price * (1 - product.discountRate / 100)}"
+											pattern="#,###원" />
+								</span>
+							</span> <span class="rating"> ★ ${product.score} <span
+									class="review-count">리뷰 ${product.reviewCount}</span>
+							</span>
+						</span>
+						</a>
+					</div>
+				</c:forEach>
+			</div>
+		</div>
+	</section>
+</div>
+
+<script type="text/javascript">
 	document.addEventListener('DOMContentLoaded', () => {
 	    initProductSlider();
 	    initSwiper();
