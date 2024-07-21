@@ -41,14 +41,14 @@
 				<div class="cart-box">
 					<article class="cart-item">
 						<div class="checkbox-wrap">
-							<input type="checkbox" name="stockNum" value="${dto.stockNum}" class="checkbox">
+							<input type="checkbox" name="stockNum" value="${dto.stockNum}" class="checkbox" ${dto.totalStock <1 ? "disabled":""}>
 						</div>
 						<a class="item-link" href="${pageContext.request.contextPath}/product/details?productNum=${dto.productNum}">
 							<span class="item-img">
 								<img alt="상품 이미지" src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}">
 							</span>
 							<span class="item-content">
-								<h1 class="item-title">${dto.productName}</h1>
+								<h1 class="item-title">${dto.productName} ${dto.totalStock <1 ? "(품절)":""}</h1>
 								<span class="delivery-info">배송비: ${dto.delivery}원</span>
 							</span>
 						</a>
@@ -65,15 +65,15 @@
 							<div class="option-subBox">
 								<div class="option-qty">
 									<span class="minus_qty bi bi-dash-lg"></span>
-									<button type="button" class="chage_qty">${dto.qty}</button>
+									<button type="button" class="chage_qty">${dto.totalStock <1 ? 0:dto.qty}</button>
 									<span class="plus_qty bi bi-plus-lg"></span>
 								</div>
 								<div class="option-price">
-									<span class="number"><fmt:formatNumber value="${dto.price*(1-dto.discountRate/100)*dto.qty}" pattern="#,###" /></span>원
+									<span class="number"><fmt:formatNumber value="${dto.price*(1-dto.discountRate/100)* dto.totalStock <1 ? 0:dto.qty}" pattern="#,###" /></span>원
 								</div> 
 							</div>
 							<input type="hidden" data-stock-num="${dto.stockNum}">
-							<input type="hidden" name="qty" value="${dto.qty}">
+							<input type="hidden" name="qty" value="${dto.totalStock <1 ? 0:dto.qty}">
 							<input type="hidden" name="productPrice" value="${dto.price}">
 							<input type="hidden" name="salePrice" value="${Math.ceil(dto.price*(1-dto.discountRate/100))}">
 							<input type="hidden" name="delivery" value="${dto.delivery}">
@@ -315,7 +315,10 @@ $('.cart-list').on('click', function(e) {
 	let $box = $(e.target).closest('.option-box');
 	let qty = $($box).find('input[name="qty"]').val();
 	let stockNum = $box.find('input[data-stock-num]').attr('data-stock-num');
-
+	if(qty === "0"){
+		alert("품절된 상품입니다.");
+		return;
+	}
 	if($(e.target).hasClass("chage_qty")){
 		let result = parseInt(window.prompt('변경하실 수량을 입력하세요. ( 1 ~ 99 )')) || undefined;
 		

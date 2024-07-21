@@ -51,11 +51,11 @@
 	
 	<!-- 주문 정보 -->
 	<select id="findById" parameterType="String" resultType="com.sgsg.dra.domain.Order">
-		SELECT PRODUCTORDERNAME, po.ORDERNUM, po.USERID, m.USERNAME, ISSUE_ID,
+		SELECT PRODUCTORDERNAME, po.ORDERNUM, MEMBERIDX, po.USERID, m.USERNAME, ISSUE_ID,
 			TO_CHAR(ORDERDATE, 'YYYY-MM-DD HH24:MI:SS') ORDERDATE, TOTALMONEY, USEDSAVED, 
-			DELIVERYCHARGE, PAYMENT, ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENTNAME,
+			DELIVERYCHARGE, PAYMENT, po.ORDERSTATE, ORDERSTATEDATE, CANCELAMOUNT, RECIPIENTNAME,
 			po.TEL, po.ZIP, po.ADDR1, po.ADDR2, po.DESTMEMO, PAYMETHOD, CARDNAME,
-			AUTHNUMBER, AUTHDATE, DELIVERYNAME, INVOICENUMBER, STATUS_CODE
+			AUTHNUMBER, AUTHDATE, DELIVERYNAME, INVOICENUMBER, DELIVERYNUM
         FROM PRODUCTORDER po
         LEFT OUTER JOIN MEMBER1 m ON po.USERID = m.USERID
         LEFT OUTER JOIN payDetail pd ON po.orderNum = pd.orderNum
@@ -84,13 +84,13 @@
 	
 	<!-- 배송 등록 -->
 	<insert id="insertDelivery" parameterType="map">
-		INSERT INTO DELIVERY(DELIVERYNUM, orderNum, companyNum, DELIVERYNAME, INVOICENUMBER, STATUS_CODE)
-			VALUES(DELIVERY_seq.nextval, #{orderNum}, #{companyNum}, #{deliveryName}, #{invoiceNumber}, #{status_code})
+		INSERT INTO DELIVERY(DELIVERYNUM, orderNum, companyNum, DELIVERYNAME, INVOICENUMBER, ORDERSTATE)
+			VALUES(DELIVERY_seq.nextval, #{orderNum}, #{companyNum}, #{deliveryName}, #{invoiceNumber}, #{orderState})
 	</insert>
 	
 	<!-- 배송상태 변경 -->
 	<update id="updateDeliveryState" parameterType="map">
-		update DELIVERY set status_code=#{status_code} where DELIVERYNUM = #{deliveryNum}
+		update DELIVERY set ORDERSTATE=#{orderState} where DELIVERYNUM = #{deliveryNum}
 	</update>
 	
 	<!-- 주문 상태 변경 -->
@@ -100,36 +100,40 @@
 	
 	<!-- 판매취소 -->
 	<!-- 판매취소는 사용자 요청시 인서트? -->
-	<insert id="canceleOrder" >
+	<insert id="cancelOrder" parameterType="map">
 		insert into ORDER_CANCELLATION(orderNum, CANCEL_DATE, CANCEL_REASON, PROCESS_DATE)
-			values(#{orderNum}, #{cancel_date}, #{cancel_reason}, #{process_date})
+		values(#{orderNum}, sysdate, #{cancel_reason}, sysdate)
 	</insert>
+	
+	<!-- 마지막 포인트 조회 -->
+	<select id="findByUserPoint" parameterType="String" resultType="com.sgsg.dra.domain.UserPoint">
+		SELECT NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, USERID
+		FROM POINT_HISTORY ph
+		left outer join member1 m on m.USERID = ph.USERID
+		WHERE MEMBERIDX = #{memberIdx}
+		ORDER BY num DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
 	
 	<!-- 판매 취소시 사용한 포인트 돌려주기 -->
 	<insert id="canceleUesdPoint" parameterType="map">
-		INSERT INTO POINT_HISTORY (
-			NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, USERID, orderNum
-		)
-		SELECT
-			POINT_HISTORY_SEQ.NEXTVAL,
-			-(SELECT CHANGE_POINTS
-			 FROM POINT_HISTORY
-			 WHERE orderNum = #{orderNum}),
-			#{reason},
-			SYSDATE,
-			COALESCE((
-				SELECT REMAIN_POINTS
-				FROM POINT_HISTORY
-				WHERE USERID = #{userId}
-				ORDER BY CHANGE_DATE DESC
-				FETCH FIRST 1 ROWS ONLY
-			), 0) - (SELECT CHANGE_POINTS
-					FROM POINT_HISTORY
-					WHERE orderNum = #{orderNum}),
-			#{userId},
-			#{orderNum}
-		FROM DUAL
+		INSERT INTO POINT_HISTORY (NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, USERID, orderNum)
+		values(POINT_HISTORY_SEQ.NEXTVAL, #{usedSaved}, #{reason}, SYSDATE, #{remain_points}, #{userId}, #{orderNum})
 	</insert>
+	
+	<!-- 재고 돌리기, 상세주문에서 주문번호 가지고 stock 돌려줌 -->
+	<update id="cancelProductStock" parameterType="map">
+		MERGE INTO PRODUCTSTOCK ps
+		USING (
+			SELECT od.STOCKNUM, SUM(od.QTY) AS TOTAL_QTY
+			FROM ORDERDETAIL od
+			WHERE od.ORDERNUM = #{orderNum}
+			GROUP BY od.STOCKNUM
+		) od
+		ON (ps.STOCKNUM = od.STOCKNUM)
+		WHEN MATCHED THEN
+			UPDATE SET ps.TOTALSTOCK = ps.TOTALSTOCK + od.TOTAL_QTY
+	</update>
 	
 	
 </mapper>

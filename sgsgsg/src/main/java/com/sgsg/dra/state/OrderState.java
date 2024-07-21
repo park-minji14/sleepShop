@@ -7,6 +7,9 @@ public enum OrderState {
     SHIPMENT_STARTED("배송시작"),
     IN_TRANSIT("배송중"),
     DELIVERED("배송완료"),
+    DELIVERY_FAILED("배송실패"),
+    BOUNCED("반송됨"),
+    PURCHASE_CONFIRMATION("구매확정"),
     CANCELED("판매취소");
 
     private final String korean;

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -136,18 +137,55 @@ public class OrderManageController {
 		return map;
 	}
 	
-	
-	
-	
-	@RequestMapping("delivery")
-	public String deliveryManage(Model model) throws Exception {
+	@PostMapping("order/detail")
+	@ResponseBody
+	public Map<String, Object> insertDelivery(@RequestParam Map<String, Object> paramMap) throws Exception {
+		String state = "true";
+		
 		try {
-			
+			service.insertDelivery(paramMap);
+		} catch (Exception e) {
+			state = "false";
+		}
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state", state);
+		return model;
+	}
+	
+	
+	@PostMapping("order/delivery")
+	@ResponseBody
+	public Map<String, Object> delivery(@RequestParam Map<String, Object> paramMap) throws Exception {
+		String state = "true";
+		
+		try {
+			service.updateDeliveryState(paramMap);
+		} catch (Exception e) {
+			state = "false";
+		}
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state", state);
+		return model;
+	}
+	
+	@PostMapping("order/cancelOrder")
+	@ResponseBody
+	public Map<String, Object> cancelOrder(@RequestParam Map<String, Object> paramMap) throws Exception {
+		String state = "false";
+		
+		try {
+			service.cancelOrder(paramMap);
+			state="true";
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		
-		return ".adminLeft.order.delivery";
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state", state);
+		return model;
 	}
+	
+	
 }

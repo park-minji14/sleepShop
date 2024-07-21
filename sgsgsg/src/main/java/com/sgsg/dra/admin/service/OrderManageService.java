@@ -13,6 +13,9 @@ public interface OrderManageService {
 	public List<Order> findByOrderDetails(String orderNum) throws Exception;
 	
 	public List<Order> selectDeliveryCompanyList() throws Exception;
+	public void insertDelivery(Map<String, Object> map) throws Exception;
+	public void updateDeliveryState(Map<String, Object> map) throws Exception;
 	
+	public void cancelOrder(Map<String, Object> map) throws Exception;
 	
 }
