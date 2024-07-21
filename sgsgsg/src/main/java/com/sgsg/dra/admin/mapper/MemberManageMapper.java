@@ -15,7 +15,13 @@ public interface MemberManageMapper {
 	public List<MemberManage> listMember(Map<String, Object> map);
 
 	public MemberManage findById(Long memberIdx);
-
+	public String findByAuthority(String userId);
+	
 	public void updateMembership(Map<String, Object> map) throws SQLException;
 	public void updateAuthority(Map<String, Object> map) throws SQLException;	
+	
+	public void updateMemberEnabled(Map<String, Object> map) throws SQLException;
+	public void insertMemberState(MemberManage dto) throws SQLException;
+	public List<MemberManage> listMemberState(String userId);
+	public MemberManage findByState(String userId);	
 }

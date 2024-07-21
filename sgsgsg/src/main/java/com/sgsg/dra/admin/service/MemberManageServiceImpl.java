@@ -78,7 +78,8 @@ public class MemberManageServiceImpl implements MemberManageService {
 	@Override
 	public void updateMembership(Map<String, Object> map) throws Exception {
 		try {
-			mapper.updateMembership(map); // 회원 상태 업데이트
+			mapper.updateMembership(map); // 회원 membership 업데이트
+			mapper.updateAuthority(map); // 회원 authority 업데이트
 		} catch (Exception e) {
 			e.printStackTrace(); // 예외 발생 시 스택 트레이스 출력
 			throw e; // 예외 다시 던지기
@@ -86,14 +87,51 @@ public class MemberManageServiceImpl implements MemberManageService {
 	}
 
 	@Override
-	public void updateAuthority(Map<String, Object> map) throws Exception {
+	public void updateMemberEnabled(Map<String, Object> map) throws Exception {
 		try {
-			mapper.updateAuthority(map);
+			mapper.updateMemberEnabled(map);
 		} catch (Exception e) {
-			e.printStackTrace(); // 예외 발생 시 스택 트레이스 출력
-			throw e; // 예외 다시 던지기
+			e.printStackTrace();
+			throw e;
 		}
+		
 	}
-	
-	
+
+	@Override
+	public void insertMemberState(MemberManage dto) throws Exception {
+		try {
+			mapper.insertMemberState(dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+	}
+
+	@Override
+	public List<MemberManage> listMemberState(String userId) {
+		List<MemberManage> list = null;
+		
+		try {
+			list = mapper.listMemberState(userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+
+	@Override
+	public MemberManage findByState(String userId) {
+		MemberManage dto = null;
+
+		try {
+			dto = mapper.findByState(userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return dto;
+	}
+
 }

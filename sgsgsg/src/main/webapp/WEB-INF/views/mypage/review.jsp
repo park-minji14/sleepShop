@@ -23,8 +23,8 @@
                                 class="img-fluid">
                         </div>
                         <div class="col-md-7">
-                            <h5>메모리폼 베개</h5>
-                            <p class="text-muted">구매일: 2024-07-07</p>
+                            <h5>${dto.productName}</h5>
+                            <p class="text-muted">구매일: ${dto.review_Date}</p>
                         </div>
                         <div class="col-md-3 text-end">
                             <button class="btn btn-write-review" data-bs-toggle="modal"

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgsg.dra.mapper.MyPageMapper">
+	
+	<!-- 포인트 개수 -->
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM POINT_HISTORY p
+		JOIN member1 m ON p.userId=m.userId
+		LEFT OUTER JOIN productOrder o ON p.orderNum=o.orderNum 
+		<where>
+			p.userId = #{userId}
+		</where>
+	</select>
+	
+	<!-- 포인트 리스트 -->
+    <select id="listPoint" parameterType="map" resultType="com.sgsg.dra.domain.MyPoint">
+		SELECT NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, p.USERID, p.ORDERNUM, productOrderName
+		FROM POINT_HISTORY p
+		JOIN member1 m ON p.userId=m.userId
+		LEFT OUTER JOIN productOrder o ON p.orderNum=o.orderNum 
+		<where>
+			p.userId = #{userId}
+		</where>   
+		ORDER BY num DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+	</select>
+
+	<select id="readPoint" parameterType="map" resultType="com.sgsg.dra.domain.MyPoint">
+		SELECT NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, p.USERID, p.ORDERNUM
+		FROM POINT_HISTORY p
+		JOIN member1 m ON p.userId=m.userId
+		LEFT OUTER JOIN productOrder o ON p.orderNum=o.orderNum 
+		<where>
+			p.userId = #{userId}
+		</where>   
+		ORDER BY num DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	
+	
+	
+	<!-- 리스트 개수 -->
+	<select id="reviewCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM productOrder po
+		JOIN orderDetail od ON po.orderNum = od.orderNum;
+	</select>
+	
+	
+	
+	<!-- 리뷰 리스트 -->
+	<select id="listReview" parameterType="map" resultType="com.sgsg.dra.domain.Review">
+		SELECT po.orderNum, userId, orderDate, totalMoney, payment, deliveryCharge, orderStateDate, orderState, 
+                od.orderDetailNum, ps.productNum, ps.detailNum, od.qty, od.productMoney, od.savedMoney,
+                p.productName, p.optionCount, p.thumbnail, d1.optionValue, d2.optionValue optionValue2,
+                NVL(r.reviewWrite, 0) reviewWrite
+		FROM productOrder po
+        
+		JOIN orderDetail od ON po.orderNum = od.orderNum
+        JOIN productStock ps ON od.stockNum = ps.stockNum
+		JOIN product p ON ps.productNum = p.productNum
+		LEFT OUTER JOIN optionDetail d1 ON ps.detailNum = d1.detailNum
+		LEFT OUTER JOIN optionDetail d2 ON ps.detailNum2 = d2.detailNum
+		LEFT OUTER JOIN (
+			SELECT ORDERdETAILnum, 1 reviewWrite
+			FROM product_Review ppr
+			WHERE userId = 'admin'
+		) r ON od.orderDetailNum = r.orderDetailnum;
+        
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>
