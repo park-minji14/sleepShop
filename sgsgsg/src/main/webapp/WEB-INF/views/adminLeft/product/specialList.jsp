@@ -110,6 +110,10 @@
 <script type="text/javascript">
 function searchList() {
     const f = document.searchForm;
+    
+    f.method = "get";
+    
+    f.action = "${pageContext.request.contextPath}/adminManagement/productManage/specialList";
     f.submit();
 }
 

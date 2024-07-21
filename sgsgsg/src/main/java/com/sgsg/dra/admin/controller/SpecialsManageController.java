@@ -53,7 +53,7 @@ public class SpecialsManageController {
 		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("state", state); // 1:진행중, 2:예정, 3:특가종료
+		map.put("state", state); // 1: 진행중, 2: 예정, 3: 특가종료
 		map.put("schType", schType);
 		map.put("kwd", kwd);
 		

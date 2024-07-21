@@ -50,6 +50,9 @@
 .status-icon.hidden {
     color: #F44336;
 }
+.text-center {
+    vertical-align: middle;
+}
 </style>
 
 <script type="text/javascript">
@@ -137,30 +140,30 @@ window.addEventListener("load", function() {
             <table class="table">
                 <thead>
                     <tr>
-                        <th width="70">순번</th>
-                        <th width="120">이미지</th>
-                        <th width="90">상품코드</th>
-                        <th>상품명</th>
-                        <th width="110">상위카테고리</th>
-                        <th width="120">하위카테고리</th>
-                        <th width="100">전체재고</th>
-                        <th width="80">진열여부</th>
-                        <th width="120">최근수정일</th>
-                        <th>관리</th>
+                        <th width="70" class="text-center">순번</th>
+                        <th width="120" class="text-center">이미지</th>
+                        <th width="90" class="text-center">상품코드</th>
+                        <th width="500" class="text-center">상품명</th>
+                        <th width="110" class="text-center">상위카테고리</th>
+                        <th width="120" class="text-center">하위카테고리</th>
+                        <th width="100" class="text-center">전체재고</th>
+                        <th width="80" class="text-center">진열여부</th>
+                        <th width="120" class="text-center">최근수정일</th>
+                        <th class="text-center">관리</th>
                     </tr>
                 </thead>
                 <tbody>
                		<!-- 상품 진열할 곳 -->
                		<c:forEach var="dto" items="${list}" varStatus="status">
 	            		<tr>
-	                        <td>${dataCount-(page-1)*size-status.index}</td>
-	                        <td>
+	                        <td class="text-center">${dataCount-(page-1)*size-status.index}</td>
+	                        <td class="text-center">
 	                        	<img src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}" alt="상품 이미지" width="50" height="50"> 
 	                        </td>
-	                        <td>${dto.productNum}</td>
-	                        <td>${dto.productName}</td>
-	                        <td>${dto.categoryName}</td>
-	                        <td>
+	                        <td class="text-center">${dto.productNum}</td>
+	                        <td class="text-center">${dto.productName}</td>
+	                        <td class="text-center">${dto.categoryName}</td>
+	                        <td class="text-center">
 							    <c:choose>
 							        <c:when test="${dto.parentNum == 1}">
 							            침구
@@ -191,22 +194,22 @@ window.addEventListener("load", function() {
 							        </c:otherwise>
 							    </c:choose>
 							</td>
-	                        <td>${dto.totalStock}</td>   
-	                        <td>
+	                        <td class="text-center">${dto.totalStock}</td>   
+	                        <td class="text-center">
 							    <c:choose>
 							        <c:when test="${dto.productShow == 1}">
-							            <p>진열</p>
+							            <span>진열</span>
 							        </c:when>
 							        <c:when test="${dto.productShow == 0}">
-							            <p>숨김</p>
+							            <span>숨김</span>
 							        </c:when>
 							        <c:otherwise>
-							            <p>조회불가</p>
+							            <span>조회불가</span>
 							        </c:otherwise>
 							    </c:choose>
 							</td>
-							<td>${dto.update_date}</td>
-	                        <td><button type="button" class="btn btn-sm btn-primary btn-productStock" id="btnArticle" data-productNum="${dto.productNum}" data-optionCount="${dto.optionCount}">재고관리</button></td>
+							<td class="text-center">${dto.update_date}</td>
+	                        <td class="text-center"><button type="button" class="btn btn-sm btn-primary btn-productStock" id="btnArticle" data-productNum="${dto.productNum}" data-optionCount="${dto.optionCount}">재고관리</button></td>
 	                    </tr>
                		</c:forEach>
                     
