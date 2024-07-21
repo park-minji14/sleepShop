@@ -3,15 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <script>
-$(function(){
-	$('#tab-${category}').addClass('active');
 
-	$('ul.tabs li').click(function() {
-		let category = $(this).attr('data-category');
-		
-		location.href = '${pageContext.request.contextPath}/adminLeft/promotion/'+category+'/list';
-	});
-});
 
 
 </script>
@@ -61,10 +53,10 @@ $(function(){
 	<table class="table">
 		<tr>
 			<td align="left" width="50">
-				<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/admin/eventManage/${category}/list';" title="새로고침"><i class="fa-solid fa-arrow-rotate-left"></i></button>
+				<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/adminManagement/promotionManage/${category}/list';" title="새로고침"><i class="fa-solid fa-arrow-rotate-left"></i></button>
 			</td>
 			<td>
-				<form name="searchForm" action="${pageContext.request.contextPath}/adminLeft/promotion/${category}/list" method="post">
+				<form name="searchForm" action="${pageContext.request.contextPath}/adminManagement/promotionManage/${category}/list" method="post">
 					<select name="schType" class="col-auto p-1" style="width: 100px;">
 						<option value="all" ${schType=="all"?"selected":""}>모두</option>
 						<option value="startDate" ${schType=="startDate"?"selected":""}>시작일</option>
@@ -76,7 +68,7 @@ $(function(){
 				</form>
 			</td> 
 			<td width="100">
-				<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/adminLeft/promotion/${category}/write';">이벤트등록</button>
+				<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/adminManagement/promotionManage/${category}/write';">이벤트등록</button>
 			</td> 
 		</tr>
 	</table>

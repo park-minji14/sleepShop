@@ -16,15 +16,6 @@
 </style>
 
 <script type="text/javascript">
-	$(function(){
-		$('#tab-${category}').addClass('active');
-	
-		$('ul.tabs li').click(function() {
-			let category = $(this).attr('data-category');
-			
-			location.href = '${pageContext.request.contextPath}/adminLeft/promotion/'+category+'/list';
-		});
-	});
 
 	function isValidDateFormat(data){
 		if(data.length !== 8 && data.length !== 10) return false;
@@ -133,7 +124,7 @@
             return false;
         }
 
-    	f.action = "${pageContext.request.contextPath}/adminLeft/promotion/${category}/${mode}";
+    	f.action = "${pageContext.request.contextPath}/adminManagement/promotionManage/${category}/${mode}";
 
         return true;
     }
@@ -145,15 +136,7 @@
     </div>
     
     <div class="body-main">
-		<div>
-			<ul class="tabs">
-				<li id="tab-all" data-category="all">전체 이벤트</li>
-				<li id="tab-progress" data-category="progress">진행중인 이벤트</li>
-				<li id="tab-winner" data-category="winner">당첨자 발표</li>
-				<li id="tab-ended" data-category="ended">종료된 이벤트</li>
-				<li id="tab-upcoming" data-category="upcoming">진행 예정인 이벤트</li>
-			</ul>
-		</div>
+		
 		<div id="tab-content" style="padding: 15px 10px 5px; clear: both;">
 			<form name="eventForm" method="post">
 				<table class="table table-border border-top2 table-form">
@@ -220,7 +203,7 @@
 						<td align="center">
 							<button type="button" class="btn btn-dark" onclick="submitContents(this.form);">${mode=='update'?'수정완료':'등록하기'}</button>
 							<button type="reset" class="btn">다시입력</button>
-							<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/adminLeft/promotion/${category}/main';">${mode=='update'?'수정취소':'등록취소'}</button>
+							<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/adminManagement/promotionManage/${category}/list';">${mode=='update'?'수정취소':'등록취소'}</button>
 							<c:if test="${mode=='update'}">
 								<input type="hidden" name="num" value="${dto.num}">
 								<input type="hidden" name="page" value="${page}">
