@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,7 +22,7 @@ import com.sgsg.dra.admin.service.MemberManageService;
 import com.sgsg.dra.common.MyUtil;
 
 @Controller
-@RequestMapping("adminManagement/memberManage/*")
+@RequestMapping("/adminManagement/memberManage/*")
 public class MemberManageController {
 	@Autowired
 	private MemberManageService service;
@@ -126,16 +127,89 @@ public class MemberManageController {
 		if(dto == null) {
 			return "redirect:/adminManagement/memberManage/list?" + query;
 		}
+		
+		// 회원 상태 가져오기
+		MemberManage memberState = service.findByState(dto.getUserId());
+		List<MemberManage> listState = service.listMemberState(dto.getUserId());
 
 		model.addAttribute("dto", dto);
+		model.addAttribute("memberState", memberState);
+		model.addAttribute("listState", listState);
+		model.addAttribute("schType", schType);
+		model.addAttribute("kwd", kwd);
+		model.addAttribute("enabled", enabled);		
 		model.addAttribute("query", query);
 		
-
 		return ".adminLeft.member.details";
 	}
 	
+	// 회원 상태변경
+	@PostMapping("updateMemberState")
+	public String updateMemberState(
+			MemberManage dto,
+			@RequestParam Long memberIdx,
+			@RequestParam String page,
+			@RequestParam(defaultValue = "userId") String schType, 
+			@RequestParam(defaultValue = "") String kwd,
+			@RequestParam(name = "senabled", defaultValue = "") String enabled,
+			Model model) throws Exception {
+		
+		String query = "memberIdx=" + memberIdx + "&page=" + page;
+		if(enabled.length() != 0) {
+			query += "&enabled=" + enabled;
+		}
+		if (kwd.length() != 0) {
+			query += "&schType=" + schType + "&kwd=" + URLEncoder.encode(kwd, "UTF-8");
+		}
+		
+		try {
+			// 회원 활성/비활성 변경
+			Map<String, Object> map = new HashMap<>();
+			map.put("userId", dto.getUserId());
+			if (dto.getStateCode() == 0) {
+				map.put("enabled", 1);
+			} else {
+				map.put("enabled", 0);
+			}
+			
+			service.updateMemberEnabled(map);	
+			
+			// 회원 상태 변경 사항 저장			
+			service.insertMemberState(dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return "redirect:/adminManagement/memberManage/details?" + query;
+	}	
 	
-	
-	
+	// 회원 권한변경
+	@PostMapping("updateMemberRole")
+	public String updateMemberRole(
+			@RequestParam Map<String, Object> paramMap,
+			@RequestParam Long memberIdx,
+			@RequestParam String page,
+			@RequestParam(defaultValue = "userId") String schType, 
+			@RequestParam(defaultValue = "") String kwd,
+			@RequestParam(name = "senabled", defaultValue = "") String enabled,
+			Model model) throws Exception {
+		
+		String query = "memberIdx=" + memberIdx + "&page=" + page;
+		if(enabled.length() != 0) {
+			query += "&enabled=" + enabled;
+		}
+		if (kwd.length() != 0) {
+			query += "&schType=" + schType + "&kwd=" + URLEncoder.encode(kwd, "UTF-8");
+		}
+		
+		try {
+			service.updateMembership(paramMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/adminManagement/memberManage/details?" + query;
+	}	
 
 }

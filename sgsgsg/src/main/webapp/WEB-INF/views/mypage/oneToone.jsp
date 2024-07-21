@@ -4,27 +4,36 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <style>
-    .css-ow22sl {
-        overflow: hidden;
-        width: 100%; /* or any specific width */
-        padding: 20px;
-        box-sizing: border-box;
-    }
+.css-ow22sl {
+    overflow: hidden;
+    width: 100%; /* or any specific width */
+    padding: 20px;
+    box-sizing: border-box;
+}
 
-    .table-style6 {
-        max-width: 100%;
-        overflow-x: auto;
-    }
+.table-style6 {
+    max-width: 100%;
+    overflow-x: auto;
+}
 
-    .table-header, .table-content {
-        justify-content: space-between;
-        flex-wrap: nowrap;
-    }
+.table-header, .table-content {
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
 
-    .table-header > div, .table-content > div {
-        padding: 10px;
-        text-align: center;
-    }
+.table-header > div, .table-content > div {
+    padding: 10px;
+    text-align: center;
+}
+
+.justify-content-center {
+    justify-content: center !important;
+    margin-top: 100px;
+}
+
+
+
+
 </style>
 
 <div class="css-ow22sl e1v2ggz01">
@@ -77,6 +86,8 @@
     <input type="radio" id="option4" name="category" value="글 작성" class="radio-input" ${category == '글 작성' ? 'checked' : ''} onclick="inquiryModalOpen();">
     <label for="option4" class="radio-label" style="width: 150px; text-align: center; font-size: 20px;">글 작성</label>
 </div>
+
+
 
 <!-- 새 문의 작성 모달 -->
 <div class="modal fade" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true" style="z-index: 99999">
