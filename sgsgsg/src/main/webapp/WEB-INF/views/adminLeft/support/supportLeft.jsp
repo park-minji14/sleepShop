@@ -11,7 +11,7 @@
             <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/supportManage/supportList">1:1 문의</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">상품문의</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/supportManage/inquiryList">상품문의</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="${pageContext.request.contextPath}/adminManagement/supportManage/faq">FAQ</a>

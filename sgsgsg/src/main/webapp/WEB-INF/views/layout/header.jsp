@@ -42,7 +42,7 @@
 							</c:when>
 							<c:otherwise>
 								<img
-									src="https://img.icons8.com/plasticine/100/backago.png" 
+									src="https://img.icons8.com/plasticine/100/shoto.png" 
 									alt="Profile" class="profile-img"
 									style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
 							</c:otherwise>
@@ -63,7 +63,7 @@
 												alt="대시보드" style="width: 20px; height: 20px;"> 대시보드
 										</a></li>
 										<li><a
-											href="${pageContext.request.contextPath}/adminManagement/productManage/list"
+											href="${pageContext.request.contextPath}/adminManagement/supportManage/inquiryList"
 											style="text-decoration: none; color: inherit;"> <img
 												src="https://img.icons8.com/color/48/000000/product.png"
 												alt="상품 관리" style="width: 20px; height: 20px;"> 상품 관리
