@@ -65,4 +65,36 @@
     ORDER BY d.DISPLAYORDER DESC, d.DETAILNUM DESC
     FETCH FIRST #{size} ROWS ONLY
 </select>
+
+
+<!-- 특가 상품 목록을 조회하는 쿼리
+     - 상품 정보, 할인율, 판매 수량, 할인된 가격을 계산하여 조회
+     - 현재 진행 중인 특가 상품만 선택
+     - 지정된 표시 순서대로 정렬하고 지정된 개수만큼만 조회 -->
+<select id="listSpecialProducts" parameterType="map" resultType="com.sgsg.dra.domain.SpecialsProduct">
+    SELECT p.PRODUCTNUM, p.PRODUCTNAME, p.PRICE, p.DISCOUNTRATE, 
+           p.THUMBNAIL, NVL(pc.SALECOUNT, 0) SALECOUNT,
+           ROUND(p.PRICE * (1 - p.DISCOUNTRATE / 100)) AS SALEPRICE,
+           TO_CHAR(s.ENDDATE, 'YYYY-MM-DD HH24:MI:SS') AS ENDDATE
+    FROM PRODUCT p
+    JOIN SPECIALSDETAIL sd ON p.PRODUCTNUM = sd.PRODUCTNUM
+    JOIN SPECIALS s ON sd.SPECIALNUM = s.SPECIALNUM
+    LEFT OUTER JOIN (
+        SELECT STOCKNUM, SUM(QTY) SALECOUNT
+        FROM ORDERDETAIL
+        GROUP BY STOCKNUM
+    ) pc ON p.PRODUCTNUM = pc.STOCKNUM
+    WHERE s.SHOWSPECIAL = 1 
+      AND (s.STARTDATE &lt;= SYSDATE AND s.ENDDATE &gt;= SYSDATE)
+    ORDER BY sd.DISPLAYORDER DESC
+    FETCH FIRST #{size} ROWS ONLY
+</select>
+
+<!-- 현재 진행 중인 특가 중 가장 빨리 끝나는 시간을 조회하는 쿼리 -->
+<select id="getSpecialEndTime" resultType="String">
+    SELECT TO_CHAR(MIN(ENDDATE), 'YYYY-MM-DD HH24:MI:SS')
+    FROM SPECIALS
+    WHERE SHOWSPECIAL = 1 AND ENDDATE &gt; SYSDATE
+</select>
+
 </mapper>

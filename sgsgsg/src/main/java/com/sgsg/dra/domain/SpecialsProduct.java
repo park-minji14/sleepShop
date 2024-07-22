@@ -15,6 +15,7 @@ public class SpecialsProduct {
     private int delivery;
     private String thumbnail;
     private int saleCount;
+    private String endDate;
     
  // 데이터베이스에 매핑되지 않는 임시 필드
     private transient int salePrice;
@@ -84,6 +85,12 @@ public class SpecialsProduct {
 	}
 	public void setSalePrice(int salePrice) {
 		this.salePrice = salePrice;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
 }
