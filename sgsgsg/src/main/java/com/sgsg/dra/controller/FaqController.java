@@ -26,7 +26,6 @@ public class FaqController {
             Map<String, Object> map = new HashMap<>();
             List<Faq> list = service.listFAQ(map);
             
-            System.out.println("FAQ 리스트 크기: " + list.size());  // 디버깅 문구
             for (Faq faq : list) {
                 System.out.println("FAQ: " + faq.getQuestion());  // 각 FAQ 출력
             }
@@ -34,7 +33,7 @@ public class FaqController {
             model.addAttribute("list", list);
             model.addAttribute("debugMessage", "컨트롤러에서 FAQ 리스트 로드 완료");  // 디버깅 메시지
         } catch (Exception e) {
-            e.printStackTrace();  // 스택 트레이스 출력
+            e.printStackTrace(); 
             model.addAttribute("errorMessage", "FAQ 로드 중 오류 발생: " + e.getMessage());
         }
         

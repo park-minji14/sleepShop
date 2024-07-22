@@ -140,105 +140,103 @@
                             <span class="info-value" id="responseDate"></span>
                         </div>
                     </div>
-                    
-                    <div class="modal-section" id="responseFormSection">
-                        <h6>답변 작성</h6>
-                        <form id="responseForm">
-                            <div class="mb-3">
-                                <textarea class="form-control" id="newResponseContent" rows="3" placeholder="답변을 입력하세요..."></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <input class="form-control" type="file" id="responseAttachment">
-                            </div>
-                            <button type="submit" class="btn btn-primary">답변 등록</button>
-                        </form>
-                    </div>
-                </div>
+
+				<div class="modal-section" id="responseFormSection">
+					<h6>답변 작성</h6>
+					<form id="responseForm" enctype="multipart/form-data">
+						<div class="mb-3">
+							<textarea class="form-control" id="newResponseContent"
+								name="answer" rows="3" placeholder="답변을 입력하세요..."></textarea>
+						</div>
+						<div class="mb-3">
+							<input class="form-control" type="file" id="responseAttachment"
+								name="file">
+						</div>
+						<button type="submit" class="btn btn-primary">답변 등록</button>
+					</form>
+				</div>
+			</div>
             </div>
         </div>
     </div>
+    
 <script>
 $(document).ready(function() {
-$('#inquiryModal').on('show.bs.modal', function (event) {
-    var btn = $(event.relatedTarget);
-    var id = btn.data('inquiry-id');
-    var modal = $(this);
+    // 문의 상세 모달 표시 이벤트
+    $('#inquiryModal').on('show.bs.modal', function (event) {
+        var btn = $(event.relatedTarget);
+        var id = btn.data('inquiry-id');
+        var modal = $(this);
+        
+        // 문의 상세 정보 가져오기
+        $.ajax({
+            url: 'getInquiry',
+            type: 'GET',
+            data: { inquiryNum: id },
+            success: function(data) {
+                // 모달에 문의 정보 표시
+                modal.find('#inquiryNumber').text(data.inquiryNum);
+                modal.find('#inquiryCategory').text(data.inquiryType);
+                modal.find('#productName').text(data.productName);
+                modal.find('#inquiryAuthor').text(data.userId);
+                modal.find('#inquiryDate').text(data.question_Date);
+                modal.find('#inquiryStatus').text(data.answerStatus);
+                modal.find('#inquiryContent').text(data.question);
 
-    $.ajax({
-        url: 'getInquiry',
-        type: 'GET',
-        data: { inquiryNum: id },
-        success: function(data) {
-            modal.find('#inquiryNumber').text(data.inquiryNum);
-            modal.find('#inquiryCategory').text(data.inquiryType); // 카테고리 표시
-            modal.find('#productName').text(data.productName);
-            modal.find('#inquiryAuthor').text(data.userId);
-            modal.find('#inquiryDate').text(data.question_Date);
-            modal.find('#inquiryStatus').text(data.answerStatus); // 답변 상태 표시
-            modal.find('#inquiryContent').text(data.question);
+                // 첨부 파일 목록 표시
+                var fileList = modal.find('#attachedFilesList');
+                fileList.empty();
+                if (data.listFilename && data.listFilename.length > 0) {
+                    data.listFilename.forEach(function(file) {
+                        fileList.append('<li>' + file + '</li>');
+                    });
+                } else {
+                    fileList.append('<li>첨부 파일 없음</li>');
+                }
 
-            var fileList = modal.find('#attachedFilesList');
-            fileList.empty();
-            if (data.filename) {
-                var files = data.filename.split(',');
-                files.forEach(function(file) {
-                    fileList.append('<li>' + file + '</li>');
-                });
+                // 답변 여부에 따른 섹션 표시
+                if (data.answer) {
+                    modal.find('#responseContent').text(data.answer);
+                    modal.find('#responseDate').text(data.answer_Date);
+                    modal.find('#responseSection').show();
+                    modal.find('#responseFormSection').hide();
+                } else {
+                    modal.find('#responseSection').hide();
+                    modal.find('#responseFormSection').show();
+                }
+            },
+            error: function() {
+                alert('inquiryModal error');
             }
-
-            if (data.answer) {
-                modal.find('#responseContent').text(data.answer);
-                modal.find('#responseDate').text(data.answer_Date);
-                modal.find('#responseSection').show();
-                modal.find('#responseFormSection').hide();
-            } else {
-                modal.find('#responseSection').hide();
-                modal.find('#responseFormSection').show();
-            }
-        },
-        error: function() {
-            alert('Failed to load inquiry.');
-        }
+        });
     });
-});
 
-$('#responseForm').submit(function(e) {
-    e.preventDefault();
-    var id = $('#inquiryModal').find('#inquiryNumber').text();
-    var answer = $('#newResponseContent').val();
-    var answerId = 'admin'; // 아이디를 고정값으로 둬야 하나 고민..
+    // 답변 제출 폼 이벤트
+    $('#responseForm').submit(function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        var id = $('#inquiryModal').find('#inquiryNumber').text();
+        formData.append('inquiryNum', id);
+        formData.append('answerId', 'admin');
 
-    console.log("Submitting answer for inquiry ID:", id);
-    console.log("Answer content:", answer);
-    console.log("Answerer ID:", answerId);
-
-    $.ajax({
-        url: 'saveAnswer',
-        type: 'POST',
-        data: { 
-            inquiryNum: id,
-            answer: answer,
-            answerId: answerId
-        },
-        success: function(response) {
-            console.log("Server response:", response);
-            if(response.status === 'success') {
-                alert(response.message);
-                $('#inquiryModal').modal('hide');
-                location.reload();
-            } else {
-                alert("Failed to save answer. Server message: " + response.message);
+        // 답변 저장 AJAX 요청
+        $.ajax({
+            url: 'saveAnswer',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if(response.status === 'success') {
+                    alert(response.message);
+                    $('#inquiryModal').modal('hide');
+                    location.reload();
+                } 
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('responseForm error.');
             }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.error("AJAX Error:");
-            console.error("Status:", textStatus);
-            console.error("Error:", errorThrown);
-            console.error("Response Text:", jqXHR.responseText);
-            console.error("Status Code:", jqXHR.status);
-            alert('Failed to save answer. Error: ' + textStatus + '. See console for more details.');
-        	}
-    	});
-	});
+        });
+    });
 });
 </script>

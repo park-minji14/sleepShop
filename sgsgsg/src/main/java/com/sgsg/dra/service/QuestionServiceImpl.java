@@ -26,14 +26,13 @@ public class QuestionServiceImpl implements QuestionService {
 		    try {
 		        mapper.insertQuestion(dto);
 		        
+		        // 파일 처리 로직
 		        if (dto.getSelectFile() != null && !dto.getSelectFile().isEmpty()) {
-		            for (MultipartFile mf : dto.getSelectFile()) {
-		                String filename = fileManager.doFileUpload(mf, pathname);
-		                if (filename != null) {
-		                    Question fileDto = new Question();
-		                    fileDto.setInquiryNum(dto.getInquiryNum());
-		                    fileDto.setFilename(filename);
-		                    mapper.insertQuestionFile(fileDto);
+		            for (MultipartFile file : dto.getSelectFile()) {
+		                String saveFilename = fileManager.doFileUpload(file, pathname);
+		                if (saveFilename != null) {
+		                    dto.setFilename(saveFilename);
+		                    mapper.insertQuestionFile(dto);
 		                }
 		            }
 		        }
@@ -42,7 +41,6 @@ public class QuestionServiceImpl implements QuestionService {
 		        throw e;
 		    }
 		}
-
 		@Override
 		public int dataCount(Map<String, Object> map) {
 			int result=0;
@@ -90,7 +88,6 @@ public class QuestionServiceImpl implements QuestionService {
 		    return list;
 		}
 
-
 		@Override
 		public int dataCount2(Map<String, Object> map) {
 			int result=0;
@@ -105,14 +102,23 @@ public class QuestionServiceImpl implements QuestionService {
 
 		@Override
 		public List<Question> listQuestion2(Map<String, Object> map) {
-			// TODO Auto-generated method stub
-			return null;
+		    List<Question> list = null;
+		    try {
+		        list = mapper.listQuestion2(map);
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		    return list;
 		}
 
 		@Override
 		public void updateQuestion(Question dto) throws Exception {
-			// TODO Auto-generated method stub
-			
+		    try {
+		        mapper.updateQuestion(dto);
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        throw e;
+		    }
 		}
 
 		@Override
