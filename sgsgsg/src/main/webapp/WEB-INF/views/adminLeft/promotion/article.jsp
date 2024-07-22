@@ -38,6 +38,16 @@
    align-items: center;
    justify-content: center;
 }
+
+.btn {
+	border: 1px solid gray;
+}
+
+
+.btn:hover {
+	background: gray;
+	color: black;
+}
 </style>
 
 <script type="text/javascript">
@@ -54,10 +64,7 @@ function deleteOk() {
 </script>
 
 <div class="body-container">
-    <div class="body-title">
-		<h2><i class="fa-regular fa-calendar"></i> 이벤트 </h2>
-    </div>
-    
+    <br>
     <div class="body-main">
 		
 		<div id="tab-content" style="padding: 15px 10px 5px; clear: both;">
