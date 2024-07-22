@@ -43,6 +43,7 @@ public class OrderController {
 			@RequestParam List<Integer> qty,
 			@RequestParam(defaultValue = "buy") String mode,
 			HttpSession session,
+			RedirectAttributes reAttr,
 			Model model) {
 		
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
@@ -72,23 +73,40 @@ public class OrderController {
 			// 상품 정보 찾기
 			List<Product> productList = orderService.findByStockNum(map);
 			
+			
 			// 마지막 포인트 내역
 			UserPoint userPoint = orderService.findByUserPoint(info.getUserId());
 			
 			for (int i = 0; i < productList.size(); i++) {
 				Product dto = productList.get(i);
-				int productSum = dto.getPrice() * qty.get(i);
+				// 재고 개수보다 크면 재고 개수로.
+				int qtyTemp = qty.get(i) > dto.getTotalStock()? dto.getTotalStock():qty.get(i);
 				
-				dto.setQty(qty.get(i));
+				int productSum = dto.getPrice() * qtyTemp;
+				
+				dto.setQty(qtyTemp);
 				dto.setSalePrice((int) Math.ceil(dto.getPrice() * (1-dto.getDiscountRate()/100.0)));
 				
-				totalSavedMoney += (qty.get(i) * dto.getSavedMoney());
-				dto.setSavedMoney(qty.get(i) * dto.getSavedMoney());
+				totalSavedMoney += (qtyTemp * dto.getSavedMoney());
+				dto.setSavedMoney(qtyTemp * dto.getSavedMoney());
 				
 				totalProduct += productSum;
-				totalDiscountPrice += productSum - dto.getSalePrice() * qty.get(i);
+				totalDiscountPrice += productSum - dto.getSalePrice() * qtyTemp;
 				deliveryCharge += dto.getDelivery();
 				
+			}
+			// 재고 0인 상품은 리스트에서 삭제
+			productList.removeIf(n -> n.getTotalStock() ==0);
+			if (productList.size() == 0) {
+				StringBuilder sb = new StringBuilder();
+				sb.append("주문하신 상품은 품절 상태입니다.<br>");
+				sb.append("상품이 재입고되는 대로 신속하게 처리해 드릴 예정입니다.<br>");
+				sb.append("불편을 드려 대단히 죄송합니다.");
+
+				reAttr.addFlashAttribute("title", "품절 안내");
+				reAttr.addFlashAttribute("message", sb.toString());
+				
+				return "redirect:/order/complete";
 			}
 			
 			productOrderName = productList.get(0).getProductName();
