@@ -89,6 +89,7 @@ public class Order {
 	private int status_code;
 	private long companyNum;
 	
+	private int stateCount;
 	
 	public long getProductNum() {
 		return productNum;
@@ -515,6 +516,12 @@ public class Order {
 	}
 	public void setCompanyNum(long companyNum) {
 		this.companyNum = companyNum;
+	}
+	public int getStateCount() {
+		return stateCount;
+	}
+	public void setStateCount(int stateCount) {
+		this.stateCount = stateCount;
 	}
 	
 }

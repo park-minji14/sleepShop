@@ -92,6 +92,12 @@ body {
 .navbar-custom .nav-link.active {
     background-color: rgba(255,255,255,0.1);
 }
+
+.table thead th {
+    background-color: #3949ab;
+    color: #ffffff;
+    border-color: #303f9f;
+}
 </style>
 
 <header class="admin-header">
@@ -165,5 +171,13 @@ $(document).ready(function() {
             $(this).addClass('active');
         }
     });
+});
+$(function() {
+	const f = $("form[name='searchForm'] input[name='kwd']");
+	f.keydown(function(e) {
+		if(e.key==='Enter' && f.val().trim()){
+			f.closest("form").submit();
+		}
+	});
 });
 </script>

@@ -34,11 +34,12 @@
 	    	</div>
 	    </form>
 	    
-	    <div class="mt-3">
+	    <div class="d-flex justify-content-between align-items-center mt-3">
+		    <div class="col-auto"></div>
 		    <div class="page-navigation text-center">
 		        ${dataCount == 0 ? "등록된 상품이 없습니다." : paging}
 		    </div>
-		    <div class="col-auto text-end" style="position: relative; top: -65px;">
+		    <div class="col-auto text-end">
 		        ${dataCount}개(${page}/${total_page} 페이지)
 		    </div>
 		</div>
