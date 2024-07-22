@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sgsg.dra.admin.service.ChartManageService;
 import com.sgsg.dra.admin.service.OrderManageService;
 import com.sgsg.dra.domain.Order;
 
@@ -20,6 +21,9 @@ public class MainManageController {
 	
 	@Autowired
 	OrderManageService orderService;
+	
+	@Autowired
+	ChartManageService chartService;
 	 
 	@RequestMapping(value="/admin", method=RequestMethod.GET)
 	public String adminMain(Model model) {
@@ -46,7 +50,13 @@ public class MainManageController {
 	@ResponseBody
 	public Map<String, Object> chartThing(){
 		
+		List<Map<String, Object>> todayOrder = chartService.todayOrder();
+		List<Map<String, Object>> todayDelivery = chartService.todayDelivery();
+		
 		Map<String, Object> model = new HashMap<String, Object>();
+		
+		model.put("todayOrder", todayOrder);
+		model.put("todayDelivery", todayDelivery);
 		
 		return model;
 	}

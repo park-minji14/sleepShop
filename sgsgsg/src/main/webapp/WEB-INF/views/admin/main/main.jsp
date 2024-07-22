@@ -6,8 +6,15 @@
 
 <script type="text/javascript">
 $(function() {
+	let url = "${pageContext.request.contextPath}/adminManagement/charts"
+	
 	chartsUser();
-})
+	
+	$.getJSON(url, function(data) {
+		chartTodayOrder(data);
+		chartTodayDelivery(data);
+	});
+});
 
 function chartsUser() {
 	//bar
@@ -52,6 +59,118 @@ function chartsUser() {
 	option && myChart.setOption(option);
 	
 };
+
+function chartTodayOrder(data) {
+	
+	let chartData = [];
+	
+	let title = '일일 구매현황';
+	document.querySelector('.charts-today-order-title').innerHTML = title;
+	
+	for(let item of data.todayOrder) {
+		let stateNum = item.ORDERSTATE;
+		console.log(stateNum);
+		let str;
+		switch (stateNum) {
+		case 0: str = "입금대기"; break;
+		case 1: str = "결제완료"; break;
+		case 10: str = "반품접수"; break;
+		case 11: str = "반품완료"; break;
+		case 12: str = "환불접수"; break;
+		case 13: str = "환불완료"; break;
+		default: str = "오류";
+		}
+		console.log(str);
+		let obj = {value:item.STATECOUNT, name:str};
+		chartData.push(obj);
+	}
+	
+	var chartDom = document.querySelector('.charts-today-order');
+	var myChart = echarts.init(chartDom);
+	var option;
+
+	// This example requires ECharts v5.5.0 or later
+	option = {
+	  tooltip: {
+	    trigger: 'item'
+	  },
+	  legend: {
+	    top: '5%',
+	    left: 'center'
+	  },
+	  series: [
+	    {
+	      name: '당일 주문현황',
+	      type: 'pie',
+	      radius: ['40%', '70%'],
+	      center: ['50%', '70%'],
+	      // adjust the start and end angle
+	      startAngle: 180,
+	      endAngle: 360,
+	      data: chartData
+	    }
+	  ]
+	};
+
+	option && myChart.setOption(option);
+
+}
+
+function chartTodayDelivery(data) {
+	
+	let chartData = [];
+	
+	let title = '일일 배송현황';
+	document.querySelector('.charts-today-delivery-title').innerHTML = title;
+	
+	for(let item of data.todayDelivery) {
+		let stateNum = item.ORDERSTATE;
+		
+		let str;
+		switch (stateNum) {
+		case 2: str = "발송처리"; break;
+		case 3: str = "배송시작"; break;
+		case 4: str = "배송중"; break;
+		case 5: str = "배송완료"; break;
+		case 6: str = "배송실패"; break;
+		case 7: str = "반송됨"; break;
+		default: str = "오류";
+		}
+		console.log(str);
+		let obj = {value:item.STATECOUNT, name:str};
+		chartData.push(obj);
+	}
+	
+	var chartDom = document.querySelector('.charts-today-delivery');
+	var myChart = echarts.init(chartDom);
+	var option;
+
+	// This example requires ECharts v5.5.0 or later
+	option = {
+	  tooltip: {
+	    trigger: 'item'
+	  },
+	  legend: {
+	    top: '5%',
+	    left: 'center'
+	  },
+	  series: [
+	    {
+	      name: '당일 배송현황',
+	      type: 'pie',
+	      radius: ['40%', '70%'],
+	      center: ['50%', '70%'],
+	      // adjust the start and end angle
+	      startAngle: 180,
+	      endAngle: 360,
+	      data: chartData
+	    }
+	  ]
+	};
+
+	option && myChart.setOption(option);
+
+}
 </script>
 
 <div class="body-container">
@@ -63,7 +182,6 @@ function chartsUser() {
                 <div class="col-md-4">
                     <div class="card border-light shadow-sm">
                         <div class="card-body">
-                            <!-- <h6 class="card-title">회원 통계</h6> -->
                       		<div class="col p-2">
 								<div class="fs-6 fw-semibold ">
 								<i class="bi bi-chevron-right"></i> <label class="charts-user-title mb-2"></label></div>
@@ -78,59 +196,20 @@ function chartsUser() {
                             <!-- <h6 class="card-title">주문상태 현황</h6> -->
                     		<div class="col p-2">
 								<div class="fs-6 fw-semibold ">
-								<i class="bi bi-chevron-right"></i> <label class="charts-order-title mb-2"></label></div>
-								<div class="charts-order border rounded" style="height: 300px;"></div>
+								<i class="bi bi-chevron-right"></i> <label class="charts-today-order-title mb-2"></label></div>
+								<div class="charts-today-order border rounded" style="height: 300px;"></div>
 							</div>
-                            <!-- 
-                            <div class="d-flex justify-content-between">
-                                <p class="card-text">입금대기</p>
-                                <p class="card-text fw-bold">0</p>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <p class="card-text">입금완료</p>
-                                <p class="card-text fw-bold">0</p>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <p class="card-text">배송준비</p>
-                                <p class="card-text fw-bold">0</p>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <p class="card-text">배송중</p>
-                                <p class="card-text fw-bold">0</p>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <p class="card-text">배송완료</p>
-                                <p class="card-text fw-bold">1</p>
-                            </div> 
-                            -->
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card border-light shadow-sm">
                         <div class="card-body">
-                            <h6 class="card-title">구매확정/클레임 현황</h6>
-                            <hr>
-                            <div class="d-flex justify-content-between">
-                                <p class="card-text">구매확정</p>
-                                <p class="card-text fw-bold">0</p>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <p class="card-text">취소</p>
-                                <p class="card-text fw-bold">35</p>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <p class="card-text">환불</p>
-                                <p class="card-text fw-bold">0</p>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <p class="card-text">반품</p>
-                                <p class="card-text fw-bold">0</p>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <p class="card-text">교환</p>
-                                <p class="card-text fw-bold">0</p>
-                            </div>
+                            <div class="col p-2">
+								<div class="fs-6 fw-semibold ">
+								<i class="bi bi-chevron-right"></i> <label class="charts-today-delivery-title mb-2"></label></div>
+								<div class="charts-today-delivery border rounded" style="height: 300px;"></div>
+							</div>
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgsg.dra.admin.mapper.ChartManageMapper">
+
+<select id="todayOrder" resultType="map">
+Select Nvl(Count(*), 0) as stateCount, orderState 
+From productOrder 
+Where orderstate In(0, 1, 10, 11, 12, 13) 
+ And To_char(orderDate, 'YYYYmmdd') = To_char(sysdate, 'YYYYmmdd') 
+Group by orderstate
+</select>
+
+<select id="todayDelivery" resultType="map">
+Select Nvl(Count(*), 0) as stateCount, d.orderState 
+From delivery d 
+Join productOrder p On d.ordernum = p.ordernum 
+Where d.orderstate In(2, 3, 4, 5, 6, 7) 
+ And To_char(orderDate, 'YYYYmmdd') = To_char(sysdate, 'YYYYmmdd') 
+Group by d.orderstate
+</select>
+
+
+</mapper>
