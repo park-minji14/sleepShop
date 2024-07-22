@@ -115,7 +115,14 @@ public class MemberServiceImpl implements MemberService {
 			}
 
 			// 패스워드가 변경된 경우에만 member1 테이블의 패스워드를 변경하도록 설정
-			mapper.updateMember1(dto);
+			boolean bPwdUpdate = ! isPasswordCheck(dto.getUserId(), dto.getUserPwd());
+			if( bPwdUpdate ) {
+				// 패스워드가 변경된 경우에만 member1 테이블에 패스워드변경
+				String encPwd = bcryptEncoder.encode(dto.getUserPwd());
+				dto.setUserPwd(encPwd);
+				
+				mapper.updateMember1(dto);
+			}
 
 			mapper.updateMember2(dto); // member2 테이블 업데이트
 		} catch (Exception e) {

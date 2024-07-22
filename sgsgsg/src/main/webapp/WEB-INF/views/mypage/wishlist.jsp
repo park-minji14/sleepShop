@@ -4,7 +4,13 @@
 
 			<div class="tab-pane fade show active" id="recent">
 				<h4 class="mb-4" style="text-align: center;   font-size: 40px; margin: 50px;">찜한 상품</h4>
-			
+				<dl>
+					<!--  <dt><img src="https://atimg.sonyunara.com/2023/renew/list/mypage_1.png" class="icon" alt="">주문관리</dt>  -->
+					<div class="navi" style="text-align: center;">
+						<a href="${pageContext.request.contextPath}">홈 &gt;</a> 
+						<a href="${pageContext.request.contextPath}/mypage/main">마이페이지 &gt; </a>
+					<a style="font: light-gray;">찜한 상품</a></div>
+				</dl>
 			
 			
 			

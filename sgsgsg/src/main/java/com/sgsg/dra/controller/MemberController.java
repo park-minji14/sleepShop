@@ -167,139 +167,123 @@ public class MemberController {
 	
 	
 		// 회원정보수정폼
-				model.addAttribute("dto", dto);
-				model.addAttribute("mode", "update");
-				return ".member.member";
+		model.addAttribute("dto", dto);
+		model.addAttribute("mode", "update");
+		return ".member.member";
+	}
+	
+	
+	@PostMapping("update")
+	public String updateSubmit(Member dto,
+			final RedirectAttributes reAttr,
+			Model model) {
+
+		try {
+			service.updateMember(dto);
+		} catch (Exception e) {
 		}
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(dto.getUserName() + "님의 회원정보가 정상적으로 변경되었습니다.<br>");
+		sb.append("메인화면으로 이동 하시기 바랍니다.<br>");
+
+		reAttr.addFlashAttribute("title", "회원 정보 수정");
+		reAttr.addFlashAttribute("message", sb.toString());
+
+		return "redirect:/member/complete";
+	}
 	
-	
-		@PostMapping("update")
-		public String updateSubmit(Member dto,
-				final RedirectAttributes reAttr,
-				Model model) {
-	
-			try {
-				service.updateMember(dto);
-			} catch (Exception e) {
-			}
-	
-			StringBuilder sb = new StringBuilder();
-			sb.append(dto.getUserName() + "님의 회원정보가 정상적으로 변경되었습니다.<br>");
-			sb.append("메인화면으로 이동 하시기 바랍니다.<br>");
-	
-			reAttr.addFlashAttribute("title", "회원 정보 수정");
-			reAttr.addFlashAttribute("message", sb.toString());
-	
-			return "redirect:/member/complete";
+
+	// 패스워드 찾기
+	@GetMapping("pwdFind")
+	public String pwdFindForm(HttpSession session) throws Exception {
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		if(info != null) {
+			return "redirect:/";
 		}
 		
+		return ".member.pwdFind";
+	}
 	
-		// 패스워드 찾기
-		@GetMapping("pwdFind")
-		public String pwdFindForm(HttpSession session) throws Exception {
-			SessionInfo info = (SessionInfo)session.getAttribute("member");
-			if(info != null) {
-				return "redirect:/";
-			}
-			
+	/*
+	@PostMapping("pwdFind")
+	public String pwdFindSubmit(@RequestParam String userId,
+			RedirectAttributes reAttr,
+			Model model) throws Exception {
+		
+		Member dto = service.findById(userId);
+		if(dto == null || dto.getEmail() == null || dto.getEnabled() == 0) {
+			model.addAttribute("message", "등록된 아이디가 아닙니다.");
 			return ".member.pwdFind";
 		}
 		
-		/*
-		@PostMapping("pwdFind")
-		public String pwdFindSubmit(@RequestParam String userId,
-				RedirectAttributes reAttr,
-				Model model) throws Exception {
-			
-			Member dto = service.findById(userId);
-			if(dto == null || dto.getEmail() == null || dto.getEnabled() == 0) {
-				model.addAttribute("message", "등록된 아이디가 아닙니다.");
-				return ".member.pwdFind";
-			}
-			
-			try {
-				service.generatePwd(dto);
-			} catch (Exception e) {
-				model.addAttribute("message", "이메일 전송이 실패했습니다.");
-				return ".member.pwdFind";
-			}
-			
-			StringBuilder sb=new StringBuilder();
-			sb.append("회원님의 이메일로 임시패스워드를 전송했습니다.<br>");
-			sb.append("로그인 후 패스워드를 변경하시기 바랍니다.<br>");
-			
-			reAttr.addFlashAttribute("title", "패스워드 찾기");
-			reAttr.addFlashAttribute("message", sb.toString());
-			
-			return "redirect:/member/complete";
+		try {
+			service.generatePwd(dto);
+		} catch (Exception e) {
+			model.addAttribute("message", "이메일 전송이 실패했습니다.");
+			return ".member.pwdFind";
 		}
 		
-		@GetMapping("noAuthorized")
-		public String noAuthorized(Model model) {
-			return ".member.noAuthorized";
-		}
-		*/
+		StringBuilder sb=new StringBuilder();
+		sb.append("회원님의 이메일로 임시패스워드를 전송했습니다.<br>");
+		sb.append("로그인 후 패스워드를 변경하시기 바랍니다.<br>");
 		
+		reAttr.addFlashAttribute("title", "패스워드 찾기");
+		reAttr.addFlashAttribute("message", sb.toString());
 		
-		@GetMapping("checkLoginStatus")
-		@ResponseBody
-		public Map<String, Boolean> checkLoginStatus(HttpSession session) {
-		    Map<String, Boolean> response = new HashMap<>();
-		    response.put("loggedIn", session.getAttribute("member") != null);
-		    return response;
-		}
+		return "redirect:/member/complete";
+	}
+	*/
 	
-		@GetMapping("noAuthorized")
-		public String noAuthorized(Model model) {
-			// 권한이 없는 경우
-			return ".member.noAuthorized";
-		}
+	
+	@GetMapping("checkLoginStatus")
+	@ResponseBody
+	public Map<String, Boolean> checkLoginStatus(HttpSession session) {
+	    Map<String, Boolean> response = new HashMap<>();
+	    response.put("loggedIn", session.getAttribute("member") != null);
+	    return response;
+	}
 
-		@GetMapping("expired")
-		public String expired(Model model) {
-			// 세션이 만로 된 경우
-			return ".member.expired";
-		}
+	@GetMapping("noAuthorized")
+	public String noAuthorized(Model model) {
+		// 권한이 없는 경우
+		return ".member.noAuthorized";
+	}
+
+	@GetMapping("expired")
+	public String expired(Model model) {
+		// 세션이 만로 된 경우
+		return ".member.expired";
+	}
+	
+	// ---------------------------------
+	@GetMapping("updatePwd")
+	public String updatePwd() throws Exception {
+		// 패스워드 변경 폼
+		return ".member.updatePwd";
+	}
+	
+	@PostMapping("updatePwd")
+	public String updatePwdSubmit(
+			@RequestParam String userPwd,
+			HttpSession session,
+			Model model) throws Exception {
 		
-		// ---------------------------------
-		@GetMapping("updatePwd")
-		public String updatePwd() throws Exception {
-			// 패스워드 변경 폼
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		Member dto = new Member();
+		dto.setUserId(info.getUserId());
+		dto.setUserPwd(userPwd);
+		
+		try {
+			service.updatePwd(dto);
+		} catch (RuntimeException e) {
+			model.addAttribute("message", "변경할 패스워드가 기존 패스워드와 일치합니다.");
 			return ".member.updatePwd";
+		} catch (Exception e) {
 		}
 		
-		@PostMapping("updatePwd")
-		public String updatePwdSubmit(
-				@RequestParam String userPwd,
-				HttpSession session,
-				Model model) throws Exception {
-			
-			SessionInfo info = (SessionInfo) session.getAttribute("member");
-			
-			Member dto = new Member();
-			dto.setUserId(info.getUserId());
-			dto.setUserPwd(userPwd);
-			
-			try {
-				service.updatePwd(dto);
-			} catch (RuntimeException e) {
-				model.addAttribute("message", "변경할 패스워드가 기존 패스워드와 일치합니다.");
-				return ".member.updatePwd";
-			} catch (Exception e) {
-			}
-			
-			return "redirect:/";
-		}	
-		
-		@GetMapping(value = "logout")
-		public String logout(HttpSession session) {
-			// 세션에 저장된 정보 지우기
-			session.removeAttribute("member");
-
-			// 세션에 저장된 모든 정보 지우고, 세션초기화
-			session.invalidate();
-
-			return "redirect:/";
-		}
+		return "redirect:/";
+	}	
 	
 }

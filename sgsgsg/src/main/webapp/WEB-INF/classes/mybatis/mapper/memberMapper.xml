@@ -78,14 +78,24 @@
 		WHERE memberIdx=#{memberIdx}
     </update>
 
+	<update id="updateMemberEnabled" parameterType="map">
+		UPDATE member1 SET enabled=#{enabled} WHERE userId=#{userId}
+    </update>
+
 	<!-- 회원 정보 변경(member1)  -->    	
 	<update id="updateMember1" parameterType="com.sgsg.dra.domain.Member">
-		UPDATE member1 SET userPwd=#{userPwd}, modify_date=SYSDATE
+		UPDATE member1 SET userPwd=#{userPwd}, modify_date=SYSDATE, email=#{email, jdbcType=VARCHAR}
 		WHERE userId=#{userId}
     </update>
     
 	<!-- 회원 정보 변경(member2)  -->    	
-
+	<update id="updateMember2" parameterType="com.sgsg.dra.domain.Member">
+		UPDATE member2 SET  
+			tel=#{tel, jdbcType=VARCHAR}, birth=#{birth, jdbcType=VARCHAR},
+			zip=#{zip, jdbcType=VARCHAR},
+			addr1=#{addr1, jdbcType=VARCHAR}, addr2=#{addr2, jdbcType=VARCHAR}
+		WHERE userId=#{userId}
+    </update>
 
 
 	<!-- 패스워드 실패 / 회원 상태 -->

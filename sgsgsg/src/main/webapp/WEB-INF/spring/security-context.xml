@@ -38,6 +38,8 @@
 
 		<!-- admin 페이지 -->
 		<intercept-url pattern="/admin/**" access="hasAnyRole('ROLE_ADMIN','ROLE_EMP')" />
+		<!-- adminManagement 페이지 -->
+		<intercept-url pattern="/adminManagement/**" access="hasAnyRole('ROLE_ADMIN','ROLE_EMP')" />
 
 		<!-- 모든 페이지 -->
 		<intercept-url pattern="/**" access="hasAnyRole('ROLE_ADMIN','ROLE_EMP','ROLE_USER')" />

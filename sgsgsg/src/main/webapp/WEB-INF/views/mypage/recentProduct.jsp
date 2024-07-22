@@ -3,8 +3,19 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 			<!-- 최근 본 상품 탭 -->
-			<div class="tab-pane fade show active" id="recent">
+			<div class="tab-pane fade show active" id="recent" style=".member #my_menu dl dd a:first-of-type {
+    margin-left: 0;
+    position: relative;
+    z-index: 1;
+}">
 				<h4 class="mb-4" style="text-align: center;   font-size: 40px; margin: 50px;">최근 본 상품</h4>
+				<dl>
+					<!--  <dt><img src="https://atimg.sonyunara.com/2023/renew/list/mypage_1.png" class="icon" alt="">주문관리</dt>  -->
+					<div class="navi" style="text-align: center;">
+						<a href="${pageContext.request.contextPath}">홈 &gt;</a> 
+						<a href="${pageContext.request.contextPath}/mypage/main">마이페이지 &gt; </a>
+					<a style="font: light-gray;">최근 본 상품</a></div>
+				</dl>
 			
 			
 			
