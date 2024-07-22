@@ -65,7 +65,7 @@
 							<div class="option-subBox">
 								<div class="option-qty">
 									<span class="minus_qty bi bi-dash-lg"></span>
-									<button type="button" class="chage_qty">${dto.totalStock <1 ? 0:dto.qty}</button>
+									<button type="button" class="chage_qty" data-totalStock="${dto.totalStock}">${dto.totalStock <1 ? 0:dto.qty}</button>
 									<span class="plus_qty bi bi-plus-lg"></span>
 								</div>
 								<div class="option-price">
@@ -315,6 +315,8 @@ $('.cart-list').on('click', function(e) {
 	let $box = $(e.target).closest('.option-box');
 	let qty = $($box).find('input[name="qty"]').val();
 	let stockNum = $box.find('input[data-stock-num]').attr('data-stock-num');
+	let totalStock = $box.find('button[data-totalstock]').attr('data-totalstock');
+	
 	if(qty === "0"){
 		alert("품절된 상품입니다.");
 		return;
@@ -334,6 +336,12 @@ $('.cart-list').on('click', function(e) {
 	if($(e.target).hasClass("plus_qty")){
 		qty++;
 	}
+	
+	if(qty > totalStock){
+		alert("장바구니에 담긴 상품은 재고 개수를 넘길 수 없습니다.\n현재 재고 개수 : "+totalStock);
+		qty = totalStock;
+	}
+	
 	if($(e.target).hasClass("minus_qty")){
 		qty--;
 		if(qty === 0){

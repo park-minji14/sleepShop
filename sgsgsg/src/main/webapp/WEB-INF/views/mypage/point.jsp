@@ -3,6 +3,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 
+
+
+
+
 			<div class="css-ow22sl e1v2ggz01">
 				
 				<!-- 포인트 칸 -->
@@ -16,6 +20,20 @@
 					</div>
 				</div>
 				
+				<dl>
+					<!--  <dt><img src="https://atimg.sonyunara.com/2023/renew/list/mypage_1.png" class="icon" alt="">주문관리</dt>  -->
+					<div class="navi" style="text-align: center; margin-top: 30px; margin-bottom: 40px;">
+						<a href="${pageContext.request.contextPath}">홈 &gt;</a> 
+						<a href="${pageContext.request.contextPath}/mypage/main">마이페이지 &gt; </a>
+					<a style="font: light-gray;">포인트</a></div>
+				</dl>
+				
+			
+			
+			
+			<div class="css-1066lcq e1rx7pum12"><h2 class="css-ojabq6 e1rx7pum11">포인트 내역</h2>
+			
+			
 			
 			<!-- 포인트 탭 -->
 				<div class="review-item">
