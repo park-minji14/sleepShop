@@ -18,4 +18,6 @@ public interface OrderManageService {
 	
 	public void cancelOrder(Map<String, Object> map) throws Exception;
 	
+	public List<Order> selectOrderStateCount() throws Exception;
+	
 }

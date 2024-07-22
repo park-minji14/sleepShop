@@ -27,5 +27,5 @@ public interface OrderManageMapper {
 	public void canceleUesdPoint(Map<String, Object> map) throws SQLException;
 	public void cancelProductStock(Map<String, Object> map) throws SQLException;
 	
-	
+	public List<Order> selectOrderStateCount() throws SQLException;
 }

@@ -124,4 +124,15 @@ public class OrderManageServiceImpl implements OrderManageService {
 			throw e;
 		}
 	}
+	
+	@Override
+	public List<Order> selectOrderStateCount() throws Exception {
+		List<Order> list = null;
+		try {
+			list = mapper.selectOrderStateCount();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 }

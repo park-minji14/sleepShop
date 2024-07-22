@@ -149,5 +149,11 @@
 			UPDATE SET ps.TOTALSTOCK = ps.TOTALSTOCK + od.TOTAL_QTY
 	</update>
 	
+	<select id="selectOrderStateCount" resultType="com.sgsg.dra.domain.Order">
+		SELECT orderState, COUNT(*) AS stateCount
+		FROM PRODUCTORDER
+		GROUP BY orderState
+		ORDER by orderState
+	</select>
 	
 </mapper>
