@@ -106,7 +106,7 @@ body {
         </div>
         <div class="admin-profile">
             <i class="bi bi-person-circle fs-4"></i>
-            <span class="admin-name">관리자명</span>
+            <span class="admin-name">${sessionScope.member.userName}</span>
         </div>
         <a href="${pageContext.request.contextPath}/" class="btn btn-outline-light btn-sm">쇼핑몰</a>
         <a href="${pageContext.request.contextPath}/member/logout" class="btn btn-danger btn-sm">로그아웃</a>

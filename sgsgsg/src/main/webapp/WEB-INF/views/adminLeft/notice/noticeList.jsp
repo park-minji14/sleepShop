@@ -489,7 +489,7 @@ function listPage(page = 1) {
     let searchForm = $("#searchForm").serialize();
     let query = "state=" + state + "&pageNo=" + page + "&" + searchForm;
 
-    console.log("Search Query:", query); // 디버깅을 위한 로그 출력
+    //console.log("Search Query:", query); // 디버깅을 위한 로그 출력
 
     const fn = function(data) {
         let dataCount = parseInt(data.dataCount);

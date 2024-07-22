@@ -2,33 +2,86 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+
+<script type="text/javascript">
+$(function() {
+	chartsUser();
+})
+
+function chartsUser() {
+	//bar
+	let chartData = [];
+	
+	let currentData = ${currentCount};
+	let toDayData = ${toDayCount};
+	let yesterDayData = ${yesterDayCount};
+	let totalData = ${totalCount};
+	
+	let title = '회원 통계(접속자)';
+	document.querySelector('.charts-user-title').innerHTML = title;
+	
+	chartData.push(currentData);
+	chartData.push(toDayData);
+	chartData.push(yesterDayData);
+	chartData.push(totalData);
+	
+	var chartDom = document.querySelector('.charts-user');
+	var myChart = echarts.init(chartDom);
+	var option;
+
+	option = {
+	  tooltip: {
+			trigger: 'item'  
+		  },
+	  xAxis: {
+	    type: 'category',
+	    data: ['현재', '오늘', '어제', '전체']
+	  },
+	  yAxis: {
+	    type: 'value'
+	  },
+	  series: [
+	    {
+	      data: chartData,
+	      type: 'bar'
+	    }
+	  ]
+	};
+
+	option && myChart.setOption(option);
+	
+};
+</script>
+
 <div class="body-container">
     <div class="body-main">
         <!-- 전체 주문 통계 -->
         <div class="container my-4">
-            <h5 class="mb-3"><i class="fas fa-chart-line"></i> 전체 주문통계</h5>
+            <h5 class="mb-3"><i class="fas fa-chart-line"></i> 통계 </h5>
             <div class="row g-4">
                 <div class="col-md-4">
                     <div class="card border-light shadow-sm">
                         <div class="card-body">
-                            <h6 class="card-title">전체 주문현황</h6>
-                            <hr>
-                            <div class="d-flex justify-content-between">
-                                <p class="card-text">총 주문건수</p>
-                                <p class="card-text fw-bold">36</p>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <p class="card-text">총 주문액</p>
-                                <p class="card-text fw-bold">2,487,220</p>
-                            </div>
+                            <!-- <h6 class="card-title">회원 통계</h6> -->
+                      		<div class="col p-2">
+								<div class="fs-6 fw-semibold ">
+								<i class="bi bi-chevron-right"></i> <label class="charts-user-title mb-2"></label></div>
+								<div class="charts-user border rounded" style="height: 300px;"></div>
+							</div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card border-light shadow-sm">
                         <div class="card-body">
-                            <h6 class="card-title">주문상태 현황</h6>
-                            <hr>
+                            <!-- <h6 class="card-title">주문상태 현황</h6> -->
+                    		<div class="col p-2">
+								<div class="fs-6 fw-semibold ">
+								<i class="bi bi-chevron-right"></i> <label class="charts-order-title mb-2"></label></div>
+								<div class="charts-order border rounded" style="height: 300px;"></div>
+							</div>
+                            <!-- 
                             <div class="d-flex justify-content-between">
                                 <p class="card-text">입금대기</p>
                                 <p class="card-text fw-bold">0</p>
@@ -48,7 +101,8 @@
                             <div class="d-flex justify-content-between">
                                 <p class="card-text">배송완료</p>
                                 <p class="card-text fw-bold">1</p>
-                            </div>
+                            </div> 
+                            -->
                         </div>
                     </div>
                 </div>
