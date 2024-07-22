@@ -312,7 +312,6 @@ let productItemWidth = 200;
 let productCurrentIndex = 0;
 
 function initProductSlider() {
-    console.log("initProductSlider 함수 시작");
     const prevButton = document.querySelector('.product-nav.prev');
     const nextButton = document.querySelector('.product-nav.next');
     
@@ -329,10 +328,8 @@ function initProductSlider() {
 }
 
 function slideProducts(direction) {
-    console.log(`slideProducts 함수 시작, direction: ${direction}`);
     const productList = document.getElementById('productList');
     if (!productList) {
-        console.error("productList를 찾을 수 없습니다.");
         return;
     }
 
@@ -353,9 +350,7 @@ function slideProducts(direction) {
 }
 
 function initSwiper() {
-    console.log("initSwiper 함수 시작");
     if (typeof Swiper === 'undefined') {
-        console.error("Swiper is not defined. Make sure you've included the Swiper library.");
         return;
     }
 
@@ -416,7 +411,6 @@ function initSwiper() {
 }
 
 function initWishlistButtons() {
-    console.log("initWishlistButtons 함수 시작");
     document.querySelectorAll('.product-item .wishlist-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -434,31 +428,24 @@ function initWishlistButtons() {
 }
 
 function startCountdown() {
-    console.log("startCountdown 함수 시작");
     document.querySelectorAll('.timedeal-product-card').forEach((card, index) => {
         const timerElement = card.querySelector('.timedeal-timer');
         const endTimeStr = card.getAttribute('data-end-time');
-        console.log(`카드 ${index + 1} 종료 시간:`, endTimeStr);
-        console.log(`카드 ${index + 1} 타이머 요소:`, timerElement);
         
         if (!endTimeStr) {
-            console.log(`카드 ${index + 1}의 종료 시간이 설정되지 않았습니다.`);
             timerElement.textContent = "시간 정보 없음";
             return;
         }
         
         const endTime = new Date(endTimeStr).getTime();
-        console.log(`카드 ${index + 1} 파싱된 종료 시간:`, new Date(endTime));
 
         function updateTimer() {
             const now = new Date().getTime();
             const distance = endTime - now;
 
-            console.log("Updating timer, distance:", distance);
 
             if (distance < 0) {
                 timerElement.textContent = "종료됨";
-                console.log("Timer ended");
                 return;
             }
 
@@ -466,8 +453,6 @@ function startCountdown() {
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            
-            console.log("Raw time values:", {days, hours, minutes, seconds});
 
             let timerText = '';
             if (days > 0) timerText += days + "일 ";
@@ -475,7 +460,6 @@ function startCountdown() {
             if (minutes > 0 || hours > 0 || days > 0) timerText += minutes + "분 ";
             timerText += seconds + "초";
 
-            console.log("Timer text:", timerText);
             timerElement.textContent = timerText;
         }
         updateTimer();
