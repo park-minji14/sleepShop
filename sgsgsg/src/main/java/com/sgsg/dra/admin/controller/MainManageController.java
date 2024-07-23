@@ -42,28 +42,68 @@ public class MainManageController {
 		return ".adminLayout";
 	}
 	
-	
 	@RequestMapping(value="/adminManagement", method=RequestMethod.GET)
 	public String adminSideLayout() {
         
 		return ".adminManagement";
 	}
 	
-	@GetMapping(value="/adminManagement/charts")
+	@GetMapping(value="/adminManagement/daily")
 	@ResponseBody
-	public Map<String, Object> chartThing(){
-		
-		List<Map<String, Object>> todayOrder = chartService.todayOrder();
-		List<Map<String, Object>> todayDelivery = chartService.todayDelivery();
-		
-		
-		Map<String, Object> model = new HashMap<String, Object>();
-		
-		model.put("todayOrder", todayOrder);
-		model.put("todayDelivery", todayDelivery);
-		
-		
-		return model;
+	public Map<String, Object> chartDaily(){
+		Map<String, Object> map = null;
+		try {
+			List<Map<String, Object>> todayOrder = chartService.todayOrder();
+			List<Map<String, Object>> todayDelivery = chartService.todayDelivery();
+			
+			map = new HashMap<String, Object>();
+			
+			map.put("todayOrder", todayOrder);
+			map.put("todayDelivery", todayDelivery);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
+	@GetMapping(value="/adminManagement/week")
+	@ResponseBody
+	public Map<String, Object> chartWeek(){
+		Map<String, Object> map = null;
+		try {
+			List<Map<String, Object>> weekOrder = chartService.weekOrder();
+			List<Map<String, Object>> weekDelivery = chartService.weekDelivery();
+			System.out.println("디버그용weekOrder:" + weekOrder);
+			System.out.println("디버그용weekDelivery:" + weekDelivery);
+			
+			map = new HashMap<String, Object>();
+			
+			map.put("weekOrder", weekOrder);
+			map.put("weekDelivery", weekDelivery);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
+	@GetMapping(value="/adminManagement/month")
+	@ResponseBody
+	public Map<String, Object> chartMonth(){
+		Map<String, Object> map = null;
+		try {
+			List<Map<String, Object>> monthOrder = chartService.monthOrder();
+			List<Map<String, Object>> monthDelivery = chartService.monthDelivery();
+			System.out.println("디버그용monthOrder:" + monthOrder);
+			System.out.println("디버그용monthDelivery:" + monthDelivery);
+			
+			map = new HashMap<String, Object>();
+			
+			map.put("monthOrder", monthOrder);
+			map.put("monthDelivery", monthDelivery);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
 	}
 	
 }
