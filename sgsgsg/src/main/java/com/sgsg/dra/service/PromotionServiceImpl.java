@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sgsg.dra.common.MyUtil;
 import com.sgsg.dra.domain.Promotion;
 import com.sgsg.dra.mapper.PromotionMapper;
 
@@ -13,6 +14,9 @@ import com.sgsg.dra.mapper.PromotionMapper;
 public class PromotionServiceImpl implements PromotionService {
 	@Autowired
 	private PromotionMapper mapper;
+	
+	@Autowired
+	private MyUtil myUtil;
 	
 	@Override
 	public int dataCount(Map<String, Object> map) {
@@ -33,6 +37,14 @@ public class PromotionServiceImpl implements PromotionService {
 		
 		try {
 			list = mapper.listEvent(map);
+			for (Promotion promotion : list) {
+				List<String> imgs = myUtil.getImgSrc(promotion.getContent());
+				if (imgs.size() > 0) {
+					promotion.setFirstImage(imgs.get(0));
+					System.out.println(imgs.get(0));
+					
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

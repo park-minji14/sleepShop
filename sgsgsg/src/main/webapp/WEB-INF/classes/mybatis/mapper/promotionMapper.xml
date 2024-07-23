@@ -55,7 +55,7 @@
 	
 	<!-- 글 리스트 -->
 	<select id="listEvent" parameterType="map" resultType="com.sgsg.dra.domain.Promotion">
-		SELECT e.event_num, title, showEvent,
+		SELECT e.event_num, title, content, showEvent,
 			   TO_CHAR(startDate,'YYYY-MM-DD HH24:MI') startDate,
 			   TO_CHAR(endDate, 'YYYY-MM-DD HH24:MI') endDate, 
 			   TO_CHAR(winningDate, 'YYYY-MM-DD HH24:MI') winningDate, winnerNumber

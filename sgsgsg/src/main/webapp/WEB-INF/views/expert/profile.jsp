@@ -148,7 +148,7 @@
                 style="width: 200px; height: 200px; border-radius: 100px;">
                 <br>
                 <div>
-                    <span style="font-size: 32px;">@${dto.userId}</span>
+                    <span style="font-size: 32px;">${dto.userName}</span>
                 </div>
                 <div class="experience-bar-container">
                     <div class="experience-bar"></div>

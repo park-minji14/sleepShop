@@ -10,6 +10,15 @@ public class Expert {
 	private String career3;
 	private String exposed_content;
 	
+	private String userName;
+	
+	
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	public String getUserId() {
 		return userId;
 	}

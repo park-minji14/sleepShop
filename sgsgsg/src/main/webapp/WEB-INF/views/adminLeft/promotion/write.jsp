@@ -130,9 +130,14 @@
     }
     
     
-    function getImageUrl(imagePath) {
-		return "${pageContext.request.contextPath}/uploads/image" + imagePath;
-	}
+    function getFirstImage(content) {
+        const regex = /<img[^>]+src="([^">]+)"/;
+        const match = content.match(regex);
+        return match ? match[1] : '';
+    }
+    
+    
+    
 </script>
 
 <div class="body-container">
@@ -200,6 +205,9 @@
 					</tr>
 				  
 				</table>
+				
+				<input type="hidden" id="firstImage" name="firstImage" value="${dto.firstImage}">
+				
 					
 				<table class="table">
 					<tr> 
@@ -236,6 +244,13 @@ function submitContents(elClickedObj) {
 		if(! check()) {
 			return;
 		}
+		
+		// 첫 번째 이미지 추출
+        var content = document.getElementById("ir1").value;
+        var firstImage = content.match(/<img[^>]+src="([^">]+)"/);
+        if (firstImage && firstImage[1]) {
+            document.getElementById("firstImage").value = firstImage[1];
+        }
 		
 		elClickedObj.submit();
 		
