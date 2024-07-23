@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgsg.dra.mapper.WishlistMapper">
+    
+	<!-- 위시리스트 등록 -->
+	<insert id="insertWishlist" parameterType="com.sgsg.dra.domain.Wishlist">
+	    INSERT INTO wishlist(productNum, userId, reg_date)
+	    VALUES (#{productNum}, #{userId}, SYSDATE)
+	</insert>
+	
+	<!-- 위시리스트 해제 -->
+	<delete id="deleteWishlist" parameterType="map">
+	    DELETE FROM wishlist 
+	    WHERE productNum = #{productNum} AND userId = #{userId}
+	</delete>
+	
+	<!-- 사용자의 위시리스트 조회 -->
+	<select id="listWishlist" parameterType="String" resultType="com.sgsg.dra.domain.Wishlist">
+	    SELECT w.productNum, p.productName, p.price, p.thumbnail, p.discountRate,
+	           TO_CHAR(w.reg_date, 'YYYY-MM-DD HH24:MI:SS') as regDate
+	    FROM wishlist w
+	    JOIN product p ON w.productNum = p.productNum
+	    WHERE w.userId = #{userId}
+	    ORDER BY w.reg_date DESC
+	</select>
+	
+	<!-- 특정 상품의 위시리스트 등록 수 조회 -->
+	<select id="countWishlistByProduct" parameterType="Long" resultType="Integer">
+	    SELECT NVL(COUNT(*), 0)
+	    FROM wishlist
+	    WHERE productNum = #{productNum}
+	</select>
+	
+	<!-- 특정 사용자의 특정 상품 위시리스트 존재 여부 확인 -->
+	<select id="isWishlistExist" parameterType="map" resultType="Integer">
+	    SELECT COUNT(*)
+	    FROM wishlist
+	    WHERE productNum = #{productNum} AND userId = #{userId}
+	</select>
+	
+	<!-- 사용자의 전체 위시리스트 개수 -->
+	<select id="countWishlistByUser" parameterType="String" resultType="Integer">
+	    SELECT NVL(COUNT(*), 0)
+	    FROM wishlist
+	    WHERE userId = #{userId}
+	</select>
+    
+</mapper>
