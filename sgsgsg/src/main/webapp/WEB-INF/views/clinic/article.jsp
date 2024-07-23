@@ -43,7 +43,7 @@
 .table-style3 {
 	border: 1px solid #ddd;  
     border-radius: 30px; 
-    padding: 10px;
+    padding: 20px;
     margin: 20px 0; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
     background-color: #fff;

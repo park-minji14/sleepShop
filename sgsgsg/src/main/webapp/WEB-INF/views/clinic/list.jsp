@@ -216,24 +216,24 @@ document.addEventListener('DOMContentLoaded', function () {
 			<div class="swiper-wrapper">
 				<div class="slide-container swiper-slide">
 				<c:choose>
-					<c:when test="${sessionScope.member.membership > 70}">
-						<img src="${pageContext.request.contextPath}/uploads/etc/expert.png"
+					<c:when test="${sessionScope.member.membership > 90 || sessionScope.member.membership < 70}">
+						<a href="${pageContext.request.contextPath}/expertapply/apply">
+						<img src="${pageContext.request.contextPath}/uploads/etc/전문가신청배너.png"
 							alt="수면클리닉 배너 1">
+						</a>
 					</c:when>
 					<c:otherwise>
-						<a href="${pageContext.request.contextPath}/expertapply/apply">
-						<img src="${pageContext.request.contextPath}/uploads/etc/expert.png"
-							alt="수면클리닉 배너 1"> 
-						</a>
+						<img src="${pageContext.request.contextPath}/uploads/etc/전문가신청배너.png"
+							alt="수면클리닉 배너 1">
 					</c:otherwise>
 				</c:choose>
 				</div>  
 				<div class="slide-container swiper-slide">
-					<img src="${pageContext.request.contextPath}/uploads/etc/doctor.png"
+					<img src="${pageContext.request.contextPath}/uploads/etc/질문홍보배너.png"
 						alt="수면클리닉 배너 2">
 				</div>
 				<div class="slide-container swiper-slide">
-					<img src="${pageContext.request.contextPath}/uploads/etc/handgum.png"
+					<img src="${pageContext.request.contextPath}/uploads/etc/졸음껌배너.png"
 						alt="수면클리닉 배너 3"> 
 				</div>
 			</div>

@@ -104,7 +104,7 @@ function searchList() {
 }
 
 function getImageUrl(imagePath) {
-    return "${pageContext.request.contextPath}/upload/" + imagePath;
+    return "${pageContext.request.contextPath}/uploads/image" + imagePath;
 }
 
 
@@ -177,12 +177,13 @@ function getImageUrl(imagePath) {
 		            </div>
 		            <div class="col-auto">&nbsp;</div>
 		        </div>				
-
 				<div class="event-container">
 					<c:forEach var="dto" items="${list}" varStatus="status">
 						<div class="event-style" onclick="location.href='${articleUrl}&num=${dto.event_num}'"> 
 							<div> 
-								<img src="<c:out value='${imagePath}' escapeXml='false'/>" style="width: 410px; height: 350px;"> 
+								 <img src="${pageContext.request.contextPath}/uploads/image/${imagePath}">
+
+								
 							</div>
 							<br>
 							<div style="text-align: center; font-size: 25px;">   
