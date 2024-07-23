@@ -67,9 +67,9 @@
 		LEFT OUTER JOIN (
 			SELECT ORDERdETAILnum, 1 reviewWrite
 			FROM product_Review ppr
-			WHERE userId = 'admin'
+			WHERE userId = #{userId}
 		) r ON od.orderDetailNum = r.orderDetailnum
-		WHERE userId = 'admin'
+		WHERE userId = #{userId}
         
 	</select>
 	

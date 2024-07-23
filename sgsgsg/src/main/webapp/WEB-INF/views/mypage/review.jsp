@@ -24,10 +24,10 @@ a{
 				</dl>
 	           
 	           <div class="col-md-6">
-	<select class="form-select" style=" width: 200px; " onchange="if(this.value) window.open(this.value);">
-			
-			<option>상품 리뷰 작성</option>
-			<option value="${pageContext.request.contextPath}/mypage/reviewArticle">내가 작성한 리뷰</option>
+	<select class="form-select" style=" width: 200px; ">
+			<option>구매 내역</option>
+			<option>작성할 리뷰</option>
+			<option>작성된 리뷰</option>
 		</select>
 	</div>
             

@@ -14,7 +14,6 @@
 .table-style6 {
     max-width: 100%;
     overflow-x: auto;
-    box-shadow: none;
 }
 
 .table-header, .table-content {
