@@ -341,6 +341,15 @@ $(function(){
 		if(orderState === "12"){
 			qs +="&cancleAmount="+${order.payment}+"&usedSaved="+usedSaved;
 		}
+		
+		let orderDetailNums=[];
+		let productMoneys=[]
+		$(".orderDetailStatus-update").each(function() {
+			orderDetailNums.push($(this).attr("data-orderDetailNum"));
+			productMoneys.push($(this).attr("data-productMoney"));
+		})
+		qs += "&orderDetailNums="+orderDetailNums+"&productMoneys="+productMoneys;
+		
 		let url ="";
 		if(orderState > 8){
 			url = '${pageContext.request.contextPath}/adminManagement/orderManage/order/cancelOrder';

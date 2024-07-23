@@ -392,7 +392,7 @@ $(function() {
 			out += '<input type="text" name="destMemo" class="form-control my-2" placeholder="요청사항을 입력합니다." value="${defaultDest.destMemo}">';
 			out += '<span class="pt-2">';
 			out += '	<label>';
-			out += '		<input type="checkbox" name="defaultDest" value="1">';
+			out += '		<input type="checkbox" name="defaultDest" value="1" checked>';
 			out += '		<span>기본 배송지로 변경</span>';
 			out += '	</label>';
 			out += '</span>';
@@ -431,6 +431,7 @@ $(function() {
 			if(dest.attr('data-default')==1){
 				$('.destBox .isDefault').css("display", "inline");
 				$('.destBox .isDefault').text("(기본 배송지)");
+				$('.destBox input[name=defaultDest]').prop("checked", true);
 			} else {
 				$('.destBox .isDefault').css("display", "none");
 				$('.destBox .isDefault').text("");

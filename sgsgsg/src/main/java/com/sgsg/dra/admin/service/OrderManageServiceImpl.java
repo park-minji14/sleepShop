@@ -106,22 +106,39 @@ public class OrderManageServiceImpl implements OrderManageService {
 	}
 	
 	@Override
-	public void cancelOrder(Map<String, Object> map) throws Exception {
+	public void cancelOrder(int state, Map<String, Object> map) throws Exception {
 		try {
 			map.put("orderNum", map.get("orderNum").toString());
+			if(state == 10) {
+				mapper.cancelOrder(map);
+			} else {
+				
+				String[] orderDetailNums = map.get("orderDetailNums").toString().split(",");
+				String[] productMoneys = map.get("productMoneys").toString().split(",");
+
+				for(int i=0; i<orderDetailNums.length; i++) {
+					map.put("orderdetailNum", Integer.parseInt(orderDetailNums[i]));
+					map.put("cancleAmount", Integer.parseInt(productMoneys[i]));
+					mapper.insertRetrunRequest(map);
+					
+				}
+			}
 			
-			mapper.cancelOrder(map);
-			if(map.get("usedSaved") != null && Integer.parseInt(map.get("usedSaved").toString()) >0){
+			// 판매 취소시 사용한 포인트와 재고 돌려두기
+			// 반품 접수 등은 확정시 돌려줌
+			if(state == 9 && map.get("usedSaved") != null && Integer.parseInt(map.get("usedSaved").toString()) >0){
 				UserPoint point = mapper.findByUserPoint(map.get("memberIdx").toString());
 				int used = Integer.parseInt(map.get("usedSaved").toString());
 				map.put("remain_points", point.getRemain_points() + used);
 				map.put("usedSaved", used);
+				map.put("userId", point.getUserId());
 				mapper.updateUsePoint(map);
+				
+				
+				mapper.cancelProductStock(map);
 			}
 			
-			mapper.cancelProductStock(map);
 			mapper.updateOrderState(map);
-			mapper.insertRetrunRequest(map);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

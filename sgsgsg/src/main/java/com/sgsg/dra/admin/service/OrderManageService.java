@@ -16,7 +16,7 @@ public interface OrderManageService {
 	public void insertDelivery(Map<String, Object> map) throws Exception;
 	public void updateDeliveryState(Map<String, Object> map) throws Exception;
 	
-	public void cancelOrder(Map<String, Object> map) throws Exception;
+	public void cancelOrder(int state, Map<String, Object> map) throws Exception;
 	
 	public List<Order> selectOrderStateCount() throws Exception;
 	

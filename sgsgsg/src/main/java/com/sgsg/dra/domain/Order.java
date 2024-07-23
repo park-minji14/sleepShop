@@ -19,6 +19,7 @@ public class Order {
 
 	private String orderNum;
 	private long orderDetailNum;
+	private List<Long> orderDetailNums;
 	private String orderDate;
 	private int usedSaved;
 	private int payment;
@@ -174,6 +175,12 @@ public class Order {
 	}
 	public void setOrderDetailNum(long orderDetailNum) {
 		this.orderDetailNum = orderDetailNum;
+	}
+	public List<Long> getOrderDetailNums() {
+		return orderDetailNums;
+	}
+	public void setOrderDetailNums(List<Long> orderDetailNums) {
+		this.orderDetailNums = orderDetailNums;
 	}
 	public String getOrderDate() {
 		return orderDate;

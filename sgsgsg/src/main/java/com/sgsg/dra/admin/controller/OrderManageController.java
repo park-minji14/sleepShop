@@ -180,7 +180,9 @@ public class OrderManageController {
 			int orderState = Integer.parseInt(paramMap.get("orderState").toString());
 			paramMap.put("reason", OrderState.fromInt(orderState).getKorean());
 			
-			service.cancelOrder(paramMap);
+			paramMap.put("request_type", OrderState.fromInt(orderState).getKorean().substring(0, 2));
+			
+			service.cancelOrder(orderState, paramMap);
 			state="true";
 		} catch (Exception e) {
 			e.printStackTrace();

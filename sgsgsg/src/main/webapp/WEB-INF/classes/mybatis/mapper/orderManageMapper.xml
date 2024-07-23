@@ -121,7 +121,7 @@
 	
 	<!-- 마지막 포인트 조회 -->
 	<select id="findByUserPoint" parameterType="String" resultType="com.sgsg.dra.domain.UserPoint">
-		SELECT NUM, NVL(CHANGE_POINTS), REASON, CHANGE_DATE, NVL(REMAIN_POINTS), ph.USERID
+		SELECT NUM, NVL(CHANGE_POINTS, 0) CHANGE_POINTS, REASON, CHANGE_DATE, NVL(REMAIN_POINTS, 0) REMAIN_POINTS, ph.USERID
 		FROM POINT_HISTORY ph
 		left outer join member1 m on m.USERID = ph.USERID
 		WHERE MEMBERIDX = #{memberIdx}
@@ -158,8 +158,10 @@
 	
 	<!-- return_request -->
 	<insert id="insertRetrunRequest" parameterType="map">
-		INSERT INTO ORDER_CANCELLATION(ORDERNUM, CANCEL_DATE, CANCEL_REASON, PROCESS_DATE)
-		VALUES(#{orderNum}, sysdate,  #{cancel_reason, jdbcType=VARCHAR}, sysdate);
+		INSERT INTO RETURN_REQUEST(RETURN_EXCHANGE_NUM, REQUEST_TYPE, REQUEST_DATE, REFUND_AMOUNT,
+			REQUEST_REASON, DETAIL_STATUS, INSPECTION_RESULT, ORDERDETAILNUM)
+		VALUES(RETURN_REQUEST_seq.nextval, #{request_type}, sysdate, #{cancleAmount},
+		  #{cancel_reason, jdbcType=VARCHAR}, #{orderState}, #{inspection_result, jdbcType=VARCHAR}, #{orderdetailNum})
 	</insert>
 	
 	<select id="findSavedMoney" parameterType="map" resultType="Integer">
