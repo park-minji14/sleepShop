@@ -131,7 +131,7 @@
     
     
     function getImageUrl(imagePath) {
-		return "${pageContext.request.contextPath}/upload/" + imagePath;
+		return "${pageContext.request.contextPath}/uploads/image" + imagePath;
 	}
 </script>
 

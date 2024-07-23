@@ -110,7 +110,7 @@
   right: 20px;
   bottom: 20px;
   border:none; 
-  width: 130px;
+  width: 170px;
   line-height: 40px;
   -webkit-perspective: 230px;
   perspective: 230px;
@@ -118,7 +118,7 @@
 .btn-12 span {
   display: block;
   position: absolute;
-  width: 130px;
+  width: 170px;
   height: 40px;
   border: 2px solid #35c5f0;  
   margin: 0;
@@ -402,7 +402,7 @@ $(function(){
 								
 		<c:if test="${dto.winnerNumber != 0 && (category == 'winner' || category == 'ended')}">
 			<div colspan="2" class="text-center p-3">
-				<button type="button" class="custom-btn btn-12 btnEventWinnerList"> 이벤트 당첨자 확인 </button>
+				<button type="button" class="btn btn-12 btnEventWinnerList"> <span>Go!</span><span>이벤트 당첨자 확인</span> </button>
 			</div>
 		</c:if>
 		

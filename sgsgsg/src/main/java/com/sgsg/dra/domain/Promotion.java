@@ -1,6 +1,9 @@
 package com.sgsg.dra.domain;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class Promotion {
 	private long event_num;
@@ -20,6 +23,7 @@ public class Promotion {
 	private int showEvent;
 	private String userId;
 	private String userName;
+	private String image;
 	
 	
 	
@@ -169,6 +173,31 @@ public class Promotion {
 	public void setRankCount(List<Integer> rankCount) {
 		this.rankCount = rankCount;
 	}
+	
+
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	
+	public String getImagePathFromContent() {
+        if (this.content == null || this.content.isEmpty()) {
+            return null;
+        }
+
+        String imagePath = null;
+        String regex = "<img src=\"([^\"]*)\"";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(this.content);
+
+        if (matcher.find()) {
+            imagePath = matcher.group(1);
+        }
+
+        return imagePath;
+    }
 	
 	
 }
