@@ -24,8 +24,12 @@ public interface OrderManageMapper {
 	
 	public void cancelOrder(Map<String, Object> map) throws SQLException;
 	public UserPoint findByUserPoint(String userId) throws SQLException;
-	public void canceleUesdPoint(Map<String, Object> map) throws SQLException;
+	public void updateUsePoint(Map<String, Object> map) throws SQLException;
 	public void cancelProductStock(Map<String, Object> map) throws SQLException;
 	
+	public void insertRetrunRequest(Map<String, Object> map) throws SQLException;
+	
 	public List<Order> selectOrderStateCount() throws SQLException;
+	
+	public int findSavedMoney(Map<String, Object> map) throws SQLException;
 }

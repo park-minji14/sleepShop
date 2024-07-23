@@ -58,6 +58,23 @@
 						<c:if test="${order.orderState < 3}">
 							<button type="button" class="btn btn-light btn-cancel-order" data-orderNum="${order.orderNum}">판매취소</button>
 						</c:if>
+						<c:if test="${order.orderState > 4 && order.orderState < 8}">
+							<div class="row justify-content-start last-update-area">
+								<div class="col-auto">
+										<select class="form-select last-select">
+											<option value="8">구매확정</option>
+											<option value="10">반품접수</option>
+											<option value="12">환불접수</option>
+											<option value="14">교환접수</option>
+										</select>
+									</div>
+									<div class="col-auto">
+										<button type="button" class="btn btn-light btn-last-order" data-orderNum="${order.orderNum}"
+											data-orderState="${order.orderState}" data-deliveryNum="${order.deliveryNum}"
+											data-memberIdx="${order.memberIdx}" data-usedSaved="${order.usedSaved}">상태변경</button>
+									</div>
+								</div>
+						</c:if>
 					</td>
 					<td class="text-end">
 						<c:if test="${order.orderState == 1}">
@@ -294,6 +311,42 @@ $(function(){
 		
 		let qs = 'orderNum=' + orderNum + '&orderState=' + orderState+"&deliveryNum="+deliveryNum;
 		let url = '${pageContext.request.contextPath}/adminManagement/orderManage/order/delivery';
+
+		const fn = function(data) {
+			if(data.state === "true") {
+				let curUrl = new URL(location.href);
+				let query = curUrl.search.substring(0,curUrl.search.lastIndexOf("&"));
+				url = '${pageContext.request.contextPath}/adminManagement/orderManage/order'+query;
+				location.href = url;
+			}else {
+				alert("변경이 실패 했습니다.");
+			}
+		};
+		
+		ajaxFun(url, "post", qs, "json", fn);
+	});
+});
+
+$(function(){
+	$("body").on("click", ".btn-last-order", function(){
+		const $EL = $(this);
+		let orderNum = $EL.attr("data-orderNum");
+		let deliveryNum = $EL.attr("data-deliveryNum");
+		let memberIdx = $EL.attr("data-memberIdx");
+		let usedSaved = $EL.attr("data-usedSaved");
+		
+		let orderState = $EL.closest(".last-update-area").find("select").val();
+		
+		let qs = 'orderNum=' + orderNum + '&orderState=' + orderState+"&memberIdx="+memberIdx;
+		if(orderState === "12"){
+			qs +="&cancleAmount="+${order.payment}+"&usedSaved="+usedSaved;
+		}
+		let url ="";
+		if(orderState > 8){
+			url = '${pageContext.request.contextPath}/adminManagement/orderManage/order/cancelOrder';
+		} else {
+			url = '${pageContext.request.contextPath}/adminManagement/orderManage/order/confirmed';
+		}
 
 		const fn = function(data) {
 			if(data.state === "true") {

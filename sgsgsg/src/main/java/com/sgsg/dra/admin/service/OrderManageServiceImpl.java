@@ -109,16 +109,19 @@ public class OrderManageServiceImpl implements OrderManageService {
 	public void cancelOrder(Map<String, Object> map) throws Exception {
 		try {
 			map.put("orderNum", map.get("orderNum").toString());
-			map.put("reason", OrderState.CANCELED.getKorean());
+			
 			mapper.cancelOrder(map);
-			if(Integer.parseInt(map.get("usedSaved").toString()) >0){
+			if(map.get("usedSaved") != null && Integer.parseInt(map.get("usedSaved").toString()) >0){
 				UserPoint point = mapper.findByUserPoint(map.get("memberIdx").toString());
-				map.put("remain_points", point.getRemain_points());
-				mapper.canceleUesdPoint(map);
+				int used = Integer.parseInt(map.get("usedSaved").toString());
+				map.put("remain_points", point.getRemain_points() + used);
+				map.put("usedSaved", used);
+				mapper.updateUsePoint(map);
 			}
 			
 			mapper.cancelProductStock(map);
 			mapper.updateOrderState(map);
+			mapper.insertRetrunRequest(map);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -134,5 +137,23 @@ public class OrderManageServiceImpl implements OrderManageService {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	@Override
+	public void orderConfirmed(Map<String, Object> map) throws Exception {
+		
+		try {
+			int saved = mapper.findSavedMoney(map);
+			
+			UserPoint point = mapper.findByUserPoint(map.get("memberIdx").toString());
+			map.put("remain_points", point.getRemain_points()+saved);
+			map.put("usedSaved", saved);
+			map.put("userId", point.getUserId());
+			
+			mapper.updateUsePoint(map);
+			mapper.updateOrderState(map);
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 }

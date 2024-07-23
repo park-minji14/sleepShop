@@ -9,7 +9,7 @@ public enum OrderState {
     DELIVERED("배송완료"), // 5
     DELIVERY_FAILED("배송실패"),
     BOUNCED("반송됨"),
-    PURCHASE_CONFIRMATION("구매확정"),
+    PURCHASE_CONFIRMED("구매확정"),
     CANCELED("판매취소"),
     RETURN_ACCEPTANCE("반품접수"), //10
     RETURN_COMPLETED("반품완료"),

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sgsg.dra.admin.service.OrderManageService;
 import com.sgsg.dra.common.MyUtil;
 import com.sgsg.dra.domain.Order;
+import com.sgsg.dra.state.OrderState;
 
 @Controller
 @RequestMapping("adminManagement/orderManage/*")
@@ -176,7 +177,30 @@ public class OrderManageController {
 		String state = "false";
 		
 		try {
+			int orderState = Integer.parseInt(paramMap.get("orderState").toString());
+			paramMap.put("reason", OrderState.fromInt(orderState).getKorean());
+			
 			service.cancelOrder(paramMap);
+			state="true";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state", state);
+		return model;
+	}
+	
+	@PostMapping("order/confirmed")
+	@ResponseBody
+	public Map<String, Object> orderConfirmed(@RequestParam Map<String, Object> paramMap) throws Exception {
+		String state = "false";
+		
+		try {
+			int orderState = Integer.parseInt(paramMap.get("orderState").toString());
+			paramMap.put("reason", OrderState.fromInt(orderState).getKorean());
+			
+			service.orderConfirmed(paramMap);
 			state="true";
 		} catch (Exception e) {
 			e.printStackTrace();

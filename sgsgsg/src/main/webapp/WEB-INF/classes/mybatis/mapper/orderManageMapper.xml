@@ -116,12 +116,12 @@
 	<!-- 판매취소는 사용자 요청시 인서트? -->
 	<insert id="cancelOrder" parameterType="map">
 		insert into ORDER_CANCELLATION(orderNum, CANCEL_DATE, CANCEL_REASON, PROCESS_DATE)
-		values(#{orderNum}, sysdate, #{cancel_reason}, sysdate)
+		values(#{orderNum}, sysdate, #{cancel_reason, jdbcType=VARCHAR}, sysdate)
 	</insert>
 	
 	<!-- 마지막 포인트 조회 -->
 	<select id="findByUserPoint" parameterType="String" resultType="com.sgsg.dra.domain.UserPoint">
-		SELECT NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, USERID
+		SELECT NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, ph.USERID
 		FROM POINT_HISTORY ph
 		left outer join member1 m on m.USERID = ph.USERID
 		WHERE MEMBERIDX = #{memberIdx}
@@ -130,7 +130,7 @@
 	</select>
 	
 	<!-- 판매 취소시 사용한 포인트 돌려주기 -->
-	<insert id="canceleUesdPoint" parameterType="map">
+	<insert id="updateUsePoint" parameterType="map">
 		INSERT INTO POINT_HISTORY (NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, USERID, orderNum)
 		values(POINT_HISTORY_SEQ.NEXTVAL, #{usedSaved}, #{reason}, SYSDATE, #{remain_points}, #{userId}, #{orderNum})
 	</insert>
@@ -155,5 +155,16 @@
 		GROUP BY orderState
 		ORDER by orderState
 	</select>
+	
+	<!-- return_request -->
+	<insert id="insertRetrunRequest" parameterType="map">
+		INSERT INTO ORDER_CANCELLATION(ORDERNUM, CANCEL_DATE, CANCEL_REASON, PROCESS_DATE)
+		VALUES(#{orderNum}, sysdate,  #{cancel_reason, jdbcType=VARCHAR}, sysdate);
+	</insert>
+	
+	<select id="findSavedMoney" parameterType="map" resultType="Integer">
+		SELECT SUM(SAVEDMONEY) as SAVEDMONEY FROM ORDERDETAIL WHERE ORDERNUM = #{orderNum}
+	</select>
+	
 	
 </mapper>

@@ -20,4 +20,6 @@ public interface OrderManageService {
 	
 	public List<Order> selectOrderStateCount() throws Exception;
 	
+	public void orderConfirmed(Map<String, Object> map) throws Exception;
+	
 }
