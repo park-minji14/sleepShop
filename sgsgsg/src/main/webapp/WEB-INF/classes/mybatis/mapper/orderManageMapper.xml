@@ -121,7 +121,7 @@
 	
 	<!-- 마지막 포인트 조회 -->
 	<select id="findByUserPoint" parameterType="String" resultType="com.sgsg.dra.domain.UserPoint">
-		SELECT NUM, CHANGE_POINTS, REASON, CHANGE_DATE, REMAIN_POINTS, ph.USERID
+		SELECT NUM, NVL(CHANGE_POINTS), REASON, CHANGE_DATE, NVL(REMAIN_POINTS), ph.USERID
 		FROM POINT_HISTORY ph
 		left outer join member1 m on m.USERID = ph.USERID
 		WHERE MEMBERIDX = #{memberIdx}

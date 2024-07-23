@@ -4,12 +4,15 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.sgsg.dra.domain.Delivery;
 import com.sgsg.dra.domain.Member;
 import com.sgsg.dra.domain.Order;
 import com.sgsg.dra.domain.Product;
 import com.sgsg.dra.domain.UserPoint;
 
+@Mapper
 public interface OrderMapper {
 	public String findByMaxOrderNumber();
 	public void insertOrder(Order dto) throws SQLException;
