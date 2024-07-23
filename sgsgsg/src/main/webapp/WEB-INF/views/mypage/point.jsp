@@ -10,9 +10,9 @@
 			<div class="css-ow22sl e1v2ggz01">
 				
 				<!-- 포인트 칸 -->
-				<div class="css-77kc86 e1t6i3i25">
+				<div class="css-77kc86 e1t6i3i25" style="width: 75%; margin: auto; margin-top: 60px;">
 					<div class="css-0 e1t6i3i24">
-						<h2 class="css-ojabq6 e1t6i3i23" style="font-size: 40px;">사용 가능한 포인트</h2>
+						<h2 class="css-ojabq6 e1t6i3i23" style="font-size: 33px;  font-weight: 600;">사용 가능한 포인트</h2>
 						<p class="css-1irwz7g e1t6i3i22">${point.remain_points} P</p>
 					</div>
 					<div class="css-1yu4f1z e1t6i3i21">
@@ -31,7 +31,7 @@
 			
 			
 			
-			<div class="css-1066lcq e1rx7pum12"><h2 class="css-ojabq6 e1rx7pum11">포인트 내역</h2>
+			<div class="css-1066lcq e1rx7pum12"><h2 class="css-ojabq6 e1rx7pum11" style="font-size: 25px; font-weight: 600; color: gray;">포인트 내역</h2>
 			
 			
 			

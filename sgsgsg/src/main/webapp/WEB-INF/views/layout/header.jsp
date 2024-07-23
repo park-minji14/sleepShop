@@ -28,7 +28,7 @@
 				<c:when test="${not empty sessionScope.member}">
 					<div class="user-profile">
 						<c:choose>
-							<c:when test="${sessionScope.member.membership >= 51}">
+							<c:when test="${sessionScope.member.membership >= 70}">
 								<img
 									src="https://img.icons8.com/plasticine/100/000000/super-mario.png"
 									alt="Admin Profile" class="profile-img"
@@ -207,7 +207,7 @@ function updateSubMenu(category, activeSubmenu = null) {
          {text: '수면클리닉', url: '${pageContext.request.contextPath}/clinic/list'}, 
          {text: '공지사항', url: '${pageContext.request.contextPath}/'}, 
          {text: 'FAQ', url: '${pageContext.request.contextPath}/faq/list'}, 
-         {text: '이벤트', url: '${pageContext.request.contextPath}/'}
+         {text: '이벤트', url: '${pageContext.request.contextPath}/promotion/progress/list'}
      ]
  };
 
@@ -260,6 +260,8 @@ function performSearch() {
 function togglePopularSearch() {
  $('#popularSearchContent').toggleClass('active');
 }
+
+//-----------------document이벤트 시작-----------------//
 
 $(document).ready(function() {
  // 로그인 버튼 클릭 이벤트
@@ -317,5 +319,9 @@ $(document).ready(function() {
  // 인기 검색어 업데이트 시작
  updatePopularSearch();
  setInterval(updatePopularSearch, 3000);
+ 
+ 
+//----------------------북마크 함수 -----------------//
+ 
 });
 </script>

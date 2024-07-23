@@ -6,10 +6,11 @@
 
 <mapper namespace="com.sgsg.dra.mapper.ExpertMapper">
     <select id="getExpertProfile" parameterType="String" resultType="com.sgsg.dra.domain.Expert">
-        SELECT userId, license1, license2, license3, career1, career2, career3, exposed_content
-        FROM expert_mypage
-        WHERE userId = #{userId}
-    </select>
+	    SELECT e.userId, m.userName, e.license1, e.license2, e.license3, e.career1, e.career2, e.career3, e.exposed_content
+	    FROM expert_mypage e
+	    JOIN member1 m ON e.userId = m.userId
+	    WHERE e.userId = #{userId}
+	</select>
     
     
     <update id="updateExpertProfile" parameterType="com.sgsg.dra.domain.Expert">

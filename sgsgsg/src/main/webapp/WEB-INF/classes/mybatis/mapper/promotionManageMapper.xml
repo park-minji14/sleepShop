@@ -111,7 +111,7 @@
 			TO_CHAR(startDate,'YYYY-MM-DD HH24:MI') startDate,
 			TO_CHAR(endDate, 'YYYY-MM-DD HH24:MI') endDate, 
 			TO_CHAR(winningDate, 'YYYY-MM-DD HH24:MI') winningDate, 
-			winnerNumber, showEvent
+			e.winnerNumber, e.showEvent
 		FROM event e
 		JOIN member1 m ON e.userId = m.userId
 		WHERE e.event_num = #{event_num}

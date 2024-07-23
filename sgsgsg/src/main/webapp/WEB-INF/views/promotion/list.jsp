@@ -103,10 +103,6 @@ function searchList() {
 	f.submit();
 }
 
-function getImageUrl(imagePath) {
-    return "${pageContext.request.contextPath}/uploads/image" + imagePath;
-}
-
 
 </script>
 
@@ -181,9 +177,9 @@ function getImageUrl(imagePath) {
 					<c:forEach var="dto" items="${list}" varStatus="status">
 						<div class="event-style" onclick="location.href='${articleUrl}&num=${dto.event_num}'"> 
 							<div> 
-								 <img src="${pageContext.request.contextPath}/uploads/image/${imagePath}">
-
-								
+								<c:if test="${not empty dto.firstImage}">
+								   <img src="${dto.firstImage}" style="width: 100%; height: 250px; object-fit: cover;">
+							 	</c:if>
 							</div>
 							<br>
 							<div style="text-align: center; font-size: 25px;">   

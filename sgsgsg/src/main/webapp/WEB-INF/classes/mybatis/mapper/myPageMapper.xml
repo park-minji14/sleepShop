@@ -50,6 +50,7 @@
 	
 	
 	
+	
 	<!-- 리뷰 리스트 -->
 	<select id="listReview" parameterType="map" resultType="com.sgsg.dra.domain.Review">
 		SELECT po.orderNum, userId, orderDate, totalMoney, payment, deliveryCharge, orderStateDate, orderState, 
@@ -66,8 +67,9 @@
 		LEFT OUTER JOIN (
 			SELECT ORDERdETAILnum, 1 reviewWrite
 			FROM product_Review ppr
-			WHERE userId = 'admin'
-		) r ON od.orderDetailNum = r.orderDetailnum;
+			WHERE userId = #{userId}
+		) r ON od.orderDetailNum = r.orderDetailnum
+		WHERE userId = #{userId}
         
 	</select>
 	

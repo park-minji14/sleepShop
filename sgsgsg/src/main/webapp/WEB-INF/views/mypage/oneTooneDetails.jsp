@@ -16,6 +16,7 @@
     max-width: 100%;
     overflow-x: auto;
     padding-bottom: 150px;
+    box-shadow: none;
 }
 
 .table-header, .table-content {
@@ -36,8 +37,15 @@
 	
 	<!-- 1:1 문의 탭 -->
 		<div class="tab-pane fade show active" id="inquiry">
-			<h4 class="mb-4" style=" text-align: center;  font-size: 40px; margin: 50px;">1:1 문의 내역</h4>
+			<h4 class="mb-4" style=" text-align: center;  font-size: 33px;  font-weight: 600; margin: 50px;">1:1 문의</h4>
 		</div>
+		<dl>
+			<!--  <dt><img src="https://atimg.sonyunara.com/2023/renew/list/mypage_1.png" class="icon" alt="">주문관리</dt>  -->
+			<div class="navi" style="text-align: center; margin-bottom: 100px;" >
+				<a href="${pageContext.request.contextPath}">홈 &gt;</a> 
+				<a href="${pageContext.request.contextPath}/mypage/main">마이페이지 &gt; </a>
+			<a style="font: light-gray;">1:1 문의</a></div>
+		</dl>
 		
 		<input type="radio" id="option4" name="category" value="돌아가기" class="radio-input" ${category == '돌아가기' ? 'checked' : ''} onclick="listInquiry('${pageNo}')" >
 	        <label for="option4" class="radio-label" style="width: 150px; text-align: center; font-size: 20px;">돌아가기</label>

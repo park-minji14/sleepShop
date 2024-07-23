@@ -39,7 +39,7 @@
 <div class="css-ow22sl e1v2ggz01">
     <!-- 1:1 문의 탭 -->
     <div class="tab-pane fade show active" id="inquiry">
-        <h4 class="mb-4" style="text-align: center; font-size: 40px; margin: 50px;">1:1 문의 내역</h4>
+        <h4 class="mb-4" style="text-align: center; font-size: 33px; font-weight: 600; margin: 50px;">1:1 문의 내역</h4>
         <dl>
 					<!--  <dt><img src="https://atimg.sonyunara.com/2023/renew/list/mypage_1.png" class="icon" alt="">주문관리</dt>  -->
 					<div class="navi" style="text-align: center;">
@@ -73,7 +73,7 @@
             <span>
                 <div class="table-content">
                     <c:forEach var="dto" items="${list}">
-                        <div class="cont">
+                        <div class="cont" style="font-size: 15px;">
                             <div class="date">${fn:substring(dto.created_date, 0, 10)}</div>
                             <div class="inquiry">${dto.category}</div>
                             <div class="subject hover" onclick="detialsInquiry('${dto.num}', '${pageNo}')">${dto.title}</div>
