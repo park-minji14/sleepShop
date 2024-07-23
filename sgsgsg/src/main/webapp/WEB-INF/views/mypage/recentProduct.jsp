@@ -8,7 +8,7 @@
     position: relative;
     z-index: 1;
 }">
-				<h4 class="mb-4" style="text-align: center;   font-size: 40px; margin: 50px;">최근 본 상품</h4>
+				<h4 class="mb-4" style="text-align: center;   font-size: 33px;  font-weight: 600; margin: 90px;">최근 본 상품</h4>
 				<dl>
 					<!--  <dt><img src="https://atimg.sonyunara.com/2023/renew/list/mypage_1.png" class="icon" alt="">주문관리</dt>  -->
 					<div class="navi" style="text-align: center;">

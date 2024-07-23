@@ -11,6 +11,10 @@ public class Review {
 	 private String userId;
 	 private String liked_At;
 	 
+	 private String orderDate;
+	 
+	 private String thumbnail;
+	 
 	 private long fileNum;
 	 private String fileName;
 	 
@@ -103,6 +107,19 @@ public class Review {
 	public void setDetailNum2(long detailNum2) {
 		this.detailNum2 = detailNum2;
 	}
+	public String getOrderDate() {
+		return orderDate;
+	}
+	public void setOrderDate(String orderDate) {
+		this.orderDate = orderDate;
+	}
+	public String getThumbnail() {
+		return thumbnail;
+	}
+	public void setThumbnail(String thumbnail) {
+		this.thumbnail = thumbnail;
+	}
+	
 	 
 	 
 }

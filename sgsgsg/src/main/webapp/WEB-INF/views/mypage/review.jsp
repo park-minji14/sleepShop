@@ -2,10 +2,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<style>
+
+a{
+
+	color: black;
+}
+
+
+</style>
 
 	<!-- 나의 리뷰 탭 -->
 	<div class="tab-pane fade show active" id="reviews">
-	    <h4 class="mb-4" style="text-align: center;   font-size: 40px; margin: 50px;">구매한 상품</h4>
+	    <h4 class="mb-4" style="text-align: center;   font-size: 33px;  font-weight: 600; margin: 90px;">구매한 상품</h4>
 	    		<dl>
 					<!--  <dt><img src="https://atimg.sonyunara.com/2023/renew/list/mypage_1.png" class="icon" alt="">주문관리</dt>  -->
 					<div class="navi" style="text-align: center;">
@@ -15,30 +24,34 @@
 				</dl>
 	           
 	           <div class="col-md-6">
-	<select class="form-select" style=" width: 200px; ">
+	<select class="form-select" style=" width: 200px; " onchange="if(this.value) window.open(this.value);">
 			
 			<option>상품 리뷰 작성</option>
-			<option>내가 작성한 리뷰</option>
+			<option value="${pageContext.request.contextPath}/mypage/reviewArticle">내가 작성한 리뷰</option>
 		</select>
 	</div>
             
             
+            <c:forEach var="dto" items="${list}">
             <div class="review-item">
                 <div class="row align-items-center">
                     <div class="col-md-2">
-                        <img src="https://via.placeholder.com/100" alt="Product"
+                        <img src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}" alt="Product"
                             class="img-fluid">
                     </div>
                     <div class="col-md-7">
-                        <h5>${dto.productName}</h5>
-              <p class="text-muted">구매일: ${dto.review_Date}</p>
-            </div>
-            <div class="col-md-3 text-end">
-                <button class="btn btn-write-review" data-bs-toggle="modal"
-                    data-bs-target="#reviewModal">리뷰 작성하기</button>
-            </div>
-        </div>
-    </div>
+                        <a href="${pageContext.request.contextPath}/product/details?productNum=${dto.productNum}" ><h5>${dto.productName}</h5></a>
+		              <p class="text-muted">구매일: ${dto.orderDate}</p>
+		            </div>
+		            <div class="col-md-3 text-end">
+		                <button class="btn btn-write-review" data-bs-toggle="modal"
+		                    data-bs-target="#reviewModal">리뷰 작성하기</button>
+		            </div>
+		        </div>
+		    </div>
+		    </c:forEach>
+    
+    
     <div class="review-item">
         <div class="row align-items-center">
             <div class="col-md-2">
@@ -93,7 +106,7 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">취소</button>
-					<button type="button" class="btn btn-primary">리뷰 등록</button>
+					<button type="button" class="btn btn-primary" onclick="InsertReview();">리뷰 등록</button>
 				</div>
 			</div>
 		</div>
