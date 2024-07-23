@@ -80,7 +80,6 @@ function sendOk() {
 		f.tel.value = $('.destBox .tel').val().trim();
 	}
 	
-	/*
 	if(! f.recipientName.value) {
 		alert("먼저 배송지를 등록하세요..");
 		return;
@@ -96,7 +95,6 @@ function sendOk() {
 		return;
 	}
 
-	*/
 	let balance = Number($('.btn-usedSaved').attr('data-balance')) || 0;
 	let usedSaved = Number(f.usedSaved.value);
 
@@ -431,10 +429,11 @@ $(function() {
 			
 			let name = $tr.find('.recipientName').text();
 			if(dest.attr('data-default')==1){
-				$('.destBox .isDefault').css("display", "block");
-				//name += " (기본 배송지)";
+				$('.destBox .isDefault').css("display", "inline");
+				$('.destBox .isDefault').text("(기본 배송지)");
 			} else {
 				$('.destBox .isDefault').css("display", "none");
+				$('.destBox .isDefault').text("");
 			}
 			
 			$('input[name=destinationNum]').val(dest.attr('data-destnum'));
