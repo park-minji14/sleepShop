@@ -37,5 +37,16 @@ public class ChartManageServiceImpl implements ChartManageService {
 		
 		return list;
 	}
+
+	@Override
+	public List<Map<String, Object>> recentOrder() {
+		List<Map<String, Object>> list = null;
+		try {
+			list = mapper.recentOrder();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 	
 }

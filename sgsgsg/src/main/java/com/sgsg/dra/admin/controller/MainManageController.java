@@ -52,11 +52,13 @@ public class MainManageController {
 		
 		List<Map<String, Object>> todayOrder = chartService.todayOrder();
 		List<Map<String, Object>> todayDelivery = chartService.todayDelivery();
+		List<Map<String, Object>> recentOrder = chartService.recentOrder();
 		
 		Map<String, Object> model = new HashMap<String, Object>();
 		
 		model.put("todayOrder", todayOrder);
 		model.put("todayDelivery", todayDelivery);
+		model.put("recentOrder", recentOrder);
 		
 		return model;
 	}

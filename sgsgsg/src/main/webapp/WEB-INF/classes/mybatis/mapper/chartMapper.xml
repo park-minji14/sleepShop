@@ -20,5 +20,44 @@ Where d.orderstate In(2, 3, 4, 5, 6, 7)
 Group by d.orderstate
 </select>
 
+<select id="recentOrder" resultType="map">
+Select orderNum, userId, orderDate, totalMoney, orderState, recipientName, tel, productordername
+From productOrder
+Order By orderDate Desc 
+Offset 0 row Fetch first 5 rows only
+</select>
+
+<!-- 
+<select id="recentOrder" resultType="map" parameterType="String">
+Select orderNum, userId, To_char(To_Date(#{date} - 6, 'YYYY-MM-DD') orderDate, totalMoney, orderState, payment, tel, productordername
+From productOrder
+WHERE TO_CHAR(orderDate, 'YYYY-MM-DD') = TO_CHAR(TO_DATE(#{date}) - 6, 'YYYY-MM-DD') AND orderState != 6
+    UNION ALL
+Select orderNum, userId, To_char(To_Date(#{date} - 5, 'YYYY-MM-DD') orderDate, totalMoney, orderState, payment, tel, productordername
+From productOrder
+WHERE TO_CHAR(orderDate, 'YYYY-MM-DD') = TO_CHAR(TO_DATE(#{date}) - 5, 'YYYY-MM-DD') AND orderState != 5
+    UNION ALL
+Select orderNum, userId, To_char(To_Date(#{date} - 4, 'YYYY-MM-DD') orderDate, totalMoney, orderState, payment, tel, productordername
+From productOrder
+WHERE TO_CHAR(orderDate, 'YYYY-MM-DD') = TO_CHAR(TO_DATE(#{date}) - 4, 'YYYY-MM-DD') AND orderState != 4
+    UNION ALL
+Select orderNum, userId, To_char(To_Date(#{date} - 3, 'YYYY-MM-DD') orderDate, totalMoney, orderState, payment, tel, productordername
+From productOrder
+WHERE TO_CHAR(orderDate, 'YYYY-MM-DD') = TO_CHAR(TO_DATE(#{date}) - 3, 'YYYY-MM-DD') AND orderState != 3
+    UNION ALL
+Select orderNum, userId, To_char(To_Date(#{date} - 6, 'YYYY-MM-DD') orderDate, totalMoney, orderState, payment, tel, productordername
+From productOrder
+WHERE TO_CHAR(orderDate, 'YYYY-MM-DD') = TO_CHAR(TO_DATE(#{date}) - 2, 'YYYY-MM-DD') AND orderState != 2
+    UNION ALL
+Select orderNum, userId, To_char(To_Date(#{date} - 6, 'YYYY-MM-DD') orderDate, totalMoney, orderState, payment, tel, productordername
+From productOrder
+WHERE TO_CHAR(orderDate, 'YYYY-MM-DD') = TO_CHAR(TO_DATE(#{date}) - 1, 'YYYY-MM-DD') AND orderState != 1
+    UNION ALL
+Select orderNum, userId, #{date} orderDate, totalMoney, orderState, payment, tel, productordername
+From productOrder
+WHERE TO_CHAR(orderDate, 'YYYY-MM-DD') = #{date}
+</select> 
+-->
+
 
 </mapper>

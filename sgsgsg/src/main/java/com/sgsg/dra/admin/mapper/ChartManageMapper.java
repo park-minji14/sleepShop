@@ -10,4 +10,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface ChartManageMapper {
 	public List<Map<String, Object>> todayOrder() throws SQLException;
 	public List<Map<String, Object>> todayDelivery() throws SQLException;
+	public List<Map<String, Object>> recentOrder() throws SQLException;
 }
