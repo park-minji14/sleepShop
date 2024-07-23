@@ -128,12 +128,15 @@
 
         return true;
     }
+    
+    
+    function getImageUrl(imagePath) {
+		return "${pageContext.request.contextPath}/upload/" + imagePath;
+	}
 </script>
 
 <div class="body-container">
-    <div class="body-title">
-		<h2><i class="fa-regular fa-calendar"></i> 이벤트 </h2>
-    </div>
+	<br>
     
     <div class="body-main">
 		

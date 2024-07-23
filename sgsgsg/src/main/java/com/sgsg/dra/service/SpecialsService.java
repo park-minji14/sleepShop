@@ -22,4 +22,8 @@ public interface SpecialsService {
     
     // 특가/기획 상품에 포함된 제품 목록 조회
     public List<SpecialsProduct> listProduct(Map<String, Object> map);
+    
+    public List<SpecialsProduct> listSpecialProducts(Map<String, Object> map);
+    
+    public String getSpecialEndTime();
 }

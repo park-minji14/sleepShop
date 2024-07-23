@@ -215,37 +215,40 @@
 
 
 	<!-- 특가섹션 -->
-	<div class="timedeal-header">
-		<div class="inner">
-			<div class="timedeal-logo">⚡오늘의 특가</div>
-			<div class="timedeal-timer" id="timer">23:59:59</div>
+<div class="timedeal-header">
+    <div class="inner">
+        <div class="timedeal-logo">⚡오늘의 특가</div>
+        <div class="timedeal-timer" id="timer"></div>
+    </div>
+</div>
+<div class="container">
+    <div class="inner">
+        <div class="row timedeal-product-grid">
+			<c:forEach var="item" items="${specialList}" varStatus="status">
+				<div class="col-md-3 col-sm-6">
+					<a
+						href="${pageContext.request.contextPath}/product/details?productNum=${item.productNum}">
+						<div class="timedeal-product-card position-relative"
+							data-end-time="${item.endDate}">
+							<img
+								src="${pageContext.request.contextPath}/uploads/product/${item.thumbnail}"
+								alt="${item.productName}" class="timedeal-product-image">
+							<div class="timedeal-product-info">
+								<div class="timedeal-timer"></div>
+								<div class="timedeal-product-title">${item.productName}</div>
+								<div class="timedeal-product-price">
+									<span class="original-price">${item.price}원</span> <span
+										class="discount-rate badge bg-danger">${item.discountRate}%
+										할인</span>
+								</div>
+								<div class="sale-price fw-bold text-danger">${item.salePrice}원</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</c:forEach>
 		</div>
-	</div>
-	<div class="container">
-	<div class="inner">
-	    <div class="row timedeal-product-grid">
-	        <c:forEach var="item" items="${specialList}" varStatus="status">
-	            <c:if test="${status.index < 3}">
-	                <div class="col-md-4 col-sm-6"> 
-	                    <a href="${pageContext.request.contextPath}/product/details?productNum=${item.productNum}" >
-	                        <div class="timedeal-product-card position-relative">
-	                            <img src="${pageContext.request.contextPath}/uploads/product/${item.thumbnail}"
-	                                 alt="${item.productName}" class="timedeal-product-image">
-	                            <div class="timedeal-product-info">
-	                                <div class="timedeal-product-title">${item.productName}</div>
-	                                <div class="timedeal-product-price">
-	                                    <span class="original-price">${item.price}원</span>
-	                                    <span class="discount-rate badge bg-danger">${item.discountRate}% 할인</span>
-	                                </div>
-	                                <div class="sale-price fw-bold text-danger">${item.salePrice}원</div>
-	                            </div>
-	                        </div>
-	                    </a>
-	                </div>
-	            </c:if>
-	        </c:forEach>
-	    </div>
-	</div>
+    </div>
 
 	<section class="featured-products">
 		<div class="inner">
@@ -281,9 +284,10 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
+    //북마크
     $('.bookmark').click(function(e) {
-        e.preventDefault(); // 기본 동작 방지
-        e.stopPropagation(); // 이벤트 버블링 방지
+        e.preventDefault(); 
+        e.stopPropagation(); 
 
         var $bookmark = $(this);
         var productId = $bookmark.data('product-id');
@@ -293,166 +297,173 @@ $(document).ready(function() {
         if ($bookmark.hasClass('active')) { 
             console.log('Bookmark added for product ID:', productId);
         } else {
-           
             console.log('Bookmark removed for product ID:', productId);
         }
     });
+
+    // 모든 초기화 함수를 여기서 호출
+    initProductSlider();
+    initSwiper();
+    initWishlistButtons();
+    startCountdown();
 });
 
-	document.addEventListener('DOMContentLoaded', () => {
-	    initProductSlider();
-	    initSwiper();
-	    initWishlistButtons();
-	    startCountdown(); //메인 타이머 
-	    setInterval(updateTimers, 1000);
-	});
+let productItemWidth = 200;
+let productCurrentIndex = 0;
 
-	let productItemWidth = 200;
-	let productCurrentIndex = 0;
+function initProductSlider() {
+    const prevButton = document.querySelector('.product-nav.prev');
+    const nextButton = document.querySelector('.product-nav.next');
+    
+    if (!prevButton || !nextButton) {
+        console.error("네비게이션 버튼을 찾을 수 없습니다.");
+        return;
+    }
 
-	function initProductSlider() {
-	    const prevButton = document.querySelector('.product-nav.prev');
-	    const nextButton = document.querySelector('.product-nav.next');
-	    
-	    prevButton.style.display = 'none';
-	    slideProducts(0);
+    prevButton.style.display = 'none';
+    slideProducts(0);
 
-	    prevButton.addEventListener('click', () => slideProducts(-1));
-	    nextButton.addEventListener('click', () => slideProducts(1));
-	}
+    prevButton.addEventListener('click', () => slideProducts(-1));
+    nextButton.addEventListener('click', () => slideProducts(1));
+}
 
-	function slideProducts(direction) {
-	    const productList = document.getElementById('productList');
-	    const productsCount = productList.children.length;
-	    const containerWidth = productList.parentElement.offsetWidth;
-	    const itemsPerView = Math.floor(containerWidth / productItemWidth);
-	    const maxIndex = productsCount - itemsPerView;
+function slideProducts(direction) {
+    const productList = document.getElementById('productList');
+    if (!productList) {
+        return;
+    }
 
-	    productCurrentIndex += direction;
-	    productCurrentIndex = Math.max(0, Math.min(productCurrentIndex, maxIndex));
+    const productsCount = productList.children.length;
+    const containerWidth = productList.parentElement.offsetWidth;
+    const itemsPerView = Math.floor(containerWidth / productItemWidth);
+    const maxIndex = productsCount - itemsPerView;
 
-	    productList.style.transform = `translateX(-${productCurrentIndex * productItemWidth}px)`;
+    productCurrentIndex += direction;
+    productCurrentIndex = Math.max(0, Math.min(productCurrentIndex, maxIndex));
 
-	    const prevButton = document.querySelector('.product-nav.prev');
-	    const nextButton = document.querySelector('.product-nav.next');
-	    prevButton.style.display = productCurrentIndex > 0 ? 'block' : 'none';
-	    nextButton.style.display = productCurrentIndex < maxIndex ? 'block' : 'none';
-	}
+    productList.style.transform = `translateX(-${productCurrentIndex * productItemWidth}px)`;
 
-	function initSwiper() {
-	    new Swiper('.swiper-container', {
-	        slidesPerView: 'auto',
-	        centeredSlides: true,
-	        spaceBetween: 30,
-	        loop: true,
-	        grabCursor: true,
-	        effect: 'coverflow',
-	        coverflowEffect: {
-	            rotate: 0,
-	            stretch: 0,
-	            depth: 100,
-	            modifier: 1,
-	            slideShadows: false,
-	        },
-	        pagination: {
-	            el: '.swiper-pagination',
-	            clickable: true,
-	        },
-	        navigation: {
-	            nextEl: '.swiper-button-next',
-	            prevEl: '.swiper-button-prev',
-	        },
-	        autoplay: {
-	            delay: 3000,
-	            disableOnInteraction: false,
-	        },
-	    });
+    const prevButton = document.querySelector('.product-nav.prev');
+    const nextButton = document.querySelector('.product-nav.next');
+    prevButton.style.display = productCurrentIndex > 0 ? 'block' : 'none';
+    nextButton.style.display = productCurrentIndex < maxIndex ? 'block' : 'none';
+}
 
-	    new Swiper('.best-sellers-slider', {
-	        slidesPerView: 3,
-	        spaceBetween: 30,
-	        scrollbar: {
-	            el: '.swiper-scrollbar',
-	            hide: false,
-	        },
-	        breakpoints: {
-	            320: {
-	                slidesPerView: 1,
-	                spaceBetween: 10
-	            },
-	            768: {
-	                slidesPerView: 2,
-	                spaceBetween: 20
-	            },
-	            1024: {
-	                slidesPerView: 3,
-	                spaceBetween: 30
-	            }
-	        }
-	    });
-	}
+function initSwiper() {
+    if (typeof Swiper === 'undefined') {
+        return;
+    }
 
-	function initWishlistButtons() {
-	    document.querySelectorAll('.product-item .wishlist-btn').forEach(btn => {
-	        btn.addEventListener('click', function(e) {
-	            e.preventDefault();
-	            this.classList.toggle('active');
-	            const icon = this.querySelector('i');
-	            if (this.classList.contains('active')) {
-	                icon.classList.replace('bi-heart', 'bi-heart-fill');
-	                icon.style.color = 'red';
-	            } else {
-	                icon.classList.replace('bi-heart-fill', 'bi-heart');
-	                icon.style.color = '';
-	            }
-	        });
-	    });
-	}
+    try {
+        new Swiper('.swiper-container', {
+            slidesPerView: 'auto',
+            centeredSlides: true,
+            spaceBetween: 30,
+            loop: true,
+            grabCursor: true,
+            effect: 'coverflow',
+            coverflowEffect: {
+                rotate: 0,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+        });
 
-function updateTimers() {
-    document.querySelectorAll('.timedeal-product-timer').forEach(timer => {
-        const endTime = new Date(timer.dataset.endTime).getTime();
-        const now = new Date().getTime();
-        const distance = endTime - now;
+        new Swiper('.best-sellers-slider', {
+            slidesPerView: 3,
+            spaceBetween: 30,
+            scrollbar: {
+                el: '.swiper-scrollbar',
+                hide: false,
+            },
+            breakpoints: {
+                320: {
+                    slidesPerView: 1,
+                    spaceBetween: 10
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 20
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 30
+                }
+            }
+        });
+    } catch (error) {
+        console.error("Swiper 초기화 중 오류 발생:", error);
+    }
+}
 
-        if (distance < 0) {
-            timer.textContent = "종료됨";
-            return;
-        }
-
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        timer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+function initWishlistButtons() {
+    document.querySelectorAll('.product-item .wishlist-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.classList.toggle('active');
+            const icon = this.querySelector('i');
+            if (this.classList.contains('active')) {
+                icon.classList.replace('bi-heart', 'bi-heart-fill');
+                icon.style.color = 'red';
+            } else {
+                icon.classList.replace('bi-heart-fill', 'bi-heart');
+                icon.style.color = '';
+            }
+        });
     });
 }
 
 function startCountdown() {
-    const timerElement = document.querySelector('.timedeal-timer');
-    if (!timerElement) {
-        console.error('Timer element not found');
-        return;
-    }
-
-    let timeLeft = 24 * 60 * 60; // 24시간
-
-    function updateTimer() {
-        const hours = Math.floor(timeLeft / 3600);
-        const minutes = Math.floor((timeLeft % 3600) / 60);
-        const seconds = timeLeft % 60;
-
-        timerElement.textContent = 
-            `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-        if (timeLeft > 0) {
-            timeLeft--;
-            setTimeout(updateTimer, 1000);
-        } else {
-            timerElement.textContent = "특가 종료";
+    document.querySelectorAll('.timedeal-product-card').forEach((card, index) => {
+        const timerElement = card.querySelector('.timedeal-timer');
+        const endTimeStr = card.getAttribute('data-end-time');
+        
+        if (!endTimeStr) {
+            timerElement.textContent = "시간 정보 없음";
+            return;
         }
-    }
+        
+        const endTime = new Date(endTimeStr).getTime();
 
-    updateTimer();
+        function updateTimer() {
+            const now = new Date().getTime();
+            const distance = endTime - now;
+
+
+            if (distance < 0) {
+                timerElement.textContent = "종료됨";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            let timerText = '';
+            if (days > 0) timerText += days + "일 ";
+            if (hours > 0 || days > 0) timerText += hours + "시간 ";
+            if (minutes > 0 || hours > 0 || days > 0) timerText += minutes + "분 ";
+            timerText += seconds + "초";
+
+            timerElement.textContent = timerText;
+        }
+        updateTimer();
+        setInterval(updateTimer, 1000);
+    });
 }
 </script>

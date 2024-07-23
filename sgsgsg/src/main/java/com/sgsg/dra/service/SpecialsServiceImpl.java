@@ -90,4 +90,26 @@ public class SpecialsServiceImpl implements SpecialsService {
         }
         return list;
     }
+
+    @Override
+    public String getSpecialEndTime() {
+        String endTime = null;
+        try {
+            endTime = mapper.getSpecialEndTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return endTime;
+    }
+
+    @Override
+    public List<SpecialsProduct> listSpecialProducts(Map<String, Object> map) {
+        List<SpecialsProduct> list = null;
+        try {
+            list = mapper.listSpecialProducts(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

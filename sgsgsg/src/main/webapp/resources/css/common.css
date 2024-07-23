@@ -705,3 +705,8 @@ footer {
      font-size: 0.8rem;
      margin-top: 1rem;
  }
+ 
+ .sub-menu li.active a {
+    color: #35c5f0;  
+    font-weight: bold;
+}

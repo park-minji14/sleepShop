@@ -502,7 +502,9 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="qnaForm">
+     
+     
+        <form id="qnaForm" enctype="multipart/form-data" method="post" action="${pageContext.request.contextPath}/question/write">
           <div class="mb-3">
             <label class="form-label">문의 유형</label>
             <div>
@@ -538,7 +540,8 @@
           </div>
           <div class="mb-3">
             <label for="qnaFile" class="form-label">파일 첨부</label>
-            <input type="file" class="form-control" id="qnaFile" name="file" accept="image/*" multiple>
+           <!--  <input type="file" class="form-control" id="qnaFile" name="file" accept="image/*" multiple> -->
+            <input type="file" class="form-control" id="qnaFile" name="selectFile" accept="image/*" multiple>
             <div class="form-text">이미지 파일만 첨부 가능합니다. (최대 5개, 각 5MB 이하)</div>
           </div>
           <div id="fileList" class="mt-2"></div>
@@ -899,9 +902,16 @@ function updateStockStatus() {
     });
 
     $('#increaseQuantity, #scrollIncreaseQuantity').click(function () {
-        let quantity = parseInt($('#quantity').val()) + 1;
-        $('#quantity, #scrollQuantity').val(quantity);
-        updatePrice(quantity);
+        let quantity = parseInt($('#quantity').val());
+        let totalStock = parseInt($('.product-options').data('total-stock'));
+        
+        if (quantity < totalStock) {
+            quantity++;
+            $('#quantity, #scrollQuantity').val(quantity);
+            updatePrice(quantity);
+        } else {
+            showToast('현재 재고량을 초과할 수 없습니다.');
+        }
     });
 
 
@@ -1054,41 +1064,44 @@ function handleOptionSelection(stockNum, totalStock, detailNum, detailNum2, sale
               showToast('두 번째 옵션을 선택해주세요.');
               return;
           }
+      }       
+
+      // URL 생성
+      let url = "${pageContext.request.contextPath}/order/payment";
+      let query = "?stockNum=" + stockNum + "&qty=" + qty;
+      
+      // 옵션 정보 추가
+      if (option1) query += "&option1=" + option1;
+      if (option2) query += "&option2=" + option2;
+      
+      console.log('생성된 URL:', url + query);
+      
+      // 바로 페이지 이동
+      location.href = url + query;
+  });
+  
+
+/*       // 토스트 메시지 표시 후 페이지 이동
+      showToast('구매 페이지로 이동합니다.', function() {
+          location.href = url + query;
+      });
+  });
+
+  function showToast(message, callback) {
+      $('#cartToast .toast-body').text(message);
+      var toast = new bootstrap.Toast($('#cartToast')[0], {
+          autohide: true,
+          delay: 2000 // 2초 후 자동으로 사라짐
+      });
+      toast.show();
+      
+      if (callback) {
+          $('#cartToast').on('hidden.bs.toast', function () {
+              callback();
+              $('#cartToast').off('hidden.bs.toast');
+          });
       }
-        
-        // stockNum이 없는 경우
-        /* if (!stockNum) {
-            showToast('옵션을 모두 선택해주세요.');
-            return;
-        } */
-        
-        // URL 생성
-        let url = "${pageContext.request.contextPath}/order/payment";
-        let query = "?stockNum=" + stockNum + "&qty=" + qty;
-        
-        // 옵션 정보 추가
-        if (option1) query += "&option1=" + option1;
-        if (option2) query += "&option2=" + option2;
-        
-        console.log('생성된 URL:', url + query);
-
-        // 토스트 메시지 표시 후 페이지 이동
-        showToast('구매 페이지로 이동합니다.', function() {
-            location.href = url + query;
-        });
-    });
-
-    function showToast(message, callback) {
-        $('#cartToast .toast-body').text(message);
-        $('#cartToast').toast('show');
-        
-        if (callback) {
-            $('#cartToast').on('hidden.bs.toast', function () {
-                callback();
-                $('#cartToast').off('hidden.bs.toast');
-            });
-        }
-    }
+  } */
 
     // 동기화
 function syncOptions() {
@@ -1358,7 +1371,9 @@ function syncOptions() {
     updateProductInfoBottom();
     updatePrice($('#quantity').val());
     
-    // 상품문의
+    
+ //------------------------------상품문의------------------------------//
+ 
     function updateGuideText() {
         var selectedType = $('input[name="qnaType"]:checked').val();
         var guideText = '';
@@ -1439,60 +1454,73 @@ function syncOptions() {
     });
 
     // 문의하기 제출 버튼 클릭 시
-    $('#submitQna').click(function() {
-        const f = document.getElementById('qnaForm');
-        let content = $('#qnaContent').val().trim();
-        
-        if (!content) {
-            alert("문의 내용을 입력하세요.");
-            $('#qnaContent').focus();
-            return false;
-        }
-        
-        let files = $('#qnaFile')[0].files;
-        if (files.length > 5) {
-            alert("이미지는 최대 5개까지 가능합니다.");
-            return false;
-        }
-        
-        let productNum = $('#productNum').val();
-        if (!productNum) {
-            console.error("상품 번호가 없습니다.");
-            alert("상품 정보를 불러올 수 없습니다. 페이지를 새로고침 후 다시 시도해주세요.");
-            return false;
-        }
-        
-        let formData = new FormData(f);
-        // 여러 파일 추가
-        for (let i = 0; i < files.length; i++) {
-            formData.append('file', files[i]);
-            console.log('File ' + i + ':', files[i].name);
-        }
-        
-        formData.append('secret', $('#qnaPrivate').is(':checked') ? 0 : 1);
-        formData.append('inquiryType', $('input[name=qnaType]:checked').val());
-        formData.append('productNum', productNum);
-        
-        // FormData 내용 로깅 (디버깅용)
-        for (let pair of formData.entries()) {
-            console.log(pair[0] + ': ' + pair[1]);
-        }
-        
-        let url = "${pageContext.request.contextPath}/question/write";
-        console.log("요청 URL:", url);
-        
-        ajaxFun(url, "POST", formData, "json", function(data) {
+$('#submitQna').click(function() {
+    const f = document.getElementById('qnaForm');
+    let content = $('#qnaContent').val().trim();
+    
+    if (!content) {
+        alert("문의 내용을 입력하세요.");
+        $('#qnaContent').focus();
+        return false;
+    }
+    
+    let files = $('#qnaFile')[0].files;
+    if (files.length > 5) {
+        alert("이미지는 최대 5개까지 가능합니다.");
+        return false;
+    }
+    
+    let productNum = $('#productNum').val();
+    if (!productNum) {
+        console.error("상품 번호가 없습니다.");
+        alert("상품 정보를 불러올 수 없습니다. 페이지를 새로고침 후 다시 시도해주세요.");
+        return false;
+    }
+    
+    let formData = new FormData(f);
+    // 여러 파일 추가
+    for (let i = 0; i < files.length; i++) {
+     /*    formData.append('selectFile', files[i]); */
+        console.log('File ' + i + ':', files[i].name);
+    }
+    
+    formData.append('secret', $('#qnaPrivate').is(':checked') ? 0 : 1);
+    formData.append('inquiryType', $('input[name=qnaType]:checked').val());
+    formData.append('productNum', productNum);
+    
+    // FormData 내용 로깅 (디버깅용)
+    for (let pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+    }
+    
+    let url = "${pageContext.request.contextPath}/question/write";
+    console.log("요청 URL:", url);
+    
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: "json",
+        success: function(data) {
             console.log("서버 응답:", data);
             if(data.state === "true") {
                 f.reset();
                 $("#qnaModal").modal("hide");
                 
                 alert('문의가 성공적으로 등록되었습니다.');
+                
             } else {
                 alert('문의 등록에 실패했습니다. 다시 시도해주세요.');
             }
-        });
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX 오류:", status, error);
+            alert("문의 등록 중 오류가 발생했습니다. 다시 시도해주세요.");
+        }
     });
+});
     
     listQuestion(1);
 });
@@ -1513,13 +1541,16 @@ function listQuestion(page) {
     ajaxFun(url, 'get', query, 'json', fn);
 }
 
-    
 function printQuestion(data) {
+    // 문의 갯수 업데이트
     let dataCount = data.dataCount;
     $('.title-qnaCount').html('(' + dataCount + ')');
+    $('#qna-tab').text('문의 ' + dataCount);
+
     let out = '';
     if (Array.isArray(data.list)) {
         for (let item of data.list) {
+            // 문의 항목 데이터 준비
             let userName = item.userName || '';
             let question = item.question || '';
             let questionDate = item.question_Date || '';
@@ -1528,31 +1559,47 @@ function printQuestion(data) {
             let answerState = answer ? 
                 '<span class="badge bg-success">답변완료</span>' : 
                 '<span class="badge bg-warning text-dark">답변대기</span>';
-
-                out += '<div class="qna-item">';
-                out += '    <div class="d-flex justify-content-between align-items-center mb-2">';
-                out += '        <strong>' + userName + '</strong>';
-                out += '        ' + answerState;
+            
+            // 문의 항목 HTML 생성
+            out += '<div class="qna-item">';
+            out += '    <div class="d-flex justify-content-between align-items-center mb-2">';
+            out += '        <strong>' + userName + '</strong>';
+            out += '        ' + answerState;
+            out += '    </div>';
+            out += '    <p class="mb-1">' + question + '</p>';
+            out += '    <small class="text-muted">작성일: ' + questionDate + '</small>';
+				
+            // 질문 첨부 파일 출력
+            if (item.listFilename && Array.isArray(item.listFilename) && item.listFilename.length > 0) {
+                out += '    <div class="attached-files mt-2">';
+                out += '        <p><strong>첨부 파일:</strong></p>';
+                out += '        <ul>';
+                for (let fileName of item.listFilename) {
+                    let fileUrl = '${pageContext.request.contextPath}/uploads/question/' + fileName;
+                    out += '    <li><a href="' + fileUrl + '" target="_blank">' + fileName + '</a></li>';
+                }
+                out += '        </ul>';
                 out += '    </div>';
-                out += '    <p class="mb-1">' + question + '</p>';
-                out += '    <small class="text-muted">작성일: ' + questionDate + '</small>';
-                
-                if (answer) {
-                    out += '    <div class="qna-answer mt-2">';
-                    out += '        <strong>장남균</strong>';
-                    out += '        <p class="mb-1">' + answer + '</p>';
-                    out += '        <small class="text-muted">답변일: ' + answerDate + '</small>';
-                    out += '    </div>';
-                }      
+            } 
+
+            // 답변 출력 (있는 경우)
+            if (answer) {
+                out += '    <div class="qna-answer mt-2">';
+                out += '        <strong>관리자</strong>';
+                out += '        <p class="mb-1">' + answer + '</p>';
+                out += '        <small class="text-muted">답변일: ' + answerDate + '</small>';
+                out += '    </div>';
+            }
             out += '</div>';
         }
-    } else {
-        console.error('data.list is not an array:', data.list);
     }
+    
+    // 페이징 처리
     if (dataCount > 0) {
         out += '<div class="page-navigation">' + data.paging + '</div>';
     }
+    
+    // 생성된 HTML을 페이지에 삽입
     $('.list-question').html(out);
 }
-
 </script>

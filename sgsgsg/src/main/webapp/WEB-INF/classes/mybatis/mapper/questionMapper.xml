@@ -37,7 +37,7 @@
 <select id="dataCount" parameterType="map" resultType="Integer">
 SELECT NVL(COUNT(*), 0)
 FROM PRODUCT_INQUIRY
-WHERE PRODUCTNUM = #{productNum} AND SHOWQUESTION = 1 AND LOCKED = 1
+WHERE PRODUCTNUM = #{productNum} AND SHOWQUESTION = 1
 </select>
 
 <!-- 4.특정 상품 질문 리스트(일반 공개글) -->
@@ -54,7 +54,7 @@ LEFT OUTER JOIN (
     GROUP BY INQUIRYNUM
 ) f ON q.INQUIRYNUM = f.INQUIRYNUM
 LEFT OUTER JOIN MEMBER1 m2 ON q.ANSWERID = m2.USERID
-WHERE q.PRODUCTNUM = #{productNum} AND q.SHOWQUESTION = 1 AND q.LOCKED = 1
+WHERE q.PRODUCTNUM = #{productNum}
 ORDER BY q.INQUIRYNUM DESC
 OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 </select>
@@ -84,7 +84,7 @@ OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 <select id="listQuestion2" parameterType="map" resultType="com.sgsg.dra.domain.Question">
     SELECT q.INQUIRYNUM, q.USERID, m.USERNAME, q.SECRET, q.QUESTION, q.ANSWER, 
            m2.USERID AS ANSWERID, m2.USERNAME AS ANSWERNAME, 
-           q.PRODUCTNUM, p.PRODUCTNAME, f.FILENAME, q.SHOWQUESTION, q.LOCKED,q.INQUIRY_TYPE as inquiryType,
+           q.PRODUCTNUM, p.PRODUCTNAME, f.FILENAME, q.SHOWQUESTION, q.LOCKED, q.INQUIRY_TYPE as inquiryType,
            q.QUESTION_DATE, q.ANSWER_DATE
     FROM PRODUCT_INQUIRY q
     JOIN PRODUCT p ON q.PRODUCTNUM = p.PRODUCTNUM 
@@ -121,7 +121,6 @@ OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
         ANSWER = #{answer},
         ANSWERID = #{answerId},
         ANSWER_DATE = SYSDATE,
-        SHOWQUESTION = #{showQuestion},
         LOCKED = #{locked}
     WHERE 
         INQUIRYNUM = #{inquiryNum}

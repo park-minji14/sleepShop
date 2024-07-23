@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgsg.dra.mapper.PromotionMapper">
+
+	<sql id="where-list">
+		<choose>
+			<when test="schType == 'all' ">
+			   ( INSTR(title, #{kwd}) &gt; 0
+		          OR DBMS_LOB.INSTR(content, #{kwd}) &gt; 0 )
+			</when>
+			<otherwise>
+			   ( TO_CHAR(${schType}, 'YYYYMMDD') = #{kwd}
+		          OR TO_CHAR(${schType}, 'YYYY-MM-DD') = #{kwd} )
+			</otherwise>
+		</choose>
+	</sql>
+	
+	
+	<sql id="period-list">
+		<choose>
+			<when test="category == 'progress' ">
+				( startDate &lt;= SYSDATE  AND endDate &gt; SYSDATE )
+			</when>
+			<when test="category == 'upcoming' ">
+				( startDate &gt;= SYSDATE )
+			</when>
+			<when test="category == 'winner' ">
+				( winnerNumber != 0 AND winningDate &lt;= SYSDATE AND ADD_MONTHS(winningDate, 6) &gt;= SYSDATE ) 
+			</when>
+			<when test="category == 'ended' ">
+				( endDate &lt; SYSDATE )
+			</when>
+		</choose>
+	</sql>
+	
+	
+	<!-- 글개수 -->
+	<select id="dataCount" parameterType="map" resultType="Integer">
+		SELECT NVL(COUNT(*), 0)
+		FROM event
+		<where>
+			<if test="showEvent != null and showEvent == 1">
+				showEvent = 1
+			</if>
+			<if test="category != 'all' ">
+				AND <include refid="period-list"/>
+			</if>
+			<if test="kwd!=null and kwd!='' ">
+				AND <include refid="where-list"/>
+			</if>
+		</where>   
+	</select>
+	
+	
+	<!-- 글 리스트 -->
+	<select id="listEvent" parameterType="map" resultType="com.sgsg.dra.domain.Promotion">
+		SELECT e.event_num, title, showEvent,
+			   TO_CHAR(startDate,'YYYY-MM-DD HH24:MI') startDate,
+			   TO_CHAR(endDate, 'YYYY-MM-DD HH24:MI') endDate, 
+			   TO_CHAR(winningDate, 'YYYY-MM-DD HH24:MI') winningDate, winnerNumber
+
+		FROM event e
+		<if test="category != 'winner'">
+			LEFT OUTER JOIN (
+				SELECT event_num, COUNT(*) applyCount
+				FROM eventTakers
+				GROUP BY event_num
+			) t ON e.event_num = t.event_num
+		</if>
+		<if test="category == 'winner'">
+			LEFT OUTER JOIN (
+				SELECT event_num, COUNT(*) winnerCount
+				FROM eventWinner
+				GROUP BY event_num
+			) w ON e.event_num = w.event_num
+		</if>
+		<where>
+			<if test="showEvent != null and showEvent == 1">
+				showEvent = 1
+			</if>
+			<if test="category != 'all' ">
+				AND <include refid="period-list"/>
+			</if>
+			<if test="kwd != null and kwd != ''">
+				AND <include refid="where-list"/>
+			</if>
+		</where>
+		ORDER BY endDate DESC
+		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+	</select>
+	
+	
+	<!-- 글보기 -->
+	<select id="findById" parameterType="Long" resultType="com.sgsg.dra.domain.Promotion">
+		SELECT e.event_num, e.userId, userName, title, content, 
+			TO_CHAR(startDate,'YYYY-MM-DD HH24:MI') startDate,
+			TO_CHAR(endDate, 'YYYY-MM-DD HH24:MI') endDate, 
+			TO_CHAR(winningDate, 'YYYY-MM-DD HH24:MI') winningDate, 
+			winnerNumber, showEvent
+		FROM event e
+		JOIN member1 m ON e.userId = m.userId
+		WHERE e.event_num = #{event_num}
+	</select>
+	
+	
+	<!-- 이전글 -->
+	<select id="findByPrev" parameterType="map" resultType="com.sgsg.dra.domain.Promotion">
+		SELECT event_num, title
+		FROM event
+		<where>
+			<if test="showEvent != null and showEvent == 1">
+				showEvent = 1
+			</if>
+			<if test="category != 'all' ">
+				AND <include refid="period-list"/>
+			</if>
+			<if test="kwd != null and kwd != '' ">
+				AND <include refid="where-list"/>
+			</if>
+			AND (event_num &gt; #{event_num})
+		</where>
+		ORDER BY endDate ASC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	
+	
+	<!-- 다음글 -->
+	<select id="findByNext" parameterType="map" resultType="com.sgsg.dra.domain.Promotion">
+		SELECT event_num, title
+		FROM event
+		<where>
+			<if test="showEvent != null and showEvent == 1">
+				showEvent = 1
+			</if>
+			<if test="category != 'all' ">
+				AND <include refid="period-list"/>
+			</if>
+			<if test="kwd != null and kwd != '' ">
+				AND <include refid="where-list"/>
+			</if>
+			AND (event_num &lt; #{event_num})
+		</where>
+		ORDER BY endDate DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	
+	
+	<!-- 이벤트 응모자 등록 -->
+	<insert id="insertEventTakers" parameterType="com.sgsg.dra.domain.Promotion">
+		INSERT INTO eventTakers(event_num, userId, reg_date) VALUES (#{event_num}, #{userId}, SYSDATE)
+	</insert>
+	
+	
+	<!-- 이벤트 응모 여부 -->
+	<select id="findByEventTakers" parameterType="map" resultType="com.sgsg.dra.domain.Promotion">
+		SELECT event_num, e.userId, userName 
+		FROM eventTakers e
+		JOIN member1 m ON e.userId = m.userId
+		WHERE event_num = #{event_num} AND e.userId = #{userId}
+	</select>
+	
+	
+	<!-- 이벤트 응모자 리스트 -->
+	<select id="listEventTakers" parameterType="Long" resultType="com.sgsg.dra.domain.Promotion">
+		SELECT event_num, e.userId, userName, e.reg_date
+		FROM eventTakers e
+		JOIN member1 m ON e.userId = m.userId
+		WHERE event_num = #{event_num}
+		ORDER BY reg_date ASC
+	</select>
+	
+	
+	<!-- 이벤트 당첨 여부 -->
+	<select id="findByEventWinner" parameterType="map" resultType="com.sgsg.dra.domain.Promotion">
+		SELECT event_num, userId, rank, reg_date FROM eventWinner WHERE event_num = #{event_num} AND userId = #{userId}
+	</select>
+	
+	
+	<!-- 이벤트 당첨자 리스트 -->
+	<select id="listEventWinner" parameterType="Long" resultType="com.sgsg.dra.domain.Promotion">
+		SELECT event_num, e.userId, userName, rank, e.reg_date 
+		FROM eventWinner e
+		JOIN member1 m ON e.userId = m.userId
+		WHERE event_num = #{event_num}
+		ORDER BY rank ASC
+	</select>
+
+
+
+</mapper>

@@ -32,11 +32,15 @@ public class HomeController {
             
             // Special 상품 리스트 가져오기
             Map<String, Object> map = new HashMap<>();
-            map.put("specialNum", 14); // 특가 상품의 specialNum
-            map.put("size", 4); // 표시할 특가 상품의 개수
             
-            List<SpecialsProduct> specialList = specialsService.listProduct(map);
+            map.put("size", 3); // 표시할 특가 상품의 개수
+            
+            List<SpecialsProduct> specialList = specialsService.listSpecialProducts(map);
             model.addAttribute("specialList", specialList);
+            
+            // 특가 종료 시간 가져오기
+            String specialEndTime = specialsService.getSpecialEndTime();
+            model.addAttribute("specialEndTime", specialEndTime);
             
         } catch (Exception e) {
             e.printStackTrace();

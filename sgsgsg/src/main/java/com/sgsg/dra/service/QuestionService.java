@@ -18,4 +18,6 @@ public interface QuestionService {
 	public void updateQuestion(Question dto) throws Exception;
 	
 	public void deleteQuestion(long num, String pathname) throws Exception;
+
+
 }
