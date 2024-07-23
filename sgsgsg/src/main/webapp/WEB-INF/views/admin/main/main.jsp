@@ -224,61 +224,63 @@ function chartTodayDelivery(data) {
                     <thead class="table-light">
                         <tr>
                             <th scope="col">주문번호</th>
-                            <th scope="col">주문자명</th>
+                            <th scope="col">상품명</th>
                             <th scope="col">수령자명</th>
-                            <th scope="col">전화번호</th>
-                            <th scope="col">결제방법</th>
+                            <th scope="col">주문자명</th>
                             <th scope="col">총주문액</th>
-                            <th scope="col">주문일시</th>
+                            <th scope="col">상태</th>
+                            <th scope="col">주문일자</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>24052415505361</td>
-                            <td>세금만</td>
-                            <td>세금만</td>
-                            <td>010-3333-3333</td>
-                            <td>무통장</td>
-                            <td>29,520</td>
-                            <td>2024-05-24 15:51 (금)</td>
-                        </tr>
-                        <tr>
-                            <td>24051715563443</td>
-                            <td>124</td>
-                            <td>214</td>
-                            <td>124</td>
-                            <td>무통장</td>
-                            <td>20,000</td>
-                            <td>2024-05-17 15:57 (금)</td>
-                        </tr>
-                        <tr>
-                            <td>24040511530204</td>
-                            <td>관리자</td>
-                            <td>관리자</td>
-                            <td>010-0000-0000</td>
-                            <td>무통장</td>
-                            <td>136,240</td>
-                            <td>2024-04-05 11:53 (금)</td>
-                        </tr>
-                        <tr>
-                            <td>24040416420267</td>
-                            <td>111111111</td>
-                            <td>111111</td>
-                            <td>11111</td>
-                            <td>무통장</td>
-                            <td>58,890</td>
-                            <td>2024-04-04 16:42 (목)</td>
-                        </tr>
-                        <tr>
-                            <td>24032211451267</td>
-                            <td>한글만</td>
-                            <td>한글만</td>
-                            <td>010-1111-1111</td>
-                            <td>무통장</td>
-                            <td>60,060</td>
-                            <td>2024-03-22 11:45 (금)</td>
-                        </tr>
-                    </tbody>
+    <tbody>
+    	<c:forEach var="dto" items="${recentOrder}">
+    		<tr>
+    			<td class="text-center">${dto.orderNum}</td>
+    			<td class="text-center">${dto.productOrderName}</td>
+    			<c:choose>
+	    			<c:when test="${not empty dto.recipientName}">
+		    			<td class="text-center">${dto.recipientName}</td>
+	    			</c:when>
+	    			<c:otherwise>
+	    				<td class="text-center">-</td>
+	    			</c:otherwise>
+    			</c:choose>
+    			<td class="text-center">${dto.userName}</td>
+    			<td class="text-center">
+    				<fmt:formatNumber value="${dto.totalMoney}" type="number" pattern="#,##0" />
+				</td>
+    			<td class="text-center">
+                   <c:choose>
+                        
+                        <c:when test="${dto.orderState == 0}">입금대기</c:when>
+                        <c:when test="${dto.orderState == 1}">결제완료</c:when>
+                        <c:when test="${dto.orderState == 10}">반품접수</c:when>
+                        <c:when test="${dto.orderState == 11}">반품완료</c:when>
+                        <c:when test="${dto.orderState == 12}">환불접수</c:when>
+                        <c:when test="${dto.orderState == 13}">환불완료</c:when>
+                        
+                        <c:when test="${dto.orderState == 2}">발송처리</c:when>
+                        <c:when test="${dto.orderState == 3}">배송시작</c:when>
+                        <c:when test="${dto.orderState == 4}">배송중</c:when>
+                        <c:when test="${dto.orderState == 5}">배송완료</c:when>
+                        <c:when test="${dto.orderState == 6}">배송실패</c:when>
+                        <c:when test="${dto.orderState == 7}">반송됨</c:when>
+                        
+                        <c:when test="${dto.orderState == 14}">교환접수</c:when>
+                        <c:when test="${dto.orderState == 15}">교환완료</c:when>
+                        
+                        <c:when test="${dto.orderState == 8}">구매확정</c:when>
+                        <c:when test="${dto.orderState == 9}">판매취소</c:when>
+                        <c:when test="${dto.orderState == 16}">요청취소</c:when>
+                        
+                        <c:otherwise>알 수 없는 상태</c:otherwise>
+                    </c:choose>
+                </td>
+    			<td class="text-center">${dto.orderDate}</td>
+    		</tr>    	
+    	</c:forEach>
+
+    </tbody>
                 </table>
             </div>
             

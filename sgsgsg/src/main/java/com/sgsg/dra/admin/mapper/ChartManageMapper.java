@@ -6,9 +6,11 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.sgsg.dra.admin.domain.RecentOrderManage;
+
 @Mapper
 public interface ChartManageMapper {
 	public List<Map<String, Object>> todayOrder() throws SQLException;
 	public List<Map<String, Object>> todayDelivery() throws SQLException;
-	public List<Map<String, Object>> recentOrder() throws SQLException;
+	public List<RecentOrderManage> recentOrder() throws SQLException;
 }

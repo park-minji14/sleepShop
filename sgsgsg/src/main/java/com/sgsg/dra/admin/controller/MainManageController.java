@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sgsg.dra.admin.domain.RecentOrderManage;
 import com.sgsg.dra.admin.service.ChartManageService;
 import com.sgsg.dra.admin.service.OrderManageService;
 import com.sgsg.dra.domain.Order;
@@ -30,8 +31,10 @@ public class MainManageController {
 		
 		try {
 			List<Order> stateCountList = orderService.selectOrderStateCount();
+			List<RecentOrderManage> recentOrder = chartService.recentOrder();
 			
 			model.addAttribute("stateCountList", stateCountList);
+			model.addAttribute("recentOrder", recentOrder);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -52,13 +55,13 @@ public class MainManageController {
 		
 		List<Map<String, Object>> todayOrder = chartService.todayOrder();
 		List<Map<String, Object>> todayDelivery = chartService.todayDelivery();
-		List<Map<String, Object>> recentOrder = chartService.recentOrder();
+		
 		
 		Map<String, Object> model = new HashMap<String, Object>();
 		
 		model.put("todayOrder", todayOrder);
 		model.put("todayDelivery", todayDelivery);
-		model.put("recentOrder", recentOrder);
+		
 		
 		return model;
 	}

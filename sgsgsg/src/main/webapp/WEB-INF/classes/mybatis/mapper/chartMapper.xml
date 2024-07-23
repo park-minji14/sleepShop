@@ -20,9 +20,10 @@ Where d.orderstate In(2, 3, 4, 5, 6, 7)
 Group by d.orderstate
 </select>
 
-<select id="recentOrder" resultType="map">
-Select orderNum, userId, orderDate, totalMoney, orderState, recipientName, tel, productordername
-From productOrder
+<select id="recentOrder" resultType="com.sgsg.dra.admin.domain.RecentOrderManage">
+Select orderNum, productordername, recipientName, m.userName, totalMoney, orderState, tel, To_Char(orderDate, 'YYYY-MM-DD') orderDate 
+From productOrder po
+Join member1 m On po.userId = m.userId
 Order By orderDate Desc 
 Offset 0 row Fetch first 5 rows only
 </select>

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sgsg.dra.admin.domain.RecentOrderManage;
 import com.sgsg.dra.admin.mapper.ChartManageMapper;
 
 @Service
@@ -39,8 +40,8 @@ public class ChartManageServiceImpl implements ChartManageService {
 	}
 
 	@Override
-	public List<Map<String, Object>> recentOrder() {
-		List<Map<String, Object>> list = null;
+	public List<RecentOrderManage> recentOrder() {
+		List<RecentOrderManage> list = null;
 		try {
 			list = mapper.recentOrder();
 		} catch (Exception e) {
