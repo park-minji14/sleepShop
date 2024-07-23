@@ -107,12 +107,10 @@ public class MyPageController {
 	}
 	
 	
-	
-	
-	
-	//리뷰 리스트
-	@GetMapping("review")
-	public String review(@RequestParam(value = "pageNo", defaultValue = "1") int current_page,
+
+	// 리뷰 리스트
+	@GetMapping("savedList")
+	public String savedList(@RequestParam(value = "pageNo", defaultValue = "1") int current_page,
 			@RequestParam(defaultValue = "all") String schType,
 			@RequestParam(defaultValue = "") String kwd,
 			HttpServletRequest req,
@@ -150,13 +148,14 @@ public class MyPageController {
 		map.put("size", size);
 
 
-		// 포인트 전체 리스트
+	
 		List<Review> list = service.listReview(map);
 
 		// AJAX-paging
 		String paging = myUtil.pagingMethod(current_page, total_page, "listReview");
 
 		model.addAttribute("list", list);
+		System.out.println("여기 리스트 출력"+list);
 		model.addAttribute("pageNo", current_page);
 		model.addAttribute("dataCount", dataCount);
 		model.addAttribute("total_page", total_page);
@@ -166,16 +165,12 @@ public class MyPageController {
 		model.addAttribute("kwd", kwd);
 		
 		
-		return "mypage/review";
+		return "mypage/savedList";
 	}
-	
-	
-	
-	
 	
 	//리뷰 작성
 	@ResponseBody
-	@PostMapping("write")
+	@PostMapping("reviewWrite")
 	public Map<String, Object> writeSubmit(Review dto, 
 			HttpSession session) throws Exception {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
@@ -193,9 +188,6 @@ public class MyPageController {
 		
 		return model;
 	}
-	
-	
-	
 	
 	
 	
