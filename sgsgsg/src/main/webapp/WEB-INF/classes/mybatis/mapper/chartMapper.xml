@@ -4,19 +4,57 @@
 <mapper namespace="com.sgsg.dra.admin.mapper.ChartManageMapper">
 
 <select id="todayOrder" resultType="map">
-Select Nvl(Count(*), 0) as stateCount, orderState 
+Select NVL(Count(*), 0) as stateCount, orderState 
 From productOrder 
 Where orderstate In(0, 1, 10, 11, 12, 13) 
- And To_char(orderDate, 'YYYYmmdd') = To_char(sysdate, 'YYYYmmdd') 
+	And To_char(orderDate, 'YYYYmmdd') = To_char(sysdate, 'YYYYmmdd') 
 Group by orderstate
 </select>
 
 <select id="todayDelivery" resultType="map">
-Select Nvl(Count(*), 0) as stateCount, d.orderState 
+Select NVL(Count(*), 0) as stateCount, d.orderState 
 From delivery d 
 Join productOrder p On d.ordernum = p.ordernum 
 Where d.orderstate In(2, 3, 4, 5, 6, 7) 
- And To_char(orderDate, 'YYYYmmdd') = To_char(sysdate, 'YYYYmmdd') 
+	And To_char(orderDate, 'YYYYmmdd') = To_char(sysdate, 'YYYYmmdd') 
+Group by d.orderstate
+</select>
+
+<select id="weekOrder" resultType="map">
+Select NVL(Count(*), 0) as stateCount, orderState
+From productOrder 
+Where orderState In (0, 1, 10, 11, 12, 13) 
+ And To_Char(orderDate, 'YYYY-MM-DD') &gt;= To_Char(sysDate - 6, 'YYYY-MM-DD')
+ And To_Char(orderDate, 'YYYY-MM-DD') &lt;= To_Char(sysDate, 'YYYY-MM-DD')
+Group by orderState
+</select>
+
+<select id="weekDelivery" resultType="map">
+Select NVL(Count(*), 0) as stateCount, d.orderState
+From delivery d 
+Join productOrder p On d.ordernum = p.ordernum 
+Where d.orderstate In(2, 3, 4, 5, 6, 7) 
+	And To_Char(orderDate, 'YYYY-MM-DD') &gt;= To_Char(sysDate - 6, 'YYYY-MM-DD')
+	And To_Char(orderDate, 'YYYY-MM-DD') &lt;= To_Char(sysDate, 'YYYY-MM-DD')
+Group by d.orderstate
+</select>
+
+<select id="monthOrder" resultType="map">
+Select NVL(Count(*), 0) as stateCount, orderState
+From productOrder 
+Where orderState In (0, 1, 10, 11, 12, 13) 
+ And To_Char(orderDate, 'YYYY-MM-DD') &gt;= To_Char(add_months(sysDate, -1), 'YYYY-MM-DD')
+ And To_Char(orderDate, 'YYYY-MM-DD') &lt;= To_Char(sysDate, 'YYYY-MM-DD')
+Group by orderState
+</select>
+
+<select id="monthDelivery" resultType="map">
+Select NVL(Count(*), 0) as stateCount, d.orderState
+From delivery d 
+Join productOrder p On d.ordernum = p.ordernum 
+Where d.orderstate In(2, 3, 4, 5, 6, 7) 
+	And To_Char(orderDate, 'YYYY-MM-DD') &gt;= To_Char(add_months(sysDate, -1), 'YYYY-MM-DD')
+	And To_Char(orderDate, 'YYYY-MM-DD') &lt;= To_Char(sysDate, 'YYYY-MM-DD')
 Group by d.orderstate
 </select>
 
@@ -24,41 +62,8 @@ Group by d.orderstate
 Select orderNum, productordername, recipientName, m.userName, totalMoney, orderState, tel, To_Char(orderDate, 'YYYY-MM-DD') orderDate 
 From productOrder po
 Join member1 m On po.userId = m.userId
-Order By orderDate Desc 
+Order By orderDate Desc, orderNum desc
 Offset 0 row Fetch first 5 rows only
 </select>
-
-<!-- 
-<select id="recentOrder" resultType="map" parameterType="String">
-Select orderNum, userId, To_char(To_Date(#{date} - 6, 'YYYY-MM-DD') orderDate, totalMoney, orderState, payment, tel, productordername
-From productOrder
-WHERE TO_CHAR(orderDate, 'YYYY-MM-DD') = TO_CHAR(TO_DATE(#{date}) - 6, 'YYYY-MM-DD') AND orderState != 6
-    UNION ALL
-Select orderNum, userId, To_char(To_Date(#{date} - 5, 'YYYY-MM-DD') orderDate, totalMoney, orderState, payment, tel, productordername
-From productOrder
-WHERE TO_CHAR(orderDate, 'YYYY-MM-DD') = TO_CHAR(TO_DATE(#{date}) - 5, 'YYYY-MM-DD') AND orderState != 5
-    UNION ALL
-Select orderNum, userId, To_char(To_Date(#{date} - 4, 'YYYY-MM-DD') orderDate, totalMoney, orderState, payment, tel, productordername
-From productOrder
-WHERE TO_CHAR(orderDate, 'YYYY-MM-DD') = TO_CHAR(TO_DATE(#{date}) - 4, 'YYYY-MM-DD') AND orderState != 4
-    UNION ALL
-Select orderNum, userId, To_char(To_Date(#{date} - 3, 'YYYY-MM-DD') orderDate, totalMoney, orderState, payment, tel, productordername
-From productOrder
-WHERE TO_CHAR(orderDate, 'YYYY-MM-DD') = TO_CHAR(TO_DATE(#{date}) - 3, 'YYYY-MM-DD') AND orderState != 3
-    UNION ALL
-Select orderNum, userId, To_char(To_Date(#{date} - 6, 'YYYY-MM-DD') orderDate, totalMoney, orderState, payment, tel, productordername
-From productOrder
-WHERE TO_CHAR(orderDate, 'YYYY-MM-DD') = TO_CHAR(TO_DATE(#{date}) - 2, 'YYYY-MM-DD') AND orderState != 2
-    UNION ALL
-Select orderNum, userId, To_char(To_Date(#{date} - 6, 'YYYY-MM-DD') orderDate, totalMoney, orderState, payment, tel, productordername
-From productOrder
-WHERE TO_CHAR(orderDate, 'YYYY-MM-DD') = TO_CHAR(TO_DATE(#{date}) - 1, 'YYYY-MM-DD') AND orderState != 1
-    UNION ALL
-Select orderNum, userId, #{date} orderDate, totalMoney, orderState, payment, tel, productordername
-From productOrder
-WHERE TO_CHAR(orderDate, 'YYYY-MM-DD') = #{date}
-</select> 
--->
-
 
 </mapper>

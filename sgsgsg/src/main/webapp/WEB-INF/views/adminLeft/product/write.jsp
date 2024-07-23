@@ -446,26 +446,25 @@ $(function(){
 					</tr>
 					<tr>
 						<td class="table-light  myCenter">상품가격</td>
-						<td class="table-light  myCenter">적립금</td>
-					</tr>
-					<tr>
 						<td>
 							<input type="text" name="price" class="form-control" value="${dto.price}" placeholder="상품 가격">
 						</td>
+					</tr>
+					<tr>
+						<td class="table-light  myCenter">적립금</td>
 					    <td>
 					        <input type="text" name="savedMoney" class="form-control" value="${dto.savedMoney}" placeholder="적립금">
 					    </td>
-
 					</tr>
 					<tr>
 					    <td class="table-light myCenter">할인율</td>
-					    <td class="table-light  myCenter">배송비</td>
-					</tr>
-					<tr>
 					    <td>
 					        <input type="text" name="discountRate" class="form-control" value="${dto.discountRate}" placeholder="할인율">
 					        <small class="form-control-plaintext help-block">0인 경우 상품가격이 판매가격입니다.</small>
 					    </td>
+					</tr>
+					<tr>
+					    <td class="table-light  myCenter">배송비</td>
 					    <td>
 					        <input type="text" name="delivery" class="form-control" value="${dto.delivery}" placeholder="배송비">
 					        <small class="form-control-plaintext help-block">배송비가 0인 경우 무료 배송입니다.</small>

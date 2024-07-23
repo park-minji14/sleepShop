@@ -198,7 +198,7 @@ window.addEventListener("load", function() {
 			                <img src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}" alt="상품 이미지" width="50" height="50">
 			            </td>
 			            <td class="text-center">${dto.productNum}</td>
-			            <td class="product-preview text-center">
+			            <td class="product-preview text-center">	
 			                ${dto.productName}
 			                <div class="preview-content">
 			                    <strong>${dto.productName}</strong><br>

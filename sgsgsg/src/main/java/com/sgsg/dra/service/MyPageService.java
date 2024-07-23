@@ -15,6 +15,5 @@ public interface MyPageService {
 	
 
 	public void insertReview(Review dto) throws SQLException;
-
 	public List<Review> listReview(Map<String, Object> map);
 }

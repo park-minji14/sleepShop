@@ -317,7 +317,7 @@ element.style {
 			<li class="nav-item"><a class="nav-link active" id="myshop-tab"
 				data-bs-toggle="tab" href="#orders" aria-controls="myshop">나의 쇼핑</a></li>
 			<li class="nav-item"><a class="nav-link" id="reviews-tab"
-				data-bs-toggle="tab" aria-controls="review">나의 리뷰</a></li>
+				data-bs-toggle="tab" aria-controls="savedList">구매내역</a></li>
 			<li class="nav-item"><a class="nav-link" id="wishlist-tab"
 				data-bs-toggle="tab" href="#wishlist" aria-controls="wishlist">찜한 상품</a></li>
 			<li class="nav-item"><a class="nav-link" id="recent-tab"
@@ -348,6 +348,47 @@ element.style {
 			<div class="modal-body"></div>
 		</div>
 	</div>
+</div>
+
+<!-- 리뷰 작성 모달 -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true" style="z-index: 99999">
+    <div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="reviewModalLabel">리뷰 작성하기</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form name="reviewForm">
+						<input type="hidden" name="orderDetailNum">
+						<div class="mb-3">
+							<label for="reviewRating" class="form-label">평점</label> <select
+								class="form-select" id="reviewRating" name="score">
+								<option value="5">5점</option>
+								<option value="4">4점</option>
+								<option value="3">3점</option>
+								<option value="2">2점</option>
+								<option value="1">1점</option>
+							</select>
+						</div>
+						<div class="mb-3">
+							<label for="reviewContent" class="form-label">리뷰 내용</label>
+							<textarea class="form-control" id="reviewContent" rows="3" name="review"></textarea>
+						</div>
+						<div class="mb-3">
+							<label for="reviewImage" class="form-label">이미지 첨부</label> <input
+								type="file" class="form-control" id="reviewImage" name="selectFile">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary btnReviewSend" onclick="insertReview();">리뷰 등록</button>
+				</div>
+			</div>
+		</div>
 </div>
 
 	<script>
@@ -501,6 +542,61 @@ element.style {
 				ajaxFun(url, 'post', {num:num}, 'JSON', fn);
 			}
 	  }
+	  
+
+	  $(".tab-content").on("click", ".btn-write-review", function(){
+		  let orderDetailNum = $(this).attr("data-orderDetailNum");
+		  let reviewWrite = $(this).attr("data-reviewWrite");
+		  
+		  if(reviewWrite === "0") {
+			  // 리뷰 등록 대화상자
+			  const f = document.reviewForm;
+			  f.orderDetailNum.value = orderDetailNum;
+			  $("#reviewModal").modal('show');
+		  } else {
+			  // 리뷰 보기
+			  
+		  }
+		  
+	  });
+	  
+	  function insertReview() {
+	  		const f = document.reviewForm;
+	  		let s;
+	  		
+	  		if(f.score.value === "0") {
+	  			alert("평점은 1점부터 가능합니다.");
+	  			return false;
+	  		}
+	  		
+	  		s = f.review.value.trim();
+	  		if( ! s ) {
+	  			alert("리뷰를 입력하세요.");
+	  			f.review.focus();
+	  			return false;
+	  		}
+	  		
+	  		if(f.selectFile.files.length > 5) {
+	  			alert("이미지는 최대 5개까지 가능합니다..");
+	  			return false;
+	  		}
+	  		
+	  		let url = "${pageContext.request.contextPath}/mypage/reviewWrite";
+	  		// FormData : form 필드와 그 값을 나타내는 일련의 key/value 쌍을 쉽게 생성하는 방법을 제공 
+	  		// FormData는 Content-Type을 명시하지 않으면 multipart/form-data로 전송
+	  		let query = new FormData(f); 
+	  		
+	  		const fn = function(data) {
+	  			if(data.state === "true") {
+	  
+	  			}
+	  		};
+	  		
+	  		ajaxFun(url, "post", query, "json", fn, true);
+	  	}
+	  
+	  
+	  
 	</script>
 	
 	

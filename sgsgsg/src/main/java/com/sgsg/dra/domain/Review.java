@@ -23,6 +23,8 @@ public class Review {
 	 private long detailNum;
 	 private long detailNum2;
 	 
+	 private int reviewWrite;
+	 
 	public long getOrderDetailNum() {
 		return orderDetailNum;
 	}
@@ -118,6 +120,12 @@ public class Review {
 	}
 	public void setThumbnail(String thumbnail) {
 		this.thumbnail = thumbnail;
+	}
+	public int getReviewWrite() {
+		return reviewWrite;
+	}
+	public void setReviewWrite(int reviewWrite) {
+		this.reviewWrite = reviewWrite;
 	}
 	
 	 
