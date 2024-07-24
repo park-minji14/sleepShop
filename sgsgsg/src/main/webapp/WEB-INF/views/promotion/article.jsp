@@ -166,6 +166,37 @@
 }
 
 
+.center-text {
+    text-align: center;
+    position: relative;
+    display: inline-block; /* 부모 요소의 크기를 기준으로 폭죽을 생성하기 위해 추가 */
+}
+.firework {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    opacity: 0;
+    animation: firework-animation 1s ease-out forwards;
+}
+
+@keyframes firework-animation {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        background: red;
+    }
+    50% {background: #FAED7D; opacity: 0.5;}
+    100% {
+        transform: scale(10);
+        opacity: 0;
+        background: purple;
+    }
+}
+
+
+
 </style>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/boot-board.css" type="text/css">
 
@@ -206,6 +237,38 @@ $(function(){
 		}, "json");
 	});
 });
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const textElement = document.querySelector('.center-text');
+    const positions = [
+        {top: '50%', left: '90%'}, // 오른쪽
+        {top: '50%', left: '10%'}, // 왼쪽
+        {top: '50%', left: '50%'}, // 가운데
+    ];
+
+    function createFirework(position) {
+        const firework = document.createElement('div');
+        firework.classList.add('firework');
+        firework.style.top = position.top;
+        firework.style.left = position.left;
+        textElement.appendChild(firework);
+
+        setTimeout(() => {
+            firework.remove();
+        }, 1000);
+    }
+
+    positions.forEach((position, index) => {
+        setTimeout(() => {
+            createFirework(position);
+        }, index * 1000);
+    });
+});
+
+
+
+
 </script>
 
 <div class="container">
@@ -256,7 +319,7 @@ $(function(){
 		
 		<c:if test="${listEventWinner.size() != 0 && category == 'winner' && not empty userWinner}">
 			<div>
-				<div style="float: center;">
+				<div class="center-text" style="text-align: center; font-size: 20px;">
 					<p class="form-control-plaintext">
 						<span>축하합니다.</span>
 						<span style="color: blue; font-weight: 600;">${sessionScope.member.userName}</span>님은
@@ -329,7 +392,7 @@ $(function(){
 	
 	<div class="modal fade" id="eventWinnerModal" tabindex="-1" aria-labelledby="eventWinnerModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-lg">
-			<div class="modal-content">
+			<div class="modal-content" style="border: 4px solid #35c5f0;">
 				<div class="modal-header">
 					<h5 class="modal-title" id="eventWinnerModalLabel">이벤트 당첨자 리스트</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -339,7 +402,8 @@ $(function(){
 	                 <div class="row row-cols-4 g-1">
 	                 	<c:forEach var="vo" items="${listEventWinner}" varStatus="status">
 	                 		<div class="col">
-	                 			<div class="border">
+	                 		<br>
+	                 			<div style="border: 2px solid #D5D5D5; border-radius: 10px;">
 		                 			<c:if test="${vo.rank != 0}">
 										<span>
 											${vo.rank}등 :
