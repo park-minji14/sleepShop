@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			<div class="swiper-wrapper">
 				<div class="slide-container swiper-slide">
 				<c:choose>
-					<c:when test="${sessionScope.member.membership > 90 || sessionScope.member.membership < 70}">
+					<c:when test="${sessionScope.member.membership > 90 || sessionScope.member.membership < 50}">
 						<a href="${pageContext.request.contextPath}/expertapply/apply">
 						<img src="${pageContext.request.contextPath}/uploads/etc/전문가신청배너.png"
 							alt="수면클리닉 배너 1">
@@ -233,8 +233,10 @@ document.addEventListener('DOMContentLoaded', function () {
 						alt="수면클리닉 배너 2">
 				</div>
 				<div class="slide-container swiper-slide">
+					<a href="${pageContext.request.contextPath}/promotion/progress/article?page=1&&num=15">
 					<img src="${pageContext.request.contextPath}/uploads/etc/졸음껌배너.png"
 						alt="수면클리닉 배너 3"> 
+					</a>
 				</div>
 			</div>
 			<div class="swiper-pagination"></div>

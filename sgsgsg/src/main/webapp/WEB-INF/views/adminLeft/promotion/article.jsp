@@ -115,7 +115,7 @@ function deleteOk() {
 					</c:if>
 					
 					<tr style="border-bottom: none;">
-						<td colspan="2" valign="top" height="200">
+						<td colspan="2" valign="top"> 
 							${dto.content}
 						</td>
 					</tr>
