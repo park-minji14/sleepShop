@@ -194,7 +194,7 @@ function sendOk() {
 					<c:forEach items="${productList}" var="dto">
 						<div class="cart-box ps-2 pt-2">
 							<div class="cart-item">
-								<a class="item-link" href="${pageContext.request.contextPath}/product/details/${dto.productNum}">
+								<a class="item-link" href="${pageContext.request.contextPath}/product/details?productNum=${dto.productNum}">
 									<span class="item-img">
 										<img alt="상품 이미지" src="${pageContext.request.contextPath}/uploads/product/${dto.thumbnail}">
 									</span>
