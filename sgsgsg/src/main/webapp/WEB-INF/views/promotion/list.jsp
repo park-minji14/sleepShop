@@ -177,9 +177,15 @@ function searchList() {
 					<c:forEach var="dto" items="${list}" varStatus="status">
 						<div class="event-style" onclick="location.href='${articleUrl}&num=${dto.event_num}'"> 
 							<div> 
-								<c:if test="${not empty dto.firstImage}">
-								   <img src="${dto.firstImage}" style="width: 100%; height: 250px; object-fit: cover;">
-							 	</c:if>
+								
+							 	<c:choose>
+							 		<c:when test="${not empty dto.firstImage}">
+							 			<img src="${dto.firstImage}" style="width: 100%; height: 250px; object-fit: contain;">
+							 		</c:when>
+							 		<c:otherwise>
+							 			<img src="${pageContext.request.contextPath}/uploads/etc/썸네일없음.png" style="width: 100%; height: 250px; object-fit: cover;">
+							 		</c:otherwise>
+							 	</c:choose>
 							</div>
 							<br>
 							<div style="text-align: center; font-size: 25px;">   

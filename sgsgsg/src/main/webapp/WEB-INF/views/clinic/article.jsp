@@ -48,7 +48,6 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
     background-color: #fff;
     width: 1100px;
-    height: 400px;
 }
 
 

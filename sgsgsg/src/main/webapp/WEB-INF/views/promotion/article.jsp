@@ -64,7 +64,6 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
     background-color: #fff;
     width: 1000px;
-    height: 500px;
 }
 
 
@@ -192,7 +191,7 @@ $(function(){
 		let num= "${dto.event_num}";
 		let url = "${pageContext.request.contextPath}/promotion/progress/apply";
 		
-		$.post(url, {event_num:event_num}, function(data){
+		$.post(url, {event_num:num}, function(data){
 			let state = data.state;
 			
 			if(state === "true") {
@@ -217,123 +216,7 @@ $(function(){
 		</div>
 		<br>
 		
-		<!-- 
-		<div class="body-main">
-
-			<div class="tab-content pt-2" id="nav-tabContent">
-			
-				<table class="table mb-0">
-					<thead>
-						<tr>
-							<td colspan="2" align="center">
-								${dto.title}
-							</td>
-						</tr>
-					</thead>
-					
-					<tbody>
-						<tr>
-							<td width="50%">
-								이벤트 기간 : ${dto.startDate} ~ ${dto.endDate}
-							</td>
-						</tr>
-						
-						<c:if test="${dto.winnerNumber != 0}">
-							<tr>
-								<td width="50%">
-									당첨일자 :
-									<c:choose>
-										<c:when test="${listEventWinner.size() == 0 && (category == 'winner' || category == 'ended') }">
-											당첨이 곧 진행 예정입니다.
-										</c:when>
-										<c:otherwise>
-											${dto.winningDate}
-										</c:otherwise>
-									</c:choose>									
-								</td>
-								<td align="right">
-									<c:choose>
-										<c:when test="${listEventWinner.size() != 0 && (category == 'winner' || category == 'ended')}">
-											당첨 인원 : ${listEventWinner.size()}명
-										</c:when>
-										<c:when test="${category == 'progress'}">
-											당첨 인원 : ${dto.winnerNumber}
-										</c:when>
-									</c:choose>
-								</td>
-							</tr>
-						</c:if>
-						
-						<c:if test="${listEventWinner.size() != 0 && category == 'winner' && not empty userWinner}">
-							<tr>
-								<td colspan="2" class="py-3" align="center" >
-									<p class="form-control-plaintext">
-										<span>축하합니다.</span>
-										<span style="color: blue; font-weight: 600;">${sessionScope.member.userName}</span>님은
-										<c:if test="${userWinner.rank != 0}">
-											<span>이벤트에 <label style="color: tomato; font-weight: 500;">${userWinner.rank}</label>등으로 당첨되었습니다 </span>
-										</c:if>
-										<c:if test="${userWinner.rank == 0}">
-											<span>이벤트에 당첨되었습니다.</span>
-										</c:if>
-									</p>
-								</td>
-							</tr>
-						</c:if>
-					
-						<tr>
-							<td colspan="2" valign="top" height="200" style="${dto.winnerNumber != 0 ? 'border-bottom: none;' : ''}">
-								${dto.content}
-							</td>
-						</tr>
-						
-						<c:if test="${dto.winnerNumber != 0 && category == 'progress'}">
-							<tr>
-								<td colspan="2" class="text-center p-3">
-									<button type="button" class="btn btn-outline-secondary btnApplyEvent" ${userEventTakers? "disabled='disabled'" : "" }> ${userEventTakers ? "이벤트 응모 완료" : "이벤트 응모" } </button>
-								</td>
-							</tr>
-						</c:if>
-												
-						<c:if test="${dto.winnerNumber != 0 && (category == 'winner' || category == 'ended')}">
-							<tr>
-								<td colspan="2" class="text-center p-3">
-									<button type="button" class="btn btn-outline-secondary btnEventWinnerList"> 이벤트 당첨자 확인 </button>
-								</td>
-							</tr>
-						</c:if>						
-
-						<tr>
-							<td colspan="2">
-								이전글 :
-								<c:if test="${not empty prevDto}">
-									<a href="${pageContext.request.contextPath}/promotion/${category}/article?${query}&num=${prevDto.event_num}">${prevDto.title}</a>
-								</c:if>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								다음글 :
-								<c:if test="${not empty nextDto}">
-									<a href="${pageContext.request.contextPath}/promotion/${category}/article?${query}&num=${nextDto.event_num}">${nextDto.title}</a>
-								</c:if>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				
-				<table class="table table-borderless">
-					<tr>
-						<td width="50%">&nbsp;</td>
-						<td class="text-end">
-							<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/promotion/${category}/list?${query}';">리스트</button>
-						</td>
-					</tr>
-				</table>
-			
-			</div>
-		</div>
-		-->
+		
 		
 		<div class="event-style1">
 			<span style="font-size: 20px;">${dto.title}</span>
@@ -343,8 +226,8 @@ $(function(){
 			<div width="50%">
 				이벤트 기간 : ${dto.startDate} ~ ${dto.endDate}
 			</div>
-			<hr>
 			<c:if test="${dto.winnerNumber != 0}">
+			<hr>
 				<div>
 					<span>
 						당첨일자 :
