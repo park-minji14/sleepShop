@@ -59,7 +59,7 @@
 
 @keyframes btncolor {
     0% {}
-    100% {background: #35c5f0; color: white; transform: translateY(4px);}
+    100% {background: #35c5f0; color: white; transform: translateY(2px);} 
 }
 
 .profile-update {

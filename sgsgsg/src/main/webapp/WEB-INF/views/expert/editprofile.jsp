@@ -14,6 +14,8 @@
 }
 
 
+
+
 .edit-style {
 	border: 3px solid #35c5f0;  
     border-radius: 30px;

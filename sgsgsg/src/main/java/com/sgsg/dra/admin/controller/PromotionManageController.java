@@ -243,10 +243,12 @@ public class PromotionManageController {
 	@PostMapping("{category}/win")
 	public String winner(
 			@PathVariable String category,
+			@RequestParam(value = "num", defaultValue = "0") int num,
 			PromotionManage dto,
 			@RequestParam String page) throws Exception {
 		
 		try {
+			dto.setEvent_num(num);
 			service.insertEventWinner(dto);
 		} catch (Exception e) {
 		}

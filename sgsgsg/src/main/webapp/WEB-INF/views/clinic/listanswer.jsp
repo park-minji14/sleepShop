@@ -111,7 +111,7 @@
 						<div class='name' style="font-size: 25px;">
 							<a href="${pageContext.request.contextPath}/expert/profile?userId=${vo.userId}" style="text-decoration: none; color: inherit;">${vo.userName}</a>
 						    <c:if test="${vo.pickup != 1 && sessionScope.member.userId == vo.question_userId}">
-						        <button type="submit" class="btn btn-like adopt-btn" onclick="toggleForm(${vo.answer_num});">채택하기</button>
+						        <button type="submit" class="btn btn-like adopt-btn" onclick="toggleForm('${vo.answer_num}');">채택하기</button>
 						    </c:if> 
 						   
 						    
@@ -174,71 +174,16 @@
 <div class="page-navigation">
 	${paging}
 </div>		
-
-
-
-
-<c:if test="${sessionScope.member.membership > 90 || vo.question_userId == sessionScope.member.userId}">
-    <script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function() {
-    window.onload = function() {
-        var isPicked = ${isPicked};
-        if (isPicked) {
-            var adoptButtons = document.querySelectorAll('.adopt-btn');
-            adoptButtons.forEach(function(button) {
-                button.style.display = 'none';
-            });
-        }
-    };
-    
-     
-    function toggleForm(answer_num) {
-        var form = document.getElementById("form_" + answer_num);
-        if (form) {
-            form.style.display = (form.style.display === "block") ? "none" : "block";
-        } else {
-            console.error('Form not found:', form);
-        }
+<script>
+document.addEventListener("load", function() {
+    var isPicked = '${isPicked}';
+    if (isPicked) {
+        var adoptButtons = document.querySelectorAll('.adopt-btn');
+        adoptButtons.forEach(function(button) {
+            button.style.display = 'none';
+        });
     }
+});
 
-    function submitForm(answer_num) {
-        var textarea = document.getElementById("textarea_" + answer_num);
-        if (textarea.value.trim() === "") {
-            alert("코멘트를 입력해주세요.");
-            return;
-        }
-        
-        if (!confirm("이 답변을 채택하시겠습니까?")) {
-            return;
-        }
 
-        var form = document.getElementById("submitForm_" + answer_num);
-        if (form && form.tagName === 'FORM') {
-        	location.reload();
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", form.action, true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    document.getElementById("comment_" + answer_num).textContent = textarea.value;
-                    form.style.display = "none";
-                    
-                    var adoptButtons = document.getElementsByClassName('adopt-btn');
-                    for (var i = 0; i < adoptButtons.length; i++) {
-                        adoptButtons[i].style.display = 'none';
-                    }
-                }
-            };
-
-            var formData = new FormData(form);
-            var queryString = new URLSearchParams(formData).toString();
-            xhr.send(queryString);
-        } else { 
-            console.error('Form not found or not a form element:', form);
-        }
-    }
-   }
-
-   
-    </script> 
-</c:if>	
+</script>
