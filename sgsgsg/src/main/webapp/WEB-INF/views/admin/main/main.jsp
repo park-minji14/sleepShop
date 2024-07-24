@@ -25,25 +25,62 @@
 
 <script type="text/javascript">
 $(function() {
+	//회원통계 바로 출력
 	chartsUser();
 	
 	let baseURL = "${pageContext.request.contextPath}/adminManagement";
 
-    function loadData(url) {
-        $.getJSON(url, function(data) {
-            if ((data.todayOrder || data.weekOrder || data.monthOrder)) {
-                chartOrder(data);
-            } else {
-                handleEmptyData('.charts-today-order', '조회되는 주문 정보가 없습니다.');
-            }
+	function loadData(url) {	
+	    $.getJSON(url, function(data) {
+	    	console.log(new Date().getTime());
+	    	console.log("넘어온 자료: ", data);
+	    	
+	    	//Order 데이터 분류
+	        let orderKey = Object.keys(data).find(key => key.endsWith('Order'));
+	        let periodType = orderKey ? orderKey.replace('Order', '') : '';
+	        let periodTitle = getPeriodTitle(periodType);
+	        let orderTitle = periodTitle + ' 구매현황';
 
-            if ((data.todayDelivery || data.weekDelivery || data.monthDelivery)) {
-                chartDelivery(data);
-            } else {
-                handleEmptyData('.charts-today-delivery', '조회되는 배송 정보가 없습니다.');
-            }
-        });
-    }
+	        console.log(orderKey + ":" + data[orderKey] + ":" + periodType);
+	        
+	        if (orderKey && data[orderKey] && data[orderKey].length > 0) {
+	        	//clearChart('.charts-today-order');
+	            chartOrder(data, orderTitle);
+	        } else {
+	        	//clearChart('.charts-today-order');
+	            handleEmptyData('.charts-today-order', '조회되는 주문 정보가 없습니다.', orderTitle);
+	        }
+
+			//Delivery 데이터 분류
+	        let deliveryKey = Object.keys(data).find(key => key.endsWith('Delivery'));
+	        periodType = deliveryKey ? deliveryKey.replace('Delivery', '') : '';
+	        periodTitle = getPeriodTitle(periodType);
+	        let deliveryTitle = periodTitle + ' 배송현황';
+
+	        console.log(deliveryKey + ":" + data[deliveryKey] + ":" + periodType);
+	        
+	        if (deliveryKey && data[deliveryKey] && data[deliveryKey].length > 0) {
+	        	//clearChart('.charts-today-delivery');
+	            chartDelivery(data, deliveryTitle);
+	        } else {
+	        	//clearChart('.charts-today-delivery');
+	            handleEmptyData('.charts-today-delivery', '조회되는 배송 정보가 없습니다.', deliveryTitle);
+	        }
+	        
+	    }).fail(function() {
+	        handleEmptyData('.charts-today-order', '데이터를 불러오는 중 오류가 발생했습니다.', '구매현황');
+	        handleEmptyData('.charts-today-delivery', '데이터를 불러오는 중 오류가 발생했습니다.', '배송현황');
+	    });
+	}
+
+	function getPeriodTitle(periodType) {
+		switch (periodType) {
+			case 'today': return '일일';
+			case 'week': return '주간';
+			case 'month': return '한달';
+			default: return '';
+		}
+	}
 
     //초기데이터
     loadData(baseURL + "/daily");
@@ -51,28 +88,45 @@ $(function() {
     //바뀔때
     $('.mySelectThing').on('change', function() {
         let selectedOption = $(this).val();
-        let url = baseURL + "/" + selectedOption;
+        let url = baseURL + "/" + selectedOption; // + "?tmp=" + new Date().getTime();
 
-        //console.log("옵션값:", selectedOption);
-        //console.log("URL:", url);
+        console.log("옵션값:", selectedOption);
+        console.log("URL:", url);
 
         loadData(url);
     });
 });
 
-function handleEmptyData(selector, message) {
+function handleEmptyData(selector, message, title) {
     $(selector).html('<div class="centered-message">' + message + '</div>');
+    if (selector.includes('order')) {
+        document.querySelector('.charts-today-order-title').innerHTML = title;
+    } else if (selector.includes('delivery')) {
+        document.querySelector('.charts-today-delivery-title').innerHTML = title;
+    }
+}
+/* 
+function clearMessage(selector) {
+    $(selector + ' .centered-message').remove();
 }
 
-function chartOrder(data) {
-	//console.log(data)
+function clearChart(selector) {
+    const chartContainer = document.querySelector(selector);
+    while (chartContainer.firstChild) {
+        chartContainer.removeChild(chartContainer.firstChild);
+    }
+}
+*/
+
+function chartOrder(data, title) {
+	//console.log(data);
 	let chartData = [];
-	
-	let title = '구매현황';
-	document.querySelector('.charts-today-order-title').innerHTML = title;
 	
 	let orderKey = Object.keys(data).find(key => key.endsWith('Order'));
 	let orders = data[orderKey];
+	
+	//clearMessage('.charts-today-order');
+	document.querySelector('.charts-today-order-title').innerHTML = title;
 	
 	for(let item of orders) {
 		let stateNum = item.ORDERSTATE;
@@ -107,7 +161,7 @@ function chartOrder(data) {
 	  },
 	  series: [
 	    {
-	      name: '당일 주문현황',
+	      name: title,
 	      type: 'pie',
 	      radius: ['40%', '70%'],
 	      center: ['50%', '70%'],
@@ -120,18 +174,18 @@ function chartOrder(data) {
 	};
 
 	option && myChart.setOption(option);
-
 }
 
-function chartDelivery(data) {
+function chartDelivery(data, title) {
 	//console.log(data)
 	let chartData = [];
 	
-	let title = '배송현황';
-	document.querySelector('.charts-today-delivery-title').innerHTML = title;
-	
 	let deliveryKey = Object.keys(data).find(key => key.endsWith('Delivery'));
 	let delivery = data[deliveryKey];
+	
+	//clearMessage('.charts-today-delivery');
+	document.querySelector('.charts-today-delivery-title').innerHTML = title;
+	
 	
 	for(let item of delivery) {
 		let stateNum = item.ORDERSTATE;
@@ -153,6 +207,7 @@ function chartDelivery(data) {
 	
 	var chartDom = document.querySelector('.charts-today-delivery');
 	var myChart = echarts.init(chartDom);
+	//myChart.clear();
 	var option;
 
 	// This example requires ECharts v5.5.0 or later
@@ -166,7 +221,7 @@ function chartDelivery(data) {
 	  },
 	  series: [
 	    {
-	      name: '당일 배송현황',
+	      name: title,
 	      type: 'pie',
 	      radius: ['40%', '70%'],
 	      center: ['50%', '70%'],
@@ -177,9 +232,9 @@ function chartDelivery(data) {
 	    }
 	  ]
 	};
-
+	
+	//myChart.clear();
 	option && myChart.setOption(option);
-
 }
 
 function chartsUser() {
@@ -245,7 +300,6 @@ function chartsUser() {
 			        <strong class="mb-2">조회 옵션</strong>
 			        	<br>
 			        <select class="form-select-sm mySelectThing">
-			            <option value="">선택해주세요.</option>
 			            <option value="daily">당일 조회</option>
 			            <option value="week">일주일 조회</option>
 			            <option value="month">한달 조회</option>

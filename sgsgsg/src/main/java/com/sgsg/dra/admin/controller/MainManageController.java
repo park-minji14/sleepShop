@@ -94,7 +94,7 @@ public class MainManageController {
 			List<Map<String, Object>> monthOrder = chartService.monthOrder();
 			List<Map<String, Object>> monthDelivery = chartService.monthDelivery();
 			System.out.println("디버그용monthOrder:" + monthOrder);
-			System.out.println("디버그용monthDelivery:" + monthDelivery);
+			System.out.println("디버그용weekDelivery:" + monthDelivery);
 			
 			map = new HashMap<String, Object>();
 			
