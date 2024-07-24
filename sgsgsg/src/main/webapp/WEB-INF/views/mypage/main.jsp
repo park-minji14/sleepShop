@@ -448,6 +448,10 @@ element.style {
 					// 1:1 문의
 					listInquiry(1);
 					return;
+				} else if(tab === "savedList") {
+					// 구매 내역
+					listSaved(1);
+					return;
 				}
 				
 				
@@ -560,6 +564,18 @@ element.style {
 		  
 	  });
 	  
+	  // 구매 내역
+	  function listSaved(page) {
+		  let url = "${pageContext.request.contextPath}/mypage/savedList";
+		  let selector = ".tab-content";
+		  
+		  const fn = function(data){
+				$(selector).html(data);
+			};
+			ajaxFun(url, "get", {pageNo:page}, "text", fn);
+	  }
+	  
+	  //  리뷰 등록하기
 	  function insertReview() {
 	  		const f = document.reviewForm;
 	  		let s;
@@ -588,14 +604,11 @@ element.style {
 	  		
 	  		const fn = function(data) {
 	  			if(data.state === "true") {
-	  
 	  			}
 	  		};
 	  		
 	  		ajaxFun(url, "post", query, "json", fn, true);
 	  	}
-	  
-	  
 	  
 	</script>
 	

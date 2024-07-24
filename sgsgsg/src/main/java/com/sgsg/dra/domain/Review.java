@@ -1,8 +1,9 @@
 package com.sgsg.dra.domain;
 
 public class Review {
+	 private long orderNum; 
 	 private long orderDetailNum;
-	 private long score;
+	 private int score;
 	 private  String review;
 	 private String review_Date;
 	 private int showReview;
@@ -31,10 +32,10 @@ public class Review {
 	public void setOrderDetailNum(long orderDetailNum) {
 		this.orderDetailNum = orderDetailNum;
 	}
-	public long getScore() {
+	public int getScore() {
 		return score;
 	}
-	public void setScore(long score) {
+	public void setScore(int score) {
 		this.score = score;
 	}
 	public String getReview() {
@@ -126,6 +127,12 @@ public class Review {
 	}
 	public void setReviewWrite(int reviewWrite) {
 		this.reviewWrite = reviewWrite;
+	}
+	public long getOrderNum() {
+		return orderNum;
+	}
+	public void setOrderNum(long orderNum) {
+		this.orderNum = orderNum;
 	}
 	
 	 

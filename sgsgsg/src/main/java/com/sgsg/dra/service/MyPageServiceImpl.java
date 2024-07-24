@@ -84,6 +84,20 @@ public class MyPageServiceImpl implements MyPageService {
 		
 		return list;
 	}
+
+	//구매목록 개수
+	@Override
+	public int reviewCount(Map<String, Object> map) {
+		int result = 0;
+		
+		try {
+			result = mapper.reviewCount(map);
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		
+		return result;
+	}
 	
 	
 	

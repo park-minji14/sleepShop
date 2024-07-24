@@ -35,6 +35,8 @@ public class MyPageController {
 	// 메인화면
 	@GetMapping("main")
 	public String main() {
+		
+		
 		return ".mypage.main";
 	}
 	
@@ -105,10 +107,8 @@ public class MyPageController {
 			
 		return "mypage/point";
 	}
-	
-	
 
-	// 리뷰 리스트
+	// 구매목록 리스트
 	@GetMapping("savedList")
 	public String savedList(@RequestParam(value = "pageNo", defaultValue = "1") int current_page,
 			@RequestParam(defaultValue = "all") String schType,
@@ -132,7 +132,7 @@ public class MyPageController {
 		map.put("kwd", kwd);
 		map.put("userId", info.getUserId());
 		
-		dataCount = service.dataCount(map);
+		dataCount = service.reviewCount(map);
 		if (dataCount != 0) {
 			total_page = myUtil.pageCount(dataCount, size);
 		}
@@ -146,16 +146,13 @@ public class MyPageController {
 
 		map.put("offset", offset);
 		map.put("size", size);
-
-
 	
 		List<Review> list = service.listReview(map);
 
 		// AJAX-paging
-		String paging = myUtil.pagingMethod(current_page, total_page, "listReview");
+		String paging = myUtil.pagingMethod(current_page, total_page, "listSaved");
 
 		model.addAttribute("list", list);
-		System.out.println("여기 리스트 출력"+list);
 		model.addAttribute("pageNo", current_page);
 		model.addAttribute("dataCount", dataCount);
 		model.addAttribute("total_page", total_page);
@@ -163,7 +160,6 @@ public class MyPageController {
 
 		model.addAttribute("schType", schType);
 		model.addAttribute("kwd", kwd);
-		
 		
 		return "mypage/savedList";
 	}

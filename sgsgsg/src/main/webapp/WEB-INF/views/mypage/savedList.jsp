@@ -32,7 +32,7 @@ a{
 	</div>
             
             
-     <c:forEach var="dto" items="${list}">
+     <c:forEach var="dto" items="${list}" varStatus="status">
             <div class="review-item">
                 <div class="row align-items-center">
                     <div class="col-md-2">
@@ -44,10 +44,22 @@ a{
 		              <p class="text-muted">구매일: ${dto.orderDate}</p>
 		            </div>
 		            <div class="col-md-3 text-end">
-	                	<button class="btn btn-write-review" data-orderDetailNum="${dto.orderDetailNum}" data-reviewWrite="${dto.reviewWrite}">${dto.reviewWrite == 1 ? "리뷰 보기" : "리뷰 작성"}</button>
+	                	<button class="btn ${dto.reviewWrite == 1 ? 'btn-success':'btn-write-review' }" data-orderDetailNum="${dto.orderDetailNum}" data-reviewWrite="${dto.reviewWrite}"
+	                		data-bs-toggle="collapse" data-bs-target="#collapseExample${status.index}" aria-expanded="false" aria-controls="collapseExample">${dto.reviewWrite == 1 ? "리뷰 보기" : "리뷰 작성"}</button>
 		            </div>
+		            <c:if test="${dto.reviewWrite==1}">
+		            	<div class="collapse" id="collapseExample${status.index}">
+  							<div class="card card-body">
+    							${dto.review}
+  							</div>
+						</div>
+		            </c:if>
 		        </div>
 		    </div>
 	  </c:forEach>
+	  <div class="page-navigation text-center mt-3">
+            ${dataCount == 0 ? "등록된 문의가 없습니다." : paging}
+      </div>
+        
 
 </div>
