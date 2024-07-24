@@ -25,7 +25,7 @@
 							<c:forEach var="product" items="${list}">
 								<div class="product-item">
 									<a
-										href="${pageContext.request.contextPath}/product/details/${product.productNum}">
+										href="${pageContext.request.contextPath}/product/details?productNum=${product.productNum}">
 										<img
 										src="${pageContext.request.contextPath}/uploads/product/${product.thumbnail}"
 										alt="${product.productName}"> <span class="product-info">
