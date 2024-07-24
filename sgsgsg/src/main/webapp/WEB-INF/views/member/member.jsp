@@ -8,7 +8,7 @@ body {
 	background: white;
 }
 
-.container {
+.container-member {
 	display: block;
 	max-width: 680px;
 	width: 80%;
@@ -310,7 +310,7 @@ footer p a .fa-behance {
 	font-weight: 700;
 }
 
-.container {
+.container-mypage {
 	max-width: 700px;
 	margin-top: 50px;
 	background-color: #fff;
@@ -493,7 +493,7 @@ h1 {
 
 
 
-<div class="container">
+<div class="container-member">
 	<h1 class="text-center">${mode=="member"?"SIGN UP":"UPDATE PROFILE"}</h1>
 	<div class="links text-center">
 		<a href="${pageContext.request.contextPath}/member/login" id="signin">로그인</a>
