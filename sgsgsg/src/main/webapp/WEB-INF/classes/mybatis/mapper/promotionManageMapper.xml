@@ -208,7 +208,7 @@
 	
 	<!-- 이벤트 당첨자 리스트 -->
 	<select id="listEventWinner" parameterType="Long" resultType="com.sgsg.dra.admin.domain.PromotionManage">
-		SELECT event_num, e.userId, userName, rank, e.reg_date 
+		SELECT event_num, e.userId, rank, e.reg_date 
 		FROM eventWinner e
 		JOIN member1 m ON e.userId = m.userId
 		WHERE event_num = #{event_num}

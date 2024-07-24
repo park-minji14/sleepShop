@@ -335,6 +335,7 @@ $(function(){
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body pt-1 text-center">
+					
 	                 <div class="row row-cols-4 g-1">
 	                 	<c:forEach var="vo" items="${listEventWinner}" varStatus="status">
 	                 		<div class="col">
@@ -351,6 +352,7 @@ $(function(){
 	                 		</div>
 	                 	</c:forEach>
 	                 </div>
+	                 
 				</div>
 			</div>
 		</div>
