@@ -3,19 +3,19 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <div class="fixed-header">
-    <div class="inner">
-        <div class="logo" id="logo">새근새근</div>
-        <ul class="main-menu">
-            <li onclick="updateSubMenu('쇼핑')">쇼핑</li>
-            <li onclick="updateSubMenu('커뮤니티')">커뮤니티</li>
-        </ul>
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="쇼핑 검색">
-            <button onclick="performSearch()" class="search-button">
-                <i class="bi bi-search"></i>
-            </button>
-        </div>
-        <div class="user-icons">
+	<div class="inner">
+		<div class="logo" id="logo">새근새근</div>
+		<ul class="main-menu">
+			<li onclick="updateSubMenu('쇼핑')">쇼핑</li>
+			<li onclick="updateSubMenu('커뮤니티')">커뮤니티</li>
+		</ul>
+		<div class="search-bar">
+			<input type="text" id="searchInput" placeholder="쇼핑 검색">
+			<button onclick="performSearch()" class="search-button">
+				<i class="bi bi-search"></i>
+			</button>
+		</div>
+		<div class="user-icons">
 			<span class="me-4"><img
 				src="https://img.icons8.com/fluent-systems-regular/60/000000/like--v1.png"
 				alt="좋아요" /></span> <span class="me-4 notification" data-count="2"><img
@@ -35,8 +35,7 @@
 									style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
 							</c:when>
 							<c:otherwise>
-								<img
-									src="https://img.icons8.com/plasticine/100/shoto.png" 
+								<img src="https://img.icons8.com/plasticine/100/shoto.png"
 									alt="Profile" class="profile-img"
 									style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
 							</c:otherwise>
@@ -111,36 +110,37 @@
 	</div>
 
 	<nav class="fixed-nav">
-		<div class="inner">
+		<div class="inner submenu-wrap">
 			<ul class="sub-menu" id="subMenu">
 				<!--서브메뉴 자바스크립트로 동적 생성 -->
 			</ul>
+			<div class="popular-search-container">
+				<div class="popular-search">
+					<span id="popularSearchText"></span>
+					<button class="popular-search-btn" onclick="togglePopularSearch()">▼</button>
+					<div class="popular-search-content" id="popularSearchContent">
+						<div class="popular-search-header">
+							<span>인기 검색어</span>
+							<button class="close-btn" onclick="togglePopularSearch()">▲</button>
+						</div>
+						<ul class="popular-search-list">
+							<li><span>1. 메모리폼 베개</span><span class="new">NEW</span></li>
+							<li><span>2. 숙면 매트리스</span><span class="new">NEW</span></li>
+							<li><span>3. 수면등</span><span class="new">NEW</span></li>
+							<li><span>4. 릴렉스 체어</span><span class="new">NEW</span></li>
+							<li><span>5. 수면 음료</span></li>
+							<li><span>6. 아로마 디퓨저</span></li>
+							<li><span>7. 블랙아웃 커튼</span><span class="new">NEW</span></li>
+							<li><span>8. 수면 보조제</span></li>
+							<li><span>9. 릴렉스 오일</span></li>
+						</ul>
+					</div>
+				</div>
+			</div>
 		</div>
 	</nav>
 
-	<div class="popular-search-container">
-		<div class="popular-search">
-			<span id="popularSearchText"></span>
-			<button class="popular-search-btn" onclick="togglePopularSearch()">▼</button>
-			<div class="popular-search-content" id="popularSearchContent">
-				<div class="popular-search-header">
-					<span>인기 검색어</span>
-					<button class="close-btn" onclick="togglePopularSearch()">▲</button>
-				</div>
-				<ul class="popular-search-list">
-					<li><span>1. 메모리폼 베개</span><span class="new">NEW</span></li>
-					<li><span>2. 숙면 매트리스</span><span class="new">NEW</span></li>
-					<li><span>3. 수면등</span><span class="new">NEW</span></li>
-					<li><span>4. 릴렉스 체어</span><span class="new">NEW</span></li>
-					<li><span>5. 수면 음료</span></li>
-					<li><span>6. 아로마 디퓨저</span></li>
-					<li><span>7. 블랙아웃 커튼</span><span class="new">NEW</span></li>
-					<li><span>8. 수면 보조제</span></li>
-					<li><span>9. 릴렉스 오일</span></li>
-                </ul>
-            </div>
-        </div>
-    </div>
+
 </div>
 
 
@@ -160,7 +160,7 @@ function activateMenuBasedOnURL() {
  } else if (currentPath.includes('/faq')) {
      category = '커뮤니티';
      submenu = 'FAQ';
- } else if (currentPath.includes('/event')) {
+ } else if (currentPath.includes('/promotion')) {
      category = '커뮤니티';
      submenu = '이벤트';
  } else if (currentPath.includes('/category')) {
@@ -205,7 +205,7 @@ function updateSubMenu(category, activeSubmenu = null) {
      '커뮤니티': [
          {text: '홈', url: '${pageContext.request.contextPath}/'}, 
          {text: '수면클리닉', url: '${pageContext.request.contextPath}/clinic/list'}, 
-         {text: '공지사항', url: '${pageContext.request.contextPath}/'}, 
+         {text: '공지사항', url: '${pageContext.request.contextPath}/notice/userNotice'}, 
          {text: 'FAQ', url: '${pageContext.request.contextPath}/faq/list'}, 
          {text: '이벤트', url: '${pageContext.request.contextPath}/promotion/progress/list'}
      ]

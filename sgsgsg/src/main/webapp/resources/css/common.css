@@ -111,15 +111,18 @@ body {
 	border-radius: 4px;
 	cursor: pointer;
 }
-
+.submenu-wrap {
+	padding: 20px;
+	width: 100%;
+}
 .sub-menu {
 	display: flex;
 	list-style-type: none;
-	padding: 20px 20px;
 	align-items: center;
 	margin-bottom: 0;
-	width: 100%;
+	/* width: 100%; */
 	position: relative;
+	padding: 0;
 }
 
 .sub-menu li {
