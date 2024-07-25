@@ -49,8 +49,21 @@
 		JOIN product p ON ps.productNum = p.productNum
 		LEFT OUTER JOIN optionDetail d1 ON ps.detailNum = d1.detailNum
 		LEFT OUTER JOIN optionDetail d2 ON ps.detailNum2 = d2.detailNum
+		LEFT OUTER JOIN (
+			SELECT ORDERdETAILnum, 1 as reviewWrite, review, score, review_date
+			FROM product_Review ppr
+			WHERE userId = #{userId}
+		) r ON od.orderDetailNum = r.orderDetailnum
 		<where>
 			userId = #{userId}
+			
+			<if test="state == 1">
+				AND reviewWrite IS NULL
+			</if>
+			<if test="state == 2">
+				AND reviewWrite = 1
+			</if>
+			
 		</where>
 	</select>
 	
@@ -58,7 +71,7 @@
 	<select id="listReview" parameterType="map" resultType="com.sgsg.dra.domain.Review">
 		SELECT po.orderNum, userId, orderDate, totalMoney, payment, deliveryCharge, orderStateDate, orderState, 
                 od.orderDetailNum, ps.productNum, ps.detailNum, detailNum2, od.qty, salePrice, od.productMoney, od.savedMoney,
-                p.productName, p.optionCount, p.thumbnail, d1.optionValue, d2.optionValue optionValue2, review, score,
+                p.productName, p.optionCount, p.thumbnail, d1.optionValue, d2.optionValue optionValue2, review, score, review_date,
                 NVL(r.reviewWrite, 0) reviewWrite
 		FROM productOrder po
 		JOIN orderDetail od ON po.orderNum = od.orderNum
@@ -67,21 +80,42 @@
 		LEFT OUTER JOIN optionDetail d1 ON ps.detailNum = d1.detailNum
 		LEFT OUTER JOIN optionDetail d2 ON ps.detailNum2 = d2.detailNum
 		LEFT OUTER JOIN (
-			SELECT ORDERdETAILnum, 1 as reviewWrite, review, score
+			SELECT ORDERdETAILnum, 1 as reviewWrite, review, score, review_date
 			FROM product_Review ppr
 			WHERE userId = #{userId}
 		) r ON od.orderDetailNum = r.orderDetailnum
-        WHERE userId = #{userId}
+		<where>
+			userId = #{userId}
+			<if test="state == 1">
+				AND reviewWrite IS NULL
+			</if>
+			<if test="state == 2">
+				AND reviewWrite = 1
+			</if>			
+		</where>
         
         ORDER BY orderDate DESC
         OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 	</select>
-	
+
 	<!-- 리뷰 등록 -->
 	<select id="insertReview" parameterType="map" resultType="com.sgsg.dra.domain.Review">
 		INSERT INTO product_Review (orderDetailNum, score, review, review_Date, showReview, locked, userId)
 								VALUES (#{orderDetailNum}, #{score}, #{review}, SYSDATE, 1, 0, #{userId} )
 	</select>
+	
+	<!-- 리뷰 삭제 -->
+	<delete id="deleteReview" parameterType="map">
+		DELETE FROM product_Review
+		WHERE orderDetailNum = #{orderDetailNum}
+		  AND userId = #{userId}
+	</delete>
+	
+	
+	
+	
+	
+	
 
 	
 </mapper>
