@@ -18,27 +18,42 @@ public class ProductServiceImpl implements ProductService  {
 
     @Override
     public List<Product> listProduct() {
-    	List<Product> list = null;
-    	try {
-			list=mapper.listProduct();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        List<Product> list = null;
+        try {
+            list = mapper.listProduct();
+            if (list != null) {
+                for (Product product : list) {
+                    double discountedPrice = product.getPrice() * (1 - product.getDiscountRate() / 100.0);
+                    // 백원 단위로 반올림
+                    long roundedPrice = Math.round(discountedPrice / 100.0) * 100;
+                    product.setSalePrice(roundedPrice);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return list;
     }
 
-	@Override
-	public Product findById(long productNum) {
-		Product dto = null;
-		try {
-			dto=mapper.findById(productNum);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		 return dto;
-
-	}
+    
+    @Override
+    public Product findById(long productNum) {
+        Product dto = null;
+        try {
+            dto = mapper.findById(productNum);
+            if (dto != null) {
+                double discountedPrice = dto.getPrice() * (1 - dto.getDiscountRate() / 100.0);
+                // 백원 단위로 반올림
+                long roundedPrice = Math.round(discountedPrice / 100.0) * 100;
+                dto.setSalePrice(roundedPrice);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }      
+        return dto;
+    }
+    
+    
 	@Override
 	public List<Product> listProductFile(long productNum) {
 		List<Product> list = null;

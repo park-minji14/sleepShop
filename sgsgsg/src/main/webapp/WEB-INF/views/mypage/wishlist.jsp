@@ -2,178 +2,94 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-			<div class="tab-pane fade show active" id="recent">
-				<h4 class="mb-4" style="text-align: center;   font-size: 33px;  font-weight: 600; margin: 90px;">찜한 상품</h4>
-				<dl>
-					<!--  <dt><img src="https://atimg.sonyunara.com/2023/renew/list/mypage_1.png" class="icon" alt="">주문관리</dt>  -->
-					<div class="navi" style="text-align: center;">
-						<a href="${pageContext.request.contextPath}">홈 &gt;</a> 
-						<a href="${pageContext.request.contextPath}/mypage/main">마이페이지 &gt; </a>
-					<a style="font: light-gray;">찜한 상품</a></div>
-				</dl>
-			
-			
-			
-			<div class="col-md-6">
-				<select class="form-select" style=" width: 200px; ">
-					<option>카테고리</option>
-					<option>침구</option>
-					<option>가전</option>
-					<option>의류</option>
-					<option>향초</option>
-					<option>조명</option>
-					<option>영양제</option>
-					<option>수면용품</option>
-					<option>졸음방지용품</option>
-				</select>
-			</div>
-			
-			
-			<section class="featured-products">
-			    <div class="inner">
-			        <div class="product-grid">
-			            
-			                <div class="product-item">
-			                    <a href="/dra/product/details/18">
-			                        <img src="/dra/uploads/product/test1.png" alt="ㅌㅅㅌ">
-			                        <span class="product-info">
-			                            <span>ㅌㅅㅌ</span>
-			                            <span class="discount">
-			                                5% 
-			                                <span class="price">
-			                                    30,000원
-			                                </span>
-			                            </span>
-			                            <span class="rating">
-			                                ★ 0.0 
-			                                <span class="review-count">리뷰 0</span>
-			                            </span>
-			                        </span>
-			                    </a>
-			                </div>
-			            
-			                <div class="product-item">
-			                    <a href="/dra/product/details/16">
-			                        <img src="/dra/uploads/product/test1.png" alt="민지쿤">
-			                        <span class="product-info">
-			                            <span>민지쿤</span>
-			                            <span class="discount">
-			                                10% 
-			                                <span class="price">
-			                                    30,000원
-			                                </span>
-			                            </span>
-			                            <span class="rating">
-			                                ★ 0.0 
-			                                <span class="review-count">리뷰 0</span>
-			                            </span>
-			                        </span>
-			                    </a>
-			                </div>
-			            
-			                <div class="product-item">
-			                    <a href="/dra/product/details/15">
-			                        <img src="/dra/uploads/product/test1.png" alt="김치테스트">
-			                        <span class="product-info">
-			                            <span>김치테스트</span>
-			                            <span class="discount">
-			                                2% 
-			                                <span class="price">
-			                                    2,000,000원
-			                                </span>
-			                            </span>
-			                            <span class="rating">
-			                                ★ 0.0 
-			                                <span class="review-count">리뷰 0</span>
-			                            </span>
-			                        </span>
-			                    </a>
-			                </div>
-			            
-			                <div class="product-item">
-			                    <a href="/dra/product/details/14">
-			                        <img src="/dra/uploads/product/test1.png" alt="호랑">
-			                        <span class="product-info">
-			                            <span>호랑</span>
-			                            <span class="discount">
-			                                10% 
-			                                <span class="price">
-			                                    30,000원
-			                                </span>
-			                            </span>
-			                            <span class="rating">
-			                                ★ 0.0 
-			                                <span class="review-count">리뷰 0</span>
-			                            </span>
-			                        </span>
-			                    </a>
-			                </div>
-			            
-			                <div class="product-item">
-			                    <a href="/dra/product/details/3">
-			                        <img src="/dra/uploads/product/test1.png" alt="룰루랄라">
-			                        <span class="product-info">
-			                            <span>룰루랄라</span>
-			                            <span class="discount">
-			                                10% 
-			                                <span class="price">
-			                                    30,000원
-			                                </span>
-			                            </span>
-			                            <span class="rating">
-			                                ★ 0.0 
-			                                <span class="review-count">리뷰 0</span>
-			                            </span>
-			                        </span>
-			                    </a>
-			                </div>
-			            
-			                <div class="product-item">
-			                    <a href="/dra/product/details/2">
-			                        <img src="/dra/uploads/product/test1.png" alt="쿨에어 이불">
-			                        <span class="product-info">
-			                            <span>쿨에어 이불</span>
-			                            <span class="discount">
-			                                10% 
-			                                <span class="price">
-			                                    40,000원
-			                                </span>
-			                            </span>
-			                            <span class="rating">
-			                                ★ 0.0 
-			                                <span class="review-count">리뷰 0</span>
-			                            </span>
-			                        </span>
-			                    </a>
-			                </div>
-			            
-			                <div class="product-item">
-			                    <a href="/dra/product/details/1">
-			                        <img src="/dra/uploads/product/test1.png" alt="럭셔리 킹사이즈 침대">
-			                        <span class="product-info">
-			                            <span>럭셔리 킹사이즈 침대</span>
-			                            <span class="discount">
-			                                10% 
-			                                <span class="price">
-			                                    2,000,000원
-			                                </span>
-			                            </span>
-			                            <span class="rating">
-			                                ★ 0.0 
-			                                <span class="review-count">리뷰 0</span>
-			                            </span>
-			                        </span>
-			                    </a>
-			                </div>
-            
-        </div>
-    </div>
-</section>
-			
-			
-				<!-- 최근 본 상품 목록 -->
-				<div class="recent-item">
-					<!-- 상품 정보 및 다시 보기 버튼 -->
+<!-- CSS: 메인전용 -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/page/main.css"
+	type="text/css">
+
+
+<div class="tab-pane fade show active" id="recent">
+	<h4 class="mb-4"
+		style="text-align: center; font-size: 40px; margin: 50px;">찜한 상품</h4>
+	<dl>
+
+		<div class="navi" style="text-align: center;">
+			<a href="${pageContext.request.contextPath}">홈 &gt;</a> <a
+				href="${pageContext.request.contextPath}/mypage/main">마이페이지 &gt;
+			</a> <a style="font: light-gray;">찜한 상품</a>
+		</div>
+	</dl>
+
+
+
+	<div class="col-md-6">
+		<select class="form-select" style="width: 200px;">
+			<option>카테고리</option>
+			<option>침구</option>
+			<option>가전</option>
+			<option>의류</option>
+			<option>향초</option>
+			<option>조명</option>
+			<option>영양제</option>
+			<option>수면용품</option>
+			<option>졸음방지용품</option>
+		</select>
+	</div>
+
+
+<%-- 	<section class="featured-products">
+		<div class="inner">
+			<div class="product-grid">
+				<div class="product-item">
+					<c:forEach var="list" items="${list}">
+						<a href="${pageContext.request.contextPath}/product/details?productNum=${list.productNum}"> <img
+							src="/dra/uploads/product/test1.png" alt="ㅌㅅㅌ"> <span
+							class="product-info"> <span>${list.productName}</span> <span
+								class="discount">${list.productName} <span class="price">${list.productName}
+								</span>
+							</span> <span class="rating">${list.productName} <span class="review-count">리뷰
+										0</span>
+							</span>
+						</span>
+						</a>
+					</c:forEach>
 				</div>
-				<!-- 추가 최근 본 상품 아이템... -->
 			</div>
+		</div>
+	</section> --%>
+
+	<section class="featured-products">
+		<div class="inner">
+			<div class="product-grid">
+				<c:forEach var="list" items="${list}">
+					<div class="product-item">
+						<a
+							href="${pageContext.request.contextPath}/product/details?productNum=${list.productNum}">
+							<div class="image-wrapper">
+								<img
+									src="${pageContext.request.contextPath}/uploads/product/${list.thumbnail}"
+									alt="${list.productName}">
+								<div class="bookmark" data-product-id="${list.productNum}"></div>
+							</div> <span class="product-info"> <span>${list.productName}</span>
+								<span class="discount"> ${list.discountRate}% <span
+									class="price"> <fmt:formatNumber
+											value="${list.price * (1 - list.discountRate / 100)}"
+											pattern="#,###원" />
+								</span>
+							</span> <span class="rating"> ★ ${list.score} <span
+									class="review-count">리뷰 ${list.reviewCount}</span>
+							</span>
+						</span>
+						</a>
+					</div>
+					</c:forEach>
+			</div>
+		</div>
+	</section>
+
+	<!-- 최근 본 상품 목록 -->
+	<div class="recent-item">
+		<!-- 상품 정보 및 다시 보기 버튼 -->
+	</div>
+	<!-- 추가 최근 본 상품 아이템... -->
+</div>

@@ -40,7 +40,7 @@
 	</select>
 	
 	<!-- 사용자의 전체 위시리스트 개수 -->
-	<select id="countWishlistByUser" parameterType="String" resultType="Integer">
+	<select id="dataCountWishlist" parameterType="String" resultType="Integer">
 	    SELECT NVL(COUNT(*), 0)
 	    FROM wishlist
 	    WHERE userId = #{userId}

@@ -7,11 +7,19 @@ import org.springframework.web.bind.annotation.*;
 
 import com.sgsg.dra.common.MyUtil;
 import com.sgsg.dra.domain.Product;
+import com.sgsg.dra.domain.Review;
+import com.sgsg.dra.domain.SessionInfo;
 import com.sgsg.dra.service.ProductService;
+import com.sgsg.dra.service.ReviewService;
+import com.sgsg.dra.service.WishlistService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+
 
 @Controller
 @RequestMapping("/product/*")
@@ -19,6 +27,12 @@ public class ProductController {
 	
 	@Autowired
 	private ProductService service;
+	
+	 @Autowired
+	 private ReviewService reviewService;
+	 
+    @Autowired
+    private WishlistService wishlistService;
 
 	@Autowired
 	private MyUtil myUtil;
@@ -73,56 +87,81 @@ public class ProductController {
 		return list;
 	}
 
-	@GetMapping("/details")
-	public String productDetail(@RequestParam Long productNum, Model model) {
+	   @GetMapping("/details")
+	    public String productDetail(@RequestParam Long productNum, 
+	                                @RequestParam(value = "reviewPage", defaultValue = "1") int reviewPage, 
+	                                Model model) {
+	        try {
+	            Product dto = service.findById(productNum);
+	            if (dto == null) {
+	                return "redirect:/home";
+	            }
 
-		try {
-			Product dto = service.findById(productNum);
-			if (dto == null) {
-				return "redirect:/home";
-			}
+	            List<Product> listFile = service.listProductFile(productNum);
+	            List<Product> listOption = service.listProductOption(productNum);
 
-			List<Product> listFile = service.listProductFile(productNum);
-			List<Product> listOption = service.listProductOption(productNum);
+	            List<Product> listOptionDetail = null;
+	            if (listOption.size() > 0) {
+	                listOptionDetail = service.listOptionDetail(listOption.get(0).getOptionNum());
+	            }
 
-			List<Product> listOptionDetail = null;
-			if (listOption.size() > 0) {
-				listOptionDetail = service.listOptionDetail(listOption.get(0).getOptionNum());
-			}
+	            Map<String, Object> map = new HashMap<>();
+	            map.put("productNum", dto.getProductNum());
+	            List<Product> listStock = service.listOptionDetailStock(map);
 
-			Map<String, Object> map = new HashMap<>();
-			map.put("productNum", dto.getProductNum());
-			List<Product> listStock = service.listOptionDetailStock(map);
+	            if (dto.getOptionCount() == 0) {
+	                // 단품 상품인 경우
+	                if (listStock != null && !listStock.isEmpty()) {
+	                    dto.setStockNum(listStock.get(0).getStockNum());
+	                    dto.setTotalStock(listStock.get(0).getTotalStock());
+	                }
+	            } else if (dto.getOptionCount() > 0) {
+	                // 옵션이 있는 상품인 경우
+	                for (Product vo : listOptionDetail) {
+	                    for (Product ps : listStock) {
+	                        if (vo.getDetailNum() == ps.getDetailNum()) {
+	                            vo.setStockNum(ps.getStockNum());
+	                            vo.setTotalStock(ps.getTotalStock());
+	                            break;
+	                        }
+	                    }
+	                }
+	            }
 
-			if (dto.getOptionCount() == 0) {
-				// 단품 상품인 경우
-				if (listStock != null && !listStock.isEmpty()) {
-					dto.setStockNum(listStock.get(0).getStockNum());
-					dto.setTotalStock(listStock.get(0).getTotalStock());
-				}
-			} else if (dto.getOptionCount() > 0) {
-				// 옵션이 있는 상품인 경우
-				for (Product vo : listOptionDetail) {
-					for (Product ps : listStock) {
-						if (vo.getDetailNum() == ps.getDetailNum()) {
-							vo.setStockNum(ps.getStockNum());
-							vo.setTotalStock(ps.getTotalStock());
-							break;
-						}
-					}
-				}
-			}
+	            model.addAttribute("dto", dto);
+	            model.addAttribute("listFile", listFile);
+	            model.addAttribute("listOption", listOption);
+	            model.addAttribute("listOptionDetail", listOptionDetail);
 
-			model.addAttribute("dto", dto);
-			model.addAttribute("listFile", listFile);
-			model.addAttribute("listOption", listOption);
-			model.addAttribute("listOptionDetail", listOptionDetail);
+	            // 리뷰 정보 추가
+	            int reviewSize = 5; // 페이지당 리뷰 수
+	            int reviewOffset = (reviewPage - 1) * reviewSize;
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return ".product.details";
-	}
+	            Map<String, Object> reviewMap = new HashMap<>();
+	            reviewMap.put("productNum", productNum);
+	            reviewMap.put("offset", reviewOffset);
+	            reviewMap.put("size", reviewSize);
+
+	            List<Review> reviewList = reviewService.listReviews(reviewMap);
+	            int reviewCount = reviewService.countReviews(productNum);
+	            double avgScore = reviewService.getAvgScore(productNum);
+
+	            // 리뷰 페이징 처리
+	            int totalReviewPages = (int) Math.ceil((double) reviewCount / reviewSize);
+	            String reviewPaging = myUtil.pagingMethod(reviewPage, totalReviewPages, "loadReviews");
+
+
+	            model.addAttribute("reviewList", reviewList);
+	            model.addAttribute("reviewCount", reviewCount);
+	            model.addAttribute("avgScore", avgScore);
+	            model.addAttribute("reviewPage", reviewPage);
+	            model.addAttribute("reviewPaging", reviewPaging);
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        return ".product.details";
+	    }
 
 	   @GetMapping("/category")
 	    public String categoryView(@RequestParam Long categoryNum, 
@@ -221,5 +260,20 @@ public class ProductController {
 	    response.put("products", products);
 
 	    return response;
+	}
+	
+	@PostMapping("toggleWishlist")
+	@ResponseBody
+	public Map<String, Object> toggleWishlist(@RequestParam Long productNum, HttpSession session) {
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+		try {
+			return wishlistService.toggleWishlist(info.getUserId(), productNum);
+			
+		} catch (Exception e) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("state", "false");
+			return map;
+		}
 	}
 }

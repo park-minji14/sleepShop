@@ -183,29 +183,9 @@
 						</div>
 						<img
 							src="${pageContext.request.contextPath}/uploads/product/150.png"
-							alt="숙면 차">
-						<p>숙면 유도 차 세트</p>
-						<p>18,000원</p>
-					</div>
-					<div class="product-item">
-						<div class="wishlist-btn">
-							<i class="bi bi-heart"></i>
-						</div>
-						<img
-							src="${pageContext.request.contextPath}/uploads/product/150.png"
 							alt="차분한 음악 기기">
 						<p>차분한 음악 재생기</p>
 						<p>75,000원</p>
-					</div>
-					<div class="product-item">
-						<div class="wishlist-btn">
-							<i class="bi bi-heart"></i>
-						</div>
-						<img
-							src="${pageContext.request.contextPath}/uploads/product/150.png"
-							alt="잠옷 세트">
-						<p>편안한 잠옷 세트</p>
-						<p>40,000원</p>
 					</div>
 				</div>
 				<button class="product-nav next" onclick="slideProducts(1)">&#10095;</button>
@@ -222,8 +202,8 @@
     </div>
 </div>
 <div class="container">
-    <div class="inner">
-        <div class="row timedeal-product-grid">
+	<div class="inner">
+		<div class="row timedeal-product-grid">
 			<c:forEach var="item" items="${specialList}" varStatus="status">
 				<div class="col-md-3 col-sm-6">
 					<a
@@ -248,7 +228,7 @@
 				</div>
 			</c:forEach>
 		</div>
-    </div>
+	</div>
 
 	<section class="featured-products">
 		<div class="inner">
@@ -259,15 +239,14 @@
 						<a
 							href="${pageContext.request.contextPath}/product/details?productNum=${product.productNum}">
 							<div class="image-wrapper">
-							    <img src="${pageContext.request.contextPath}/uploads/product/${product.thumbnail}"
-							         alt="${product.productName}">
-							    <div class="bookmark" data-product-id="${product.productNum}"></div>
-							</div>
-							 <span class="product-info">
-								<span>${product.productName}</span> <span class="discount">
-									${product.discountRate}% <span class="price"> <fmt:formatNumber
-											value="${product.price * (1 - product.discountRate / 100)}"
-											pattern="#,###원" />
+								<img
+									src="${pageContext.request.contextPath}/uploads/product/${product.thumbnail}"
+									alt="${product.productName}">
+								<div class="bookmark" data-product-id="${product.productNum}"></div>
+							</div> <span class="product-info"> <span>${product.productName}</span>
+								<span class="discount"> ${product.discountRate}% <span
+									class="price"> <fmt:formatNumber
+											value="${product.salePrice}" pattern="#,###원" />
 								</span>
 							</span> <span class="rating"> ★ ${product.score} <span
 									class="review-count">리뷰 ${product.reviewCount}</span>
@@ -284,22 +263,38 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-    //북마크
-    $('.bookmark').click(function(e) {
-        e.preventDefault(); 
-        e.stopPropagation(); 
+	
+	//북마크 설정 
+	function toggleWishlist(productNum) {
+	    $.ajax({
+	        url: "${pageContext.request.contextPath}/product/toggleWishlist",
+	        type: "POST",
+	        data: {productNum: productNum},
+	        dataType: "json",
+	        success: function(data) {
+	            if(data.state === "true") {
+	                var $bookmark = $(".bookmark[data-product-id='" + productNum + "']");
+	                if(data.isAdded) {
+	                    $bookmark.addClass("active");
+	                    $bookmark.attr("title", "북마크 해제");
+	                } else {
+	                    $bookmark.removeClass("active");
+	                    $bookmark.attr("title", "찜하기");
+	                }
+	            } else {
+	                alert(data.message);
+	            }
+	        },
+	    });
+	}
 
-        var $bookmark = $(this);
-        var productId = $bookmark.data('product-id');
+	    $('.bookmark').click(function(e) {
+	        e.preventDefault(); 
+	        e.stopPropagation(); 
 
-        $bookmark.toggleClass('active');
-
-        if ($bookmark.hasClass('active')) { 
-            console.log('Bookmark added for product ID:', productId);
-        } else {
-            console.log('Bookmark removed for product ID:', productId);
-        }
-    });
+	        var productId = $(this).data('product-id');
+	        toggleWishlist(productId);
+	    });
 
     // 모든 초기화 함수를 여기서 호출
     initProductSlider();

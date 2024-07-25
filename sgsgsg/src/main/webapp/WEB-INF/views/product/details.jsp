@@ -54,8 +54,7 @@
 					<div class="product-price mb-3">
 						<span class="badge bg-primary me-2">${dto.discountRate}%</span> <span
 							class="fs-3 fw-bold"> <fmt:formatNumber
-								value="${dto.price * (1 - dto.discountRate / 100)}"
-								pattern="#,###원" />
+								value="${dto.salePrice}" pattern="#,###원" />
 						</span> <span class="text-muted text-decoration-line-through"> <fmt:formatNumber
 								value="${dto.price}" pattern="#,###원" />
 						</span>
@@ -210,7 +209,7 @@
 					<button class="nav-link" id="review-tab" data-bs-toggle="tab"
 						data-bs-target="#review" type="button" role="tab"
 						aria-controls="review" aria-selected="false">리뷰
-						${dto.reviewCount}</button>
+						${reviewCount}</button>
 				</li>
 				<li class="nav-item" role="presentation">
 					<button class="nav-link" id="qna-tab" data-bs-toggle="tab"
@@ -252,7 +251,7 @@
 					<div class="container">
 						<div class="row mb-4">
 							<div class="col-12">
-								<h3 class="border-bottom pb-2">리뷰 ${dto.reviewCount}</h3>
+								<h3 class="border-bottom pb-2">리뷰 ${reviewCount}</h3>
 							</div>
 						</div>
 
@@ -270,19 +269,28 @@
 								</div>
 							</div>
 						</div>
+
 						<div class="row mb-4">
 							<div class="col-md-6">
 								<div class="card">
 									<div class="card-body text-center">
-										<h2 class="display-4"></h2>
+										<h2 class="display-4">${avgScore}</h2>
 										<div class="stars mb-3">
-											<i class="bi bi-star-fill text-warning"></i> <i
-												class="bi bi-star-fill text-warning"></i> <i
-												class="bi bi-star-fill text-warning"></i> <i
-												class="bi bi-star-fill text-warning"></i> <i
-												class="bi bi-star-half text-warning"></i>
+											<c:forEach begin="1" end="5" var="i">
+												<c:choose>
+													<c:when test="${i <= avgScore}">
+														<i class="bi bi-star-fill text-warning"></i>
+													</c:when>
+													<c:when test="${i > avgScore && i - 1 < avgScore}">
+														<i class="bi bi-star-half text-warning"></i>
+													</c:when>
+													<c:otherwise>
+														<i class="bi bi-star text-warning"></i>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
 										</div>
-										<p class="mb-0">${dto.reviewCount}리뷰기준</p>
+										<p class="mb-0">${reviewCount}개의리뷰기준</p>
 									</div>
 								</div>
 							</div>
@@ -291,7 +299,7 @@
 									<div class="card-body">
 										<h5 class="card-title">구매자 만족도</h5>
 										<div class="d-flex align-items-center mb-2">
-											<span class="me-2">뭘쓰지</span>
+											<span class="me-2">품질</span>
 											<div class="progress flex-grow-1" style="height: 10px;">
 												<div class="progress-bar bg-success" role="progressbar"
 													style="width: 85%;" aria-valuenow="85" aria-valuemin="0"
@@ -300,7 +308,7 @@
 											<span class="ms-2">85%</span>
 										</div>
 										<div class="d-flex align-items-center mb-2">
-											<span class="me-2">뭔그를</span>
+											<span class="me-2">가격</span>
 											<div class="progress flex-grow-1" style="height: 10px;">
 												<div class="progress-bar bg-info" role="progressbar"
 													style="width: 75%;" aria-valuenow="75" aria-valuemin="0"
@@ -321,35 +329,64 @@
 								</div>
 							</div>
 						</div>
-
 						<div class="row">
 							<div class="col-12">
 								<div class="review-list border p-3 rounded">
-									<!-- 리뷰 예시 -->
-									<div class="review-item border-bottom pb-3 mb-3">
-										<div class="d-flex align-items-center mb-2">
-											<img src="https://via.placeholder.com/40" alt="User"
-												class="rounded-circle me-2"> <strong>진태만두</strong>
-											<div class="stars ms-auto">
-												<i class="bi bi-star-fill text-warning"></i> <i
-													class="bi bi-star-fill text-warning"></i> <i
-													class="bi bi-star-fill text-warning"></i> <i
-													class="bi bi-star-fill text-warning"></i> <i
-													class="bi bi-star-fill text-warning"></i>
-											</div>
-										</div>
-										<p class="mb-2">2024.06.13 · 새근새근 구매</p>
-										<div class="review-content">
-											<p>오예 ...</p>
-											<img src="https://via.placeholder.com/200x200"
-												alt="Review Image" class="img-fluid mb-2">
-										</div>
-										<button class="btn btn-sm btn-outline-secondary rounded-pill">
-											<i class="bi bi-hand-thumbs-up me-1"></i>도움이 돼요
-										</button>
-									</div>
-									<!-- 추가 리뷰 나올 곳 -->
+									<c:choose>
+										<c:when test="${empty reviewList}">
+											<p>등록된 리뷰가 없습니다.</p>
+										</c:when>
+										<c:otherwise>
+											<c:forEach var="review" items="${reviewList}"
+												varStatus="status">
+												<div class="review-item border-bottom pb-3 mb-3">
+													<div class="d-flex align-items-center mb-2">
+														<img src="https://via.placeholder.com/40" alt="User"
+															class="rounded-circle me-2"> <strong>${review.userName}</strong>
+														<div class="stars ms-auto">
+															<c:forEach begin="1" end="5" var="i">
+																<i
+																	class="bi bi-star${i <= review.score ? '-fill' : ''} text-warning"></i>
+															</c:forEach>
+														</div>
+													</div>
+													<p class="mb-2">
+														${review.review_Date} · ${review.productName} 구매
+														<c:if test="${not empty review.optionNames}">
+															<br>
+															<small class="text-muted">옵션:
+																${review.optionNames}</small>
+														</c:if>
+													</p>
+													<div class="review-content">
+														<p>${review.review}</p>
+													</div>
+													<c:if test="${not empty review.imageUrls}">
+														<div class="review-images mb-2">
+															<c:forEach var="imageUrl" items="${review.imageUrls}">
+																<img src="${imageUrl}" alt="Review Image"
+																	class="img-thumbnail me-2"
+																	style="width: 100px; height: 100px; object-fit: cover;">
+															</c:forEach>
+														</div>
+													</c:if>
+													<button
+														class="btn btn-sm btn-outline-secondary rounded-pill">
+														<i class="bi bi-hand-thumbs-up me-1"></i>도움이 돼요
+													</button>
+												</div>
+											</c:forEach>
+										</c:otherwise>
+									</c:choose>
 								</div>
+							</div>
+						</div>
+
+
+						<!-- 페이징 처리 -->
+						<div class="row mt-3">
+							<div class="col-12">
+								<nav>${reviewPaging}</nav>
 							</div>
 						</div>
 					</div>
@@ -636,72 +673,32 @@
   </c:if>
 </div>
 
-
-    <!-- 리뷰 작성 모달 -->
-    <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="reviewModalLabel">리뷰 작성</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="mb-3">
-                <label for="reviewRating" class="form-label">평점</label>
-                <select class="form-select" id="reviewRating">
-                  <option value="5">5점</option>
-                  <option value="4">4점</option>
-                  <option value="3">3점</option>
-                  <option value="2">2점</option>
-                  <option value="1">1점</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="reviewContent" class="form-label">리뷰 내용</label>
-                <textarea class="form-control" id="reviewContent" rows="3"></textarea>
-              </div>
-              <div class="mb-3">
-                <label for="reviewImage" class="form-label">이미지 첨부</label>
-                <input type="file" class="form-control" id="reviewImage">
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-            <button type="button" class="btn btn-primary">리뷰 등록</button>
-          </div>
-        </div>
-      </div>
-    </div>
+<!--챗봇-->
+<div id="live-chat-widget" class="live-chat-widget">
+	<button id="chat-toggle" class="chat-toggle">
+		<i class="bi bi-chat-dots"></i>
+	</button>
+	<div id="chat-window" class="chat-window">
+		<div class="chat-header">
+			<h5>실시간 상담</h5>
+			<button id="chat-close" class="chat-close">
+				<i class="bi bi-x"></i>
+			</button>
+		</div>
+		<div id="chat-messages" class="chat-messages">
+			<!-- 메시지 추가되는곳 -->
+		</div>
+		<div class="chat-input">
+			<input type="text" id="chat-input-field" placeholder="메시지를 입력하세요...">
+			<button id="chat-send">
+				<i class="bi bi-send"></i>
+			</button>
+		</div>
+	</div>
+</div>
 
 
-    <!--챗봇-->
-    <div id="live-chat-widget" class="live-chat-widget">
-      <button id="chat-toggle" class="chat-toggle">
-        <i class="bi bi-chat-dots"></i>
-      </button>
-      <div id="chat-window" class="chat-window">
-        <div class="chat-header">
-          <h5>실시간 상담</h5>
-          <button id="chat-close" class="chat-close">
-            <i class="bi bi-x"></i>
-          </button>
-        </div>
-        <div id="chat-messages" class="chat-messages">
-          <!-- 메시지 추가되는곳 -->
-        </div>
-        <div class="chat-input">
-          <input type="text" id="chat-input-field" placeholder="메시지를 입력하세요...">
-          <button id="chat-send">
-            <i class="bi bi-send"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-
-
-    <!--토스트 메시지-->
+<!--토스트 메시지-->
 <div class="toast-container position-fixed top-50 start-50 translate-middle" style="z-index: 9999;">
   <div class="toast" id="cartToast" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header">

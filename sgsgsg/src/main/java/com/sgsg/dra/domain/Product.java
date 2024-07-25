@@ -17,7 +17,7 @@ public class Product {
 	private long productNum;
 	private int classify;
 	private int price;
-	private int salePrice;
+	private long salePrice;
 	private int discountRate;
 	private int savedMoney;
 	private int delivery;
@@ -179,11 +179,11 @@ public class Product {
 		this.price = price;
 	}
 
-	public int getSalePrice() {
+	public long getSalePrice() {
 		return salePrice;
 	}
 
-	public void setSalePrice(int salePrice) {
+	public void setSalePrice(long salePrice) {
 		this.salePrice = salePrice;
 	}
 

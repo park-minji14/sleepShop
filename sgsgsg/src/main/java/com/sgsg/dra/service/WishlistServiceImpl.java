@@ -90,4 +90,30 @@ public class WishlistServiceImpl implements WishlistService {
         
         return result;
     }
+
+    
+    @Override
+    public Map<String, Object> toggleWishlist(String userId, Long productNum) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+        
+        try {
+            boolean isInWishlist = isInWishlist(userId, productNum);
+            if (isInWishlist) {
+                removeFromWishlist(userId, productNum);
+                result.put("isAdded", false);
+            } else {
+                Wishlist wishlist = new Wishlist();
+                wishlist.setProductNum(productNum);
+                wishlist.setUserId(userId);
+                addToWishlist(wishlist);
+                result.put("isAdded", true);
+            }
+            result.put("state", "true");
+        } catch (Exception e) {
+            result.put("state", "false");
+            result.put("message", e.getMessage());
+        }
+        
+        return result;
+    }
 }
