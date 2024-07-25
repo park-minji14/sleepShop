@@ -21,7 +21,9 @@ import com.sgsg.dra.common.MyUtil;
 import com.sgsg.dra.domain.MyPoint;
 import com.sgsg.dra.domain.Review;
 import com.sgsg.dra.domain.SessionInfo;
+import com.sgsg.dra.domain.Wishlist;
 import com.sgsg.dra.service.MyPageService;
+import com.sgsg.dra.service.WishlistService;
 
 @Controller
 @RequestMapping(value ="/mypage/*")
@@ -32,18 +34,19 @@ public class MyPageController {
 	@Autowired
 	private MyUtil myUtil;
 	
+	@Autowired
+    private WishlistService wishlistService;
+	
 	// 메인화면
 	@GetMapping("main")
 	public String main() {
-		
-		
 		return ".mypage.main";
 	}
 	
-
 	// 나의 쇼핑
 	@GetMapping("myshop")
 	public String myshop() {
+		
 		return "mypage/myshop";
 	}
 	
@@ -111,8 +114,7 @@ public class MyPageController {
 	// 구매목록 리스트
 	@GetMapping("savedList")
 	public String savedList(@RequestParam(value = "pageNo", defaultValue = "1") int current_page,
-			@RequestParam(defaultValue = "all") String schType,
-			@RequestParam(defaultValue = "") String kwd,
+			@RequestParam(defaultValue = "0") int state,
 			HttpServletRequest req,
 			HttpSession session,
 			Model model) throws Exception {
@@ -124,12 +126,9 @@ public class MyPageController {
 		int total_page = 0;
 		int dataCount = 0;
 
-		kwd = URLDecoder.decode(kwd, "utf-8");
-		
 		// 전체 페이지 수
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("schType", schType);
-		map.put("kwd", kwd);
+		map.put("state", state);
 		map.put("userId", info.getUserId());
 		
 		dataCount = service.reviewCount(map);
@@ -157,10 +156,8 @@ public class MyPageController {
 		model.addAttribute("dataCount", dataCount);
 		model.addAttribute("total_page", total_page);
 		model.addAttribute("paging", paging);
+		model.addAttribute("state", state);
 
-		model.addAttribute("schType", schType);
-		model.addAttribute("kwd", kwd);
-		
 		return "mypage/savedList";
 	}
 	
@@ -186,6 +183,34 @@ public class MyPageController {
 	}
 	
 	
+	//리뷰 삭제
+	@ResponseBody
+	@PostMapping("reviewDelete")
+	public Map<String, Object>  delete(@RequestParam long orderDetailNum,
+			HttpSession session) throws Exception {
+
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+		String state = "false";
+		
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("orderDetailNum", orderDetailNum);
+			map.put("userId", info.getUserId());
+			
+			service.deleteReview(map);
+					
+			state = "true";
+					
+		} catch (Exception e) {
+				
+		}
+
+		Map<String, Object> model = new HashMap<>();
+		model.put("state", state);
+		
+		return model;
+	}
 	
 		
 	// 최근 본 상품
@@ -194,11 +219,31 @@ public class MyPageController {
 		return "mypage/recentProduct";
 	}
 	
+	
+	
 	// 찜한 상품
-	@GetMapping("wishlist")
-	public String wishlist() {
-		return "mypage/wishlist";
+    @GetMapping("wishlist")
+    public String wishlist(HttpSession session, Model model) {
+        SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+        List<Wishlist> list = wishlistService.listWishlist(info.getUserId());
+        int count = wishlistService.getWishlistCount(info.getUserId());
+
+        model.addAttribute("list", list);
+        model.addAttribute("wishlistCount", count);
+
+        return "mypage/wishlist";
+    }
+	
+	
+	
+	
+	// 설정 
+	@GetMapping("settings")
+	public String settings() {
+		return "mypage/settings";
 	}
+	
 	
 	
 

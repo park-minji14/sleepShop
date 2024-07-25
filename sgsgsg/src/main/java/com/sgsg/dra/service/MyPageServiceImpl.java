@@ -98,8 +98,16 @@ public class MyPageServiceImpl implements MyPageService {
 		
 		return result;
 	}
-	
-	
-	
+
+	//리뷰 삭제
+	@Override
+	public void deleteReview(Map<String, Object> map) throws Exception {
+		try {
+			mapper.deleteReview(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
 	
 }

@@ -16,5 +16,7 @@ public interface MyPageService {
 	
 	public int reviewCount(Map<String, Object> map);
 	public void insertReview(Review dto) throws SQLException;
+	public void deleteReview(Map<String, Object> map) throws Exception;
+
 	public List<Review> listReview(Map<String, Object> map);
 }
