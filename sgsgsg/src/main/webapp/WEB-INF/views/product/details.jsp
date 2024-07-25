@@ -44,12 +44,22 @@
 					</h1>
 					<input type="hidden" id="productNum" value="${dto.productNum}">
 					<div class="product-rating mb-3">
-						<i class="bi bi-star-fill text-warning"></i> <i
-							class="bi bi-star-fill text-warning"></i> <i
-							class="bi bi-star-fill text-warning"></i> <i
-							class="bi bi-star-fill text-warning"></i> <i
-							class="bi bi-star-half text-warning"></i> <span
-							class="ms-2 text-muted">${dto.reviewCount}개 리뷰</span>
+						<c:forEach begin="1" end="5" var="i">
+							<c:choose>
+								<c:when test="${i <= avgScore}">
+									<i class="bi bi-star-fill text-warning"></i>
+								</c:when>
+								<c:when test="${i > avgScore && i - 1 < avgScore}">
+									<i class="bi bi-star-half text-warning"></i>
+								</c:when>
+								<c:otherwise>
+									<i class="bi bi-star text-warning"></i>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<span class="ms-2 text-muted"> <span
+							id="productReviewCount">${dto.reviewCount}</span>개 리뷰
+						</span>
 					</div>
 					<div class="product-price mb-3">
 						<span class="badge bg-primary me-2">${dto.discountRate}%</span> <span
@@ -208,8 +218,9 @@
 				<li class="nav-item" role="presentation">
 					<button class="nav-link" id="review-tab" data-bs-toggle="tab"
 						data-bs-target="#review" type="button" role="tab"
-						aria-controls="review" aria-selected="false">리뷰
-						${reviewCount}</button>
+						aria-controls="review" aria-selected="false">
+						리뷰 <span id="tabReviewCount">${dto.reviewCount}</span>
+					</button>
 				</li>
 				<li class="nav-item" role="presentation">
 					<button class="nav-link" id="qna-tab" data-bs-toggle="tab"
@@ -244,14 +255,15 @@
 						</div>
 					</div>
 				</div>
-
 				<!-- 리뷰 탭 내용 -->
 				<div class="tab-pane fade mb-4" id="review" role="tabpanel"
 					aria-labelledby="review-tab">
 					<div class="container">
 						<div class="row mb-4">
 							<div class="col-12">
-								<h3 class="border-bottom pb-2">리뷰 ${reviewCount}</h3>
+								<h3 class="border-bottom pb-2">
+									리뷰 <span id="reviewCount">${reviewCount}</span>
+								</h3>
 							</div>
 						</div>
 
@@ -274,23 +286,13 @@
 							<div class="col-md-6">
 								<div class="card">
 									<div class="card-body text-center">
-										<h2 class="display-4">${avgScore}</h2>
-										<div class="stars mb-3">
-											<c:forEach begin="1" end="5" var="i">
-												<c:choose>
-													<c:when test="${i <= avgScore}">
-														<i class="bi bi-star-fill text-warning"></i>
-													</c:when>
-													<c:when test="${i > avgScore && i - 1 < avgScore}">
-														<i class="bi bi-star-half text-warning"></i>
-													</c:when>
-													<c:otherwise>
-														<i class="bi bi-star text-warning"></i>
-													</c:otherwise>
-												</c:choose>
-											</c:forEach>
+										<h2 class="display-4" id="avgScore">${avgScore}</h2>
+										<div class="stars mb-3" id="avgScoreStars">
+											<!-- 별점은 AJAX로 업데이트됩니다 -->
 										</div>
-										<p class="mb-0">${reviewCount}개의리뷰기준</p>
+										<p class="mb-0">
+											<span id="reviewCountBottom">${reviewCount}</span>개의 리뷰 기준
+										</p>
 									</div>
 								</div>
 							</div>
@@ -331,62 +333,16 @@
 						</div>
 						<div class="row">
 							<div class="col-12">
-								<div class="review-list border p-3 rounded">
-									<c:choose>
-										<c:when test="${empty reviewList}">
-											<p>등록된 리뷰가 없습니다.</p>
-										</c:when>
-										<c:otherwise>
-											<c:forEach var="review" items="${reviewList}"
-												varStatus="status">
-												<div class="review-item border-bottom pb-3 mb-3">
-													<div class="d-flex align-items-center mb-2">
-														<img src="https://via.placeholder.com/40" alt="User"
-															class="rounded-circle me-2"> <strong>${review.userName}</strong>
-														<div class="stars ms-auto">
-															<c:forEach begin="1" end="5" var="i">
-																<i
-																	class="bi bi-star${i <= review.score ? '-fill' : ''} text-warning"></i>
-															</c:forEach>
-														</div>
-													</div>
-													<p class="mb-2">
-														${review.review_Date} · ${review.productName} 구매
-														<c:if test="${not empty review.optionNames}">
-															<br>
-															<small class="text-muted">옵션:
-																${review.optionNames}</small>
-														</c:if>
-													</p>
-													<div class="review-content">
-														<p>${review.review}</p>
-													</div>
-													<c:if test="${not empty review.imageUrls}">
-														<div class="review-images mb-2">
-															<c:forEach var="imageUrl" items="${review.imageUrls}">
-																<img src="${imageUrl}" alt="Review Image"
-																	class="img-thumbnail me-2"
-																	style="width: 100px; height: 100px; object-fit: cover;">
-															</c:forEach>
-														</div>
-													</c:if>
-													<button
-														class="btn btn-sm btn-outline-secondary rounded-pill">
-														<i class="bi bi-hand-thumbs-up me-1"></i>도움이 돼요
-													</button>
-												</div>
-											</c:forEach>
-										</c:otherwise>
-									</c:choose>
+								<div id="reviewList" class="review-list border p-3 rounded">
+									<!-- 리뷰 목록은 AJAX로 로드됩니다 -->
 								</div>
-							</div>
-						</div>
 
-
-						<!-- 페이징 처리 -->
-						<div class="row mt-3">
-							<div class="col-12">
-								<nav>${reviewPaging}</nav>
+								<!-- 페이징 처리 -->
+								<div class="row mt-3">
+									<div class="col-12">
+										<nav id="reviewPaging"></nav>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -738,8 +694,6 @@ function ajaxFun(url, method, query, dataType, fn) {
         url: url,
         data: query,
         dataType: dataType,
-        processData: false, 
-        contentType: false, 
         success: function(data) {
             console.log("Ajax 성공:", data);
             fn(data);
@@ -793,11 +747,153 @@ function buyQuantity(stockNum, salePrice, detailNum, detailNum2) {
     let totalStock = $productOptions.data('total-stock');
     updateButtonState(stockNum, totalStock, optionCount);
 }
-//-------------------DOM 로드 완료 후 실행-------------------//
+
+//-------------------리뷰 에이작스-------------------------//
+function loadReviews(page) {
+    // 중복 실행 방지
+    if (loadReviews.isLoading) return;
+    loadReviews.isLoading = true;
+
+    let url = "${pageContext.request.contextPath}/product/reviews";
+    let query = "productNum=${dto.productNum}&pageNo=" + (page || 1);
+
+    ajaxFun(url, "GET", query, "json", function(data) {
+        if (data.error) {
+            console.error(data.error);
+            return;
+        }
+        updateReviewSection(data);
+        loadReviews.isLoading = false;
+    });
+}
+
+function updateReviewSection(data) {
+    console.log("Received review data:", data);
+
+    let reviewCount = data.dataCount || 0;
+    $('#reviewCount, #reviewCountBottom, #tabReviewCount, #productReviewCount').text(reviewCount);
+    console.log("Review count:", reviewCount);
+    $('#reviewCount, #reviewCountBottom, #tabReviewCount').text(reviewCount);
+
+    if (data.avgScore !== undefined) {
+        let avgScore = parseFloat(data.avgScore).toFixed(1);
+        console.log("Average score:", avgScore);
+        $('#avgScore').text(avgScore);
+        updateStars(data.avgScore);
+    } else {
+        console.log("Average score is undefined, setting to 0.0");
+        $('#avgScore').text('0.0');
+        updateStars(0);
+    }
+
+    let reviewHtml = '';
+    if (!data.reviewList || data.reviewList.length === 0) {
+        console.log("No reviews found");
+        reviewHtml = '<p>등록된 리뷰가 없습니다.</p>';
+    } else {
+        console.log("Number of reviews:", data.reviewList.length);
+        for (let review of data.reviewList) {
+            console.log("Processing review:", review);
+            reviewHtml += '<div class="review-item border-bottom pb-3 mb-3">';
+            reviewHtml += '<div class="d-flex align-items-center mb-2">';
+            reviewHtml += '<img src="https://via.placeholder.com/40" alt="User" class="rounded-circle me-2">';
+            reviewHtml += '<strong>' + (review.userName || 'Anonymous') + '</strong>';
+            reviewHtml += '<div class="stars ms-auto">' + getStarHtml(review.score) + '</div>';
+            reviewHtml += '</div>';
+            reviewHtml += '<p class="mb-2">' + (review.review_Date || 'N/A') + ' · ' + (review.productName || 'N/A') + ' 구매';
+            if (review.optionNames) {
+                reviewHtml += '<br><small class="text-muted">옵션: ' + review.optionNames + '</small>';
+            }
+            reviewHtml += '</p>';
+            reviewHtml += '<div class="review-content"><p>' + (review.review || 'No review content') + '</p></div>';
+            if (review.imageUrls && review.imageUrls.length > 0) {
+                reviewHtml += '<div class="review-images mb-2">';
+                for (let imageUrl of review.imageUrls) {
+                    reviewHtml += '<img src="' + imageUrl + '" alt="Review Image" class="img-thumbnail me-2" style="width: 100px; height: 100px; object-fit: cover;">';
+                }
+                reviewHtml += '</div>';
+            }
+            reviewHtml += '<div style="text-align: right;">';
+            reviewHtml += '<button class="btn btn-sm btn-outline-secondary rounded-pill">';
+            reviewHtml += '<i class="bi bi-hand-thumbs-up me-1"></i>도움이 돼요';
+            reviewHtml += '</button>';
+            reviewHtml += '</div>';
+            reviewHtml += '</div>';
+        }
+    }
+    
+    $('#reviewList').html(reviewHtml);
+
+    if (data.paging) {
+        $('#reviewPaging').html(data.paging);
+    } else {
+        $('#reviewPaging').empty();
+    }
+}
+function getStarHtml(score) {
+    let starsHtml = '';
+    for (let i = 1; i <= 5; i++) {
+        starsHtml += '<i class="bi bi-star' + (i <= score ? '-fill' : '') + ' text-warning"></i>';
+    }
+    return starsHtml;
+}
+
+function updateStars(score) {
+    let starsHtml = getStarHtml(score);
+    $('#avgScoreStars').html(starsHtml);
+}
+
+$(document).on('click', '.page-link', function(e) {
+    e.preventDefault();
+    var page = $(this).data('page');
+    if (page) {
+        loadReviews(page);
+    }
+});
+
+//---------------------------DOM 로드 완료 후 실행--------------------------//
+
 $(document).ready(function () {
     $('#optionButtons').show();
     $('#stockAlert').hide();
+    
+    $('#review-tab').on('shown.bs.tab', function (e) {
+        loadReviews(1);
+    });
+    
+    $(document).off('click', '#reviewPaging a').on('click', '#reviewPaging a', function(e) {
+        e.preventDefault();
+        var page = $(this).data('page');
+        if (page) {
+            loadReviews(page);
+        }
+    });
 	
+    
+//---------------------------- 오늘 본 상품 목록에 추가--------------------------//
+   
+	let pnum = "${dto.productNum}";
+    let pname = "${dto.productName}";
+    let pimg = "${dto.thumbnail}";
+    
+    let product = JSON.parse(localStorage.getItem("product")) || [];
+    
+    product = product.filter(item => item.pnum !== pnum);
+    
+    // 9개 이상이면 마지막 데이터 삭제
+    if (product.length >= 9) {
+        product.pop();
+    }
+    
+    // 저장할 데이터
+    let obj = {pnum: pnum, pname: pname, pimg: pimg};
+    product.unshift(obj); // 배열 가장 앞에 추가
+    
+    // 웹스토리지에 저장
+    localStorage.setItem("product", JSON.stringify(product));
+	
+//----------------------------------------------------------------------//    
+    
     let optionCount = $('.product-options').data('option-count');
     console.log("옵션 개수:", optionCount);
 
@@ -807,7 +903,7 @@ $(document).ready(function () {
         onOptionChange("#scrollOption1", optionCount > 1 ? "#scrollOption2" : null, ${dto.salePrice});
     }
 	
-    // 여기서 optionCount를 재할당합니다 (let 키워드 제거)
+    // 여기서 optionCount를 재할당 (let 키워드 제거)
     optionCount = $('.product-options').data('option-count') || 0;
     let stockNum = $('.product-options').data('stock-num') || 0;
     let totalStock = $('.product-options').data('total-stock');
@@ -910,7 +1006,6 @@ function updateStockStatus() {
             showToast('현재 재고량을 초과할 수 없습니다.');
         }
     });
-
 
 
  //----------------------- 옵션 변경 이벤트 처리하기----------------//

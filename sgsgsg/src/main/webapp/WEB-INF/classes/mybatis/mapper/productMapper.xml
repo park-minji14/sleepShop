@@ -44,11 +44,11 @@
            NVL(t.reviewCount, 0) reviewCount, NVL(pi.questionCount, 0) questionCount,
            s.startDate, s.endDate, s.showSpecial,
            NVL(pc.saleCount, 0) saleCount,
-           NVL(ps.stockNum, 0) AS stockNum  <!-- 추가된 부분 -->
+           NVL(ps.stockNum, 0) AS stockNum
     FROM product p
     JOIN PRODUCT_CATEGORY c ON p.categoryNum = c.categoryNum
     LEFT OUTER JOIN (
-        SELECT productNum, NVL(SUM(totalStock), 0) totalStock, MIN(stockNum) AS stockNum  <!-- 수정된 부분 -->
+        SELECT productNum, NVL(SUM(totalStock), 0) totalStock, MIN(stockNum) AS stockNum 
         FROM productStock
         GROUP BY productNum
     ) ps ON p.productNum = ps.productNum

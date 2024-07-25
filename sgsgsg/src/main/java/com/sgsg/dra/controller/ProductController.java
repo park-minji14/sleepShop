@@ -20,7 +20,6 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 
-
 @Controller
 @RequestMapping("/product/*")
 public class ProductController {
@@ -86,79 +85,97 @@ public class ProductController {
 		List<Product> list = service.listOptionDetailStock(map);
 		return list;
 	}
-
+	
+	
 	@GetMapping("/details")
-	public String productDetail(@RequestParam Long productNum,
-			@RequestParam(value = "reviewPage", defaultValue = "1") int reviewPage, Model model) {
-		try {
-			Product dto = service.findById(productNum);
-			if (dto == null) {
-				return "redirect:/home";
-			}
+	public String productDetail(@RequestParam Long productNum, Model model) {
+	    try {
+	        Product dto = service.findById(productNum);
+	        if (dto == null) {
+	            return "redirect:/home";
+	        }
 
-			List<Product> listFile = service.listProductFile(productNum);
-			List<Product> listOption = service.listProductOption(productNum);
+	        List<Product> listFile = service.listProductFile(productNum);
+	        List<Product> listOption = service.listProductOption(productNum);
+	        List<Product> listOptionDetail = null;
+	        if (listOption.size() > 0) {
+	            listOptionDetail = service.listOptionDetail(listOption.get(0).getOptionNum());
+	        }
 
-			List<Product> listOptionDetail = null;
-			if (listOption.size() > 0) {
-				listOptionDetail = service.listOptionDetail(listOption.get(0).getOptionNum());
-			}
+	        Map<String, Object> map = new HashMap<>();
+	        map.put("productNum", dto.getProductNum());
+	        List<Product> listStock = service.listOptionDetailStock(map);
 
-			Map<String, Object> map = new HashMap<>();
-			map.put("productNum", dto.getProductNum());
-			List<Product> listStock = service.listOptionDetailStock(map);
+	        if (dto.getOptionCount() == 0) {
+	            // 단품 상품인 경우
+	            if (listStock != null && !listStock.isEmpty()) {
+	                dto.setStockNum(listStock.get(0).getStockNum());
+	                dto.setTotalStock(listStock.get(0).getTotalStock());
+	            }
+	        } else if (dto.getOptionCount() > 0) {
+	            // 옵션이 있는 상품인 경우
+	            for (Product vo : listOptionDetail) {
+	                for (Product ps : listStock) {
+	                    if (vo.getDetailNum() == ps.getDetailNum()) {
+	                        vo.setStockNum(ps.getStockNum());
+	                        vo.setTotalStock(ps.getTotalStock());
+	                        break;
+	                    }
+	                }
+	            }
+	        }
 
-			if (dto.getOptionCount() == 0) {
-				// 단품 상품인 경우
-				if (listStock != null && !listStock.isEmpty()) {
-					dto.setStockNum(listStock.get(0).getStockNum());
-					dto.setTotalStock(listStock.get(0).getTotalStock());
-				}
-			} else if (dto.getOptionCount() > 0) {
-				// 옵션이 있는 상품인 경우
-				for (Product vo : listOptionDetail) {
-					for (Product ps : listStock) {
-						if (vo.getDetailNum() == ps.getDetailNum()) {
-							vo.setStockNum(ps.getStockNum());
-							vo.setTotalStock(ps.getTotalStock());
-							break;
-						}
-					}
-				}
-			}
+	        // 리뷰 수와 평균 평점만 가져오기
+	        int reviewCount = reviewService.countReviews(productNum);
+	        double avgScore = reviewService.getAvgScore(productNum);
 
-			model.addAttribute("dto", dto);
-			model.addAttribute("listFile", listFile);
-			model.addAttribute("listOption", listOption);
-			model.addAttribute("listOptionDetail", listOptionDetail);
+	        model.addAttribute("dto", dto);
+	        model.addAttribute("listFile", listFile);
+	        model.addAttribute("listOption", listOption);
+	        model.addAttribute("listOptionDetail", listOptionDetail);
+	        model.addAttribute("reviewCount", reviewCount);
+	        model.addAttribute("avgScore", avgScore);
 
-			// 리뷰 정보 추가
-			int reviewSize = 5; // 페이지당 리뷰 수
-			int reviewOffset = (reviewPage - 1) * reviewSize;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return ".product.details";
+	}
 
-			Map<String, Object> reviewMap = new HashMap<>();
-			reviewMap.put("productNum", productNum);
-			reviewMap.put("offset", reviewOffset);
-			reviewMap.put("size", reviewSize);
+	@GetMapping("/reviews")
+	@ResponseBody
+	public Map<String, Object> getReviews(
+	        @RequestParam Long productNum,
+	        @RequestParam(value = "pageNo", defaultValue = "1") int current_page) {
+	    Map<String, Object> result = new HashMap<>();
+	    try {
+	        int size = 5;
+	        int offset = (current_page - 1) * size;
+	        if (offset < 0) offset = 0;
 
-			List<Review> reviewList = reviewService.listReviews(reviewMap);
-			int reviewCount = reviewService.countReviews(productNum);
-			double avgScore = reviewService.getAvgScore(productNum);
+	        Map<String, Object> map = new HashMap<>();
+	        map.put("productNum", productNum);
+	        map.put("offset", offset);
+	        map.put("size", size);
 
-			// 리뷰 페이징 처리
-			int totalReviewPages = (int) Math.ceil((double) reviewCount / reviewSize);
-			String reviewPaging = myUtil.pagingMethod(reviewPage, totalReviewPages, "loadReviews");
+	        List<Review> reviewList = reviewService.listReviews(map);
+	        int dataCount = reviewService.countReviews(productNum);
+	        double avgScore = reviewService.getAvgScore(productNum);  // 평균 평점 추가
 
-			model.addAttribute("reviewList", reviewList);
-			model.addAttribute("reviewCount", reviewCount);
-			model.addAttribute("avgScore", avgScore);
-			model.addAttribute("reviewPage", reviewPage);
-			model.addAttribute("reviewPaging", reviewPaging);
+	        int total_page = myUtil.pageCount(dataCount, size);
+	        String paging = myUtil.pagingMethod(current_page, total_page, "loadReviews");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return ".product.details";
+	        result.put("reviewList", reviewList);
+	        result.put("dataCount", dataCount);
+	        result.put("avgScore", avgScore);  // 평균 평점 추가
+	        result.put("total_page", total_page);
+	        result.put("pageNo", current_page);
+	        result.put("paging", paging);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        result.put("error", "리뷰를 불러오는 중 오류가 발생했습니다.");
+	    }
+	    return result;
 	}
 
 	@GetMapping("/category")
