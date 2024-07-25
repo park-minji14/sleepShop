@@ -1,12 +1,13 @@
 package com.sgsg.dra.service;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.sgsg.dra.common.FileManager;
 import com.sgsg.dra.domain.MyPoint;
 import com.sgsg.dra.domain.Review;
 import com.sgsg.dra.mapper.MyPageMapper;
@@ -16,6 +17,9 @@ import com.sgsg.dra.mapper.MyPageMapper;
 public class MyPageServiceImpl implements MyPageService {
 	@Autowired
 	private MyPageMapper mapper;
+	
+	@Autowired
+	private FileManager fileManager;
 	
 	@Override
 	public int dataCount(Map<String, Object> map) {
@@ -61,9 +65,19 @@ public class MyPageServiceImpl implements MyPageService {
 
 	// 리뷰 등록
 	@Override
-	public void insertReview(Review dto) throws SQLException {
+	public void insertReview(Review dto, String pathname) throws Exception {
 		try {
 			mapper.insertReview(dto);
+			
+			if(! dto.getImageFiles().isEmpty()) {
+				for(MultipartFile mf : dto.getImageFiles()) {
+					String filename = fileManager.doFileUpload(mf, pathname);
+					if(filename != null) {
+						dto.setFileName(filename);
+						mapper.insertReviewPhoto(dto);
+					}
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -101,9 +115,15 @@ public class MyPageServiceImpl implements MyPageService {
 
 	//리뷰 삭제
 	@Override
-	public void deleteReview(Map<String, Object> map) throws Exception {
+	public void deleteReview(Map<String, Object> map, String pathname) throws Exception {
 		try {
-			mapper.deleteReview(map);
+			List<Review> list = mapper.listReviewPhoto(map);
+			for(Review dto : list) {
+				fileManager.doFileDelete(dto.getFileName(), pathname);			
+			}
+
+			mapper.deleteReviewPhoto(map);
+			mapper.deleteReview(map);			
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

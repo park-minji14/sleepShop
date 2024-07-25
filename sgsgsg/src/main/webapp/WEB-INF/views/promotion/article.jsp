@@ -281,7 +281,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		
 		
 		
-		<div class="event-style1">
+		<div class="event-style1" style="text-align: center;">
 			<span style="font-size: 20px;">${dto.title}</span>
 		</div>
 		
@@ -403,13 +403,13 @@ document.addEventListener("DOMContentLoaded", function() {
 	                 	<c:forEach var="vo" items="${listEventWinner}" varStatus="status">
 	                 		<div class="col">
 	                 		<br>
-	                 			<div style="border: 2px solid #D5D5D5; border-radius: 10px;">
+	                 			<div style="border: 2px solid #D5D5D5; border-radius: 15px;">
 		                 			<c:if test="${vo.rank != 0}">
 										<span>
 											${vo.rank}등 :
 										</span>
 									</c:if>
-									<span style="font-weight: 500;">
+									<span style="font-weight: 500; font-size: 18px;">
 										${vo.userName}(${vo.userId})
 									</span>
 								</div>

@@ -71,7 +71,7 @@
 									<div class="col-auto">
 										<button type="button" class="btn btn-light btn-last-order" data-orderNum="${order.orderNum}"
 											data-orderState="${order.orderState}" data-deliveryNum="${order.deliveryNum}"
-											data-memberIdx="${order.memberIdx}" data-usedSaved="${order.usedSaved}">상태변경</button>
+											data-memberIdx="${order.memberIdx}" data-usedSaved="${order.usedSaved}" data-userId="${order.userId}">상태변경</button>
 									</div>
 								</div>
 						</c:if>
@@ -334,12 +334,15 @@ $(function(){
 		let deliveryNum = $EL.attr("data-deliveryNum");
 		let memberIdx = $EL.attr("data-memberIdx");
 		let usedSaved = $EL.attr("data-usedSaved");
+		let userId = $EL.attr("data-userId");
 		
 		let orderState = $EL.closest(".last-update-area").find("select").val();
 		
-		let qs = 'orderNum=' + orderNum + '&orderState=' + orderState+"&memberIdx="+memberIdx;
+		let qs = 'orderNum=' + orderNum + '&orderState=' + orderState+"&memberIdx="+memberIdx+"&userId="+userId;
 		if(orderState === "12"){
 			qs +="&cancleAmount="+${order.payment}+"&usedSaved="+usedSaved;
+		} else {
+			qs +="&cancleAmount=0";
 		}
 		
 		let orderDetailNums=[];

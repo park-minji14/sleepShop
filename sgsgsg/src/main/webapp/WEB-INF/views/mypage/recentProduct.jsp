@@ -2,6 +2,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<style>
+
+.navi{
+	margin-bottom: 80px;
+}
+
+
+</style>
+
+
+
 			<!-- 최근 본 상품 탭 -->
 			<div class="tab-pane fade show active" id="recent" style=".member #my_menu dl dd a:first-of-type {
     margin-left: 0;
@@ -40,7 +51,7 @@
 			        <div class="product-grid">
 			            
 			                <div class="product-item">
-			                    <a href="/dra/product/details/18">
+			                    <a href="/dra/product/details?productNum=98">
 			                        <img src="/dra/uploads/product/test1.png" alt="ㅌㅅㅌ">
 			                        <span class="product-info">
 			                            <span>ㅌㅅㅌ</span>
@@ -59,7 +70,7 @@
 			                </div>
 			            
 			                <div class="product-item">
-			                    <a href="/dra/product/details/16">
+			                    <a href="/dra/product/details?productNum=98">
 			                        <img src="/dra/uploads/product/test1.png" alt="민지쿤">
 			                        <span class="product-info">
 			                            <span>민지쿤</span>
@@ -78,7 +89,7 @@
 			                </div>
 			            
 			                <div class="product-item">
-			                    <a href="/dra/product/details/15">
+			                    <a href="/dra/product/details?productNum=98">
 			                        <img src="/dra/uploads/product/test1.png" alt="김치테스트">
 			                        <span class="product-info">
 			                            <span>김치테스트</span>
@@ -97,7 +108,7 @@
 			                </div>
 			            
 			                <div class="product-item">
-			                    <a href="/dra/product/details/14">
+			                    <a href="/dra/product/details?productNum=98">
 			                        <img src="/dra/uploads/product/test1.png" alt="호랑">
 			                        <span class="product-info">
 			                            <span>호랑</span>
@@ -116,7 +127,7 @@
 			                </div>
 			            
 			                <div class="product-item">
-			                    <a href="/dra/product/details/3">
+			                    <a href="/dra/product/details?productNum=98">
 			                        <img src="/dra/uploads/product/test1.png" alt="룰루랄라">
 			                        <span class="product-info">
 			                            <span>룰루랄라</span>
@@ -135,7 +146,7 @@
 			                </div>
 			            
 			                <div class="product-item">
-			                    <a href="/dra/product/details/2">
+			                    <a href="/dra/product/details?productNum=98">
 			                        <img src="/dra/uploads/product/test1.png" alt="쿨에어 이불">
 			                        <span class="product-info">
 			                            <span>쿨에어 이불</span>
@@ -154,7 +165,7 @@
 			                </div>
 			            
 			                <div class="product-item">
-			                    <a href="/dra/product/details/1">
+			                    <a href="/dra/product/details?productNum=98">
 			                        <img src="/dra/uploads/product/test1.png" alt="럭셔리 킹사이즈 침대">
 			                        <span class="product-info">
 			                            <span>럭셔리 킹사이즈 침대</span>

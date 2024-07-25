@@ -109,11 +109,16 @@ public class OrderManageServiceImpl implements OrderManageService {
 	public void cancelOrder(int state, Map<String, Object> map) throws Exception {
 		try {
 			map.put("orderNum", map.get("orderNum").toString());
+			String[] orderDetailNums = map.get("orderDetailNums").toString().split(",");
+
 			if(state == 10) {
 				mapper.cancelOrder(map);
+				for(int i=0; i<orderDetailNums.length; i++) {
+					map.put("orderdetailNum", Integer.parseInt(orderDetailNums[i]));
+					mapper.insertRetrunRequest(map);
+				}
 			} else {
 				
-				String[] orderDetailNums = map.get("orderDetailNums").toString().split(",");
 				String[] productMoneys = map.get("productMoneys").toString().split(",");
 
 				for(int i=0; i<orderDetailNums.length; i++) {
@@ -163,9 +168,12 @@ public class OrderManageServiceImpl implements OrderManageService {
 			int saved = mapper.findSavedMoney(map);
 			
 			UserPoint point = mapper.findByUserPoint(map.get("memberIdx").toString());
-			map.put("remain_points", point.getRemain_points()+saved);
+			if(point != null) {
+				map.put("remain_points", point.getRemain_points()+saved);
+			} else {
+				map.put("remain_points", saved);
+			}
 			map.put("usedSaved", saved);
-			map.put("userId", point.getUserId());
 			
 			mapper.updateUsePoint(map);
 			mapper.updateOrderState(map);

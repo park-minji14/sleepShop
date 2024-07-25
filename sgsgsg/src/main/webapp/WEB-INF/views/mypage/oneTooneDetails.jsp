@@ -27,6 +27,30 @@
 .table-header > div, .table-content > div {
     padding: 10px;
 }
+
+
+.navi{
+	margin-bottom: 80px;
+}
+
+
+.radio-input:checked + .radio-label {
+    background-color: fff;
+    color: #35c5f0;
+}
+.radio-input:checked + .radio-label {
+    background-color: #ffff; 
+    color: #35c5f0;
+}
+
+
+.content {
+	color: gray;
+}
+
+
+
+
 </style>
 			
 			
@@ -47,12 +71,17 @@
 			<a style="font: light-gray;">1:1 문의</a></div>
 		</dl>
 		
-		<input type="radio" id="option4" name="category" value="돌아가기" class="radio-input" ${category == '돌아가기' ? 'checked' : ''} onclick="listInquiry('${pageNo}')" >
-	        <label for="option4" class="radio-label" style="width: 150px; text-align: center; font-size: 20px;">돌아가기</label>
+		<div style="display: flex; justify-content: space-between;">
+    <div style="flex: 1;">
+        <input type="radio" id="option4" name="category" value="돌아가기" class="radio-input" ${category == '돌아가기' ? 'checked' : ''} onclick="listInquiry('${pageNo}')" >
+        <label for="option4" class="radio-label" style="width: 150px; text-align: center; font-size: 20px;">돌아가기</label>
+    </div>
+    <div style="flex: 1; text-align: right;">
+        <input type="radio" id="option5" name="category2" value="삭제" class="radio-input" ${category == '삭제' ? 'checked' : ''} onclick="deleteInquiry('${dto.num}', '${pageNo}')" >
+        <label for="option5" class="radio-label" style="width: 150px; text-align: center; font-size: 20px;">삭제</label>
+    </div>
+</div>
 		
-		<input type="radio" id="option5" name="category2" value="삭제" style="float: right;" class="radio-input" ${category == '삭제' ? 'checked' : ''} onclick="deleteInquiry('${dto.num}', '${pageNo}')" >
-	        <label for="option5" class="radio-label" style="width: 150px; text-align: center; font-size: 20px;">삭제</label>
-			
 		<div class="table-style6">
 				<div>
 					<span>
@@ -91,7 +120,7 @@
 						<span>
 							<div class="table-content" >
 								<div class="cont">
-									<div class="content">${dto.response_content}</div>
+									<div class="content">상담원 "◎새근새근◎"에서 답변드립니다.<br>안녕하세요, 새근새근 입니다~(❁´◡`❁)<br><br>${dto.response_content}</div>
 								</div>
 							</div>
 						</span>

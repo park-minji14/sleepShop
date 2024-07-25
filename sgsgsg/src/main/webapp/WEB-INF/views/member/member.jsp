@@ -16,7 +16,6 @@ body {
 }
 
 h1 {
-	color: #35c5f0;
 	font-size: 48px;
 	letter-spacing: -3px;
 	text-align: center;
@@ -320,7 +319,6 @@ footer p a .fa-behance {
 }
 
 h1 {
-	color: #35c5f0;
 	margin-bottom: 30px;
 }
 
@@ -494,10 +492,10 @@ h1 {
 
 
 <div class="container-member">
-	<h1 class="text-center">${mode=="member"?"SIGN UP":"UPDATE PROFILE"}</h1>
+	<h1 class="text-center">${mode=="member"?"회원가입":"회원 정보 수정"}</h1>
 	<div class="links text-center">
 		<a href="${pageContext.request.contextPath}/member/login" id="signin">로그인</a>
-		<a href="#" id="signup">회원가입</a> <a href="#" id="reset">RESET</a>
+		<a href="${pageContext.request.contextPath}/member/member" id="signup">회원가입</a> <a href="#" id="reset">RESET</a>
 	</div>
 
 	<form name="memberForm" method="post">

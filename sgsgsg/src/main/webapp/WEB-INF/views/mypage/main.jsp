@@ -316,8 +316,8 @@ element.style {
 		<ul class="nav nav-tabs mb-4">
 			<li class="nav-item"><a class="nav-link active" id="myshop-tab"
 				data-bs-toggle="tab" href="#orders" aria-controls="myshop">나의 쇼핑</a></li>
-			<li class="nav-item"><a class="nav-link" id="reviews-tab"
-				data-bs-toggle="tab" aria-controls="savedList">구매내역</a></li>
+			<li class="nav-item"><a class="nav-link" id="savedList-tab"
+				data-bs-toggle="tab" aria-controls="savedList" style="cursor: pointer;">구매내역</a></li>
 			<li class="nav-item"><a class="nav-link" id="wishlist-tab"
 				data-bs-toggle="tab" href="#wishlist" aria-controls="wishlist">찜한 상품</a></li>
 			<li class="nav-item"><a class="nav-link" id="recent-tab"
@@ -378,7 +378,7 @@ element.style {
 						</div>
 						<div class="mb-3">
 							<label for="reviewImage" class="form-label">이미지 첨부</label> <input
-								type="file" class="form-control" id="reviewImage" name="selectFile">
+								type="file" class="form-control" id="reviewImage" name="imageFiles">
 						</div>
 					</form>
 				</div>
@@ -461,12 +461,6 @@ element.style {
 				ajaxFun(url, "get", null, "text", fn);		
 			}
 
-			// 리뷰 등록 버튼 클릭 이벤트
-			$('.modal-footer .btn-primary').on('click', function() {
-				alert('리뷰가 등록되었습니다.');
-				$('#reviewModal').modal('hide');
-			});
-
 			// 찜한 상품 장바구니 담기 버튼 클릭 이벤트
 			$('.wishlist-item .btn-primary').on('click', function() {
 				alert('상품이 장바구니에 담겼습니다.');
@@ -508,6 +502,7 @@ element.style {
 	  function inquiryModalOpen() { // 등록 모달창
 		  $('#inquiryModal').modal('show');
 	  }
+	  
 	
 	  function inquirySave() { // 문의 등록
 			let url = '${pageContext.request.contextPath}/inquiry/write';
@@ -551,28 +546,37 @@ element.style {
 	  $(".tab-content").on("click", ".btn-write-review", function(){
 		  let orderDetailNum = $(this).attr("data-orderDetailNum");
 		  let reviewWrite = $(this).attr("data-reviewWrite");
+		  const f = document.reviewForm;
+		  f.reset();
 		  
 		  if(reviewWrite === "0") {
 			  // 리뷰 등록 대화상자
-			  const f = document.reviewForm;
 			  f.orderDetailNum.value = orderDetailNum;
 			  $("#reviewModal").modal('show');
 		  } else {
 			  // 리뷰 보기
 			  
 		  }
-		  
 	  });
+	  
+	 $('.tab-content').on('change', '.changeReview', function(){
+		 listSaved(1);
+	 });
 	  
 	  // 구매 내역
 	  function listSaved(page) {
 		  let url = "${pageContext.request.contextPath}/mypage/savedList";
 		  let selector = ".tab-content";
 		  
+		  let state = $('.changeReview').val();
+		  if(! state) {
+			  state = 0;
+		  }
+		  
 		  const fn = function(data){
 				$(selector).html(data);
 			};
-			ajaxFun(url, "get", {pageNo:page}, "text", fn);
+			ajaxFun(url, "get", {pageNo:page, state:state}, "text", fn);
 	  }
 	  
 	  //  리뷰 등록하기
@@ -592,7 +596,7 @@ element.style {
 	  			return false;
 	  		}
 	  		
-	  		if(f.selectFile.files.length > 5) {
+	  		if(f.imageFiles.files.length > 5) {
 	  			alert("이미지는 최대 5개까지 가능합니다..");
 	  			return false;
 	  		}
@@ -603,13 +607,26 @@ element.style {
 	  		let query = new FormData(f); 
 	  		
 	  		const fn = function(data) {
-	  			if(data.state === "true") {
-	  			}
+	  			listSaved(1);
+	  			$("#reviewModal").modal('hide');
 	  		};
 	  		
 	  		ajaxFun(url, "post", query, "json", fn, true);
 	  	}
 	  
+	  
+	  //리뷰 삭제하기
+	  function deleteReview(orderDetailNum, pageNo) { // 리뷰 삭제
+		  if(confirm("리뷰를 삭제 하시겠습니까 ?")) {
+				
+				let url = "${pageContext.request.contextPath}/mypage/reviewDelete";
+				const fn = function(data) {
+					listSaved(pageNo);
+				};
+				
+				ajaxFun(url, 'post', {orderDetailNum:orderDetailNum}, 'JSON', fn);
+			}
+	  }
 	</script>
 	
 	

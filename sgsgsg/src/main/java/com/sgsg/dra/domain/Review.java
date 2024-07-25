@@ -2,6 +2,8 @@ package com.sgsg.dra.domain;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class Review {
 	 private long orderNum; 
 	 private long orderDetailNum;
@@ -32,7 +34,7 @@ public class Review {
 	 
 	 private String optionNames;
 
-	 private List<String> imageFiles;
+	 private List<MultipartFile> imageFiles;
 	 
 	  private List<String> imageUrls;
 	 
@@ -156,10 +158,10 @@ public class Review {
 	public void setOptionNames(String optionNames) {
 		this.optionNames = optionNames;
 	}
-	public List<String> getImageFiles() {
+	public List<MultipartFile> getImageFiles() {
 		return imageFiles;
 	}
-	public void setImageFiles(List<String> imageFiles) {
+	public void setImageFiles(List<MultipartFile> imageFiles) {
 		this.imageFiles = imageFiles;
 	}
 	public List<String> getImageUrls() {

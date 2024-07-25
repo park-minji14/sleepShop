@@ -61,7 +61,7 @@ function profile(memberIdx) {
 				<th width="130">아이디</th>
 				<th width="130">이름</th>
 				<th width="130">생년월일</th>
-				<th width="130">전화번호</th>
+				<th min-width="140">전화번호</th>
 				<th width="100">회원구분</th>
 				<th width="80">상태</th>
 				<th>이메일</th>

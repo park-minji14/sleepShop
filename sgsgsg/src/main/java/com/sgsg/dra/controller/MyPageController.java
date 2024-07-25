@@ -1,5 +1,6 @@
 package com.sgsg.dra.controller;
 
+import java.io.File;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +46,18 @@ public class MyPageController {
 	
 	// 나의 쇼핑
 	@GetMapping("myshop")
-	public String myshop() {
+	public String myshop(HttpSession session,
+			Model model) {
+		
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", info.getUserId());
+		map.put("offset", 0);
+		map.put("size", 5);
+		
+		
+		
 		
 		return "mypage/myshop";
 	}
@@ -164,14 +176,17 @@ public class MyPageController {
 	//리뷰 작성
 	@ResponseBody
 	@PostMapping("reviewWrite")
-	public Map<String, Object> writeSubmit(Review dto, 
+	public Map<String, Object> writeSubmit(Review dto,
 			HttpSession session) throws Exception {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
 		String state = "true";
+		
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root+"uploads"+File.separator+"review";
 		try {
 			dto.setUserId(info.getUserId());
-			service.insertReview(dto);
+			service.insertReview(dto, pathname);
 		} catch (Exception e) {
 			state = "false";
 		}
@@ -192,13 +207,15 @@ public class MyPageController {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
 		String state = "false";
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root+"uploads"+File.separator+"review";
 		
 		try {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("orderDetailNum", orderDetailNum);
 			map.put("userId", info.getUserId());
 			
-			service.deleteReview(map);
+			service.deleteReview(map, pathname);
 					
 			state = "true";
 					
