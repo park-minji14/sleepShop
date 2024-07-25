@@ -109,11 +109,16 @@ public class OrderManageServiceImpl implements OrderManageService {
 	public void cancelOrder(int state, Map<String, Object> map) throws Exception {
 		try {
 			map.put("orderNum", map.get("orderNum").toString());
+			String[] orderDetailNums = map.get("orderDetailNums").toString().split(",");
+
 			if(state == 10) {
 				mapper.cancelOrder(map);
+				for(int i=0; i<orderDetailNums.length; i++) {
+					map.put("orderdetailNum", Integer.parseInt(orderDetailNums[i]));
+					mapper.insertRetrunRequest(map);
+				}
 			} else {
 				
-				String[] orderDetailNums = map.get("orderDetailNums").toString().split(",");
 				String[] productMoneys = map.get("productMoneys").toString().split(",");
 
 				for(int i=0; i<orderDetailNums.length; i++) {

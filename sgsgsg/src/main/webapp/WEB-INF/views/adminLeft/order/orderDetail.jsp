@@ -341,6 +341,8 @@ $(function(){
 		let qs = 'orderNum=' + orderNum + '&orderState=' + orderState+"&memberIdx="+memberIdx+"&userId="+userId;
 		if(orderState === "12"){
 			qs +="&cancleAmount="+${order.payment}+"&usedSaved="+usedSaved;
+		} else {
+			qs +="&cancleAmount=0";
 		}
 		
 		let orderDetailNums=[];
