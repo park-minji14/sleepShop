@@ -1,6 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sgsg.dra.admin.mapper.ReviewMapper">
+<mapper namespace="com.sgsg.dra.mapper.ReviewMapper">
+    <!-- 1. 상품의 전체 리뷰 목록 불러오기 -->
+    <select id="listReviews" parameterType="map" resultType="com.sgsg.dra.domain.Review">
+	SELECT 
+	    pr.ORDERDETAILNUM, 
+	    pr.REVIEW, 
+	    pr.REVIEW_DATE, 
+	    pr.SCORE,
+	    m.USERID, 
+	    m.USERNAME,
+	    p.PRODUCTNUM,
+	    p.PRODUCTNAME,
+	    (SELECT LISTAGG(prp.FILENAME, ',') WITHIN GROUP (ORDER BY prp.FILENUM)
+	     FROM PRODUCT_REVIEW_PHOTO prp 
+	     WHERE prp.ORDERDETAILNUM = pr.ORDERDETAILNUM) AS FILENAME,
+	    NVL2(od1.OPTIONVALUE, 
+	         od1.OPTIONVALUE || NVL2(od2.OPTIONVALUE, ', ' || od2.OPTIONVALUE, ''),
+	         NULL) AS OPTIONNAMES
+	FROM 
+	    PRODUCT_REVIEW pr
+	JOIN 
+	    ORDERDETAIL od ON pr.ORDERDETAILNUM = od.ORDERDETAILNUM
+	JOIN 
+	    PRODUCTORDER po ON od.ORDERNUM = po.ORDERNUM
+	JOIN 
+	    MEMBER1 m ON po.USERID = m.USERID
+	JOIN 
+	    PRODUCTSTOCK ps ON od.STOCKNUM = ps.STOCKNUM
+	JOIN 
+	    PRODUCT p ON ps.PRODUCTNUM = p.PRODUCTNUM
+	LEFT JOIN
+	    OPTIONDETAIL od1 ON ps.DETAILNUM = od1.DETAILNUM
+	LEFT JOIN
+	    OPTIONDETAIL od2 ON ps.DETAILNUM2 = od2.DETAILNUM
+	WHERE 
+	    p.PRODUCTNUM = #{productNum}
+	    AND pr.SHOWREVIEW = 1
+	ORDER BY 
+	    pr.REVIEW_DATE DESC
+	OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+</select>
+
+    <!-- 2. 상품의 리뷰 갯수 불러오기 -->
+    <select id="countReviews" parameterType="long" resultType="int">
+        SELECT COUNT(*)
+        FROM PRODUCT_REVIEW pr
+        JOIN ORDERDETAIL od ON pr.ORDERDETAILNUM = od.ORDERDETAILNUM
+        JOIN PRODUCTSTOCK ps ON od.STOCKNUM = ps.STOCKNUM
+        WHERE ps.PRODUCTNUM = #{productNum}
+        AND pr.SHOWREVIEW = 1
+    </select>
+    
+        <!-- 3. 상품의 평균 평점 가져오기 -->
+    <select id="getAvgScore" parameterType="long" resultType="double">
+        SELECT ROUND(AVG(pr.SCORE), 2) as avgScore
+        FROM PRODUCT_REVIEW pr
+        JOIN ORDERDETAIL od ON pr.ORDERDETAILNUM = od.ORDERDETAILNUM
+        JOIN PRODUCTSTOCK ps ON od.STOCKNUM = ps.STOCKNUM
+        WHERE ps.PRODUCTNUM = #{productNum}
+        AND pr.SHOWREVIEW = 1
+    </select>
 
 </mapper>

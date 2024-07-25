@@ -1,5 +1,7 @@
 package com.sgsg.dra.domain;
 
+import java.util.List;
+
 public class Review {
 	 private long orderNum; 
 	 private long orderDetailNum;
@@ -25,6 +27,14 @@ public class Review {
 	 private long detailNum2;
 	 
 	 private int reviewWrite;
+	 
+	 private String userName;
+	 
+	 private String optionNames;
+
+	 private List<String> imageFiles;
+	 
+	  private List<String> imageUrls;
 	 
 	public long getOrderDetailNum() {
 		return orderDetailNum;
@@ -133,6 +143,30 @@ public class Review {
 	}
 	public void setOrderNum(long orderNum) {
 		this.orderNum = orderNum;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getOptionNames() {
+		return optionNames;
+	}
+	public void setOptionNames(String optionNames) {
+		this.optionNames = optionNames;
+	}
+	public List<String> getImageFiles() {
+		return imageFiles;
+	}
+	public void setImageFiles(List<String> imageFiles) {
+		this.imageFiles = imageFiles;
+	}
+	public List<String> getImageUrls() {
+		return imageUrls;
+	}
+	public void setImageUrls(List<String> imageUrls) {
+		this.imageUrls = imageUrls;
 	}
 	
 	 
