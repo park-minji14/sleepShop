@@ -15,18 +15,29 @@ import com.sgsg.dra.mapper.ProductMapper;
 public class ProductServiceImpl implements ProductService  {
     @Autowired
     private ProductMapper mapper;
-
+    
+    
     @Override
     public List<Product> listProduct() {
         List<Product> list = null;
         try {
+            // 기본 제품 목록
             list = mapper.listProduct();
             if (list != null) {
                 for (Product product : list) {
+                    // 할인된 가격 계산
                     double discountedPrice = product.getPrice() * (1 - product.getDiscountRate() / 100.0);
                     // 백원 단위로 반올림
                     long roundedPrice = Math.round(discountedPrice / 100.0) * 100;
                     product.setSalePrice(roundedPrice);
+
+                    // 제품 번호로 상세 정보를 조회
+                    Product detailedProduct = findById(product.getProductNum());
+                    if (detailedProduct != null) {
+                        // 상세 정보에서 리뷰 수와 평균 점수를 가져와 설정
+                        product.setReviewCount(detailedProduct.getReviewCount());
+                        product.setScore(detailedProduct.getScore());
+                    }
                 }
             }
         } catch (Exception e) {
@@ -34,7 +45,6 @@ public class ProductServiceImpl implements ProductService  {
         }
         return list;
     }
-
     
     @Override
     public Product findById(long productNum) {

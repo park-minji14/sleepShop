@@ -87,111 +87,108 @@ public class ProductController {
 		return list;
 	}
 
-	   @GetMapping("/details")
-	    public String productDetail(@RequestParam Long productNum, 
-	                                @RequestParam(value = "reviewPage", defaultValue = "1") int reviewPage, 
-	                                Model model) {
-	        try {
-	            Product dto = service.findById(productNum);
-	            if (dto == null) {
-	                return "redirect:/home";
-	            }
+	@GetMapping("/details")
+	public String productDetail(@RequestParam Long productNum,
+			@RequestParam(value = "reviewPage", defaultValue = "1") int reviewPage, Model model) {
+		try {
+			Product dto = service.findById(productNum);
+			if (dto == null) {
+				return "redirect:/home";
+			}
 
-	            List<Product> listFile = service.listProductFile(productNum);
-	            List<Product> listOption = service.listProductOption(productNum);
+			List<Product> listFile = service.listProductFile(productNum);
+			List<Product> listOption = service.listProductOption(productNum);
 
-	            List<Product> listOptionDetail = null;
-	            if (listOption.size() > 0) {
-	                listOptionDetail = service.listOptionDetail(listOption.get(0).getOptionNum());
-	            }
+			List<Product> listOptionDetail = null;
+			if (listOption.size() > 0) {
+				listOptionDetail = service.listOptionDetail(listOption.get(0).getOptionNum());
+			}
 
-	            Map<String, Object> map = new HashMap<>();
-	            map.put("productNum", dto.getProductNum());
-	            List<Product> listStock = service.listOptionDetailStock(map);
+			Map<String, Object> map = new HashMap<>();
+			map.put("productNum", dto.getProductNum());
+			List<Product> listStock = service.listOptionDetailStock(map);
 
-	            if (dto.getOptionCount() == 0) {
-	                // 단품 상품인 경우
-	                if (listStock != null && !listStock.isEmpty()) {
-	                    dto.setStockNum(listStock.get(0).getStockNum());
-	                    dto.setTotalStock(listStock.get(0).getTotalStock());
-	                }
-	            } else if (dto.getOptionCount() > 0) {
-	                // 옵션이 있는 상품인 경우
-	                for (Product vo : listOptionDetail) {
-	                    for (Product ps : listStock) {
-	                        if (vo.getDetailNum() == ps.getDetailNum()) {
-	                            vo.setStockNum(ps.getStockNum());
-	                            vo.setTotalStock(ps.getTotalStock());
-	                            break;
-	                        }
-	                    }
-	                }
-	            }
+			if (dto.getOptionCount() == 0) {
+				// 단품 상품인 경우
+				if (listStock != null && !listStock.isEmpty()) {
+					dto.setStockNum(listStock.get(0).getStockNum());
+					dto.setTotalStock(listStock.get(0).getTotalStock());
+				}
+			} else if (dto.getOptionCount() > 0) {
+				// 옵션이 있는 상품인 경우
+				for (Product vo : listOptionDetail) {
+					for (Product ps : listStock) {
+						if (vo.getDetailNum() == ps.getDetailNum()) {
+							vo.setStockNum(ps.getStockNum());
+							vo.setTotalStock(ps.getTotalStock());
+							break;
+						}
+					}
+				}
+			}
 
-	            model.addAttribute("dto", dto);
-	            model.addAttribute("listFile", listFile);
-	            model.addAttribute("listOption", listOption);
-	            model.addAttribute("listOptionDetail", listOptionDetail);
+			model.addAttribute("dto", dto);
+			model.addAttribute("listFile", listFile);
+			model.addAttribute("listOption", listOption);
+			model.addAttribute("listOptionDetail", listOptionDetail);
 
-	            // 리뷰 정보 추가
-	            int reviewSize = 5; // 페이지당 리뷰 수
-	            int reviewOffset = (reviewPage - 1) * reviewSize;
+			// 리뷰 정보 추가
+			int reviewSize = 5; // 페이지당 리뷰 수
+			int reviewOffset = (reviewPage - 1) * reviewSize;
 
-	            Map<String, Object> reviewMap = new HashMap<>();
-	            reviewMap.put("productNum", productNum);
-	            reviewMap.put("offset", reviewOffset);
-	            reviewMap.put("size", reviewSize);
+			Map<String, Object> reviewMap = new HashMap<>();
+			reviewMap.put("productNum", productNum);
+			reviewMap.put("offset", reviewOffset);
+			reviewMap.put("size", reviewSize);
 
-	            List<Review> reviewList = reviewService.listReviews(reviewMap);
-	            int reviewCount = reviewService.countReviews(productNum);
-	            double avgScore = reviewService.getAvgScore(productNum);
+			List<Review> reviewList = reviewService.listReviews(reviewMap);
+			int reviewCount = reviewService.countReviews(productNum);
+			double avgScore = reviewService.getAvgScore(productNum);
 
-	            // 리뷰 페이징 처리
-	            int totalReviewPages = (int) Math.ceil((double) reviewCount / reviewSize);
-	            String reviewPaging = myUtil.pagingMethod(reviewPage, totalReviewPages, "loadReviews");
+			// 리뷰 페이징 처리
+			int totalReviewPages = (int) Math.ceil((double) reviewCount / reviewSize);
+			String reviewPaging = myUtil.pagingMethod(reviewPage, totalReviewPages, "loadReviews");
 
+			model.addAttribute("reviewList", reviewList);
+			model.addAttribute("reviewCount", reviewCount);
+			model.addAttribute("avgScore", avgScore);
+			model.addAttribute("reviewPage", reviewPage);
+			model.addAttribute("reviewPaging", reviewPaging);
 
-	            model.addAttribute("reviewList", reviewList);
-	            model.addAttribute("reviewCount", reviewCount);
-	            model.addAttribute("avgScore", avgScore);
-	            model.addAttribute("reviewPage", reviewPage);
-	            model.addAttribute("reviewPaging", reviewPaging);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ".product.details";
+	}
 
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	        return ".product.details";
-	    }
+	@GetMapping("/category")
+	public String categoryView(@RequestParam Long categoryNum, @RequestParam(required = false) Long subCategoryNum,
+			Model model) {
+		// 현재 카테고리 정보 가져오기
+		Product category = service.getCategoryById(categoryNum);
 
-	   @GetMapping("/category")
-	    public String categoryView(@RequestParam Long categoryNum, 
-	                               @RequestParam(required = false) Long subCategoryNum,
-	                               Model model) {
-	        // 현재 카테고리 정보 가져오기
-	        Product category = service.getCategoryById(categoryNum);
+		// 메인 카테고리 목록 가져오기
+		List<Product> mainCategories = service.selectCategoryList();
 
-	        // 메인 카테고리 목록 가져오기
-	        List<Product> mainCategories = service.selectCategoryList();
+		// 서브 카테고리 목록 가져오기
+		List<Product> subCategories = service.listSubCategory(categoryNum);
 
-	        // 서브 카테고리 목록 가져오기
-	        List<Product> subCategories = service.listSubCategory(categoryNum);
+		// 해당 카테고리의 상품 목록 가져오기
+		List<Product> products;
+		if (subCategoryNum != null) {
+			products = service.getProductsByCategory(subCategoryNum);
+		} else {
+			products = service.getProductsByCategory(categoryNum);
+		}
 
-	        // 해당 카테고리의 상품 목록 가져오기
-	        List<Product> products;
-	        if (subCategoryNum != null) {
-	            products = service.getProductsByCategory(subCategoryNum);
-	        } else {
-	            products = service.getProductsByCategory(categoryNum);
-	        }
+		model.addAttribute("category", category);
+		model.addAttribute("mainCategories", mainCategories);
+		model.addAttribute("subCategories", subCategories);
+		model.addAttribute("subCategoryNum", subCategoryNum);
+		model.addAttribute("products", products);
 
-	        model.addAttribute("category", category);
-	        model.addAttribute("mainCategories", mainCategories);
-	        model.addAttribute("subCategories", subCategories);
-	        model.addAttribute("subCategoryNum", subCategoryNum);
-	        model.addAttribute("products", products);
-
-	        return ".product.category";
-	    }
+		return ".product.category";
+	}
 
 	@GetMapping("/search")
 	public String searchProducts(@RequestParam String searchTerm,
@@ -262,6 +259,7 @@ public class ProductController {
 	    return response;
 	}
 	
+	//북마크
 	@PostMapping("toggleWishlist")
 	@ResponseBody
 	public Map<String, Object> toggleWishlist(@RequestParam Long productNum, HttpSession session) {

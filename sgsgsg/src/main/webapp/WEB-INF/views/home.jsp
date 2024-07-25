@@ -50,6 +50,8 @@
         </div>
     </div>
 </section>
+
+
 <section class="best-sellers-section">
     <div class="container">
         <h2 class="best-sellers-title mb-4">고객 추천 상품</h2>
@@ -98,9 +100,10 @@
             <div class="swiper-scrollbar"></div>
         </div>
     </div>
-</section>
+</section> 
 
 
+<!-- 
 	<section class="recommended-products">
 		<div class="inner">
 			<h2>추천 상품</h2>
@@ -173,16 +176,6 @@
 						</div>
 						<img
 							src="${pageContext.request.contextPath}/uploads/product/150.png"
-							alt="온열 담요">
-						<p>온열 담요</p>
-						<p>55,000원</p>
-					</div>
-					<div class="product-item">
-						<div class="wishlist-btn">
-							<i class="bi bi-heart"></i>
-						</div>
-						<img
-							src="${pageContext.request.contextPath}/uploads/product/150.png"
 							alt="차분한 음악 기기">
 						<p>차분한 음악 재생기</p>
 						<p>75,000원</p>
@@ -192,14 +185,19 @@
 			</div>
 		</div>
 	</section>
+	 -->
 
 
 	<!-- 특가섹션 -->
 <div class="timedeal-header">
-    <div class="inner">
-        <div class="timedeal-logo">⚡오늘의 특가</div>
-        <div class="timedeal-timer" id="timer"></div>
-    </div>
+	<div class="inner">
+		<div class="timedeal-logo">
+			<img width="50" height="50"
+				src="https://img.icons8.com/pastel-glyph/50/000000/conflict--v1.png"
+				alt="conflict--v1" />오늘의 특가
+		</div>
+		<div class="timedeal-timer" id="timer"></div>
+	</div>
 </div>
 <div class="container">
 	<div class="inner">
@@ -231,33 +229,36 @@
 	</div>
 
 	<section class="featured-products">
-		<div class="inner">
-			<h2>꿀잠을 위한 필수 아이템</h2>
-			<div class="product-grid">
-				<c:forEach var="product" items="${list}">
-					<div class="product-item">
-						<a
-							href="${pageContext.request.contextPath}/product/details?productNum=${product.productNum}">
-							<div class="image-wrapper">
-								<img
-									src="${pageContext.request.contextPath}/uploads/product/${product.thumbnail}"
-									alt="${product.productName}">
-								<div class="bookmark" data-product-id="${product.productNum}"></div>
-							</div> <span class="product-info"> <span>${product.productName}</span>
-								<span class="discount"> ${product.discountRate}% <span
-									class="price"> <fmt:formatNumber
-											value="${product.salePrice}" pattern="#,###원" />
-								</span>
-							</span> <span class="rating"> ★ ${product.score} <span
-									class="review-count">리뷰 ${product.reviewCount}</span>
-							</span>
-						</span>
-						</a>
-					</div>
-				</c:forEach>
-			</div>
-		</div>
-	</section>
+    <div class="inner">
+        <h2>꿀잠을 위한 필수 아이템</h2>
+        <div class="product-grid">
+            <c:forEach var="product" items="${list}">
+                <div class="product-item">
+                    <a href="${pageContext.request.contextPath}/product/details?productNum=${product.productNum}">
+                        <div class="image-wrapper">
+                            <img src="${pageContext.request.contextPath}/uploads/product/${product.thumbnail}"
+                                 alt="${product.productName}">
+                            <div class="bookmark" data-product-id="${product.productNum}"></div>
+                        </div>
+                        <span class="product-info">
+                            <span class="product-name">${product.productName}</span>
+                            <span class="discount">
+                                ${product.discountRate}% 
+                                <span class="price">
+                                    <fmt:formatNumber value="${product.salePrice}" pattern="#,###원" />
+                                </span>
+                            </span>
+                            <span class="rating">
+                                ★ <fmt:formatNumber value="${product.score}" pattern="#.#" />
+                                <span class="review-count">리뷰 ${product.reviewCount}</span>
+                            </span>
+                        </span>
+                    </a>
+                </div>
+            </c:forEach>
+        </div>
+    </div>
+</section>
 </div>
 
 <script type="text/javascript">
@@ -297,7 +298,7 @@ $(document).ready(function() {
 	    });
 
     // 모든 초기화 함수를 여기서 호출
-    initProductSlider();
+    /* initProductSlider(); */
     initSwiper();
     initWishlistButtons();
     startCountdown();
@@ -306,6 +307,7 @@ $(document).ready(function() {
 let productItemWidth = 200;
 let productCurrentIndex = 0;
 
+/* 
 function initProductSlider() {
     const prevButton = document.querySelector('.product-nav.prev');
     const nextButton = document.querySelector('.product-nav.next');
@@ -320,7 +322,7 @@ function initProductSlider() {
 
     prevButton.addEventListener('click', () => slideProducts(-1));
     nextButton.addEventListener('click', () => slideProducts(1));
-}
+} */
 
 function slideProducts(direction) {
     const productList = document.getElementById('productList');

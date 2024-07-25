@@ -24,15 +24,16 @@ public class HomeController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(Model model) {
         try {
+            // 카테고리 목록 가져오기
             List<Product> categoryList = productService.selectCategoryList();
             model.addAttribute("categoryList", categoryList);
             
+            // 제품 목록 가져오기 (할인 가격, 리뷰 정보 포함)
             List<Product> listProduct = productService.listProduct();
             model.addAttribute("list", listProduct);
             
             // Special 상품 리스트 가져오기
             Map<String, Object> map = new HashMap<>();
-            
             map.put("size", 3); // 표시할 특가 상품의 개수
             
             List<SpecialsProduct> specialList = specialsService.listSpecialProducts(map);
