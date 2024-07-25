@@ -2,10 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<!-- CSS: 메인전용 -->
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/page/main.css"
-	type="text/css">
+
 
 
 <div class="tab-pane fade show active" id="recent">
