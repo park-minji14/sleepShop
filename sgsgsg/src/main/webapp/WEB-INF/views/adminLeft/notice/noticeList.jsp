@@ -315,7 +315,7 @@ $("body").on("click", ".btn-update", function(){
         $(".saveNotice-form input[name=noticeTitle]").val(data.title);
         $(".saveNotice-form input[name=noticeDate]").val(data.created_date.split(" ")[0]);
         $(".saveNotice-form input[name=noticeWriter]").val(data.userNickname);
-        $(".saveNotice-form .noticeContent").val(data.content);
+        $(".saveNotice-form .noticeContent").val(data.content.replaceAll("<br>", "\n"));
         $(".saveNotice-form select[name=status]").val(data.status);
         $(".saveNotice-form input[name=mode]").val("update");
         $(".saveNotice-form input[name=noticeNum]").val(detailNum);

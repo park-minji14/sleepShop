@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgsg.dra.mapper.NoticeMapper">
+<select id="listNotice" parameterType="map" resultType="com.sgsg.dra.domain.Notice">
+	Select Num, title, content, To_Char(created_date, 'YYYY-MM-DD') AS created_date, 
+		To_Char(updated_date, 'YYYY-MM-DD') AS updated_date, userNickname, status 
+	From notice 
+	Where status = #{status}
+	Order By Num DESC
+	Offset #{offset} Rows Fetch First #{size} Rows only
+</select>
+
+<select id="findById" parameterType="Long" resultType="com.sgsg.dra.domain.Notice">
+	Select Num, title, content, To_Char(created_date, 'YYYY-MM-DD') AS created_date, 
+		To_Char(updated_date, 'YYYY-MM-DD') AS updated_date, userNickname, status 
+	From notice Where num = #{num}
+</select>
+
+<select id="dataCount" parameterType="map" resultType="Integer">
+	Select NVL(Count(num), 0) From notice
+	Where status = #{status}
+</select>
+
+<select id="findByPrev" parameterType="map" resultType="com.sgsg.dra.domain.Notice">
+	Select Num, title, content, created_date, updated_date, userNickname, status From notice
+	Where num &gt; #{num} AND status = #{status}
+	ORDER BY Num ASC
+	FETCH FIRST 1 ROWS ONLY
+</select>
+
+<select id="findByNext" parameterType="map" resultType="com.sgsg.dra.domain.Notice">
+	Select Num, title, content, created_date, updated_date, userNickname, status From notice
+	Where num &lt; #{num} AND status = #{status}
+	ORDER BY Num DESC
+	FETCH FIRST 1 ROWS ONLY
+</select>
+
+</mapper>

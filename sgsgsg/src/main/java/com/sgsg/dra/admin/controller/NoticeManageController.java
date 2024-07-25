@@ -51,6 +51,8 @@ public class NoticeManageController {
 		try {
 			dto.setUserid(info.getUserId());
 			dto.setUserNickname(info.getUserName());
+			dto.setContent(dto.getContent().replaceAll("(\r\n|\n|\r)", "<br>"));
+			//System.out.println(dto.getContent());
 			service.insertNotice(dto);
 		} catch (Exception e) {
 			state = "false";
@@ -117,7 +119,9 @@ public class NoticeManageController {
             model.put("created_date", dto.getCreated_date());
             model.put("updated_date", dto.getUpdated_date() != null ? dto.getUpdated_date() : "");
             model.put("status", dto.getStatus());
-            model.put("content", dto.getContent());
+            
+            String content = dto.getContent().replaceAll("(\r\n|\n|\r)", "<br>");
+            model.put("content", content);
         }
         
         return model;
@@ -167,7 +171,7 @@ public class NoticeManageController {
         int size = 10;
         int total_page;
         int dataCount;
-        System.out.println("Received Search Parameters - State: " + state + ", Page: " + current_page + ", Search Type: " + searchType + ", Keyword: " + keyword);
+        //System.out.println("Received Search Parameters - State: " + state + ", Page: " + current_page + ", Search Type: " + searchType + ", Keyword: " + keyword);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("state", state);
         map.put("keyword", keyword);
