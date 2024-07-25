@@ -10,4 +10,6 @@ public interface ReturnManageService {
 	public List<Return> listReturnRequest(Map<String, Object> map) throws Exception;
 	public int dataCount(Map<String, Object> map) throws Exception;
 	
+	public void updateRetrunRequest(Map<String, Object> map) throws Exception;
+	
 }

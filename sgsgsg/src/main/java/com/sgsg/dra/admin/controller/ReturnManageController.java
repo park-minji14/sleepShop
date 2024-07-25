@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sgsg.dra.admin.service.ReturnManageService;
 import com.sgsg.dra.common.MyUtil;
@@ -99,4 +101,24 @@ public class ReturnManageController {
 		
 		return ".adminLeft.order.return";
 	}
+	
+	@PostMapping("confirm")
+	@ResponseBody
+	public Map<String, Object> returnConfirm(@RequestParam Map<String, Object> paramMap) throws Exception {
+		String state = "false";
+		
+		try {
+			String s = paramMap.get("detail_status").toString();
+			System.out.println("detail_status tostring"+s);
+			service.updateRetrunRequest(paramMap);
+			state = "true";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("state", state);
+		return model;
+	};
+	
 }

@@ -14,4 +14,7 @@ public interface ReturnManageMapper {
 	public List<Return> listReturnRequest(Map<String, Object> map) throws SQLException;
 	public int dataCount(Map<String, Object> map) throws SQLException;
 	
+	public void updateRetrunRequest(Map<String, Object> map) throws SQLException;
+	public Return findReturnNum(Map<String, Object> map) throws SQLException;
+	public void cancelProductStock(Map<String, Object> map) throws SQLException;
 }

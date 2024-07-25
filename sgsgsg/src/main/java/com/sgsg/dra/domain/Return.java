@@ -24,6 +24,7 @@ public class Return {
 	
 	private String orderNum;
 	private long stockNum;
+	private int qty;
 	private long productNum;
 	private String productName;
 	private int optionCount;
@@ -158,6 +159,12 @@ public class Return {
 	}
 	public void setStockNum(long stockNum) {
 		this.stockNum = stockNum;
+	}
+	public int getQty() {
+		return qty;
+	}
+	public void setQty(int qty) {
+		this.qty = qty;
 	}
 	public long getProductNum() {
 		return productNum;

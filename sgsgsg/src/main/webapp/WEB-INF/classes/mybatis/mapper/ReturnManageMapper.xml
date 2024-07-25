@@ -71,7 +71,36 @@
 		</where>
 	</select>
 	
-	<!-- 요청 상세 -->
 	
+	<update id="updateRetrunRequest" parameterType="map">
+		UPDATE RETURN_REQUEST set inspection_result = #{inspection_result, jdbcType=VARCHAR},
+			REFUND_AMOUNT= nvl(#{refund_amount, jdbcType=INTEGER}, 0), DETAIL_STATUS = #{detail_status}
+		WHERE RETURN_EXCHANGE_NUM = #{return_exchange_num}
+	</update>
+	
+	<!-- 요청 상세 -->
+	<select id="findReturnNum" parameterType="map" resultType="com.sgsg.dra.domain.Return">
+		SELECT RETURN_EXCHANGE_NUM, REQUEST_TYPE, to_char(REQUEST_DATE, 'yyyy-mm-dd hh24:mi:ss') REQUEST_DATE,
+		    REQUEST_REASON, DETAIL_STATUS, INSPECTION_RESULT, rr.ORDERDETAILNUM, QTY,
+		    PRODUCTMONEY as refund_amount, STOCKNUM
+		FROM RETURN_REQUEST rr
+		JOIN ORDERDETAIL od on rr.ORDERDETAILNUM = od.ORDERDETAILNUM
+		WHERE RETURN_EXCHANGE_NUM = #{return_exchange_num}
+	</select>
+	
+	<!-- 재고 돌리기, 주문상세번호 가지고 stock 돌려줌 -->
+	<update id="cancelProductStock" parameterType="map">
+		MERGE INTO PRODUCTSTOCK ps
+		USING (
+			SELECT od.STOCKNUM, SUM(od.QTY) AS TOTAL_QTY
+			FROM RETURN_REQUEST rr
+            join ORDERDETAIL od on rr.ORDERDETAILNUM = od.ORDERDETAILNUM
+			WHERE rr.ORDERDETAILNUM = #{orderdetailNum}
+			GROUP BY od.STOCKNUM
+		) od
+		ON (ps.STOCKNUM = od.STOCKNUM)
+		WHEN MATCHED THEN
+			UPDATE SET ps.TOTALSTOCK = ps.TOTALSTOCK + od.TOTAL_QTY
+	</update>
 	
 </mapper>

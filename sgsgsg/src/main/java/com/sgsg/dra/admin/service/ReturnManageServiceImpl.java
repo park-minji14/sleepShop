@@ -51,4 +51,21 @@ public class ReturnManageServiceImpl implements ReturnManageService{
 		return result;
 	}
 	
+	@Override
+	public void updateRetrunRequest(Map<String, Object> map) throws Exception {
+		try {
+			
+			String status = map.get("detail_status").toString();
+			if (status.equals("13")) {
+				Return returnRequest = mapper.findReturnNum(map);
+				map.put("refund_amount", returnRequest.getRefund_amount());
+			}
+			mapper.cancelProductStock(map);
+			mapper.updateRetrunRequest(map);
+		} catch (Exception e) {
+			throw e;
+		}
+		
+	}
+	
 }
