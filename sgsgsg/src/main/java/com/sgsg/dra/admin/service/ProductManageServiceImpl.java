@@ -1,6 +1,7 @@
 package com.sgsg.dra.admin.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -162,11 +163,37 @@ public class ProductManageServiceImpl implements ProductManageService {
 	}
 	
 	@Override
+	public List<ProductManage> listProductExcel(Map<String, Object> map) {
+		List<ProductManage> list = null;
+		
+		try {
+			list = mapper.listProductExcel(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	@Override
 	public List<ProductManage> listProductForStock(Map<String, Object> map) {
 		List<ProductManage> list = null;
 		
 		try {
 			list = mapper.listProductForStock(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	@Override
+	public List<ProductManage> listProductForStockAndExcel(Map<String, Object> map) {
+		List<ProductManage> list = null;
+		
+		try {
+			list = mapper.listProductForStockAndExcel(map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -492,6 +519,42 @@ public class ProductManageServiceImpl implements ProductManageService {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	
+	//parseing 및 연산에 사용할 메서드
+	@Override
+    public String parseParentNum(long parentNum) {
+        Map<Long, String> parentNumMap = new HashMap<>();
+        parentNumMap.put((long) 1, "침구");
+        parentNumMap.put((long) 2, "가전");
+        parentNumMap.put((long) 3, "의류");
+        parentNumMap.put((long) 4, "향초");
+        parentNumMap.put((long) 5, "조명");
+        parentNumMap.put((long) 6, "영양제");
+        parentNumMap.put((long) 7, "수면용품");
+        parentNumMap.put((long) 8, "졸음방지용품");
+        
+        return parentNumMap.getOrDefault(parentNum, "기타");
+    }
+	
+	@Override
+	public String parseProductShow(int showNum) {
+		String parsedStr = null;
+		
+		switch (showNum) {
+		case 0: parsedStr = "미진열"; break;
+		case 1: parsedStr = "진열"; break;
+		default : parsedStr = "오류값";
+		
+	}
+		return parsedStr;
+	}
+	
+	@Override
+    public double getRoundedSalePrice(double price, double discountRate) {
+        double discountedPrice = price * (1 - discountRate / 100.0);
+        return Math.round(discountedPrice / 100) * 100;
 	}
 
 }

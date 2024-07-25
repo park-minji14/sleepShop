@@ -118,6 +118,29 @@
     OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 </select>
 
+<select id="listProductExcel" parameterType="map"
+    resultType="com.sgsg.dra.admin.domain.ProductManage">
+    Select productNum, pc.Parent_categoryNum as ParentNum, p.categoryNum, pc.categoryName, productName, classify, price, discountRate, savedMoney, 
+        delivery, optionCount, content, thumbnail, productShow, To_Char(reg_date, 'YYYY-MM-DD') reg_date, To_Char(update_date, 'YYYY-MM-DD') update_date, search_word
+    From product p
+    Join PRODUCT_CATEGORY pc On p.categoryNum = pc.categoryNum
+    <where>
+        <if test="kwd != null and kwd != ''">
+            (INSTR(productName, #{kwd}) &gt; 0 OR INSTR(search_word, #{kwd}) &gt; 0)
+        </if>
+        <if test="parentNum != 0">
+            AND <include refid="category-search"/>
+        </if>
+        <if test="priceMin > 0">
+            AND price &gt;= #{priceMin}
+        </if>
+        <if test="priceMax > 0">
+            AND price &lt;= #{priceMax}
+        </if>
+    </where>
+    Order By p.categoryNum DESC, p.productNum ASC 
+</select>
+
 <sql id="category-search">
     <if test="parentNum != 0">
         pc.Parent_categoryNum = #{parentNum}
@@ -263,6 +286,23 @@
     </if>
     ORDER BY p.productNum DESC
     OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
+</select>
+
+<select id="listProductForStockAndExcel" parameterType="map" resultType="com.sgsg.dra.admin.domain.ProductManage">
+    SELECT 
+        p.productNum, pc.Parent_categoryNum as ParentNum, p.categoryNum, pc.categoryName, p.productName, 
+        p.classify, p.price, p.discountRate, p.savedMoney, p.delivery, p.optionCount,
+        p.thumbnail, p.productShow, TO_CHAR(p.reg_date, 'YYYY-MM-DD') as reg_date, 
+        TO_CHAR(p.update_date, 'YYYY-MM-DD') as update_date, p.search_word, 
+        NVL(SUM(ps.totalStock), 0) as totalstock
+    FROM product p
+    JOIN PRODUCT_CATEGORY pc ON p.categoryNum = pc.categoryNum
+    LEFT OUTER JOIN productStock ps ON p.productNum = ps.productNum
+    GROUP BY p.productNum, pc.Parent_categoryNum, p.categoryNum, pc.categoryName, 
+        p.productName, p.classify, p.price, p.discountRate, p.savedMoney, 
+        p.delivery, p.optionCount, p.thumbnail, p.productShow, 
+        TO_CHAR(p.reg_date, 'YYYY-MM-DD'), TO_CHAR(p.update_date, 'YYYY-MM-DD'), p.search_word
+    ORDER BY pc.Parent_categoryNum DESC, p.productNum ASC
 </select>
 
 <select id="dataCountStockList" parameterType="map" resultType="Integer">

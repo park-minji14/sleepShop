@@ -130,6 +130,8 @@ public class SpecialsManageController {
 		} catch (Exception e) {
 		}
 		
+		model.addAttribute("mode", "specialWrite");
+		
 		return "redirect:/adminManagement/productManage/specialList";
 	}
 	

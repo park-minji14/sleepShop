@@ -133,7 +133,7 @@ function check() {
 	}
 	
     let mode = "${mode}";
-    if( (mode === "specialUpdate") && (! f.selectFile.value) ) {
+    if( (mode === "specialWrite") && (! f.selectFile.value) ) {
         alert("이미지 파일을 추가 하세요. ");
         f.selectFile.focus();
         return;

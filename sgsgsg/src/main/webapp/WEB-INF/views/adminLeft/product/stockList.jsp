@@ -121,7 +121,9 @@ window.addEventListener("load", function() {
         
 		<div class="d-flex justify-content-between align-items-center mt-3">
 		    <!-- 왼쪽 빈 영역 -->
-		    <div class="col-auto"></div>
+		    <div class="col-auto">
+		    	<button class="btn btn-secondary"><a class="nav-link text-white" href="${pageContext.request.contextPath}/adminManagement/productManage/excelStockAllDownload">EXCEL</a></button>
+		    </div>
 		
 		    <!-- 가운데 -->
 		    <div class="col-auto flex-grow-1 text-center">

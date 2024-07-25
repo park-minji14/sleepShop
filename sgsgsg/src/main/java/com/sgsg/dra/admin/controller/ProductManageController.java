@@ -2,6 +2,7 @@ package com.sgsg.dra.admin.controller;
 
 import java.io.File;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.View;
 
 import com.sgsg.dra.admin.domain.ProductManage;
 import com.sgsg.dra.admin.domain.ProductStockManage;
 import com.sgsg.dra.admin.service.ProductManageService;
+import com.sgsg.dra.common.ExcelView;
 import com.sgsg.dra.common.MyUtil;
 
 @Controller
@@ -32,6 +35,9 @@ public class ProductManageController {
 	
 	@Autowired
 	private MyUtil myUtil;
+	
+	@Autowired
+	private ExcelView excelView;
 	
 	@RequestMapping("productList")
 	public String productManageList(
@@ -78,8 +84,13 @@ public class ProductManageController {
 		map.put("size", size);
 		
 		List<ProductManage> list = service.listProduct(map);
-		
 		List<ProductManage> listCategory = service.listCategory();
+		
+	    for (ProductManage dto : list) {
+	        double roundedSalePrice = service.getRoundedSalePrice(dto.getPrice(), dto.getDiscountRate());
+	        dto.setSalePrice((int)roundedSalePrice);
+	    }
+		
 		/*
 		//listSubCategory 안써서 안넣어도 됨
 		List<ProductManage> listSubCategory = null;
@@ -441,5 +452,102 @@ public class ProductManageController {
 		model.put("state", state);
 		return model;
 	}
+	
+	@RequestMapping("excelProductAllDownload")
+	public View downloadExcel(
+			@RequestParam(defaultValue = "0") long parentNum,
+			@RequestParam(defaultValue = "0") long categoryNum,
+			@RequestParam(defaultValue = "") String kwd,
+			@RequestParam(defaultValue = "0") int priceMin,
+			@RequestParam(defaultValue = "0") int priceMax,
+			Map<String, Object> model) throws Exception {
+		String sheetName = "상품목록";
+		
+		List<String> columnLabels = new ArrayList<String>();
+		
+		columnLabels.add("상품코드");
+		columnLabels.add("상품명");
+		columnLabels.add("상위카테고리");
+		columnLabels.add("하위카테고리");
+		columnLabels.add("상품등록일");
+		columnLabels.add("진열여부");
+		columnLabels.add("정가");
+		columnLabels.add("할인율");
+		columnLabels.add("판매가");
+		columnLabels.add("적립금");
+		
+		List<Object[]> columnValues = new ArrayList<Object[]>();
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("parentNum", parentNum);
+		map.put("categoryNum", categoryNum);
+		map.put("kwd", kwd);
+	    map.put("priceMin", priceMin);
+	    map.put("priceMax", priceMax);
+		
+		List<ProductManage> list = service.listProductExcel(map);
+		
+		for(ProductManage dto : list) {
+			String parentCategory = service.parseParentNum(dto.getParentNum());
+			String parsedShow = service.parseProductShow(dto.getProductShow());
+			double salePrice = dto.getDiscountRate() == 0 ? dto.getPrice() : dto.getPrice() * (dto.getDiscountRate() * 0.01);
+			columnValues.add(new Object[] {dto.getProductNum(), dto.getProductName(), 
+					parentCategory, dto.getCategoryName(), dto.getReg_date(),
+					parsedShow, dto.getPrice(), dto.getDiscountRate(), salePrice, dto.getSavedMoney()});
+		}
+		
+		model.put("filename", "productList.xlsx");
+		model.put("sheetName", sheetName);
+		model.put("columnLabels", columnLabels);
+		model.put("columnValues", columnValues);
+		
+		return excelView;
+	}
+	
+	@RequestMapping("excelStockAllDownload")
+	public View downloadExcelStock(
+			@RequestParam(defaultValue = "0") long parentNum,
+			@RequestParam(defaultValue = "0") long categoryNum,
+			@RequestParam(defaultValue = "") String kwd,
+			Map<String, Object> model) throws Exception {
+		String sheetName = "상품목록";
+		
+		List<String> columnLabels = new ArrayList<String>();
+		
+		columnLabels.add("상품코드");
+		columnLabels.add("상품명");
+		columnLabels.add("상위카테고리");
+		columnLabels.add("하위카테고리");
+		columnLabels.add("상품등록일");
+		columnLabels.add("진열여부");
+		columnLabels.add("전체재고");
+		
+		List<Object[]> columnValues = new ArrayList<Object[]>();
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("parentNum", parentNum);
+		map.put("categoryNum", categoryNum);
+		map.put("kwd", kwd);
+		
+		List<ProductManage> list = service.listProductForStockAndExcel(map);
+		
+		for(ProductManage dto : list) {
+			String parentCategory = service.parseParentNum(dto.getParentNum());
+			String parsedShow = service.parseProductShow(dto.getProductShow());
+
+			columnValues.add(new Object[] {dto.getProductNum(), dto.getProductName(), parentCategory,
+					dto.getCategoryName(), dto.getReg_date(), parsedShow, dto.getTotalStock()});
+		}
+		
+		model.put("filename", "stockList.xlsx");
+		model.put("sheetName", sheetName);
+		model.put("columnLabels", columnLabels);
+		model.put("columnValues", columnValues);
+		
+		return excelView;
+	}
+	
 	
 }

@@ -59,7 +59,7 @@ Group by d.orderstate
 </select>
 
 <select id="recentOrder" resultType="com.sgsg.dra.admin.domain.RecentOrderManage">
-Select orderNum, productordername, recipientName, m.userName, totalMoney, orderState, tel, To_Char(orderDate, 'YYYY-MM-DD') orderDate 
+Select orderNum, productordername, recipientName, m.userName, ROUND(totalMoney, -2) AS totalMoney, orderState, tel, To_Char(orderDate, 'YYYY-MM-DD') orderDate 
 From productOrder po
 Join member1 m On po.userId = m.userId
 Order By orderDate Desc, orderNum desc

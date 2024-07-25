@@ -162,6 +162,7 @@ window.addEventListener("load", function() {
 	<div class="d-flex justify-content-between align-items-center mt-3">
 	    <div class="col-auto">
 	        <button class="btn btn-success"><a class="nav-link text-white" href="${pageContext.request.contextPath}/adminManagement/productManage/productWrite">+ 상품 등록</a></button>
+	        <button class="btn btn-secondary"><a class="nav-link text-white" href="${pageContext.request.contextPath}/adminManagement/productManage/excelProductAllDownload">EXCEL</a></button>
 	    </div>
 	    <div class="page-navigation text-center">
 	        ${dataCount == 0 ? "등록된 상품이 없습니다." : paging}
@@ -231,7 +232,7 @@ window.addEventListener("load", function() {
 			            </td>
 			            <td class="text-center"><fmt:formatNumber value="${dto.price}" type="number"/></td>
 			            <td class="text-center">${dto.discountRate}%</td>
-			            <td class="text-center"><fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100.0)}" type="number" maxFractionDigits="0"/></td>
+			            <td class="text-center"><fmt:formatNumber value="${dto.salePrice}" type="number" maxFractionDigits="0"/></td>
 			            <td class="text-center">${dto.savedMoney}</td>
 			            <td class="text-center"><button type="button" class="btn btn-sm btn-primary" id="btnUpdate" data-productNum="${dto.productNum}" data-parentNum="${dto.parentNum}" onclick="sendProductNum(this)">수정</button></td>
 			            <td class="text-center"><button type="button" class="btn btn-sm btn-danger" id="btnDelete" data-productNum="${dto.productNum}" onclick="sendProductNum(this)">삭제</button></td>

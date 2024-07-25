@@ -26,6 +26,7 @@ public interface ProductManageMapper {
 	public List<ProductManage> listCategory();
 	public List<ProductManage> listSubCategory(long parentNum);
 	public List<ProductManage> listProduct(Map<String, Object> map);
+	public List<ProductManage> listProductExcel(Map<String, Object> map);
 
 	public int dataCount(Map<String, Object> map);
 	public int dataCountStockList(Map<String, Object> map);
@@ -49,6 +50,7 @@ public interface ProductManageMapper {
 	public void updateProductStock(ProductStockManage dto) throws SQLException;
 	public List<ProductStockManage> listProductStock(Map<String, Object> map);
 	public List<ProductManage> listProductForStock(Map<String, Object> map);
+	public List<ProductManage> listProductForStockAndExcel(Map<String, Object> map);
 	
 	
 }
