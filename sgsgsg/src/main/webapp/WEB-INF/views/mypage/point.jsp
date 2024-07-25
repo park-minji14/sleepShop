@@ -2,7 +2,36 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<style>
 
+.navi{
+	margin-bottom: 80px;
+}
+
+
+.h2, h2 {
+    /* font-size: calc(1.5rem); */
+    font-size: 20px;
+    line-height: 20px;
+    margin-left: 8px;
+    font-weight: 700;
+    color: #424242;
+}
+
+
+.h5, h5 {
+    font-size: 18px;
+    line-height: 18px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    color: rgb(194, 200, 204);
+}
+
+
+
+
+</style>
 
 
 
@@ -12,7 +41,7 @@
 				<!-- 포인트 칸 -->
 				<div class="css-77kc86 e1t6i3i25" style="width: 75%; margin: auto; margin-top: 60px;">
 					<div class="css-0 e1t6i3i24">
-						<h2 class="css-ojabq6 e1t6i3i23" style="font-size: 33px;  font-weight: 600;">사용 가능한 포인트</h2>
+						<h2 class="css-ojabq6 e1t6i3i23" style="font-size: 33px;  font-weight: 600; margin-top: 30px; margin-bottom: 25px;">사용 가능한 포인트</h2>
 						<p class="css-1irwz7g e1t6i3i22">${point.remain_points} P</p>
 					</div>
 					<div class="css-1yu4f1z e1t6i3i21">
@@ -27,7 +56,7 @@
 						<a href="${pageContext.request.contextPath}/mypage/main">마이페이지 &gt; </a>
 					<a style="font: light-gray;">포인트</a></div>
 				</dl>
-				
+			</div>
 			
 			
 			

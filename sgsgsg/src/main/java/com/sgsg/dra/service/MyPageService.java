@@ -1,6 +1,5 @@
 package com.sgsg.dra.service;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +14,8 @@ public interface MyPageService {
 	
 	
 	public int reviewCount(Map<String, Object> map);
-	public void insertReview(Review dto) throws SQLException;
-	public void deleteReview(Map<String, Object> map) throws Exception;
+	public void insertReview(Review dto, String pathname) throws Exception;
+	public void deleteReview(Map<String, Object> map, String pathname) throws Exception;
 
 	public List<Review> listReview(Map<String, Object> map);
 }

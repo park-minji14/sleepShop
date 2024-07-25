@@ -32,6 +32,36 @@
 }
 
 
+.navi{
+	margin-bottom: 80px;
+}
+
+
+
+#my_menu dl dd a.active:after {
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 11px;
+    background: #e9a89a9e;
+    content: '';
+    z-index: -1;
+}
+
+
+.radio-input:checked + .radio-label {
+    background-color: fff;
+    color: #35c5f0;
+}
+.radio-input:checked + .radio-label {
+    background-color: #fff; 
+    color: #35c5f0;
+}
+
+
+
 
 
 </style>
@@ -49,19 +79,26 @@
 				</dl>
     </div>
 
-    <div class="col-md-6">
-        <select class="form-select" style="width: 200px;">
-            <option>전체</option>
-            <option>답변완료</option>
-            <option>답변대기</option>
-        </select>
-    </div>
+	<div style="display: flex; justify-content: space-between; align-items: center;">
+	    <div class="col-md-6" style="margin-right: 10px;">
+	        <select class="form-select" style="width: 200px;">
+	            <option>전체</option>
+	            <option>답변완료</option>
+	            <option>답변대기</option>
+	        </select>
+	    </div>
+	    <div style="text-align: right;">
+	        <input type="radio" id="option4" name="category" value="글 작성" class="radio-input" ${category == '글 작성' ? 'checked' : ''} onclick="inquiryModalOpen();">
+	        <label for="option4" class="radio-label" style="width: 150px; text-align: center; font-size: 20px;">글 작성</label>
+	    </div>
+	</div>
+
 
     <div class="table-style6">
         <div>
             <span>
-                <div class="table-header">
-                    <div class="date">작성일</div>
+                <div class="table-header" style="font-weight: 600; color: #585858;">
+                    <div class="date" >작성일</div>
                     <div class="inquiry">문의구분</div>
                     <div class="subject">제목</div>
                     <div class="answer">답변여부</div>
@@ -74,8 +111,8 @@
                 <div class="table-content">
                     <c:forEach var="dto" items="${list}">
                         <div class="cont" style="font-size: 15px;">
-                            <div class="date">${fn:substring(dto.created_date, 0, 10)}</div>
-                            <div class="inquiry">${dto.category}</div>
+                            <div class="date" style="color: gray;">${fn:substring(dto.created_date, 0, 10)}</div>
+                            <div class="inquiry" style="color: gray;">${dto.category}</div>
                             <div class="subject hover" onclick="detialsInquiry('${dto.num}', '${pageNo}')">${dto.title}</div>
                             <div class="answer">
                                 ${empty dto.response_date ? "답변대기" : "답변완료"}
@@ -90,8 +127,7 @@
         </div>
     </div>
 
-    <input type="radio" id="option4" name="category" value="글 작성" class="radio-input" ${category == '글 작성' ? 'checked' : ''} onclick="inquiryModalOpen();">
-    <label for="option4" class="radio-label" style="width: 150px; text-align: center; font-size: 20px;">글 작성</label>
+    
 </div>
 
 

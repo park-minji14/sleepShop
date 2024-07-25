@@ -71,7 +71,7 @@
 	<select id="listReview" parameterType="map" resultType="com.sgsg.dra.domain.Review">
 		SELECT po.orderNum, userId, orderDate, totalMoney, payment, deliveryCharge, orderStateDate, orderState, 
                 od.orderDetailNum, ps.productNum, ps.detailNum, detailNum2, od.qty, salePrice, od.productMoney, od.savedMoney,
-                p.productName, p.optionCount, p.thumbnail, d1.optionValue, d2.optionValue optionValue2, review, score, review_date,
+                p.productName, p.optionCount, p.thumbnail, d1.optionValue, d2.optionValue optionValue2, review, score, review_date, r.FILENAME,
                 NVL(r.reviewWrite, 0) reviewWrite
 		FROM productOrder po
 		JOIN orderDetail od ON po.orderNum = od.orderNum
@@ -80,8 +80,9 @@
 		LEFT OUTER JOIN optionDetail d1 ON ps.detailNum = d1.detailNum
 		LEFT OUTER JOIN optionDetail d2 ON ps.detailNum2 = d2.detailNum
 		LEFT OUTER JOIN (
-			SELECT ORDERdETAILnum, 1 as reviewWrite, review, score, review_date
+			SELECT ppr.ORDERdETAILnum, 1 as reviewWrite, review, score, review_date, FILENAME
 			FROM product_Review ppr
+            left outer JOIN PRODUCT_REVIEW_PHOTO pprp ON ppr.ORDERDETAILNUM = pprp.ORDERDETAILNUM
 			WHERE userId = #{userId}
 		) r ON od.orderDetailNum = r.orderDetailnum
 		<where>
@@ -98,10 +99,18 @@
         OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 	</select>
 
+
+
 	<!-- 리뷰 등록 -->
 	<select id="insertReview" parameterType="map" resultType="com.sgsg.dra.domain.Review">
 		INSERT INTO product_Review (orderDetailNum, score, review, review_Date, showReview, locked, userId)
 								VALUES (#{orderDetailNum}, #{score}, #{review}, SYSDATE, 1, 0, #{userId} )
+	</select>
+	
+	<!-- 리뷰이미지등록 -->
+	<select id="insertReviewPhoto" parameterType="map" resultType="com.sgsg.dra.domain.Review">
+		INSERT INTO product_Review_PHOTO ( FILENUM, FILENAME, ORDERDETAILNUM)
+                                    VALUES ( product_Review_PHOTO_seq.nextval, #{fileName}, #{orderDetailNum})
 	</select>
 	
 	<!-- 리뷰 삭제 -->
@@ -111,11 +120,17 @@
 		  AND userId = #{userId}
 	</delete>
 	
-	
-	
-	
-	
-	
+	<!-- 리뷰 이미지 삭제 -->
+	<select id="listReviewPhoto" parameterType="map" resultType="com.sgsg.dra.domain.Review">
+		SELECT fileNum, fileName
+		FROM product_Review_Photo
+		WHERE orderDetailNum = #{orderDetailNum}
+	</select>
+
+	<delete id="deleteReviewPhoto" parameterType="map">
+		DELETE FROM product_Review_Photo
+		WHERE orderDetailNum = #{orderDetailNum}
+	</delete>
 
 	
 </mapper>
