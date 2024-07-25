@@ -163,9 +163,12 @@ public class OrderManageServiceImpl implements OrderManageService {
 			int saved = mapper.findSavedMoney(map);
 			
 			UserPoint point = mapper.findByUserPoint(map.get("memberIdx").toString());
-			map.put("remain_points", point.getRemain_points()+saved);
+			if(point != null) {
+				map.put("remain_points", point.getRemain_points()+saved);
+			} else {
+				map.put("remain_points", saved);
+			}
 			map.put("usedSaved", saved);
-			map.put("userId", point.getUserId());
 			
 			mapper.updateUsePoint(map);
 			mapper.updateOrderState(map);
