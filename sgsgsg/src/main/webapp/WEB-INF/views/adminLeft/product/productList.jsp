@@ -201,12 +201,6 @@ window.addEventListener("load", function() {
 			            <td class="text-center">${dto.productNum}</td>
 			            <td class="product-preview text-center">	
 			                ${dto.productName}
-			                <div class="preview-content">
-			                    <strong>${dto.productName}</strong><br>
-			                    카테고리: ${dto.categoryName}<br>
-			                    가격: <fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100.0)}" type="number" maxFractionDigits="0"/>원<br>
-			                    재고: [재고 정보 추가 필요]
-			                </div>
 			            </td>
 			            <td class="text-center">
 			                <c:choose>
