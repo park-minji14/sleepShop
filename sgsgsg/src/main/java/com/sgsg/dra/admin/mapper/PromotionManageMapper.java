@@ -7,6 +7,8 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.sgsg.dra.admin.domain.PromotionManage;
+import com.sgsg.dra.domain.MyPoint;
+import com.sgsg.dra.domain.UserPoint;
 
 @Mapper
 public interface PromotionManageMapper {
@@ -30,5 +32,10 @@ public interface PromotionManageMapper {
 	public void insertEventWinner2(PromotionManage dto) throws SQLException;
 	// 이벤트 당첨자 리스트
 	public List<PromotionManage> listEventWinner(long num);
+	
+	
+	public void insertPointHistory(MyPoint point) throws SQLException;
+	
+	public UserPoint findByUserPoint(String userId) throws SQLException;
 
 }

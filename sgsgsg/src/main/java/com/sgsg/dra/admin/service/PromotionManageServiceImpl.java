@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sgsg.dra.admin.mapper.PromotionManageMapper;
+import com.sgsg.dra.domain.MyPoint;
+import com.sgsg.dra.domain.UserPoint;
 import com.sgsg.dra.admin.domain.PromotionManage;
 
 @Service
@@ -173,8 +175,8 @@ public class PromotionManageServiceImpl implements PromotionManageService {
 				
 				int idx = 0;
 				jump:
-				for(int i = 0; i < dto.getRankCount().size(); i++) {
-					for(int j = 0; j < dto.getRankCount().get(i); j++ ) {
+				for(int i = 0; i < dto.getRankNum().size(); i++) {
+					for(int j = 0; j < dto.getRankNum().get(i); j++ ) {
 						if(idx >= list.size()) {
 							break jump;
 						}
@@ -207,6 +209,29 @@ public class PromotionManageServiceImpl implements PromotionManageService {
 		}
 		
 		return list;
+	}
+	
+	
+	@Override
+    public void insertPointHistory(MyPoint point) throws Exception {
+        try {
+            mapper.insertPointHistory(point);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+	
+	@Override
+	public UserPoint findByUserPoint(String userId) throws Exception {
+		UserPoint point = null;
+		
+		try {
+			point = mapper.findByUserPoint(userId);
+		} catch (Exception e) {
+			throw e;
+		}
+		return point;
 	}
 
 }

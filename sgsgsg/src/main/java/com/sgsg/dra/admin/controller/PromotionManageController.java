@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.sgsg.dra.admin.domain.PromotionManage;
 import com.sgsg.dra.admin.service.PromotionManageService;
 import com.sgsg.dra.common.MyUtil;
+import com.sgsg.dra.domain.MyPoint;
 import com.sgsg.dra.domain.SessionInfo;
+import com.sgsg.dra.domain.UserPoint;
 
 @Controller
 @RequestMapping("adminManagement/promotionManage/*")
@@ -250,7 +253,42 @@ public class PromotionManageController {
 		try {
 			dto.setEvent_num(num);
 			service.insertEventWinner(dto);
+			
+			// 포인트 지급 처리
+			List<PromotionManage> winners = service.listEventWinner(num);
+			
+			for (PromotionManage winner : winners) {
+				MyPoint point = new MyPoint();
+				point.setUserId(winner.getUserId());
+				point.setReason("이벤트 당첨");
+				UserPoint lastPoint = service.findByUserPoint(winner.getUserId());
+
+				// 순위별 포인트 지급 처리
+				if (dto.getWinEvent() == 2) {
+					for (int i = 0; i < dto.getRankNum().size(); i++) {
+						if (winner.getRank() == dto.getRankNum().get(i)) {
+							point.setChange_points(dto.getRankPoints().get(i));
+							break;
+						}
+					}
+				} else {
+					// 공평한 포인트 지급 처리
+					point.setChange_points(dto.getUnrankedPoint()); // 원하는 만큼 지급할 포인트 설정
+				}
+
+
+				if (lastPoint != null) {
+					point.setRemain_points(point.getChange_points() + lastPoint.getRemain_points());
+				}
+				point.setRemain_points(point.getChange_points());
+				
+				// 포인트 삽입 처리
+				service.insertPointHistory(point);
+			}
+			
+			
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		return "redirect:/adminManagement/promotionManage/winner/list?page=" + page;

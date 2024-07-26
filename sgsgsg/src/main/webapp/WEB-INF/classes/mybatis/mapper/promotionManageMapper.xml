@@ -214,6 +214,22 @@
 		WHERE event_num = #{event_num}
 		ORDER BY rank ASC
 	</select>
+	
+	
+	<!-- 포인트 기록 삽입 -->
+    <insert id="insertPointHistory" parameterType="com.sgsg.dra.domain.MyPoint">
+        INSERT INTO point_history (num, change_points, reason, change_date, remain_points, userId)
+        VALUES (point_history_seq.NEXTVAL, #{change_points}, #{reason}, SYSDATE, #{remain_points}, #{userId})
+    </insert>
+    
+    <!-- 마지막 포인트 조회 -->
+	<select id="findByUserPoint" parameterType="String" resultType="com.sgsg.dra.domain.UserPoint">
+		SELECT NUM, NVL(CHANGE_POINTS, 0) CHANGE_POINTS, REASON, CHANGE_DATE, NVL(REMAIN_POINTS, 0) REMAIN_POINTS, USERID
+		FROM POINT_HISTORY
+		WHERE USERID = #{userId}
+		ORDER BY num DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
 
 
 </mapper>
