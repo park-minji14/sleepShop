@@ -308,6 +308,16 @@ element.style {
 
 .hover { cursor: pointer; }
 .hover: hover {	color: #0d6efd; }
+
+
+.btnReviewSend {
+	background-color: #35c5f0;
+}
+
+
+
+
+
 </style>
 
 <div class="inner">

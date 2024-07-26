@@ -61,7 +61,24 @@
 }
 
 
+.thisCategory {
+    margin-left: 0;
+    position: relative;
+    z-index: 1;
+}
 
+
+.thisCategory:after {
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 11px;
+    background: #81DAF5;
+    content: '';
+    z-index: -1;
+}
 
 
 </style>
@@ -73,9 +90,9 @@
         <dl>
 					<!--  <dt><img src="https://atimg.sonyunara.com/2023/renew/list/mypage_1.png" class="icon" alt="">주문관리</dt>  -->
 					<div class="navi" style="text-align: center;">
-						<a href="${pageContext.request.contextPath}">홈 &gt;</a> 
-						<a href="${pageContext.request.contextPath}/mypage/main">마이페이지 &gt; </a>
-					<a style="font: light-gray;">1:1 문의</a></div>
+						<a href="${pageContext.request.contextPath}" style="color: gray">홈 &gt;</a> 
+						<a href="${pageContext.request.contextPath}/mypage/main" style="color: gray">마이페이지 &gt; </a>
+					<a style="color: black;" class="thisCategory">1:1 문의</a></div>
 				</dl>
     </div>
 
