@@ -308,6 +308,16 @@ element.style {
 
 .hover { cursor: pointer; }
 .hover: hover {	color: #0d6efd; }
+
+
+.btnReviewSend {
+	background-color: #35c5f0;
+}
+
+
+
+
+
 </style>
 
 <div class="inner">
@@ -566,6 +576,7 @@ element.style {
 	  // 구매 내역
 	  function listSaved(page) {
 		  let url = "${pageContext.request.contextPath}/mypage/savedList";
+		  
 		  let selector = ".tab-content";
 		  
 		  let state = $('.changeReview').val();
@@ -627,6 +638,14 @@ element.style {
 				ajaxFun(url, 'post', {orderDetailNum:orderDetailNum}, 'JSON', fn);
 			}
 	  }
+	  
+	  
+	  
+	 
+	  
+	  
+	  
+	  
 	</script>
 	
 	

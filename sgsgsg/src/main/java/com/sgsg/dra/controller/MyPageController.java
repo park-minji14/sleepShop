@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sgsg.dra.common.MyUtil;
+import com.sgsg.dra.domain.Member;
 import com.sgsg.dra.domain.MyPoint;
 import com.sgsg.dra.domain.Review;
 import com.sgsg.dra.domain.SessionInfo;
 import com.sgsg.dra.domain.Wishlist;
+import com.sgsg.dra.service.MemberService;
 import com.sgsg.dra.service.MyPageService;
 import com.sgsg.dra.service.WishlistService;
 
@@ -37,6 +39,9 @@ public class MyPageController {
 	
 	@Autowired
     private WishlistService wishlistService;
+	
+	@Autowired
+	private MemberService memberService;
 	
 	// 메인화면
 	@GetMapping("main")
@@ -252,12 +257,17 @@ public class MyPageController {
         return "mypage/wishlist";
     }
 	
-	
-	
-	
 	// 설정 
 	@GetMapping("settings")
-	public String settings() {
+	public String settings(HttpSession session,
+			Model model) throws Exception {
+		
+		 SessionInfo info = (SessionInfo) session.getAttribute("member");
+		 
+		 Member dto = memberService.findById(info.getUserId());
+		 
+		 model.addAttribute("dto", dto);
+		
 		return "mypage/settings";
 	}
 	

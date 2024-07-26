@@ -42,7 +42,7 @@ function sendOk() {
                             <input type="password" name="userPwd" class="form-control form-control-lg" autocomplete="off" placeholder="패스워드">
                         </div>
                         <div class="d-grid">
-                            <button type="button" class="btn btn-lg btn-primary" onclick="sendOk();">확인 <i class="bi bi-check2"></i> </button>
+                            <button type="button" class="btn btn-lg btn-primary" onclick="sendOk();">확인  </button>
                             <input type="hidden" name="mode" value="${mode}">
                         </div>
                     </form>

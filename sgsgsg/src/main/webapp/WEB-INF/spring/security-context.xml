@@ -31,7 +31,24 @@
 		<intercept-url pattern="/member/complete" access="permitAll" />
 		<intercept-url pattern="/member/pwdFind" access="permitAll" />
 		<intercept-url pattern="/member/expired" access="permitAll" />
-
+		<intercept-url pattern="/product/*" access="permitAll" />
+		
+		<intercept-url pattern="/product/*" access="permitAll" />
+		<intercept-url pattern="/product/category/*" access="permitAll" />
+		<intercept-url pattern="/question/list" access="permitAll" />
+		<intercept-url pattern="/clinic/list" access="permitAll" />
+		<intercept-url pattern="/clinic/article" access="permitAll" />
+		<intercept-url pattern="/clinic/listanswer" access="permitAll" />
+		<intercept-url pattern="/notice/userNotice" access="permitAll" />
+		<intercept-url pattern="/notice/userArticle" access="permitAll" />
+		<intercept-url pattern="/faq/list" access="permitAll" />
+		<intercept-url pattern="/promotion/progress/list" access="permitAll" />
+		<intercept-url pattern="/promotion/progress/article" access="permitAll" />
+		<intercept-url pattern="/promotion/winner/list" access="permitAll" />
+		<intercept-url pattern="/promotion/winner/article" access="permitAll" />
+		<intercept-url pattern="/promotion/ended/list" access="permitAll" />
+		<intercept-url pattern="/promotion/ended/article" access="permitAll" />
+		
 		<!-- 이미지, javascript, css등 -->
 		<intercept-url pattern="/resources/**" access="permitAll" />
 		<intercept-url pattern="/uploads/**" access="permitAll" />

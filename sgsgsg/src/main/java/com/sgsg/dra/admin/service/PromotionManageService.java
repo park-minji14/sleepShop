@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.sgsg.dra.admin.domain.PromotionManage;
+import com.sgsg.dra.domain.MyPoint;
+import com.sgsg.dra.domain.UserPoint;
 
 public interface PromotionManageService {
 	
@@ -23,5 +25,8 @@ public interface PromotionManageService {
 	
 	public void insertEventWinner(PromotionManage dto) throws Exception;
 	public List<PromotionManage> listEventWinner(long num);
-
+	
+	public void insertPointHistory(MyPoint point) throws Exception;
+	
+	public UserPoint findByUserPoint(String userId) throws Exception;
 }

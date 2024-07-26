@@ -165,7 +165,7 @@ function deleteOk() {
 				    	
 				    	<c:choose>
 				    		<c:when test="${listEventTakers.size() != 0}">
-		    					<button type="button" class="btn" disabled>삭제</button>
+		    					<button type="button" class="btn" onclick="deleteOk();">삭제</button>
 				    		</c:when>
 				    		<c:otherwise>
 		    					<button type="button" class="btn" onclick="deleteOk();">삭제</button>
@@ -203,21 +203,21 @@ $(function(){
 		let winEvent = $(this).val();
 		
 		if(winEvent === '1') {
+			$('#unrankedPointRow').show();
 			$('form .rank-numbers').remove();
 		} else {
-			let out = '<tr class="rank-numbers">';
-			out += '<td valign="top" style="padding-top:12px;">순위별인원</td>';
-			out += '<td>';
-			out += '  <p>';
-			out += '    <span class="span-rank">1등 : </span>';
-			out += '    <input type="hidden" name="rankNum" value="1">';
-			out += '    <input type="text" name="rankCount" class="form-control" style="width:100px;">&nbsp;';
-			out += '    <i class="fa-solid fa-plus rank-plus"></i>&nbsp;';
-			out += '    <i class="fa-solid fa-minus rank-minus"></i>';
-			out += '  </p>';
-			out += '</td>';
-			out += '</tr>';
-			
+			$('#unrankedPointRow').hide();
+			let out = '';
+			for (let i = 1; i <= ${dto.winnerNumber}; i++) {
+				out += '<tr class="rank-numbers">';
+				out += '<td valign="top" style="padding-top:12px;">' + i + '등</td>';
+				out += '<td>';
+				out += '  <input type="hidden" name="rankNum" value="' + i + '">';
+				out += '  <input type="text" name="rankCount" class="form-control" style="width:100px;" placeholder="인원수">';
+				out += '  <input type="text" name="rankPoints" class="form-control" style="width:100px;" placeholder="포인트">';
+				out += '</td>';
+				out += '</tr>';
+			}
 			$tb.append(out);
 		}
 	});
@@ -329,10 +329,14 @@ $(function(){
 					<tr>
 						<td>당첨 방식</td>
 						<td>
-							<input type="radio" name="winEvent" value="1" id="winEvent1" class="form-control" checked> <label for="winEvent1">순위 없음</label>
+							<input type="radio" name="winEvent" value="1" id="winEvent1" class="form-control" style="width: 20px;" checked> <label for="winEvent1">순위 없음</label>
 							&nbsp;&nbsp;
-							<input type="radio" name="winEvent" value="2" id="winEvent2" class="form-control"> <label for="winEvent2">순위별 당첨</label>
+							<input type="radio" name="winEvent" value="2" id="winEvent2" class="form-control" style="width: 20px;"> <label for="winEvent2">순위별 당첨</label>
 						</td>
+					</tr>
+					<tr id="unrankedPointRow">
+						<td>포인트</td>
+						<td><input type="text" name="unrankedPoint" class="form-control" style="width: 100px;"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -370,3 +374,30 @@ $(function(){
 		</div>
 	</div>
 </c:if>
+
+<script type="text/javascript">
+$(function() {
+	$('input[name="winEvent"]').change(function() {
+		if ($(this).val() == '2') {
+			$('#unrankedPointRow').hide();
+			$('form .rank-numbers').show();
+		} else {
+			$('#unrankedPointRow').show();
+			$('form .rank-numbers').remove();
+		}
+	});
+
+	// 당첨자 발표 버튼 클릭 시
+	$('.btnSendWinner').click(function() {
+		var form = document.winnerForm;
+		var winEvent = $('input[name="winEvent"]:checked').val();
+		if (winEvent == '2') {
+			$(form).find('input[name=unrankedPoint]').remove();
+			
+		}
+
+		// 폼 제출
+		form.submit();
+	});
+});
+</script>

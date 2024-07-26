@@ -193,7 +193,8 @@ function searchList() {
 							</div>
 							<div style="text-align: center; margin-top: 10px;">시작일 : ${dto.startDate}</div>
 							<div style="text-align: center;">종료일 : ${dto.endDate}</div>
-							<div style="text-align: center; margin-top: 10px; font-size: 20px;">발표 : ${dto.winnerCount == 0 ? "추후 예정" : "완료"}</div>
+							<!-- <div style="text-align: center; margin-top: 10px; font-size: 20px;">발표 : ${dto.winnerCount == 0 ? "추후 예정" : "완료"}</div> -->
+							
 						</div>
 					</c:forEach>
 				</div>

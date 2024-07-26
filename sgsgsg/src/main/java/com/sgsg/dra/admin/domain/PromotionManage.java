@@ -15,12 +15,46 @@ public class PromotionManage {
 	private String etime;
 	private String winningDate;
 	private String wday;
+	private int applyCount;
+	private int winnerCount;
+	
+	
+	private int rank;
+	private int rankCount;
+	
+	private List<Integer> rankNum;
 	private String wtime;
+	private int winEvent;
 	private int winnerNumber;
 	private int showEvent;
 	private String userId;
 	private String userName;
 	private String firstImage;
+	
+	private int unrankedPoint;
+	private List<Integer> rankPoints;
+	
+	public int getRankCount() {
+		return rankCount;
+	}
+	public void setRankCount(int rankCount) {
+		this.rankCount = rankCount;
+	}
+	
+	
+	
+	public int getUnrankedPoint() {
+		return unrankedPoint;
+	}
+	public void setUnrankedPoint(int unrankedPoint) {
+		this.unrankedPoint = unrankedPoint;
+	}
+	public List<Integer> getRankPoints() {
+		return rankPoints;
+	}
+	public void setRankPoints(List<Integer> rankPoints) {
+		this.rankPoints = rankPoints;
+	}
 	
 	
 	public String getFirstImage() {
@@ -29,15 +63,6 @@ public class PromotionManage {
 	public void setFirstImage(String firstImage) {
 		this.firstImage = firstImage;
 	}
-	
-	private int rank;
-	
-	private int applyCount;
-	private int winnerCount;
-	
-	private int winEvent;
-	private List<Integer> rankNum;
-	private List<Integer> rankCount;
 	
 	
 	public String getUserName() {
@@ -78,12 +103,6 @@ public class PromotionManage {
 	}
 	public void setRankNum(List<Integer> rankNum) {
 		this.rankNum = rankNum;
-	}
-	public List<Integer> getRankCount() {
-		return rankCount;
-	}
-	public void setRankCount(List<Integer> rankCount) {
-		this.rankCount = rankCount;
 	}
 	public String getSday() {
 		return sday;
