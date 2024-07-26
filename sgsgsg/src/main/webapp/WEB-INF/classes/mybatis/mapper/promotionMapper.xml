@@ -185,7 +185,8 @@
 		WHERE event_num = #{event_num}
 		ORDER BY rank ASC
 	</select>
-
+	
+	
 
 
 </mapper>

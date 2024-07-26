@@ -21,5 +21,6 @@ public interface PromotionService {
 	// 이벤트 당첨자 / 리스트
 	public Promotion findByEventWinner(Map<String, Object> map);
 	public List<Promotion> listEventWinner(long num);
+	
 
 }

@@ -130,6 +130,10 @@ public class PromotionController {
 			return "redirect:/promotion/" + category + "/list?" + query;
 		}
 		
+		
+		
+		
+		
 		// 이전 글, 다음 글
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("category", category);
