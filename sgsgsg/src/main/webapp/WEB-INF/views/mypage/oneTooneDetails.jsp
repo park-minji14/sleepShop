@@ -123,7 +123,7 @@
 		</div>
 		
 		<c:if test="${not empty dto.response_date}">
-		</c:if>
+		
 			<div class="table-style6">
 					<div>
 						<span>
@@ -145,5 +145,5 @@
 						</span>
 					</div>
 			</div>
-
+		</c:if>
 </div>

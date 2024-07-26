@@ -576,6 +576,7 @@ element.style {
 	  // 구매 내역
 	  function listSaved(page) {
 		  let url = "${pageContext.request.contextPath}/mypage/savedList";
+		  
 		  let selector = ".tab-content";
 		  
 		  let state = $('.changeReview').val();
@@ -637,6 +638,14 @@ element.style {
 				ajaxFun(url, 'post', {orderDetailNum:orderDetailNum}, 'JSON', fn);
 			}
 	  }
+	  
+	  
+	  
+	 
+	  
+	  
+	  
+	  
 	</script>
 	
 	

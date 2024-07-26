@@ -129,7 +129,7 @@ a{
                             class="img-fluid">
                     </div>
                     <div class="col-md-7">
-                        <a href="${pageContext.request.contextPath}/product/details?productNum=${dto.productNum}" ><a style="color: darkgray;">구매한 상품</a><h5>${dto.productName}</h5></a>
+                        <a href="${pageContext.request.contextPath}/product/details?productNum=${dto.productNum}" ><p style="color: darkgray; margin-bottom: 0">구매한 상품</p><h5>${dto.productName}</h5></a>
 		              <p class="text-muted">구매일: ${dto.orderDate}</p>
 		            </div>
 		            <div class="col-md-3 text-end">
@@ -155,7 +155,7 @@ a{
 			  								${dto.review_Date}
 			  							</div>
 			  							<div class="col-auto">
-			  								<button class="btn deleteReview" onclick="deleteReview('${dto.orderDetailNum}', '${pageNo}');">리뷰삭제</button>
+			  								<a class="deleteReview" onclick="deleteReview('${dto.orderDetailNum}', '${pageNo}');">리뷰삭제</a>
 			  							</div>
 	  								</div>
 	  							</div>
