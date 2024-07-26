@@ -4,9 +4,11 @@
 
 <style type="text/css">
 body {
-    font-family: 'Pretendard-Regular', sans-serif;
+    /* font-family: 'Pretendard-Regular', sans-serif; */
    /*  background-color: #f8f9fa; */
 }
+
+
 
 /* 헤더 부분 꾸미기 */
 .admin-header {
@@ -98,6 +100,14 @@ body {
     color: #ffffff;
     border-color: #303f9f;
 }
+
+.row.board-list-footer .col-6.text-center{position: absolute; left: 43%;}
+
+.navbar-custom .nav-link:hover, .navbar-custom .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-weight: 900;
+}
 </style>
 
 <header class="admin-header">
@@ -180,4 +190,6 @@ $(function() {
 		}
 	});
 });
+
+
 </script>

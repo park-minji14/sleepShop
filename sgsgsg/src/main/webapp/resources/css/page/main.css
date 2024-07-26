@@ -686,9 +686,9 @@ height: 300px
 .text-danger{
 	color: #212529 !important;
 }
-.bg-danger {
+/* .bg-danger {
     background-color: #0d6efd !important;
-}
+} */
 
  .pagination {
     background-color: rgba(255, 255, 255, 0.8);
@@ -785,5 +785,5 @@ page-navigation{
 }
 
 .bookmark.active {
-    background-color: #0d6efd; 
+    background-color: #0dcaf0a6; 
 }

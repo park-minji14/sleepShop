@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<!-- 마우스 따라다니는 효과1 -->
+<!-- <div class="circle"></div> -->
 <div class="fixed-header">
 	<div class="inner">
 		<div class="logo" id="logo">새근새근</div>
@@ -83,7 +85,7 @@
 												alt="마이페이지" style="width: 20px; height: 20px;"> 마이페이지
 										</a></li>
 										<li><a
-											href="${pageContext.request.contextPath}/mypage/myshop"
+											href="${pageContext.request.contextPath}/mypage/savedList"
 											style="text-decoration: none; color: inherit;"> <img
 												src="https://img.icons8.com/ios/50/000000/purchase-order.png"
 												alt="구매 내역" style="width: 20px; height: 20px;"> 구매 내역
@@ -322,6 +324,39 @@ $(document).ready(function() {
  
  
 //----------------------북마크 함수 -----------------//
+
+/* 마우스 따라다니는 효과2 */
+/* 
+ var circle = document.querySelector('.circle');
+
+ var mouseX = 0;
+ var mouseY = 0;
+
+ var circleX = 0;
+ var circleY = 0;
+
+ var speed = 0.06;
+
+ function animate() {
+   var distX = mouseX - circleX;
+   var distY = mouseY - circleY;
+   
+   circleX = circleX + (distX * speed);
+   circleY = circleY + (distY * speed);
+   
+   var translatedValue = 'translate3d(' + circleX + 'px, ' + circleY + 'px, 0)';
+   circle.style.transform = translatedValue;
+   
+   requestAnimationFrame(animate);
+ }
+
+ animate();
+
+ document.addEventListener('mousemove', function(e) {
+   mouseX = e.clientX - circle.offsetWidth / 4;
+   mouseY = e.clientY - circle.offsetHeight / 4;
+ });
+ */
  
 });
 </script>

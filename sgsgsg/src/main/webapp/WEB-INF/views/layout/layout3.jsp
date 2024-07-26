@@ -17,6 +17,8 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css" type="text/css">
 	<!-- CSS: swiper -->
 	 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+	 <!-- CSS: 페이지네이션  -->
+	 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/paginate.css" type="text/css">
 	
 	<!-- JS: jquery -->
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/vendor/jquery/js/jquery.min.js"></script>

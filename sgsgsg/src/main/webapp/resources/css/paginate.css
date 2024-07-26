@@ -34,3 +34,126 @@
 .paginate :first-child {
 	margin-left: 0;
 }
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    font-family: Arial, sans-serif;
+}
+
+.page-item {
+    list-style-type: none;
+}
+
+.page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    border-radius: 4px;
+}
+
+.page-item.active .page-link {
+    background-color: #e5f8fa;
+    color: #6b93e2;
+    font-weight: 900;
+}
+
+/* .page-link.active:hover:not(.active), */ 
+.paginate span:hover, .page-item.active:hover  .page-link{
+    background-color: #77ecf9 !important;
+    color: #fff;
+}
+.page-link:hover{background-color: #fff !important;}
+
+/* 화살표 스타일 */
+.page-item:first-child .page-link,
+.page-item:nth-child(2) .page-link,
+.page-item:nth-last-child(2) .page-link,
+.page-item:last-child .page-link {
+    background-color: transparent;
+    font-size: 18px;
+    font-weight: normal;
+}
+
+/* 화살표 크기 조정 */
+.page-item:first-child .page-link,
+.page-item:last-child .page-link {
+    font-size: 14px;
+}
+
+.page-item:nth-child(2) .page-link,
+.page-item:nth-last-child(2) .page-link {
+    font-size: 16px;
+}
+
+.paginate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.paginate a, .paginate span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    height: 40px;
+    width: 40px;
+    margin: 0 2px;
+    padding: 0 5px;
+    border: 0px solid #ddd;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-radius: 10px !important;
+}
+
+.paginate a:hover {
+    background-color: #f8f9fa;
+}
+
+.paginate span {
+    background-color: #e5f8fa;
+    color: #6b93e2;
+    font-weight: 900;
+}
+
+/* 화살표 스타일 */
+.paginate a:first-child,
+.paginate a:nth-child(2),
+.paginate a:nth-last-child(2),
+.paginate a:last-child {
+    background-color: #fff;
+    font-weight: bold;
+}
+
+/* 페이지네이션 커스텀 */
+.page-item .page-link{
+	border: 0px solid #c4c8cb;
+	border-radius: 10px !important;
+	font-weight: 600;
+	color: #000;
+}
+
+.page-item .page-link .bi{
+	/* text-indent: -9999px; */
+	font-weight: 900;
+	line-height: 20px;
+}
+.bi-chevron-bar-right::before,
+.bi-chevron-bar-left::before{font-size: 18px;margin-top:4px;}
+
+li.page-item.disabled .page-link {
+    background: #f8f8f8;
+}

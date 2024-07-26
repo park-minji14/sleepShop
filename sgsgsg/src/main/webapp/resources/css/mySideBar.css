@@ -7,11 +7,24 @@
 }
 
 .unique-sidebar {
+	position:relative;
     width: 17%;
     background-color: #f8f9fa;
+}
+/* 사이드바 회색 */
+.unique-sidebar:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 120px);
+    background: #f8f9fa;
+    z-index: -1;
 }
 
 .unique-main-content {
     width: 80%;
     padding-left: 20px;
 }
+

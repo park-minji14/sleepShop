@@ -18,14 +18,14 @@
 .table-list tr>th, .table-list tr>td { text-align: center; }
 .table-list .left { text-align: left; padding-left: 5px; }
 
-.form-select {
+/* .form-select {
     border: 1px solid #999;
     border-radius: 4px;
     background-color: #fff;
     padding: 4px 5px;
-    font-family: "맑은 고딕", 나눔고딕, 돋움, sans-serif;
+    font-family: '맑은 고딕', 나눔고딕, 돋움, sans-serif;
     vertical-align: baseline;
-}
+} */
 
 .table th, .table td {
     padding-top: 10px;
@@ -89,29 +89,33 @@ function searchList() {
 			${dataCount == 0 ? "등록된 문의가 없습니다." : paging}
 		</div>
 		
-		<table class="table">
-			<tr>
-				<td align="left" width="100">
-					<button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/adminManagement/supportManage/supportList';" title="새로고침"><i class="fa-solid fa-arrow-rotate-left"></i></button>
-				</td>
-				<td align="center">
-					<form name="searchForm" action="${pageContext.request.contextPath}/adminManagement/supportManage/supportList" method="post">
-						<select name="schType" class="form-select">
-							<option value="all" ${schType=="all"?"selected":""}>제목+내용</option>
-							<option value="userId" ${schType=="userId"?"selected":""}>아이디</option>
-							<option value="created_date" ${schType=="created_date"?"selected":""}>등록일</option>
-							<option value="title" ${schType=="title"?"selected":""}>제목</option>
-							<option value="content" ${schType=="content"?"selected":""}>내용</option>
-						</select>
-						<input type="text" name="kwd" value="${kwd}" class="form-control">
-						<button type="button" class="btn" onclick="searchList()">검색</button>
+		<div class="row board-list-footer">
+			<div class="col">
+					<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/adminManagement/supportManage/supportList';" title="새로고침"><i class="fa-solid fa-arrow-rotate-left"></i></button>
+			</div>
+			<div class="col-6 text-center">
+					<form class="row" name="searchForm" action="${pageContext.request.contextPath}/adminManagement/supportManage/supportList" method="post">
+						<div class="col-auto p-1">
+							<select name="schType" class="form-select">
+								<option value="all" ${schType=="all"?"selected":""}>제목+내용</option>
+								<option value="userId" ${schType=="userId"?"selected":""}>아이디</option>
+								<option value="created_date" ${schType=="created_date"?"selected":""}>등록일</option>
+								<option value="title" ${schType=="title"?"selected":""}>제목</option>
+								<option value="content" ${schType=="content"?"selected":""}>내용</option>
+							</select>
+						</div>
+						<div class="col-auto p-1">
+							<input type="text" name="kwd" value="${kwd}" class="form-control">
+						</div>
+						<div class="col-auto p-1">
+							<button type="button" class="btn btn-light"  onclick="searchList()"><i class="bi bi-search"></i></button>
+						</div>
 					</form>
-				</td>
-				<td align="right" width="100">
+				</div>
+				<div class="col text-end">
 					&nbsp;
-				</td>
-			</tr>
-		</table>
+				</div>
+		</div>
 
 	</div>
 </div>
