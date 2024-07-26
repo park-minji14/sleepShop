@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -279,8 +278,9 @@ public class PromotionManageController {
 
 				if (lastPoint != null) {
 					point.setRemain_points(point.getChange_points() + lastPoint.getRemain_points());
+				} else {
+					point.setRemain_points(point.getChange_points());
 				}
-				point.setRemain_points(point.getChange_points());
 				
 				// 포인트 삽입 처리
 				service.insertPointHistory(point);
