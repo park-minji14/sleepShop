@@ -133,8 +133,6 @@ body {
 }
 /*--------------------------------*/
 
-
-
 /*--------------포인트--------------*/
 .css-77kc86 {
     padding: 24px 16px;
@@ -179,7 +177,6 @@ body {
     font-weight: 700;
 }
 /*--------------------------------*/
-
 
 .member .tab_mp li.on a {
     border: 1px solid var(--season_color_11);
@@ -309,14 +306,39 @@ element.style {
 .hover { cursor: pointer; }
 .hover: hover {	color: #0d6efd; }
 
-
 .btnReviewSend {
 	background-color: #35c5f0;
 }
 
+.profile-form .img-viewer, .img-profile {
+	cursor: pointer;
+	border: 1px solid #ccc;
+	width: 150px;
+	height: 150px;
+	border-radius: 100px;
+	background-image: url("${pageContext.request.contextPath}/resources/images/add_photo.png");
+	position: relative;
+	z-index: 9999;
+	background-repeat : no-repeat;
+	background-size : cover;
+	margin-left: 25px;
+	margin-bottom: 35px;
+}
 
 
 
+.img-my-profile {
+    cursor: pointer;
+    border: 1px solid #ccc;
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;
+    position: relative;
+    z-index: 9999;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: 30px;
+}
 
 </style>
 
@@ -399,6 +421,36 @@ element.style {
 				</div>
 			</div>
 		</div>
+</div>
+
+<!-- profile -->
+<div class="modal fade" id="profileDialogModal" tabindex="-1" aria-labelledby="profileDialogModalLabel" aria-hidden="true" style="z-index: 9999;">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="profileDialogModalLabel">이미지변경</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="profile-form">
+					<form name="profileForm">
+						<div class="p-1 text-center">
+							<div class="row">
+								<div class="col-auto">
+										<div class="img-viewer"></div>
+								</div>
+								<div class="col-auto align-self-center">
+									<button type="button" class="btn btn-light btn-profile-changeOk">이미지 변경</button>
+								</div>
+							</div>
+
+							<input type="file" name="selectFile" accept="image/*" multiple class="form-control"  style="display: none;">
+						</div>	
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 	<script>
@@ -551,7 +603,6 @@ element.style {
 				ajaxFun(url, 'post', {num:num}, 'JSON', fn);
 			}
 	  }
-	  
 
 	  $(".tab-content").on("click", ".btn-write-review", function(){
 		  let orderDetailNum = $(this).attr("data-orderDetailNum");
@@ -563,10 +614,7 @@ element.style {
 			  // 리뷰 등록 대화상자
 			  f.orderDetailNum.value = orderDetailNum;
 			  $("#reviewModal").modal('show');
-		  } else {
-			  // 리뷰 보기
-			  
-		  }
+		  } 
 	  });
 	  
 	 $('.tab-content').on('change', '.changeReview', function(){
@@ -638,22 +686,106 @@ element.style {
 				ajaxFun(url, 'post', {orderDetailNum:orderDetailNum}, 'JSON', fn);
 			}
 	  }
-	  
-	  
-	  
-	 
-	  
-	  
-	  
-	  
 	</script>
 	
 	
 	<script>
-	  // 포인트 -----------------
-	  
- 	</script>
-
+	  // 사진 변경
+	$(function() {
+		$(".profile-form .img-viewer").click(function(){
+			$("form[name=profileForm] input[name=selectFile]").trigger("click"); 
+		});
+		
+		$("form[name=profileForm] input[name=selectFile]").change(function(){
+			let file = this.files[0];
+			if(! file) {
+				$(".profile-form .img-viewer").empty();
+				if( img ) {
+					img = "${pageContext.request.contextPath}/uploads/profile/" + img;
+				} else {
+					img = "${pageContext.request.contextPath}/resources/images/add_photo.png";
+				}
+				$(".profile-form .img-viewer").css("background-image", "url("+img+")");
+				
+				return false;
+			}
+			
+			if(! file.type.match("image.*")) {
+				this.focus();
+				return false;
+			}
+			
+			let reader = new FileReader();
+			reader.onload = function(e) {
+				$(".profile-form .img-viewer").empty();
+				$(".profile-form .img-viewer").css("background-image", "url("+e.target.result+")");
+			}
+			reader.readAsDataURL(file);
+		});
+	});	  
 	
+	
+	$('.tab-content').on('click', '.btn-profile-change', function(){
+		let img = $(this).attr('data-profile');
+		
+		if( img ) {
+			img = "${pageContext.request.contextPath}/uploads/profile/" + img;
+
+			$(".profile-form .img-viewer").empty();
+			$(".profile-form .img-viewer").css("background-image", "url("+img+")");
+		}
+		
+		$("#profileDialogModal").modal('show');
+		
+	});
+	
+	$('.tab-content').on('click', '.profile-remove', function(){
+		let img = $('.btn-profile-change').attr('data-profile');
+		if(! img ) {
+			alert('등록된 이미지가 없습니다.');
+			return false;
+		}
+		
+		if( ! confirm('등록된 이미지를 삭제하시겠습니까? ? ')) {
+			return false;
+		}
+		
+		
+		let url = "${pageContext.request.contextPath}/mypage/profileRemove";
+		let query = "profile=" + img;
+		const fn = function(data) {
+			if(data.state === "true") {
+				$('.btn-profile-change').attr('data-profile', '');
+				$('.img-my-profile').attr('src', '${pageContext.request.contextPath}/resources/images/person.png');
+			}
+		};
+		
+		ajaxFun(url, "post", query, "json", fn);	
+	});
+	
+	$('.btn-profile-changeOk').click(function(){
+		const f = document.profileForm;
+		
+		if(! f.selectFile.value) {
+			alert('등록할 이미지를 선택하세요');
+			return false;
+		}
+		
+		let url = "${pageContext.request.contextPath}/mypage/profileChange";
+		let query = new FormData(f); 
+		
+		const fn = function(data) {
+			if(data.state === "true") {
+				$('.btn-profile-change').attr('data-profile', data.profile);
+				$('.img-my-profile').attr('src', '${pageContext.request.contextPath}/uploads/profile/'+data.profile);
+			}
+			
+			$("#profileDialogModal").modal("hide");
+		};
+		
+		ajaxFun(url, "post", query, "json", fn, true);		
+		
+	});
+	</script>
 	
 	

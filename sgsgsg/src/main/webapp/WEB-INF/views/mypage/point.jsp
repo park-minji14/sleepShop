@@ -51,6 +51,17 @@
 
 
 
+.css-42wh1f {
+    text-align: right;
+    margin-left: 16px;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 700;
+    flex-shrink: 0;
+    color: rgb(53, 197, 240);
+}
+
+
 </style>
 
 

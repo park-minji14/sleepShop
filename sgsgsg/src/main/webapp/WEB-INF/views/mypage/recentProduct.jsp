@@ -37,182 +37,72 @@
 
 			<!-- 최근 본 상품 탭 -->
 			<div class="tab-pane fade show active" id="recent" style=".member #my_menu dl dd a:first-of-type {
-    margin-left: 0;
-    position: relative;
-    z-index: 1;
-}">
+				    margin-left: 0;
+				    position: relative;
+				    z-index: 1;
+				}">
 				<h4 class="mb-4" style="text-align: center;   font-size: 33px;  font-weight: 600; margin: 90px;">최근 본 상품</h4>
 				<dl>
 					<!--  <dt><img src="https://atimg.sonyunara.com/2023/renew/list/mypage_1.png" class="icon" alt="">주문관리</dt>  -->
 					<div class="navi" style="text-align: center;">
-						<a href="${pageContext.request.contextPath}" style="color: gray;">홈 &gt;</a> 
+						<a href="${pageContext.request.contextPath}/" style="color: gray;">홈 &gt;</a> 
 						<a href="${pageContext.request.contextPath}/mypage/main" style="color: gray;">마이페이지 &gt; </a>
 					<a style="color: black;" class="thisCategory">최근 본 상품</a></div>
 				</dl>
 			
-			
-			
-			
-			<div class="col-md-6">
-				<select class="form-select" style=" width: 200px; ">
-					<option>카테고리</option>
-					<option>침구</option>
-					<option>가전</option>
-					<option>의류</option>
-					<option>향초</option>
-					<option>조명</option>
-					<option>영양제</option>
-					<option>수면용품</option>
-					<option>졸음방지용품</option>
-				</select>
-			</div>
-			
+	
 			
 			<section class="featured-products">
-			    <div class="inner">
-			        <div class="product-grid">
-			            
-			                <div class="product-item">
-			                    <a href="/dra/product/details?productNum=98">
-			                        <img src="/dra/uploads/product/test1.png" alt="ㅌㅅㅌ">
-			                        <span class="product-info">
-			                            <span>ㅌㅅㅌ</span>
-			                            <span class="discount">
-			                                5% 
-			                                <span class="price">
-			                                    30,000원
-			                                </span>
-			                            </span>
-			                            <span class="rating">
-			                                ★ 0.0 
-			                                <span class="review-count">리뷰 0</span>
-			                            </span>
-			                        </span>
-			                    </a>
-			                </div>
-			            
-			                <div class="product-item">
-			                    <a href="/dra/product/details?productNum=98">
-			                        <img src="/dra/uploads/product/test1.png" alt="민지쿤">
-			                        <span class="product-info">
-			                            <span>민지쿤</span>
-			                            <span class="discount">
-			                                10% 
-			                                <span class="price">
-			                                    30,000원
-			                                </span>
-			                            </span>
-			                            <span class="rating">
-			                                ★ 0.0 
-			                                <span class="review-count">리뷰 0</span>
-			                            </span>
-			                        </span>
-			                    </a>
-			                </div>
-			            
-			                <div class="product-item">
-			                    <a href="/dra/product/details?productNum=98">
-			                        <img src="/dra/uploads/product/test1.png" alt="김치테스트">
-			                        <span class="product-info">
-			                            <span>김치테스트</span>
-			                            <span class="discount">
-			                                2% 
-			                                <span class="price">
-			                                    2,000,000원
-			                                </span>
-			                            </span>
-			                            <span class="rating">
-			                                ★ 0.0 
-			                                <span class="review-count">리뷰 0</span>
-			                            </span>
-			                        </span>
-			                    </a>
-			                </div>
-			            
-			                <div class="product-item">
-			                    <a href="/dra/product/details?productNum=98">
-			                        <img src="/dra/uploads/product/test1.png" alt="호랑">
-			                        <span class="product-info">
-			                            <span>호랑</span>
-			                            <span class="discount">
-			                                10% 
-			                                <span class="price">
-			                                    30,000원
-			                                </span>
-			                            </span>
-			                            <span class="rating">
-			                                ★ 0.0 
-			                                <span class="review-count">리뷰 0</span>
-			                            </span>
-			                        </span>
-			                    </a>
-			                </div>
-			            
-			                <div class="product-item">
-			                    <a href="/dra/product/details?productNum=98">
-			                        <img src="/dra/uploads/product/test1.png" alt="룰루랄라">
-			                        <span class="product-info">
-			                            <span>룰루랄라</span>
-			                            <span class="discount">
-			                                10% 
-			                                <span class="price">
-			                                    30,000원
-			                                </span>
-			                            </span>
-			                            <span class="rating">
-			                                ★ 0.0 
-			                                <span class="review-count">리뷰 0</span>
-			                            </span>
-			                        </span>
-			                    </a>
-			                </div>
-			            
-			                <div class="product-item">
-			                    <a href="/dra/product/details?productNum=98">
-			                        <img src="/dra/uploads/product/test1.png" alt="쿨에어 이불">
-			                        <span class="product-info">
-			                            <span>쿨에어 이불</span>
-			                            <span class="discount">
-			                                10% 
-			                                <span class="price">
-			                                    40,000원
-			                                </span>
-			                            </span>
-			                            <span class="rating">
-			                                ★ 0.0 
-			                                <span class="review-count">리뷰 0</span>
-			                            </span>
-			                        </span>
-			                    </a>
-			                </div>
-			            
-			                <div class="product-item">
-			                    <a href="/dra/product/details?productNum=98">
-			                        <img src="/dra/uploads/product/test1.png" alt="럭셔리 킹사이즈 침대">
-			                        <span class="product-info">
-			                            <span>럭셔리 킹사이즈 침대</span>
-			                            <span class="discount">
-			                                10% 
-			                                <span class="price">
-			                                    2,000,000원
-			                                </span>
-			                            </span>
-			                            <span class="rating">
-			                                ★ 0.0 
-			                                <span class="review-count">리뷰 0</span>
-			                            </span>
-			                        </span>
-			                    </a>
-			                </div>
-            
-        </div>
-    </div>
-</section>
-			
-			
-				<!-- 최근 본 상품 목록 -->
-				<div class="recent-item">
-					<!-- 상품 정보 및 다시 보기 버튼 -->
+				<div class="remove-layout">
+					<button type="button" class="btn" onclick="recentProductRemove()">삭제</button>
 				</div>
-				<!-- 추가 최근 본 상품 아이템... -->
-			</div>
+			    <div class="inner">
+			        <div class="product-grid"></div>
+    			</div>
+			</section>
+			
+
+<script type="text/javascript">
+$(function(){
+	 recentProductView();
+});
+
+function recentProductView() {
+	let product = JSON.parse(localStorage.getItem("product")) || [];
+	let out = '';
+	
+	if(product.length == 0) {
+		out = '<div class="text-center p-5 fs-5" style="color: gray;">최근 본 상품 목록이 없습니다.</div>';
+		$('.featured-products .inner').html(out);
+		$('.remove-layout').hide();
+	} else {
+		out = '';
+		for(let item of product) {
+			let productNum = item.pnum;
+			let productName = item.pname;
+			let img = item.pimg;
+			
+			out += ' <div class="product-item">';
+			out += '  <a href="${pageContext.request.contextPath}/product/details?productNum='+productNum+'">';
+			out += '      <img src="/dra/uploads/product/' + img + '">';
+			out += '      <span class="product-info">';
+			out += '          <span>' + productName + '</span>';
+			out += '       </span>';
+			out += '  </a>';
+			out += '</div>';
+		}
+		$('.product-grid').html(out);
+		$('.remove-layout').show();
+	}
+	
+}
+
+function recentProductRemove() {
+	localStorage.removeItem("product");
+	alert("최근 본 상품을 삭제하시겠습니까?");
+	recentProductView();
+}
+
+</script>			
+			
+			

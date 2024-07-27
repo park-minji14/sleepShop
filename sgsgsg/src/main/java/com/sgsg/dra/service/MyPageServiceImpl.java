@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sgsg.dra.common.FileManager;
+import com.sgsg.dra.domain.Member;
 import com.sgsg.dra.domain.MyPoint;
 import com.sgsg.dra.domain.Review;
 import com.sgsg.dra.mapper.MyPageMapper;
@@ -128,6 +129,45 @@ public class MyPageServiceImpl implements MyPageService {
 			e.printStackTrace();
 			throw e;
 		}
+	}
+
+
+	@Override
+	public String updateProFile(Member dto, String pathname) throws Exception {
+		String filename = null;
+		
+		try {
+			filename = fileManager.doFileUpload(dto.getSelectFile(), pathname);
+			
+			if(filename != null) {
+				dto.setProfile(filename);
+				mapper.updateProFile(dto);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+		return filename;
+	}
+
+
+	@Override
+	public void removeProFile(String userId, String path, String profile) {
+		try {
+			fileManager.doFileDelete(profile, path);
+			
+			Member dto = new Member();
+			dto.setUserId(userId);
+			dto.setProfile("");
+			
+			mapper.updateProFile(dto);
+			
+		} catch (Exception e) {
+			
+		}
+		
 	}
 	
 }

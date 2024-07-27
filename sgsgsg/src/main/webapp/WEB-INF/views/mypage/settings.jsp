@@ -5,11 +5,10 @@
 
 <script>
 document.getElementById('infoUpdateBtn').addEventListener('click', function() {
-    window.location.href = '${pageContext.request.contextPath}/member/pwd';
+    location.href = '${pageContext.request.contextPath}/member/pwd';
 });
 
 </script>
-
 
 <style>
 
@@ -37,9 +36,7 @@ document.getElementById('infoUpdateBtn').addEventListener('click', function() {
 
 .profileData {
 	font-size: 18px;
-	
 }
-
 
 .row {
 	margin-top: 40px;
@@ -47,24 +44,27 @@ document.getElementById('infoUpdateBtn').addEventListener('click', function() {
 }
 
 
+.profile-remove {
+	margin-left: 65px;
+	color: lightgray;
+	font-size: 13px;
+	
+}
 
 </style>
-
-
-
 
 <div class="col-md-4">
 	<div class="card">
 		<div class="card-body">
-			<h5 class="card-title">
-				<img src="https://image.ohou.se/i/bucketplace-v2-development/uploads/users/profile_images/
-							166315803394254074.jpeg?w=144&amp;h=144&amp;c=c" srcset="https://image.ohou.se/
-							i/bucketplace-v2-development/uploads/users/profile_images/166315803394254074.jpeg?
-							w=216&amp;h=216&amp;c=c 1.5x,https://image.ohou.se/i/bucketplace-v2-development/uploads/
-							users/profile_images/166315803394254074.jpeg?w=288&amp;h=288&amp;c=c 2x,https://image.ohou.se/
-							i/bucketplace-v2-development/uploads/users/profile_images/166315803394254074.jpeg?w=432&amp;h=432&amp;
-							c=c 3x" alt="profileImage" class="e1gqgyr33 css-4buihn">
+			<h5 class="card-title btn-profile-change" data-profile='${dto.profile}'>
+				<c:set var="url1" value="${pageContext.request.contextPath}/resources/images/person.png"/>
+				<c:set var="url2" value="${pageContext.request.contextPath}/uploads/profile/${dto.profile}"/>
+			
+				<img class="img-my-profile" src="${empty dto.profile ? url1:url2}" >
 			</h5>
+			<div>
+				<a class="profile-remove">이미지 삭제</a>
+			</div>
 			<div>
 				<div class="nick">이름  </div>
 				<div class="profileData" >${dto.userName}</div>

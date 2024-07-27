@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.sgsg.dra.domain.Member;
 import com.sgsg.dra.domain.MyPoint;
 import com.sgsg.dra.domain.Review;
 
@@ -26,5 +27,8 @@ public interface MyPageMapper {
 
 	public List<Review> listReview(Map<String, Object> map);
 	public List<Review> listReviewPhoto(Map<String, Object> map);
+	
+	public void updateProFile(Member dto) throws SQLException;
+	
 	
 }

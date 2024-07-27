@@ -3,6 +3,7 @@ package com.sgsg.dra.service;
 import java.util.List;
 import java.util.Map;
 
+import com.sgsg.dra.domain.Member;
 import com.sgsg.dra.domain.MyPoint;
 import com.sgsg.dra.domain.Review;
 
@@ -18,4 +19,7 @@ public interface MyPageService {
 	public void deleteReview(Map<String, Object> map, String pathname) throws Exception;
 
 	public List<Review> listReview(Map<String, Object> map);
+	
+	public String updateProFile(Member dto, String pathname) throws Exception;	
+	public void removeProFile(String userId, String path, String profile);
 }

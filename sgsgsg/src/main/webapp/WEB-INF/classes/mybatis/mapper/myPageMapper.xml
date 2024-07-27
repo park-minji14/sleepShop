@@ -131,6 +131,29 @@
 		DELETE FROM product_Review_Photo
 		WHERE orderDetailNum = #{orderDetailNum}
 	</delete>
-
+	
+	<update id="updateProFile" parameterType="com.sgsg.dra.domain.Member">
+		UPDATE member2 SET profile = #{profile, jdbcType=VARCHAR}
+		WHERE userId = #{userId}
+	</update>
+	
+	
+	
+	<select id="userOrderState">
+		SELECT COUNT(*) cnt, ORDERSTATE
+        FROM PRODUCTOrDer
+        WHERE UserId = #{userId}
+        GROUP bY OrderState
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 </mapper>
