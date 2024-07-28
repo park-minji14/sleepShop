@@ -5,146 +5,144 @@
 <!-- 마우스 따라다니는 효과1 -->
 <!-- <div class="circle"></div> -->
 <div class="fixed-header">
-	<div class="inner">
-		<div class="logo" id="logo">새근새근</div>
-		<ul class="main-menu">
-			<li onclick="updateSubMenu('쇼핑')">쇼핑</li>
-			<li onclick="updateSubMenu('커뮤니티')">커뮤니티</li>
-		</ul>
-		<div class="search-bar">
-			<input type="text" id="searchInput" placeholder="쇼핑 검색">
-			<button onclick="performSearch()" class="search-button">
-				<i class="bi bi-search"></i>
-			</button>
-		</div>
-		<div class="user-icons">
-			<span class="me-4"><img
-				src="https://img.icons8.com/fluent-systems-regular/60/000000/like--v1.png"
-				alt="좋아요" /></span> <span class="me-4 notification" data-count="2"><img
-				src="https://img.icons8.com/fluent-systems-regular/60/000000/appointment-reminders.png"
-				alt="알림" /></span> <span class="me-4"><a
-				href="${pageContext.request.contextPath}/cart/list"><img
-					src="https://img.icons8.com/fluent-systems-regular/60/000000/shopping-cart.png"
-					alt="장바구니" /></a></span>
-			<c:choose>
-				<c:when test="${not empty sessionScope.member}">
-					<div class="user-profile">
-						<c:choose>
-							<c:when test="${sessionScope.member.membership >= 70}">
-								<img
-									src="https://img.icons8.com/plasticine/100/000000/super-mario.png"
-									alt="Admin Profile" class="profile-img"
-									style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
-							</c:when>
-							<c:otherwise>
-								<img src="https://img.icons8.com/plasticine/100/shoto.png"
-									alt="Profile" class="profile-img"
-									style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
-							</c:otherwise>
-						</c:choose>
-						<div class="profile-menu" style="display: none;">
-							<div class="profile-header">
-								<span class="user-name">${sessionScope.member.userName}</span> <img
-									src="https://img.icons8.com/ios/50/000000/bell.png"
-									alt="Notifications" class="notification-icon"
-									style="width: 24px; height: 24px;">
-							</div>
+    <div class="inner">
+        <div class="logo" id="logo">새근새근</div>
+        <ul class="main-menu">
+            <li onclick="updateSubMenu('쇼핑')">쇼핑</li>
+            <li onclick="updateSubMenu('커뮤니티')">커뮤니티</li>
+        </ul>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="쇼핑 검색">
+            <button onclick="performSearch()" class="search-button">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+        <div class="user-icons">
+            <span class="me-4"><img
+                src="https://img.icons8.com/fluent-systems-regular/60/000000/like--v1.png"
+                alt="좋아요" /></span> 
+            <span class="me-4 notification" data-count="2"><img
+                src="https://img.icons8.com/fluent-systems-regular/60/000000/appointment-reminders.png"
+                alt="알림" /></span> 
+            <span class="me-4">
+                <a href="${pageContext.request.contextPath}/cart/list"></a><img
+                    src="https://img.icons8.com/fluent-systems-regular/60/000000/shopping-cart.png"
+                    alt="장바구니" /></span>
+            <c:choose>
+                <c:when test="${not empty sessionScope.member}">
+                    <div class="user-profile">
+						<div class="user-profile-img">
 							<c:choose>
-								<c:when test="${sessionScope.member.membership >= 51}">
-									<ul class="menu-list">
-										<li><a href="${pageContext.request.contextPath}/admin"
-											style="text-decoration: none; color: inherit;"> <img
-												src="https://img.icons8.com/color/48/000000/dashboard.png"
-												alt="대시보드" style="width: 20px; height: 20px;"> 대시보드
-										</a></li>
-										<li><a
-											href="${pageContext.request.contextPath}/adminManagement/supportManage/inquiryList"
-											style="text-decoration: none; color: inherit;"> <img
-												src="https://img.icons8.com/color/48/000000/product.png"
-												alt="상품 관리" style="width: 20px; height: 20px;"> 상품 관리
-										</a></li>
-										<li><a
-											href="${pageContext.request.contextPath}/adminManagement/orderManage/order"
-											style="text-decoration: none; color: inherit;"> <img
-												src="https://img.icons8.com/color/48/000000/purchase-order.png"
-												alt="주문 관리" style="width: 20px; height: 20px;"> 주문 관리
-										</a></li>
-									</ul>
+								<c:when test="${not empty sessionScope.member.profile}">
+									<img
+										src="${pageContext.request.contextPath}/uploads/profiles/${sessionScope.member.profile}"
+										alt="Profile" class="profile-img"
+										style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
 								</c:when>
 								<c:otherwise>
-									<div class="user-stats">
-										<span>쿠폰 <strong></strong>개
-										</span> <span>포인트 <strong></strong>원
-										</span>
-									</div>
-									<ul class="menu-list">
-										<li><a
-											href="${pageContext.request.contextPath}/mypage/main"
-											style="text-decoration: none; color: inherit;"> <img
-												src="https://img.icons8.com/ios/50/000000/like.png"
-												alt="마이페이지" style="width: 20px; height: 20px;"> 마이페이지
-										</a></li>
-										<li><a
-											href="${pageContext.request.contextPath}/mypage/savedList"
-											style="text-decoration: none; color: inherit;"> <img
-												src="https://img.icons8.com/ios/50/000000/purchase-order.png"
-												alt="구매 내역" style="width: 20px; height: 20px;"> 구매 내역
-										</a></li>
-										<li><a
-											src="https://img.icons8.com/ios/50/000000/settings.png"
-											alt="설정" style="text-decoration: none; color: inherit;">
-												설정</a></li>
-									</ul>
+									<img
+										src="${pageContext.request.contextPath}/uploads/profiles/super-mario.png"
+										alt="Default Profile" class="profile-img"
+										style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
 								</c:otherwise>
 							</c:choose>
-							<div class="footer-links">
-								<a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
-								<a href="#">고객센터 ></a>
-							</div>
 						</div>
-					</div>
-				</c:when>
-				<c:otherwise>
-					<button id="loginBtn" class="login-btn">로그인</button>
-				</c:otherwise>
-			</c:choose>
-		</div>
-	</div>
+						<div class="profile-menu" style="display: none;">
+                            <div class="profile-header">
+                                <span class="user-name">${sessionScope.member.userName}</span> 
+                                <img src="https://img.icons8.com/ios/50/000000/bell.png"
+                                    alt="Notifications" class="notification-icon"
+                                    style="width: 24px; height: 24px;">
+                            </div>
+                            <c:choose>
+                                <c:when test="${sessionScope.member.membership >= 51}">
+                                    <ul class="menu-list">
+                                        <li><a href="${pageContext.request.contextPath}/admin"
+                                            style="text-decoration: none; color: inherit;"> 
+                                            <img src="https://img.icons8.com/color/48/000000/dashboard.png"
+                                                alt="대시보드" style="width: 20px; height: 20px;"> 대시보드
+                                        </a></li>
+                                        <li><a href="${pageContext.request.contextPath}/adminManagement/supportManage/inquiryList"
+                                            style="text-decoration: none; color: inherit;"> 
+                                            <img src="https://img.icons8.com/color/48/000000/product.png"
+                                                alt="상품 관리" style="width: 20px; height: 20px;"> 상품 관리
+                                        </a></li>
+                                        <li><a href="${pageContext.request.contextPath}/adminManagement/orderManage/order"
+                                            style="text-decoration: none; color: inherit;"> 
+                                            <img src="https://img.icons8.com/color/48/000000/purchase-order.png"
+                                                alt="주문 관리" style="width: 20px; height: 20px;"> 주문 관리
+                                        </a></li>
+                                    </ul>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="user-stats">
+                                        <span>쿠폰 <strong></strong>개</span> 
+                                        <span>포인트 <strong></strong>원</span>
+                                    </div>
+                                    <ul class="menu-list">
+                                        <li><a href="${pageContext.request.contextPath}/mypage/main"
+                                            style="text-decoration: none; color: inherit;"> 
+                                            <img src="https://img.icons8.com/ios/50/000000/like.png"
+                                                alt="마이페이지" style="width: 20px; height: 20px;"> 마이페이지
+                                        </a></li>
+                                        <li><a href="${pageContext.request.contextPath}/mypage/savedList"
+                                            style="text-decoration: none; color: inherit;"> 
+                                            <img src="https://img.icons8.com/ios/50/000000/purchase-order.png"
+                                                alt="구매 내역" style="width: 20px; height: 20px;"> 구매 내역
+                                        </a></li>
+                                        <li><a href="#"
+                                            style="text-decoration: none; color: inherit;">
+                                            <img src="https://img.icons8.com/ios/50/000000/settings.png"
+                                                alt="설정" style="width: 20px; height: 20px;"> 설정
+                                        </a></li>
+                                    </ul>
+                                </c:otherwise>
+                            </c:choose>
+                            <div class="footer-links">
+                                <a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
+                                <a href="#">고객센터 ></a>
+                            </div>
+                        </div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <button id="loginBtn" class="login-btn">로그인</button>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
 
-	<nav class="fixed-nav">
-		<div class="inner submenu-wrap">
-			<ul class="sub-menu" id="subMenu">
-				<!--서브메뉴 자바스크립트로 동적 생성 -->
-			</ul>
-			<div class="popular-search-container">
-				<div class="popular-search">
-					<span id="popularSearchText"></span>
-					<button class="popular-search-btn" onclick="togglePopularSearch()">▼</button>
-					<div class="popular-search-content" id="popularSearchContent">
-						<div class="popular-search-header">
-							<span>인기 검색어</span>
-							<button class="close-btn" onclick="togglePopularSearch()">▲</button>
-						</div>
-						<ul class="popular-search-list">
-							<li><span>1. 메모리폼 베개</span><span class="new">NEW</span></li>
-							<li><span>2. 숙면 매트리스</span><span class="new">NEW</span></li>
-							<li><span>3. 수면등</span><span class="new">NEW</span></li>
-							<li><span>4. 릴렉스 체어</span><span class="new">NEW</span></li>
-							<li><span>5. 수면 음료</span></li>
-							<li><span>6. 아로마 디퓨저</span></li>
-							<li><span>7. 블랙아웃 커튼</span><span class="new">NEW</span></li>
-							<li><span>8. 수면 보조제</span></li>
-							<li><span>9. 릴렉스 오일</span></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</nav>
-
-
+    <nav class="fixed-nav">
+        <div class="inner submenu-wrap">
+            <ul class="sub-menu" id="subMenu">
+                <!--서브메뉴 자바스크립트로 동적 생성 -->
+            </ul>
+            <div class="popular-search-container">
+                <div class="popular-search">
+                    <span id="popularSearchText"></span>
+                    <button class="popular-search-btn" onclick="togglePopularSearch()">▼</button>
+                    <div class="popular-search-content" id="popularSearchContent">
+                        <div class="popular-search-header">
+                            <span>인기 검색어</span>
+                            <button class="close-btn" onclick="togglePopularSearch()">▲</button>
+                        </div>
+                        <ul class="popular-search-list">
+                            <li><span>1. 메모리폼 베개</span><span class="new">NEW</span></li>
+                            <li><span>2. 숙면 매트리스</span><span class="new">NEW</span></li>
+                            <li><span>3. 수면등</span><span class="new">NEW</span></li>
+                            <li><span>4. 릴렉스 체어</span><span class="new">NEW</span></li>
+                            <li><span>5. 수면 음료</span></li>
+                            <li><span>6. 아로마 디퓨저</span></li>
+                            <li><span>7. 블랙아웃 커튼</span><span class="new">NEW</span></li>
+                            <li><span>8. 수면 보조제</span></li>
+                            <li><span>9. 릴렉스 오일</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 </div>
-
 
 <script>
 function activateMenuBasedOnURL() {
@@ -321,6 +319,7 @@ $(document).ready(function() {
  // 인기 검색어 업데이트 시작
  updatePopularSearch();
  setInterval(updatePopularSearch, 3000);
+ 
  
  
 //----------------------북마크 함수 -----------------//

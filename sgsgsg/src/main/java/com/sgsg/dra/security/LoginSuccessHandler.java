@@ -56,6 +56,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		info.setMembership(member.getMembership());
 		info.setUserId(member.getUserId());
 		info.setUserName(member.getUserName());
+		info.setProfile(member.getProfile()); // 프로필 정보 추가
 		
 		session.setAttribute("member", info);
 		
