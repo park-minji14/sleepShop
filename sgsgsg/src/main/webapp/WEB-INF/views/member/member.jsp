@@ -13,13 +13,16 @@ body {
 	max-width: 680px;
 	width: 80%;
 	margin: 120px auto;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 30px;
 }
 
 h1 {
 	font-size: 48px;
 	letter-spacing: -3px;
 	text-align: center;
-	margin: 120px 0 80px 0;
+	/* margin: 120px 0 80px 0; */
 	transition: 0.2s linear;
 	font-weight: 900;
 }
