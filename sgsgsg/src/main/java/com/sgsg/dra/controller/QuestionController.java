@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -63,12 +64,14 @@ public class QuestionController {
 
     //상품 페이지의 문의 리스트 
     @GetMapping("list")
+    @ResponseBody
     public Map<String, Object> list(
-            @RequestParam long productNum,
+            @RequestParam(value = "productNum") long productNum,
             @RequestParam(value = "pageNo", defaultValue = "1") int current_page, 
             HttpSession session) throws Exception {
         SessionInfo info = (SessionInfo) session.getAttribute("member");
         Map<String, Object> model = new HashMap<String,Object>();
+
         try {
             Map<String, Object> map = new HashMap<String,Object>();
             int size = 5;
@@ -92,19 +95,19 @@ public class QuestionController {
                     dto.setAnswerStatus("답변대기");
                 }
 
-                boolean canViewFullContent = info != null && 
-                    (info.getMembership() >= 50 || dto.getUserId().equals(info.getUserId()) || dto.getSecret() == 1);
-                
-                if (!canViewFullContent) {
-                    dto.setQuestion("비공개 문의글 <img src='https://img.icons8.com/ios/20/000000/lock--v1.png' alt='lock'>");
-                    if (dto.getAnswer() != null && !dto.getAnswer().isEmpty()) {
-                        dto.setAnswer("답변이 등록되었습니다.");
-                    }
-                    // 파일 존재 여부만 표시
-                    if (dto.getListFilename() != null && dto.getListFilename().length > 0) {
-                        dto.setListFilename(new String[]{"[첨부파일]"});
-                    }
-                }
+                boolean canViewFullContent = dto.getSecret() == 0 || // 비밀글이 아니면 누구나 볼 수 있음
+                	    (info != null && (info.getMembership() >= 50 || dto.getUserId().equals(info.getUserId())));
+
+                	if (!canViewFullContent) {
+                	    dto.setQuestion("비공개 문의글 <img src='https://img.icons8.com/ios/20/000000/lock--v1.png' alt='lock'>");
+                	    if (dto.getAnswer() != null && !dto.getAnswer().isEmpty()) {
+                	        dto.setAnswer("답변이 등록되었습니다.");
+                	    }
+                	    // 파일 존재 여부만 표시
+                	    if (dto.getListFilename() != null && dto.getListFilename().length > 0) {
+                	        dto.setListFilename(new String[]{"[첨부파일]"});
+                	    }
+                	}
             }
             
             String paging = myUtil.pagingFunc(current_page, total_page, "listQuestion");
