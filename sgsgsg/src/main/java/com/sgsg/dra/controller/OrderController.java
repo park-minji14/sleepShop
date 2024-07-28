@@ -85,7 +85,11 @@ public class OrderController {
 				int productSum = dto.getPrice() * qtyTemp;
 				
 				dto.setQty(qtyTemp);
-				dto.setSalePrice((int) Math.ceil(dto.getPrice() * (1-dto.getDiscountRate()/100.0)));
+				// 할인된 가격 계산
+                double discountedPrice = dto.getPrice() * (1 - dto.getDiscountRate() / 100.0);
+                // 백원 단위로 반올림
+                long roundedPrice = Math.round(discountedPrice / 100.0) * 100;
+                dto.setSalePrice(roundedPrice);
 				
 				totalSavedMoney += (qtyTemp * dto.getSavedMoney());
 				dto.setSavedMoney(qtyTemp * dto.getSavedMoney());

@@ -69,13 +69,13 @@
 									<span class="plus_qty bi bi-plus-lg"></span>
 								</div>
 								<div class="option-price">
-									<span class="number"><fmt:formatNumber value="${dto.price*(1-dto.discountRate/100)* (dto.totalStock <1 ? 0:dto.qty)}" pattern="#,###" /></span>원
+									<span class="number"><fmt:formatNumber value="${dto.salePrice * (dto.totalStock <1 ? 0:dto.qty)}" pattern="#,###" /></span>원
 								</div> 
 							</div>
 							<input type="hidden" data-stock-num="${dto.stockNum}">
 							<input type="hidden" name="qty" value="${dto.totalStock <1 ? 0:dto.qty}">
 							<input type="hidden" name="productPrice" value="${dto.price}">
-							<input type="hidden" name="salePrice" value="${Math.ceil(dto.price*(1-dto.discountRate/100))}">
+							<input type="hidden" name="salePrice" value="${dto.salePrice}">
 							<input type="hidden" name="delivery" value="${dto.delivery}">
 							<input type="hidden" name="totalPrice">
 						</div>

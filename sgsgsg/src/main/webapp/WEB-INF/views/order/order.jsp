@@ -213,7 +213,7 @@ function sendOk() {
 										<c:if test="${dto.optionCount>=1}">${dto.optionName}: ${dto.optionValue}</c:if>
 										<c:if test="${dto.optionCount>=2}">/ ${dto.optionName2}: ${dto.optionValue2}</c:if>
 									</div>
-									<div>수량: ${dto.qty}개 (<fmt:formatNumber value="${dto.price*(1-dto.discountRate/100)*dto.qty}" pattern="#,###" />원)</div>
+									<div>수량: ${dto.qty}개 (<fmt:formatNumber value="${dto.salePrice*dto.qty}" pattern="#,###" />원)</div>
 								</div>
 								<div>
 									<span class=""><i class="bi bi-truck"></i> 
@@ -271,16 +271,6 @@ function sendOk() {
 						<input type="hidden" name="addr1" value="${defaultDest.addr1}">
 						<input type="hidden" name="addr2"  value="${defaultDest.addr2}">
 					</span>
-				</div>
-				
-				<div class="p-3 border rounded order_box">
-					<div class="fs-6 fw-semibold border-bottom pb-1">쿠폰 사용</div>
-					<div class="row ps-2 pt-2 col-6">
-						<select class="form-select" id="couponSelect">
-							<option>사용 안함</option>
-							<option value="">첫 결제 할인 쿠폰</option>
-						</select>
-					</div>
 				</div>
 				
 				<div class="p-3 border mt-3 rounded order_box">
