@@ -8,7 +8,7 @@ import com.sgsg.dra.domain.Product;
 public interface ProductService {
 
 	public List<Product> selectCategoryList();
-	public List<Product> listProduct();
+	public Map<String, List<Product>> listProduct();
 
 	public int dataCount(Map<String, Object> map);
 	public List<Product> listProduct(Map<String, Object> map);
@@ -32,7 +32,8 @@ public interface ProductService {
 	
 	public  Product getCategoryById(Long categoryNum);
 	public List<Product> getProductsByCategory(Long categoryNum);
-
+	
+	public List<Product> listLatestProducts(int limit);
 
     }
 

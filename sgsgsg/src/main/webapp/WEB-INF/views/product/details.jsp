@@ -138,11 +138,8 @@
 				</div>
 				<div class="total-price mb-3">
 					<span class="fs-5">주문금액</span> <span class="fs-5 fw-bold"
-						id="totalPrice"
-						data-base-price="${dto.price * (1 - dto.discountRate / 100)}">
-						<fmt:formatNumber
-							value="${dto.price * (1 - dto.discountRate / 100)}"
-							pattern="#,###원" />
+						id="totalPrice" data-base-price="${dto.salePrice}"> <fmt:formatNumber
+							value="${dto.salePrice}" pattern="#,###원" />
 					</span>
 				</div>
 				<div class="purchase-buttons">
@@ -694,6 +691,8 @@ function ajaxFun(url, method, query, dataType, fn) {
         url: url,
         data: query,
         dataType: dataType,
+        processData: false, 
+        contentType: false, 
         success: function(data) {
             console.log("Ajax 성공:", data);
             fn(data);

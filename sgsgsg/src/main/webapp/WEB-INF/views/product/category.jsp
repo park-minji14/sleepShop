@@ -502,24 +502,25 @@ $(document).ready(function() {
             console.log('Updating product list:', products);
             var $productList = $('#productList');
             $productList.empty();
-
             if (products && products.length > 0) {
                 $.each(products, function(index, product) {
                     var productHtml = 
-                        '<div class="product-item" data-product-id="' + product.productNum + '">' +
-                            '<a href="${pageContext.request.contextPath}/product/details?productNum=' + product.productNum + '">' +
-                                '<img src="${pageContext.request.contextPath}/uploads/product/' + product.thumbnail + '" alt="' + product.productName + '">' +
+                        '<div class="product-item">' +
+                            '<a href="' + contextPath + '/product/details?productNum=' + product.productNum + '">' +
+                                '<div class="image-wrapper">' +
+                                    '<img src="' + contextPath + '/uploads/product/' + product.thumbnail + '" alt="' + product.productName + '">' +
+                                    '<div class="bookmark" data-product-id="' + product.productNum + '"></div>' +
+                                '</div>' +
                                 '<span class="product-info">' +
-                                    '<span>' + product.productName + '</span>' +
-                                    '<span class="discount">' +
-                                        product.discountRate + '% ' +
-                                        '<span class="price">' +
-                                            new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(product.price * (1 - product.discountRate / 100)) +
+                                    '<span class="product-name">' + product.productName + '</span>' +
+                                    '<span class="discount">' + product.discountRate + '% ' +
+                                        '<span class="price">' + 
+                                            new Intl.NumberFormat('ko-KR', { style: 'decimal' }).format(product.salePrice) + '원' +
                                         '</span>' +
                                     '</span>' +
                                     '<span class="rating">' +
-                                        '★ ' + product.score + 
-                                        '<span class="review-count">리뷰 ' + product.reviewCount + '</span>' +
+                                        '★ ' + (product.score ? product.score.toFixed(1) : '0.0') +
+                                        '<span class="review-count">리뷰 ' + (product.reviewCount || 0) + '</span>' +
                                     '</span>' +
                                 '</span>' +
                             '</a>' +

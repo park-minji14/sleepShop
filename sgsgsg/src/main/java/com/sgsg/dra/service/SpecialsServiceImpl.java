@@ -107,9 +107,19 @@ public class SpecialsServiceImpl implements SpecialsService {
         List<SpecialsProduct> list = null;
         try {
             list = mapper.listSpecialProducts(map);
+            if (list != null) {
+                for (SpecialsProduct product : list) {
+                    // 할인된 가격 계산
+                    double discountedPrice = product.getPrice() * (1 - product.getDiscountRate() / 100.0);
+                    // 백원 단위로 반올림
+                    long roundedPrice = Math.round(discountedPrice / 100.0) * 100;
+                    product.setSalePrice(roundedPrice);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return list;
     }
+
 }

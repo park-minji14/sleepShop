@@ -8,16 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import com.sgsg.dra.common.MyUtil;
 import com.sgsg.dra.domain.Product;
 import com.sgsg.dra.domain.Review;
-import com.sgsg.dra.domain.SessionInfo;
 import com.sgsg.dra.service.ProductService;
 import com.sgsg.dra.service.ReviewService;
-import com.sgsg.dra.service.WishlistService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
 
 
 @Controller
@@ -29,9 +26,6 @@ public class ProductController {
 	
 	 @Autowired
 	 private ReviewService reviewService;
-	 
-    @Autowired
-    private WishlistService wishlistService;
 
 	@Autowired
 	private MyUtil myUtil;
@@ -87,7 +81,7 @@ public class ProductController {
 	}
 	
 	
-	@GetMapping("/details")
+	@GetMapping("details")
 	public String productDetail(@RequestParam Long productNum, Model model) {
 	    try {
 	        Product dto = service.findById(productNum);
@@ -142,7 +136,7 @@ public class ProductController {
 	    return ".product.details";
 	}
 
-	@GetMapping("/reviews")
+	@GetMapping("reviews")
 	@ResponseBody
 	public Map<String, Object> getReviews(
 	        @RequestParam Long productNum,
@@ -178,7 +172,7 @@ public class ProductController {
 	    return result;
 	}
 
-	@GetMapping("/category")
+	@GetMapping("category")
 	public String categoryView(@RequestParam Long categoryNum, @RequestParam(required = false) Long subCategoryNum,
 			Model model) {
 		// 현재 카테고리 정보 가져오기
@@ -207,7 +201,7 @@ public class ProductController {
 		return ".product.category";
 	}
 
-	@GetMapping("/search")
+	@GetMapping("search")
 	public String searchProducts(@RequestParam String searchTerm,
 			@RequestParam(value = "pageNo", defaultValue = "1") int current_page, Model model) {
 
@@ -233,7 +227,7 @@ public class ProductController {
 
 			List<Product> list = service.searchProducts(map);
 
-			String paging = myUtil.pagingFunc(current_page, total_page, "searchProducts");
+			String paging = myUtil.pagingFunc(current_page, total_page, "loadPage");
 
 			model.addAttribute("list", list);
 			model.addAttribute("dataCount", dataCount);
@@ -245,13 +239,13 @@ public class ProductController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			// 에러 처리 로직 추가
+		
 		}
 
 		return ".product.searchResults";
 	}
 	
-	@GetMapping("/category/products")
+	@GetMapping("category/products")
 	@ResponseBody
 	public Map<String, Object> getCategoryProducts(
 	        @RequestParam Long categoryNum,
@@ -274,21 +268,5 @@ public class ProductController {
 	    response.put("products", products);
 
 	    return response;
-	}
-	
-	//북마크
-	@PostMapping("toggleWishlist")
-	@ResponseBody
-	public Map<String, Object> toggleWishlist(@RequestParam Long productNum, HttpSession session) {
-		SessionInfo info = (SessionInfo) session.getAttribute("member");
-
-		try {
-			return wishlistService.toggleWishlist(info.getUserId(), productNum);
-			
-		} catch (Exception e) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("state", "false");
-			return map;
-		}
 	}
 }

@@ -35,4 +35,6 @@ public interface ProductMapper {
 	public  Product getCategoryById(Long categoryNum);
 	public List<Product> getProductsByCategory(Long categoryNum);
 	
+	public List<Product> listLatestProducts(Map<String, Object> map);
+	
 }

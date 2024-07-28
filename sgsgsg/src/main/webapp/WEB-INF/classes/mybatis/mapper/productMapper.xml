@@ -26,11 +26,11 @@
 	
 	<!-- 상품 리스트 -->
 	<select id="listProduct" resultType="com.sgsg.dra.domain.Product">
-		SELECT productNum, categoryNum, productName, price, savedMoney,
-		discountRate, optionCount, delivery, thumbnail
-		FROM PRODUCT
-		WHERE productShow = 1
-		ORDER BY productNum DESC
+	    SELECT productNum, categoryNum, productName, price, savedMoney,
+	    discountRate, optionCount, delivery, thumbnail, classify
+	    FROM PRODUCT
+	    WHERE productShow = 1
+	    ORDER BY productNum DESC
 	</select>
 
 	<!-- 상품 상세정보 가져오기 -->
@@ -200,5 +200,19 @@
     ORDER BY p.productNum DESC
 </select>
 
+<!-- 메인에서 최신상품  -->
+<select id="listLatestProducts" parameterType="map" resultType="com.sgsg.dra.domain.Product">
+    SELECT productNum, categoryNum, productName, price, savedMoney,
+    discountRate, optionCount, delivery, thumbnail, classify
+    FROM (
+        SELECT productNum, categoryNum, productName, price, savedMoney,
+        discountRate, optionCount, delivery, thumbnail, classify,
+        ROW_NUMBER() OVER (ORDER BY reg_date DESC) as rn
+        FROM PRODUCT
+        WHERE productShow = 1
+    )
+  WHERE rn &lt;= #{limit}
+    ORDER BY rn
+</select>
 	
 </mapper>
