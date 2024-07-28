@@ -50,9 +50,7 @@ function searchList() {
 </script>
 
 <div class="mt-4">
-
-    
-    
+<h2 class="mb-4 subtitle">1:1 문의 리스트</h2>
     <div class="body-main">
 		
 		<table class="table text-center">

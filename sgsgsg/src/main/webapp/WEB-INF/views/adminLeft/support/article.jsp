@@ -65,11 +65,9 @@ function sendAnswerOk() {
 }
 </script>
 
-<div class="mt-4">
-  
-    
+<div class="mt-4">    
+	<h2 class="mb-4 subtitle">1:1 문의 답변</h2>
     <div class="body-main">
-
 		<table class="table table-border table-article">
 			<tbody>
 				<tr style="border: none;">

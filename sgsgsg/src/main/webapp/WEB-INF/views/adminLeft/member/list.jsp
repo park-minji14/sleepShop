@@ -36,7 +36,7 @@ function profile(memberIdx) {
 
 	
 <div class="body-container" style="padding: 20px 10px 0;">
-			
+			<h2 class="mb-4 subtitle">회원관리</h2>
 	<table class="table table-borderless mt-2 mb-0">
 		<tr>
 			<td align="left" width="50%" valign="bottom">

@@ -32,9 +32,7 @@ style>body {
 body {
     background-color: #f8f9fa;
 }
-.container {
-    max-width: 1000px;
-}
+
 .card {
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
@@ -77,7 +75,7 @@ body {
 </style>
 
     <div class="container mt-5">
-        <h2 class="text-center mb-4">FAQ 관리</h2>
+       <h2 class="mb-4 subtitle">FAQ 관리</h2>
         <div class="mb-3">
             <a href="${pageContext.request.contextPath}/faq/list" class="btn btn-primary">FAQ 페이지로 이동</a>
         </div>

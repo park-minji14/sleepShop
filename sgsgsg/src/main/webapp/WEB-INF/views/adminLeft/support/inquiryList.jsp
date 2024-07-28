@@ -46,44 +46,56 @@
         }
     </style>
     <div class="container mt-5">
-        <h2 class="text-primary mb-4">상품 문의 관리</h2>
+      <h2 class="mb-4 subtitle">상품문의 관리</h2>
+
+	<div class="mb-3 row"  style=" justify-content: flex-end;">
+		<div class="col-4">
+			<select id="answerStatusFilter" class="form-select">
+				<option value="">모든 문의</option>
+				<option value="answered"
+					${answerStatus == 'answered' ? 'selected' : ''}>답변 완료</option>
+				<option value="unanswered"
+					${answerStatus == 'unanswered' ? 'selected' : ''}>미답변</option>
+			</select>
+		</div>
+	</div>
+
+	<table class="table table-hover">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th>번호</th>
+                    <th>카테고리</th>
+                    <th>상품명</th>
+                    <th>문의 내용</th>
+                    <th>작성자</th>
+                    <th>작성일</th>
+                    <th>상태</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="inquiry" items="${inquiries}">
+                    <tr class="inquiry-row" data-bs-toggle="modal" data-bs-target="#inquiryModal" data-inquiry-id="${inquiry.inquiryNum}">
+                        <td>${inquiry.inquiryNum}</td>
+                        <td>${inquiry.inquiryType}</td>
+                        <td>${inquiry.productName}</td>
+                        <td>${inquiry.question}</td>
+                        <td>${inquiry.userId}</td>
+                        <td>${inquiry.question_Date}</td>
+                        <td>
+                            <span class="badge ${inquiry.answerStatus == '답변완료' ? 'bg-success' : 'bg-warning'}">
+                                ${inquiry.answerStatus}
+                            </span>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
         
-       <table class="table table-hover">
-    <thead class="bg-primary text-white">
-        <tr>
-            <th>번호</th>
-            <th>카테고리</th>
-            <th>상품명</th>
-            <th>문의 내용</th>
-            <th>작성자</th>
-            <th>작성일</th>
-            <th>상태</th>
-        </tr>
-    </thead>
-    <tbody>
-        <c:forEach var="inquiry" items="${inquiries}">
-            <tr class="inquiry-row" data-bs-toggle="modal" data-bs-target="#inquiryModal" data-inquiry-id="${inquiry.inquiryNum}">
-                <td>${inquiry.inquiryNum}</td>
-                <td>${inquiry.inquiryType}</td>
-                <td>${inquiry.productName}</td>
-                <td>${inquiry.question}</td>
-                <td>${inquiry.userId}</td>
-                <td>${inquiry.question_Date}</td>
-                <td>
-                    <span class="badge ${inquiry.answerStatus == '답변완료' ? 'bg-success' : 'bg-warning'}">
-                        ${inquiry.answerStatus}
-                    </span>
-                </td>
-            </tr>
-        </c:forEach>
-    </tbody>
-</table>
-        
-<!-- 페이징 -->
-<div class="page-navigation">
-    ${paging}
-</div>
- </div>
+        <!-- 페이징 -->
+        <div class="page-navigation">
+            ${paging}
+        </div>
+    </div>
 
     <!-- 문의 상세 및 답변 모달 -->
     <div class="modal fade" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
@@ -141,27 +153,30 @@
                         </div>
                     </div>
 
-				<div class="modal-section" id="responseFormSection">
-					<h6>답변 작성</h6>
-					<form id="responseForm" enctype="multipart/form-data">
-						<div class="mb-3">
-							<textarea class="form-control" id="newResponseContent"
-								name="answer" rows="3" placeholder="답변을 입력하세요..."></textarea>
-						</div>
-						<div class="mb-3">
-							<input class="form-control" type="file" id="responseAttachment"
-								name="file">
-						</div>
-						<button type="submit" class="btn btn-primary">답변 등록</button>
-					</form>
-				</div>
-			</div>
+                    <div class="modal-section" id="responseFormSection">
+                        <h6>답변 작성</h6>
+                        <form id="responseForm" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <textarea class="form-control" id="newResponseContent" name="answer" rows="3" placeholder="답변을 입력하세요..."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <input class="form-control" type="file" id="responseAttachment" name="file">
+                            </div>
+                            <button type="submit" class="btn btn-primary">답변 등록</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     
 <script>
 $(document).ready(function() {
+    // 답변 상태 필터 변경 이벤트
+    $("#answerStatusFilter").change(function() {
+        listPage(1);
+    });
+
     // 문의 상세 모달 표시 이벤트
     $('#inquiryModal').on('show.bs.modal', function (event) {
         var btn = $(event.relatedTarget);
@@ -170,7 +185,7 @@ $(document).ready(function() {
         
         // 문의 상세 정보 가져오기
         $.ajax({
-            url: 'getInquiry',
+            url: '${pageContext.request.contextPath}/adminManagement/supportManage/getInquiry',
             type: 'GET',
             data: { inquiryNum: id },
             success: function(data) {
@@ -221,22 +236,35 @@ $(document).ready(function() {
 
         // 답변 저장 AJAX 요청
         $.ajax({
-            url: 'saveAnswer',
+            url: '${pageContext.request.contextPath}/adminManagement/supportManage/saveAnswer',
             type: 'POST',
             data: formData,
             processData: false,
             contentType: false,
             success: function(response) {
                 if(response.status === 'success') {
-                    alert(response.message);
+                    alert('답변이 성공적으로 저장되었습니다.');
                     $('#inquiryModal').modal('hide');
-                    location.reload();
-                } 
+                    location.reload();  // 페이지 새로고침
+                } else {
+                    alert('답변 저장에 실패했습니다.');
+                }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert('responseForm error.');
+            error: function() {
+                alert('답변 저장 중 오류가 발생했습니다.');
             }
         });
     });
 });
+
+function listPage(page) {
+    let answerStatus = $("#answerStatusFilter").val();
+    let url = "${pageContext.request.contextPath}/adminManagement/supportManage/inquiryList";
+    let query = "page=" + page;
+    if (answerStatus) {
+        query += "&answerStatus=" + answerStatus;
+    }
+    
+    location.href = url + "?" + query;
+}
 </script>

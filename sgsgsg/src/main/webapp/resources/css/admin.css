@@ -1,7 +1,5 @@
 @charset "UTF-8";
 
-
-<style>
 .sidebar {
     background-color: #f8f9fa;
     height: 100%;
@@ -35,7 +33,7 @@ a{
 
 
 /*-------------------------------*/
-<style>
+
 
 .sidebar {
     background-color: #f8f9fa;
@@ -102,4 +100,6 @@ a{
 	font-family: 'LINESeedKR-Bd';
 }
 
-</style>
+main{
+	margin-bottom: 100px;
+}

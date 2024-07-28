@@ -8,8 +8,6 @@ body {
    /*  background-color: #f8f9fa; */
 }
 
-
-
 /* 헤더 부분 꾸미기 */
 .admin-header {
     background-color: #3949ab;
@@ -112,9 +110,6 @@ body {
 
 <header class="admin-header">
     <h1 class="logo-text">새근새근</h1>
-    <div class="header-info">
-        오늘: n명, 어제: n명, 최대: 739, 전체: 5000명
-    </div>
     <div class="header-actions">
         <div class="notifications">
             <i class="bi bi-bell fs-4"></i>

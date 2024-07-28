@@ -7,6 +7,8 @@ public class SessionInfo {
 	private String userName;
 	private int membership;
 	
+	 private String profile;
+	
 	public long getMemberIdx() {
 		return memberIdx;
 	}
@@ -30,5 +32,11 @@ public class SessionInfo {
 	}
 	public void setMembership(int membership) {
 		this.membership = membership;
+	}
+	public String getProfile() {
+		return profile;
+	}
+	public void setProfile(String profile) {
+		this.profile = profile;
 	}
 }
