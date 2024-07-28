@@ -104,7 +104,7 @@
 .recommended-products .product-item {
 	flex: 0 0 200px;
 	margin-right: 20px;
-	border: 1px solid #e0e0e0;
+	/* border: 1px solid #e0e0e0; */
 	border-radius: 8px;
 	overflow: hidden;
 	transition: transform 0.3s ease;
@@ -648,6 +648,8 @@ height: 300px
     z-index: 10;
     padding: 5px 10px;
     border-radius: 5px;
+    background: rgba(13, 110, 253, 0.25);
+    min-width: 200px;
 }
 .timedeal-product-grid {
     margin-top: 20px;
@@ -689,61 +691,6 @@ height: 300px
 /* .bg-danger {
     background-color: #0d6efd !important;
 } */
-
- .pagination {
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 50px;
-    padding: 5px;
-    display: inline-flex;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-} 
-page-navigation{
-	text-align: center;
-}
-
-.pagination .page-item:first-child .page-link,
-.pagination .page-item:last-child .page-link {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    margin: 0 5px;
-    background-color: #f8f9fa;
-    border: none;
-    color: #6c757d;
-}
-
-.pagination .page-item:not(:first-child):not(:last-child) .page-link {
-    border: none;
-    background-color: transparent;
-    color: #6c757d;
-    font-weight: bold;
-    padding: 0.5rem 0.8rem;
-}
-
-.pagination .page-item.active .page-link {
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.pagination .page-link:focus {
-    box-shadow: none;
-}
-
-.pagination .page-link:hover {
-    background-color: #e9ecef;
-}
-
 
 /*새로운 뉴 북마크*/
 .timedeal-header:before {

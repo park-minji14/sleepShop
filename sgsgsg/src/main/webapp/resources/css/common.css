@@ -734,3 +734,19 @@ footer {
   z-index: 99999;
   background: #590000;
 }
+
+.bookmark {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 20px;
+    height: 30px;
+    background-color: rgba(255, 255, 255, 0.15);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.bookmark.active {
+    background-color: #0dcaf0a6; 
+}

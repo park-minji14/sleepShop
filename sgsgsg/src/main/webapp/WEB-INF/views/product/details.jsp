@@ -34,12 +34,13 @@
 			<div class="col-md-6">
 				<div class="product-info">
 					<h1
-						class="product-title mb-3 d-flex align-items-start justify-content-between">
+						class="product-title mb-3 d-flex align-items-start justify-content-between"
+						style="position: relative;">
 						${dto.productName}
-						<div class="d-flex flex-column align-items-center">
-							<i class="bi bi-bookmark" id="bookmarkIcon"
-								style="font-size: 1.5rem; cursor: pointer;"></i> <span
-								class="bookmark-count" style="font-size: 0.8rem;">3,333</span>
+						<div class="bookmark" data-product-id="${dto.productNum}"
+							title="${isBookmarked ? '북마크 해제' : '북마크 추가'}">
+							<span class="bookmark-count" style="font-size: 0.8rem;">
+								${totalBookmarkCount > 0 ? totalBookmarkCount : ''} </span>
 						</div>
 					</h1>
 					<input type="hidden" id="productNum" value="${dto.productNum}">
@@ -484,146 +485,180 @@
 	</div>
 </div>
 <%--문의하기 모달 --%>
-<div class="modal fade" id="qnaModal" tabindex="-1" aria-labelledby="qnaModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="qnaModalLabel">상품 문의하기</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-     
-     
-        <form id="qnaForm" enctype="multipart/form-data" method="post" action="${pageContext.request.contextPath}/question/write">
-          <div class="mb-3">
-            <label class="form-label">문의 유형</label>
-            <div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="qnaType" id="qnaTypeProduct" value="상품" checked>
-                <label class="form-check-label" for="qnaTypeProduct">상품</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="qnaType" id="qnaTypeDelivery" value="배송">
-                <label class="form-check-label" for="qnaTypeDelivery">배송</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="qnaType" id="qnaTypeReturn" value="반품/교환">
-                <label class="form-check-label" for="qnaTypeReturn">반품/교환</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="qnaType" id="qnaTypeRefund" value="환불">
-                <label class="form-check-label" for="qnaTypeRefund">환불</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="qnaType" id="qnaTypeOther" value="기타">
-                <label class="form-check-label" for="qnaTypeOther">기타</label>
-              </div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="qnaContent" class="form-label">문의 내용</label>
-            <textarea class="form-control" id="qnaContent" name="question" rows="5" required placeholder=""></textarea>
-            <div id="qnaContentGuide" class="form-text">
-              문의 내용을 자세히 작성해 주세요. 답변은 확인 후 순차적으로 처리되며, 
-              마이페이지에서도 확인 가능합니다. 개인정보는 문의 처리 후 안전하게 폐기됩니다.
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="qnaFile" class="form-label">파일 첨부</label>
-           <!--  <input type="file" class="form-control" id="qnaFile" name="file" accept="image/*" multiple> -->
-            <input type="file" class="form-control" id="qnaFile" name="selectFile" accept="image/*" multiple>
-            <div class="form-text">이미지 파일만 첨부 가능합니다. (최대 5개, 각 5MB 이하)</div>
-          </div>
-          <div id="fileList" class="mt-2"></div>
-          <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="qnaPrivate" name="isPrivate">
-            <label class="form-check-label" for="qnaPrivate">비밀글로 문의하기</label>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-        <button type="button" class="btn btn-primary" id="submitQna">문의하기</button>
-      </div>
-    </div>
-  </div>
+<div class="modal fade" id="qnaModal" tabindex="-1"
+	aria-labelledby="qnaModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="qnaModalLabel">상품 문의하기</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+
+				<form id="qnaForm" enctype="multipart/form-data" method="post"
+					action="${pageContext.request.contextPath}/question/write">
+					<div class="mb-3">
+						<label class="form-label">문의 유형</label>
+						<div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="qnaType"
+									id="qnaTypeProduct" value="상품" checked> <label
+									class="form-check-label" for="qnaTypeProduct">상품</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="qnaType"
+									id="qnaTypeDelivery" value="배송"> <label
+									class="form-check-label" for="qnaTypeDelivery">배송</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="qnaType"
+									id="qnaTypeReturn" value="반품/교환"> <label
+									class="form-check-label" for="qnaTypeReturn">반품/교환</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="qnaType"
+									id="qnaTypeRefund" value="환불"> <label
+									class="form-check-label" for="qnaTypeRefund">환불</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="qnaType"
+									id="qnaTypeOther" value="기타"> <label
+									class="form-check-label" for="qnaTypeOther">기타</label>
+							</div>
+						</div>
+					</div>
+					<div class="mb-3">
+						<label for="qnaContent" class="form-label">문의 내용</label>
+						<textarea class="form-control" id="qnaContent" name="question"
+							rows="5" required placeholder=""></textarea>
+						<div id="qnaContentGuide" class="form-text">문의 내용을 자세히 작성해
+							주세요. 답변은 확인 후 순차적으로 처리되며, 마이페이지에서도 확인 가능합니다. 개인정보는 문의 처리 후 안전하게
+							폐기됩니다.</div>
+					</div>
+					<div class="mb-3">
+						<label for="qnaFile" class="form-label">파일 첨부</label>
+						<!--  <input type="file" class="form-control" id="qnaFile" name="file" accept="image/*" multiple> -->
+						<input type="file" class="form-control" id="qnaFile"
+							name="selectFile" accept="image/*" multiple>
+						<div class="form-text">이미지 파일만 첨부 가능합니다. (최대 5개, 각 5MB 이하)</div>
+					</div>
+					<div id="fileList" class="mt-2"></div>
+					<div class="mb-3 form-check">
+						<input type="checkbox" class="form-check-input" id="qnaPrivate"
+							name="isPrivate"> <label class="form-check-label"
+							for="qnaPrivate">비밀글로 문의하기</label>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary"
+					data-bs-dismiss="modal">취소</button>
+				<button type="button" class="btn btn-primary" id="submitQna">문의하기</button>
+			</div>
+		</div>
+	</div>
 </div>
 <!-- 스크롤 시 나타나는 옵션 선택 영역 -->
 <div id="scrollOptionArea" class="scroll-option-area">
-  <h6 class="mb-2" id="scrollProductName">${dto.productName}</h6>
-  <p class="mb-2">가격: <span id="scrollProductPrice"><fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100)}" pattern="#,###원" /></span></p>
-  
-  <c:choose>
-    <c:when test="${dto.optionCount == 0}">
-      <p>단품</p>
-      <c:choose>
-        <c:when test="${dto.totalStock > 0}">
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <span>수량:</span>
-            <div class="input-group" style="width: 120px;">
-              <button class="btn btn-outline-secondary btn-sm" id="scrollDecreaseQuantity">-</button>
-              <input type="number" class="form-control form-control-sm" id="scrollQuantity" value="1" min="1" style="text-align: center;">
-              <button class="btn btn-outline-secondary btn-sm" id="scrollIncreaseQuantity">+</button>
-            </div>
-          </div>
-          <p class="mb-2">총 가격: <span id="scrollTotalPrice"><fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100)}" pattern="#,###원" /></span></p>
-          <div class="d-flex justify-content-between" id="scrollButtonArea">
-            <button class="btn btn-outline-primary btn-sm flex-grow-1 me-2" id="scrollAddToCart">장바구니</button>
-            <button class="btn btn-primary btn-sm flex-grow-1" id="scrollBuyButton">구매하기</button>
-          </div>
-        </c:when>
-        <c:otherwise>
-          <button class="btn btn-primary btn-sm w-100" id="scrollStockAlert">
-            재입고 알림 신청
-          </button>
-        </c:otherwise>
-      </c:choose>
-    </c:when>
-    <c:when test="${dto.optionCount == 1}">
-      <select class="form-select mb-2 requiredOption" id="scrollOption1" data-option-num="${listOption[0].optionNum}" ${dto.totalStock < 1 ? 'disabled':''}>
-        <option selected>${listOption[0].optionName} 선택</option>
-        <c:forEach var="vo" items="${listOptionDetail}">
-          <option value="${vo.detailNum}" 
-                  data-stock-num="${vo.stockNum}" 
-                  data-total-stock="${vo.totalStock}" 
-                  data-option-value="${vo.optionValue}">
-            ${vo.optionValue} ${vo.totalStock > 0 ? '재고 '.concat(vo.totalStock) : '재입고 알림 신청'}
-          </option>
-        </c:forEach>
-      </select>
-    </c:when>
-    <c:when test="${dto.optionCount == 2}">
-      <select class="form-select mb-2 requiredOption" id="scrollOption1" data-option-num="${listOption[0].optionNum}" ${dto.totalStock < 1 ? 'disabled':''}>
-        <option selected>${listOption[0].optionName} 선택</option>
-        <c:forEach var="vo" items="${listOptionDetail}">
-          <option value="${vo.detailNum}">${vo.optionValue}</option>
-        </c:forEach>
-      </select>
-      
-      <select class="form-select mb-2 requiredOption2" id="scrollOption2" data-option-num2="${listOption[1].optionNum}" disabled>
-        <option selected>${listOption[1].optionName} 선택</option>
-      </select>
-    </c:when>
-  </c:choose>
+	<h6 class="mb-2" id="scrollProductName">${dto.productName}</h6>
+	<p class="mb-2">
+		가격: <span id="scrollProductPrice"><fmt:formatNumber
+				value="${dto.price * (1 - dto.discountRate / 100)}" pattern="#,###원" /></span>
+	</p>
 
- <c:if test="${dto.optionCount > 0}">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-      <span>수량:</span>
-      <div class="input-group" style="width: 120px;">
-        <button class="btn btn-outline-secondary btn-sm" id="scrollDecreaseQuantity">-</button>
-        <input type="number" class="form-control form-control-sm" id="scrollQuantity" value="1" min="1" style="text-align: center;">
-        <button class="btn btn-outline-secondary btn-sm" id="scrollIncreaseQuantity">+</button>
-      </div>
-    </div>
-    <p class="mb-2">총 가격: <span id="scrollTotalPrice"><fmt:formatNumber value="${dto.price * (1 - dto.discountRate / 100)}" pattern="#,###원" /></span></p>
-    <div class="d-flex justify-content-between" id="scrollButtonArea">
-      <button class="btn btn-outline-primary btn-sm flex-grow-1 me-2" id="scrollAddToCart">장바구니</button>
-      <button class="btn btn-primary btn-sm flex-grow-1" id="scrollBuyButton">구매하기</button>
-    </div>
-    <button class="btn btn-primary btn-sm w-100" id="scrollStockAlert" style="display: none;">
-      재입고 알림 신청
-    </button>
-  </c:if>
+	<c:choose>
+		<c:when test="${dto.optionCount == 0}">
+			<p>단품</p>
+			<c:choose>
+				<c:when test="${dto.totalStock > 0}">
+					<div class="d-flex justify-content-between align-items-center mb-2">
+						<span>수량:</span>
+						<div class="input-group" style="width: 120px;">
+							<button class="btn btn-outline-secondary btn-sm"
+								id="scrollDecreaseQuantity">-</button>
+							<input type="number" class="form-control form-control-sm"
+								id="scrollQuantity" value="1" min="1"
+								style="text-align: center;">
+							<button class="btn btn-outline-secondary btn-sm"
+								id="scrollIncreaseQuantity">+</button>
+						</div>
+					</div>
+					<p class="mb-2">
+						총 가격: <span id="scrollTotalPrice"><fmt:formatNumber
+								value="${dto.price * (1 - dto.discountRate / 100)}"
+								pattern="#,###원" /></span>
+					</p>
+					<div class="d-flex justify-content-between" id="scrollButtonArea">
+						<button class="btn btn-outline-primary btn-sm flex-grow-1 me-2"
+							id="scrollAddToCart">장바구니</button>
+						<button class="btn btn-primary btn-sm flex-grow-1"
+							id="scrollBuyButton">구매하기</button>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<button class="btn btn-primary btn-sm w-100" id="scrollStockAlert">
+						재입고 알림 신청</button>
+				</c:otherwise>
+			</c:choose>
+		</c:when>
+		<c:when test="${dto.optionCount == 1}">
+			<select class="form-select mb-2 requiredOption" id="scrollOption1"
+				data-option-num="${listOption[0].optionNum}"
+				${dto.totalStock < 1 ? 'disabled':''}>
+				<option selected>${listOption[0].optionName}선택</option>
+				<c:forEach var="vo" items="${listOptionDetail}">
+					<option value="${vo.detailNum}" data-stock-num="${vo.stockNum}"
+						data-total-stock="${vo.totalStock}"
+						data-option-value="${vo.optionValue}">${vo.optionValue}
+						${vo.totalStock > 0 ? '재고 '.concat(vo.totalStock) : '재입고 알림 신청'}</option>
+				</c:forEach>
+			</select>
+		</c:when>
+		<c:when test="${dto.optionCount == 2}">
+			<select class="form-select mb-2 requiredOption" id="scrollOption1"
+				data-option-num="${listOption[0].optionNum}"
+				${dto.totalStock < 1 ? 'disabled':''}>
+				<option selected>${listOption[0].optionName}선택</option>
+				<c:forEach var="vo" items="${listOptionDetail}">
+					<option value="${vo.detailNum}">${vo.optionValue}</option>
+				</c:forEach>
+			</select>
+
+			<select class="form-select mb-2 requiredOption2" id="scrollOption2"
+				data-option-num2="${listOption[1].optionNum}" disabled>
+				<option selected>${listOption[1].optionName}선택</option>
+			</select>
+		</c:when>
+	</c:choose>
+
+	<c:if test="${dto.optionCount > 0}">
+		<div class="d-flex justify-content-between align-items-center mb-2">
+			<span>수량:</span>
+			<div class="input-group" style="width: 120px;">
+				<button class="btn btn-outline-secondary btn-sm"
+					id="scrollDecreaseQuantity">-</button>
+				<input type="number" class="form-control form-control-sm"
+					id="scrollQuantity" value="1" min="1" style="text-align: center;">
+				<button class="btn btn-outline-secondary btn-sm"
+					id="scrollIncreaseQuantity">+</button>
+			</div>
+		</div>
+		<p class="mb-2">
+			총 가격: <span id="scrollTotalPrice"><fmt:formatNumber
+					value="${dto.price * (1 - dto.discountRate / 100)}"
+					pattern="#,###원" /></span>
+		</p>
+		<div class="d-flex justify-content-between" id="scrollButtonArea">
+			<button class="btn btn-outline-primary btn-sm flex-grow-1 me-2"
+				id="scrollAddToCart">장바구니</button>
+			<button class="btn btn-primary btn-sm flex-grow-1"
+				id="scrollBuyButton">구매하기</button>
+		</div>
+		<button class="btn btn-primary btn-sm w-100" id="scrollStockAlert"
+			style="display: none;">재입고 알림 신청</button>
+	</c:if>
 </div>
 
 <!--챗봇-->
@@ -652,32 +687,38 @@
 
 
 <!--토스트 메시지-->
-<div class="toast-container position-fixed top-50 start-50 translate-middle" style="z-index: 9999;">
-  <div class="toast" id="cartToast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
-      <strong class="me-auto">알림</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body">
-    </div>
-  </div>
-	<div class="toast" id="cartConfirmToast" role="alert" aria-live="assertive" aria-atomic="true">
-	  <div class="toast-header">
-	    <strong class="me-auto">알림</strong>
-	    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-	  </div>
-	  <div class="toast-body">
-	    <!--자바스크립트로 채움 -->
-	  </div>
+<div
+	class="toast-container position-fixed top-50 start-50 translate-middle"
+	style="z-index: 9999;">
+	<div class="toast" id="cartToast" role="alert" aria-live="assertive"
+		aria-atomic="true">
+		<div class="toast-header">
+			<strong class="me-auto">알림</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="toast"
+				aria-label="Close"></button>
+		</div>
+		<div class="toast-body"></div>
 	</div>
-  <div class="toast cute-toast" id="cuteToast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header bg-pink text-white">
-      <strong class="me-auto">알림</strong>
-      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body bg-light-pink">
-    </div>
-  </div>
+	<div class="toast" id="cartConfirmToast" role="alert"
+		aria-live="assertive" aria-atomic="true">
+		<div class="toast-header">
+			<strong class="me-auto">알림</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="toast"
+				aria-label="Close"></button>
+		</div>
+		<div class="toast-body">
+			<!--자바스크립트로 채움 -->
+		</div>
+	</div>
+	<div class="toast cute-toast" id="cuteToast" role="alert"
+		aria-live="assertive" aria-atomic="true">
+		<div class="toast-header bg-pink text-white">
+			<strong class="me-auto">알림</strong>
+			<button type="button" class="btn-close btn-close-white"
+				data-bs-dismiss="toast" aria-label="Close"></button>
+		</div>
+		<div class="toast-body bg-light-pink"></div>
+	</div>
 </div>
 <script type="text/javascript">
 
@@ -859,6 +900,9 @@ $(document).ready(function () {
     $('#review-tab').on('shown.bs.tab', function (e) {
         loadReviews(1);
     });
+    
+    //북마크
+    initBookmarkStatus();
     
     $(document).off('click', '#reviewPaging a').on('click', '#reviewPaging a', function(e) {
         e.preventDefault();

@@ -20,6 +20,11 @@
 	 <!-- CSS: 페이지네이션  -->
 	 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/paginate.css" type="text/css">
 	
+	<script>
+	var contextPath = '${pageContext.request.contextPath}';
+	window.isLoggedIn = ${not empty sessionScope.member};
+	</script>
+	
 	<!-- JS: jquery -->
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/vendor/jquery/js/jquery.min.js"></script>
 	 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/util-jquery.js"></script>
@@ -27,6 +32,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- JS: custom -->
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/menu.js"></script> 
+	<!-- JS: 북마크 -->
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/bookmark.js"></script> 
 	<!-- JS: swiper -->
 	 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 	

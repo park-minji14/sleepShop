@@ -8,12 +8,16 @@ import org.springframework.web.bind.annotation.*;
 import com.sgsg.dra.common.MyUtil;
 import com.sgsg.dra.domain.Product;
 import com.sgsg.dra.domain.Review;
+import com.sgsg.dra.domain.SessionInfo;
 import com.sgsg.dra.service.ProductService;
 import com.sgsg.dra.service.ReviewService;
+import com.sgsg.dra.service.WishlistService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 
 
@@ -27,6 +31,9 @@ public class ProductController {
 	 @Autowired
 	 private ReviewService reviewService;
 
+	 @Autowired
+	 private WishlistService wishlistService;
+	 
 	@Autowired
 	private MyUtil myUtil;
 
@@ -82,24 +89,21 @@ public class ProductController {
 	
 	
 	@GetMapping("details")
-	public String productDetail(@RequestParam Long productNum, Model model) {
+	public String productDetail(@RequestParam Long productNum, Model model, HttpSession session) {
 	    try {
 	        Product dto = service.findById(productNum);
 	        if (dto == null) {
 	            return "redirect:/home";
 	        }
-
 	        List<Product> listFile = service.listProductFile(productNum);
 	        List<Product> listOption = service.listProductOption(productNum);
 	        List<Product> listOptionDetail = null;
 	        if (listOption.size() > 0) {
 	            listOptionDetail = service.listOptionDetail(listOption.get(0).getOptionNum());
 	        }
-
 	        Map<String, Object> map = new HashMap<>();
 	        map.put("productNum", dto.getProductNum());
 	        List<Product> listStock = service.listOptionDetailStock(map);
-
 	        if (dto.getOptionCount() == 0) {
 	            // 단품 상품인 경우
 	            if (listStock != null && !listStock.isEmpty()) {
@@ -118,10 +122,21 @@ public class ProductController {
 	                }
 	            }
 	        }
-
 	        // 리뷰 수와 평균 평점만 가져오기
 	        int reviewCount = reviewService.countReviews(productNum);
 	        double avgScore = reviewService.getAvgScore(productNum);
+
+	        // 북마크 관련 정보 추가
+	        int totalBookmarkCount = wishlistService.getProductWishlistCount(productNum);
+	        model.addAttribute("totalBookmarkCount", totalBookmarkCount);
+
+	        // 로그인한 사용자의 북마크 상태 확인
+	        SessionInfo sessionInfo = (SessionInfo) session.getAttribute("member");
+	        boolean isBookmarked = false;
+	        if (sessionInfo != null) {
+	            isBookmarked = wishlistService.isInWishlist(sessionInfo.getUserId(), productNum);
+	        }
+	        model.addAttribute("isBookmarked", isBookmarked);
 
 	        model.addAttribute("dto", dto);
 	        model.addAttribute("listFile", listFile);
@@ -129,7 +144,6 @@ public class ProductController {
 	        model.addAttribute("listOptionDetail", listOptionDetail);
 	        model.addAttribute("reviewCount", reviewCount);
 	        model.addAttribute("avgScore", avgScore);
-
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
