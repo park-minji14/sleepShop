@@ -25,7 +25,7 @@ public class Order {
 	private int payment;
 	private int totalMoney;
 	private int deliveryCharge;
-	private int salePrice;
+	private long salePrice;
 	private int qty;
 	private int productMoney;
 	private long cancelAmount;
@@ -65,7 +65,7 @@ public class Order {
 	private List<Integer> qtys;
 	private List<Integer> productMoneys;
 	private List<Integer> prices;
-	private List<Integer> salePrices;
+	private List<Long> salePrices;
 	private List<Integer> savedMoneys;
 	
 	private long cartNum;
@@ -212,10 +212,10 @@ public class Order {
 	public void setDeliveryCharge(int deliveryCharge) {
 		this.deliveryCharge = deliveryCharge;
 	}
-	public int getSalePrice() {
+	public long getSalePrice() {
 		return salePrice;
 	}
-	public void setSalePrice(int salePrice) {
+	public void setSalePrice(long salePrice) {
 		this.salePrice = salePrice;
 	}
 	public int getQty() {
@@ -416,10 +416,10 @@ public class Order {
 	public void setPrices(List<Integer> prices) {
 		this.prices = prices;
 	}
-	public List<Integer> getSalePrices() {
+	public List<Long> getSalePrices() {
 		return salePrices;
 	}
-	public void setSalePrices(List<Integer> salePrices) {
+	public void setSalePrices(List<Long> salePrices) {
 		this.salePrices = salePrices;
 	}
 	public List<Integer> getSavedMoneys() {

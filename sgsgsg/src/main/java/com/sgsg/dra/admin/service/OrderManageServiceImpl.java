@@ -23,6 +23,15 @@ public class OrderManageServiceImpl implements OrderManageService {
 		List<Order> orderList = null;
 		try {
 			orderList = mapper.listOrder(map);
+			if (orderList != null) {
+                for (Order order : orderList) {
+                    // 할인된 가격 계산
+                    double discountedPrice = order.getPrice() * (1 - order.getDiscountRate() / 100.0);
+                    // 백원 단위로 반올림
+                    long roundedPrice = Math.round(discountedPrice / 100.0) * 100;
+                    order.setSalePrice(roundedPrice);
+                }
+			}
 			for (Order order : orderList) {
 				order.setOrderStateInfo(OrderState.fromInt(order.getOrderState()).getKorean());
 			}
@@ -52,7 +61,13 @@ public class OrderManageServiceImpl implements OrderManageService {
 			dto = mapper.findById(orderNum);
 			
 			dto.setOrderStateInfo(OrderState.fromInt(dto.getOrderState()).getKorean());
-			
+			if (dto != null) {
+                // 할인된 가격 계산
+                double discountedPrice = dto.getPrice() * (1 - dto.getDiscountRate() / 100.0);
+                // 백원 단위로 반올림
+                long roundedPrice = Math.round(discountedPrice / 100.0) * 100;
+                dto.setSalePrice(roundedPrice);
+			}
 		} catch (Exception e) {
 			throw e;
 		}
@@ -66,6 +81,15 @@ public class OrderManageServiceImpl implements OrderManageService {
 		
 		try {
 			list = mapper.findByOrderDetails(orderNum);
+			if (list != null) {
+                for (Order order : list) {
+                    // 할인된 가격 계산
+                    double discountedPrice = order.getPrice() * (1 - order.getDiscountRate() / 100.0);
+                    // 백원 단위로 반올림
+                    long roundedPrice = Math.round(discountedPrice / 100.0) * 100;
+                    order.setSalePrice(roundedPrice);
+                }
+			}
 		} catch (Exception e) {
 			throw e;
 		}

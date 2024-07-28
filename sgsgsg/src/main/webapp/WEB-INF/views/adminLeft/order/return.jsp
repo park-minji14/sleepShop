@@ -85,7 +85,7 @@
 							<td>${dto.detailStatusInfo}</td>
 							<td>${dto.inspection_result}</td>
 							<td>
-								<c:if test="${dto.detail_status} != 11 || ${dto.detail_status} !=13 || ${dto.detail_status} != 15">
+								<c:if test="${dto.detail_status== 10 || dto.detail_status== 12 || dto.detail_status== 14}">
 									<span class="orderDetailStatus-update"
 										data-returnExchangeNum="${dto.return_exchange_num}"
 										data-detailStatus="${dto.detail_status}" 
