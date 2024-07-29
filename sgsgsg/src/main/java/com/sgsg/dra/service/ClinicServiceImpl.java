@@ -258,13 +258,8 @@ public class ClinicServiceImpl implements ClinicService {
 		}
 		
 	}
-
 	
 	
-
-
 	
-	
-		
 
 }

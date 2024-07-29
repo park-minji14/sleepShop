@@ -33,5 +33,6 @@ public interface ClinicService {
 	ClinicAnswer findLikedAnswer(long num) throws SQLException;
 	
 	public List<Clinic> listClinicCategory() throws Exception;
+	
 
 }

@@ -20,8 +20,9 @@ public class ClinicAnswer {
 	private int answerCount;
 	
 	private String question_userId;
-
 	
+	
+
 	public long getAnswer_num() {
 		return answer_num;
 	}

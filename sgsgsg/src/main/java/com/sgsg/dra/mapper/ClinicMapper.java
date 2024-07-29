@@ -37,7 +37,7 @@ public interface ClinicMapper {
 	
 	public List<Clinic> listClinicCategory() throws Exception;
 	
-	
+
 
 	
 }

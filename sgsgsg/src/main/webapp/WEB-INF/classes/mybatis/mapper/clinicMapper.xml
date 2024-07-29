@@ -193,6 +193,8 @@
 		WHERE a.question_id = #{question_id} AND l.pickup = 1
 	</select>
 	
+	
+		
 
 
 </mapper>
