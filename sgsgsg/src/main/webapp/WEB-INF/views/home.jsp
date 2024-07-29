@@ -333,8 +333,8 @@ function initSwiper() {
     
     // 최신 상품 슬라이더
     new Swiper('.latest-products-slider', {
-        slidesPerView: 8,
-        spaceBetween: 10,
+        slidesPerView: 5,  // <-기본값
+        spaceBetween: 15,
         loop: true,
         autoplay: {
             delay: 3000,
@@ -354,15 +354,15 @@ function initSwiper() {
                 spaceBetween: 10
             },
             768: {
-                slidesPerView: 4,
+                slidesPerView: 3,
                 spaceBetween: 15
             },
             1024: {
-                slidesPerView: 6,
+                slidesPerView: 4,
                 spaceBetween: 15
             },
             1440: {
-                slidesPerView: 8,
+                slidesPerView: 5,  
                 spaceBetween: 20
             }
         }

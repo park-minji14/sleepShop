@@ -737,51 +737,61 @@ element.style {
 	});
 	
 	$('.tab-content').on('click', '.profile-remove', function(){
-		let img = $('.btn-profile-change').attr('data-profile');
-		if(! img ) {
-			alert('등록된 이미지가 없습니다.');
-			return false;
-		}
-		
-		if( ! confirm('등록된 이미지를 삭제하시겠습니까? ? ')) {
-			return false;
-		}
-		
-		
-		let url = "${pageContext.request.contextPath}/mypage/profileRemove";
-		let query = "profile=" + img;
-		const fn = function(data) {
-			if(data.state === "true") {
-				$('.btn-profile-change').attr('data-profile', '');
-				$('.img-my-profile').attr('src', '${pageContext.request.contextPath}/resources/images/person.png');
-			}
-		};
-		
-		ajaxFun(url, "post", query, "json", fn);	
+	    let img = $('.btn-profile-change').attr('data-profile');
+	    if(! img ) {
+	        alert('등록된 이미지가 없습니다.');
+	        return false;
+	    }
+	    
+	    if( ! confirm('등록된 이미지를 삭제하시겠습니까? ? ')) {
+	        return false;
+	    }
+	    
+	    let url = "${pageContext.request.contextPath}/mypage/profileRemove";
+	    let query = "profile=" + img;
+	    const fn = function(data) {
+	        if(data.state === "true") {
+	            $('.btn-profile-change').attr('data-profile', '');
+	            $('.img-my-profile').attr('src', '${pageContext.request.contextPath}/resources/images/person.png');
+	            
+	            // 헤더의 프로필 이미지도 업데이트
+	            $('.profile-img').attr('src', '${pageContext.request.contextPath}/resources/images/person.png');
+	            
+	            // 페이지 새로고침
+	            location.reload();
+	        }
+	    };
+	    
+	    ajaxFun(url, "post", query, "json", fn);    
 	});
 	
 	$('.btn-profile-changeOk').click(function(){
-		const f = document.profileForm;
-		
-		if(! f.selectFile.value) {
-			alert('등록할 이미지를 선택하세요');
-			return false;
-		}
-		
-		let url = "${pageContext.request.contextPath}/mypage/profileChange";
-		let query = new FormData(f); 
-		
-		const fn = function(data) {
-			if(data.state === "true") {
-				$('.btn-profile-change').attr('data-profile', data.profile);
-				$('.img-my-profile').attr('src', '${pageContext.request.contextPath}/uploads/profile/'+data.profile);
-			}
-			
-			$("#profileDialogModal").modal("hide");
-		};
-		
-		ajaxFun(url, "post", query, "json", fn, true);		
-		
+	    const f = document.profileForm;
+	    
+	    if(! f.selectFile.value) {
+	        alert('등록할 이미지를 선택하세요');
+	        return false;
+	    }
+	    
+	    let url = "${pageContext.request.contextPath}/mypage/profileChange";
+	    let query = new FormData(f); 
+	    
+	    const fn = function(data) {
+	        if(data.state === "true") {
+	            $('.btn-profile-change').attr('data-profile', data.profile);
+	            $('.img-my-profile').attr('src', '${pageContext.request.contextPath}/uploads/profile/'+data.profile);
+	            
+	            // 헤더의 프로필 이미지도 업데이트
+	            $('.profile-img').attr('src', '${pageContext.request.contextPath}/uploads/profile/'+data.profile);
+	            
+	            // 페이지 새로고침
+	            location.reload();
+	        }
+	        
+	        $("#profileDialogModal").modal("hide");
+	    };
+	    
+	    ajaxFun(url, "post", query, "json", fn, true);        
 	});
 	</script>
 	

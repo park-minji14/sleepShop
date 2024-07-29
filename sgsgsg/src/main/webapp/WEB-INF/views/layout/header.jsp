@@ -18,13 +18,9 @@
             </button>
         </div>
         <div class="user-icons">
-            <span class="me-4"><img
-                src="https://img.icons8.com/fluent-systems-regular/60/000000/like--v1.png"
-                alt="좋아요" /></span> 
-            <span class="me-4 notification" data-count="2"><img
-                src="https://img.icons8.com/fluent-systems-regular/60/000000/appointment-reminders.png"
-                alt="알림" /></span> 
-            <span class="me-4">
+			<span class="me-4"><img width="60" height="60" src="https://img.icons8.com/pastel-glyph/60/bookmark-ribbon.png" alt="bookmark-ribbon"/></span> <span class="me-4 notification" data-count="2"><img
+				src="https://img.icons8.com/fluent-systems-regular/60/000000/appointment-reminders.png"
+				alt="알림" /></span> <span class="me-4">
                 <a href="${pageContext.request.contextPath}/cart/list"><img
                     src="https://img.icons8.com/fluent-systems-regular/60/000000/shopping-cart.png"
                     alt="장바구니" /></a></span>
@@ -62,7 +58,7 @@
                                             <img src="https://img.icons8.com/color/48/000000/dashboard.png"
                                                 alt="대시보드" style="width: 20px; height: 20px;"> 대시보드
                                         </a></li>
-                                        <li><a href="${pageContext.request.contextPath}/adminManagement/supportManage/inquiryList"
+                                        <li><a href="${pageContext.request.contextPath}/adminManagement/productManage/productList"
                                             style="text-decoration: none; color: inherit;"> 
                                             <img src="https://img.icons8.com/color/48/000000/product.png"
                                                 alt="상품 관리" style="width: 20px; height: 20px;"> 상품 관리
@@ -75,31 +71,20 @@
                                     </ul>
                                 </c:when>
                                 <c:otherwise>
-                                    <div class="user-stats">
+<!--                                     <div class="user-stats">
                                         <span>포인트 <strong></strong>원</span>
-                                    </div>
+                                    </div> -->
                                     <ul class="menu-list">
                                         <li><a href="${pageContext.request.contextPath}/mypage/main"
                                             style="text-decoration: none; color: inherit;"> 
                                             <img src="https://img.icons8.com/ios/50/000000/like.png"
                                                 alt="마이페이지" style="width: 20px; height: 20px;"> 마이페이지
                                         </a></li>
-                                        <li><a href="${pageContext.request.contextPath}/mypage/savedList"
-                                            style="text-decoration: none; color: inherit;"> 
-                                            <img src="https://img.icons8.com/ios/50/000000/purchase-order.png"
-                                                alt="구매 내역" style="width: 20px; height: 20px;"> 구매 내역
-                                        </a></li>
-                                        <li><a href="#"
-                                            style="text-decoration: none; color: inherit;">
-                                            <img src="https://img.icons8.com/ios/50/000000/settings.png"
-                                                alt="설정" style="width: 20px; height: 20px;"> 설정
-                                        </a></li>
                                     </ul>
                                 </c:otherwise>
                             </c:choose>
                             <div class="footer-links">
                                 <a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
-                                <a href="#">고객센터 ></a>
                             </div>
                         </div>
                     </div>
@@ -116,7 +101,7 @@
             <ul class="sub-menu" id="subMenu">
                 <!--서브메뉴 자바스크립트로 동적 생성 -->
             </ul>
-            <div class="popular-search-container">
+            <div class="popular-search-container" style="position: relative;">
                 <div class="popular-search">
                     <span id="popularSearchText"></span>
                     <button class="popular-search-btn" onclick="togglePopularSearch()">▼</button>

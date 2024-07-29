@@ -111,10 +111,6 @@ body {
 <header class="admin-header">
     <h1 class="logo-text">새근새근</h1>
     <div class="header-actions">
-        <div class="notifications">
-            <i class="bi bi-bell fs-4"></i>
-            <span class="notification-count">3</span>
-        </div>
         <div class="admin-profile">
             <i class="bi bi-person-circle fs-4"></i>
             <span class="admin-name">${sessionScope.member.userName}</span>

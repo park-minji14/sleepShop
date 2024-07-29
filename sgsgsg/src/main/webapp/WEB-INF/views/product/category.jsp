@@ -507,7 +507,7 @@ $(document).ready(function() {
                     var productHtml = 
                         '<div class="product-item">' +
                             '<a href="' + contextPath + '/product/details?productNum=' + product.productNum + '">' +
-                                '<div class="image-wrapper">' +
+                                '<div class="image-wrapper" style="position: relative;">' +
                                     '<img src="' + contextPath + '/uploads/product/' + product.thumbnail + '" alt="' + product.productName + '">' +
                                     '<div class="bookmark" data-product-id="' + product.productNum + '"></div>' +
                                 '</div>' +
