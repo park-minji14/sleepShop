@@ -319,7 +319,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		
 		<c:if test="${listEventWinner.size() != 0 && category == 'winner' && not empty userWinner}">
 			<div>
-				<div class="center-text" style="text-align: center; font-size: 20px;">
+				<div class="center-text" style="font-size: 20px; margin-left: 270px;">
 					<p class="form-control-plaintext">
 						<span>축하합니다.</span>
 						<span style="color: blue; font-weight: 600;">${sessionScope.member.userName}</span>님은

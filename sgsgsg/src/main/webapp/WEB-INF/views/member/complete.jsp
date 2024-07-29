@@ -13,7 +13,7 @@
 
         <div class="row justify-content-md-center mt-5">
             <div class="col-md-8">
-                <div class="border border-primary mt-5 p-4">
+                <div class="border border-primary mt-5 p-4" style="margin-left: 250px; width: 500px;">
                        <h4 class="text-center fw-bold">${title}</h4>
                        <hr class="mt-4">
                        

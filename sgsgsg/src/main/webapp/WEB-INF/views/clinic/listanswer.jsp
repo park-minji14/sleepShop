@@ -106,7 +106,7 @@
 		<c:forEach var="vo" items="${listanswer}">
 			<div class="answer-list-table">
 				<div class='row reply-writer'>
-					<div class='col-1'><i class='bi bi-person-circle text-muted icon' style="font-size: 30px;"></i></div>
+					<div class='col-1'><i class='bi bi-person-circle text-muted icon' style="font-size: 50px; margin-left: 10px;"></i></div>
 					<div class='col-auto align-self-center'>
 						<div class='name' style="font-size: 25px;">
 							<a href="${pageContext.request.contextPath}/expert/profile?userId=${vo.userId}" style="text-decoration: none; color: inherit;">${vo.userName}</a>
