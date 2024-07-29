@@ -727,7 +727,6 @@
 
 //-------------------전역 범위 ajax 선언-------------------// 
 function ajaxFun(url, method, query, dataType, fn) {
-    console.log("ajaxFun 호출됨:", url, method, dataType);
     $.ajax({
         type: method,
         url: url,
@@ -736,12 +735,9 @@ function ajaxFun(url, method, query, dataType, fn) {
         processData: false, 
         contentType: false, 
         success: function(data) {
-            console.log("Ajax 성공:", data);
             fn(data);
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            console.log("Ajax 오류:", textStatus, errorThrown);
-            console.log("응답 텍스트:", jqXHR.responseText);
             alert("오류가 발생했습니다: " + textStatus);
         }
     });
@@ -799,7 +795,6 @@ function loadReviews(page) {
 
     ajaxFun(url, "GET", query, "json", function(data) {
         if (data.error) {
-            console.error(data.error);
             return;
         }
         updateReviewSection(data);
@@ -808,32 +803,25 @@ function loadReviews(page) {
 }
 
 function updateReviewSection(data) {
-    console.log("Received review data:", data);
 
     let reviewCount = data.dataCount || 0;
     $('#reviewCount, #reviewCountBottom, #tabReviewCount, #productReviewCount').text(reviewCount);
-    console.log("Review count:", reviewCount);
     $('#reviewCount, #reviewCountBottom, #tabReviewCount').text(reviewCount);
 
     if (data.avgScore !== undefined) {
         let avgScore = parseFloat(data.avgScore).toFixed(1);
-        console.log("Average score:", avgScore);
         $('#avgScore').text(avgScore);
         updateStars(data.avgScore);
     } else {
-        console.log("Average score is undefined, setting to 0.0");
         $('#avgScore').text('0.0');
         updateStars(0);
     }
 
     let reviewHtml = '';
     if (!data.reviewList || data.reviewList.length === 0) {
-        console.log("No reviews found");
         reviewHtml = '<p>등록된 리뷰가 없습니다.</p>';
     } else {
-        console.log("Number of reviews:", data.reviewList.length);
         for (let review of data.reviewList) {
-            console.log("Processing review:", review);
             reviewHtml += '<div class="review-item border-bottom pb-3 mb-3">';
             reviewHtml += '<div class="d-flex align-items-center mb-2">';
             reviewHtml += '<img src="https://via.placeholder.com/40" alt="User" class="rounded-circle me-2">';
@@ -951,10 +939,8 @@ $(document).ready(function () {
 //----------------------------------------------------------------------//    
     
     optionCount = $('.product-options').data('option-count');
-    console.log("옵션 개수:", optionCount);
 
     if (optionCount > 0) {
-        console.log("onOptionChange 함수 호출");
         onOptionChange("#option1", optionCount > 1 ? "#option2" : null, ${dto.salePrice});
         onOptionChange("#scrollOption1", optionCount > 1 ? "#scrollOption2" : null, ${dto.salePrice});
     }
@@ -967,9 +953,6 @@ $(document).ready(function () {
         totalStock = 0;
     }
 
-    console.log('옵션 개수:', optionCount);
-    console.log('초기 재고 번호:', stockNum);
-    console.log('초기 총 재고:', totalStock);
 
     updateButtonState(stockNum, totalStock, optionCount);
     
@@ -1236,7 +1219,6 @@ $('#buyNow, #scrollBuyButton').click(function () {
     if (option1) query += "&option1=" + option1;
     if (option2) query += "&option2=" + option2;
     
-    console.log('생성된 URL:', url + query);
     
     // 바로 페이지 이동
     location.href = url + query;
@@ -1266,7 +1248,6 @@ $('#buyNow, #scrollBuyButton').click(function () {
 
     // 동기화
 function syncOptions() {
-    console.log('syncOptions 함수 호출됨');
     let option1Val = $('#option1').val();
     let option2Val = $('#option2').val();
     $('#scrollOption1').val(option1Val);
@@ -1291,14 +1272,6 @@ function syncOptions() {
     $('.product-options').data('stock-num', stockNum);
     $('.product-options').data('total-stock', totalStock);
 
-    console.log('동기화된 값들:', {
-        option1: option1Val,
-        option2: option2Val,
-        quantity: $('#scrollQuantity').val(),
-        stockNum: stockNum,
-        totalStock: totalStock,
-        optionCount: optionCount
-    });
     updateScrollInfo();
     updateButtonState(stockNum, totalStock, optionCount);
 }
@@ -1650,7 +1623,6 @@ $('#submitQna').click(function() {
     
     let productNum = $('#productNum').val();
     if (!productNum) {
-        console.error("상품 번호가 없습니다.");
         alert("상품 정보를 불러올 수 없습니다. 페이지를 새로고침 후 다시 시도해주세요.");
         return false;
     }
@@ -1666,13 +1638,8 @@ $('#submitQna').click(function() {
     formData.append('inquiryType', $('input[name=qnaType]:checked').val());
     formData.append('productNum', productNum);
     
-    // FormData 내용 로깅 (디버깅용)
-    for (let pair of formData.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
-    }
     
     let url = "${pageContext.request.contextPath}/question/write";
-    console.log("요청 URL:", url);
     
     $.ajax({
         url: url,
@@ -1682,7 +1649,6 @@ $('#submitQna').click(function() {
         contentType: false,
         dataType: "json",
         success: function(data) {
-            console.log("서버 응답:", data);
             if(data.state === "true") {
                 f.reset();
                 $("#qnaModal").modal("hide");
@@ -1694,7 +1660,6 @@ $('#submitQna').click(function() {
             }
         },
         error: function(xhr, status, error) {
-            console.error("AJAX 오류:", status, error);
             alert("문의 등록 중 오류가 발생했습니다. 다시 시도해주세요.");
         }
     });

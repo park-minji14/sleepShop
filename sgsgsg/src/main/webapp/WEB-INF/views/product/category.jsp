@@ -445,7 +445,6 @@ $(document).ready(function() {
         $('.category-link').on('click', function(e) {
             e.preventDefault();
             var categoryNum = $(this).data('category-num');
-            console.log('Main category clicked:', categoryNum);
             loadProducts(categoryNum);
         });
 
@@ -454,7 +453,6 @@ $(document).ready(function() {
             e.preventDefault();
             var mainCategoryNum = $(this).data('main-category-num');
             var subCategoryNum = $(this).data('sub-category-num');
-            console.log('Sub category clicked:', mainCategoryNum, subCategoryNum);
             loadProducts(mainCategoryNum, subCategoryNum);
         });
 
@@ -463,14 +461,12 @@ $(document).ready(function() {
             if (subCategoryNum) {
                 url += '&subCategoryNum=' + subCategoryNum;
             }
-            console.log('Loading products from URL:', url);
             
             $.ajax({
                 url: url,
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    console.log('Received data:', data);
                     updateCategoryInfo(data.category);
                     updateSubCategories(data.subCategories, categoryNum);
                     updateProductList(data.products);
@@ -482,12 +478,10 @@ $(document).ready(function() {
             });
         }
         function updateCategoryInfo(category) {
-            console.log('Updating category info:', category);
             $('#categoryName').text(category.categoryName + ' 상품 목록');
         }
 
         function updateSubCategories(subCategories, mainCategoryNum) {
-            console.log('Updating sub categories:', subCategories, mainCategoryNum);
             var $subCategoryList = $('.sub-category ul');
             $subCategoryList.empty();
             
@@ -499,7 +493,6 @@ $(document).ready(function() {
         }
 
         function updateProductList(products) {
-            console.log('Updating product list:', products);
             var $productList = $('#productList');
             $productList.empty();
             if (products && products.length > 0) {
