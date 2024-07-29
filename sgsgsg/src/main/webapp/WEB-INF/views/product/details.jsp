@@ -39,9 +39,9 @@
 						${dto.productName}
 						<div class="bookmark" data-product-id="${dto.productNum}"
 							title="${isBookmarked ? '북마크 해제' : '북마크 추가'}">
+						</div>
 							<span class="bookmark-count" style="font-size: 0.8rem;">
 								${totalBookmarkCount > 0 ? totalBookmarkCount : ''} </span>
-						</div>
 					</h1>
 					<input type="hidden" id="productNum" value="${dto.productNum}">
 					<div class="product-rating mb-3">
@@ -784,7 +784,6 @@ function updateButtonState(stockNum, totalStock, optionCount) {
 function buyQuantity(stockNum, salePrice, detailNum, detailNum2) {
     const $productOptions = $('.product-options');
     $productOptions.data('stock-num', stockNum);
-    let optionCount = $productOptions.data('option-count');
     let totalStock = $productOptions.data('total-stock');
     updateButtonState(stockNum, totalStock, optionCount);
 }
@@ -892,6 +891,9 @@ $(document).on('click', '.page-link', function(e) {
     }
 });
 
+//----전역변수 선언 ------//
+let optionCount;
+
 //---------------------------DOM 로드 완료 후 실행--------------------------//
 
 $(document).ready(function () {
@@ -912,6 +914,17 @@ $(document).ready(function () {
             loadReviews(page);
         }
     });
+    
+    //상품 옵션 확인
+	optionCount = $('.product-options').data('option-count');
+	if (optionCount === 0) {
+	    // 단품 상품인 경우 버튼 활성화
+	    $('#decreaseQuantity, #increaseQuantity').prop('disabled', false);
+	    $('#scrollDecreaseQuantity, #scrollIncreaseQuantity').prop('disabled', false);
+	} else {
+	    // 옵션이 있는 경우 초기 상태 설정
+	    updateQuantityButtons();
+	}
 	
     
 //---------------------------- 오늘 본 상품 목록에 추가--------------------------//
@@ -938,7 +951,7 @@ $(document).ready(function () {
 	
 //----------------------------------------------------------------------//    
     
-    let optionCount = $('.product-options').data('option-count');
+    optionCount = $('.product-options').data('option-count');
     console.log("옵션 개수:", optionCount);
 
     if (optionCount > 0) {
@@ -1029,28 +1042,33 @@ function updateStockStatus() {
     }
 
     // 수량 증감 버튼
-    $('#decreaseQuantity, #scrollDecreaseQuantity').click(function () {
-        let quantity = parseInt($('#quantity').val());
-        if (quantity > 1) {
-            quantity--;
-            $('#quantity, #scrollQuantity').val(quantity);
-            updatePrice(quantity);
-        }
-    });
-
-    $('#increaseQuantity, #scrollIncreaseQuantity').click(function () {
-        let quantity = parseInt($('#quantity').val());
-        let totalStock = $('.product-options').data('total-stock');
-        
-        if (quantity < totalStock) {
-            quantity++;
-            $('#quantity, #scrollQuantity').val(quantity);
-            updatePrice(quantity);
-        } else {
-            showToast('현재 재고량을 초과할 수 없습니다.');
-        }
-    });
-
+	$('#decreaseQuantity, #scrollDecreaseQuantity').click(function () {
+	    let quantity = parseInt($('#quantity').val());
+	    if (quantity > 1) {
+	        quantity--;
+	        $('#quantity, #scrollQuantity').val(quantity);
+	        updatePrice(quantity);
+	    }
+	});
+	
+	$('#increaseQuantity, #scrollIncreaseQuantity').click(function () {
+	    let quantity = parseInt($('#quantity').val());
+	    let totalStock = $('.product-options').data('total-stock');
+	    optionCount = $('.product-options').data('option-count');
+	    
+	    // 단품 상품이거나 옵션이 선택된 경우에만 수량 증가 허용
+	    if (optionCount === 0 || ($('#option1').val() && (optionCount === 1 || $('#option2').val()))) {
+	        if (quantity < totalStock) {
+	            quantity++;
+	            $('#quantity, #scrollQuantity').val(quantity);
+	            updatePrice(quantity);
+	        } else {
+	            showToast('현재 재고량을 초과할 수 없습니다.');
+	        }
+	    } else {
+	        showToast('옵션을 먼저 선택해주세요.');
+	    }
+	});
 
  //----------------------- 옵션 변경 이벤트 처리하기----------------//
     function onOptionChange(firstOptionSelector, secondOptionSelector, salePrice) {
@@ -1174,7 +1192,7 @@ function handleOptionSelection(stockNum, totalStock, detailNum, detailNum2, sale
   //------------------------------------------ 구매하기
 $('#buyNow, #scrollBuyButton').click(function () {
     let stockNum, qty, option1, option2, totalStock;
-    let optionCount = $('.product-options').data('option-count');
+    optionCount = $('.product-options').data('option-count');
 
     // 옵션 값 동기화
     if (this.id === 'scrollBuyButton') {
@@ -1258,7 +1276,7 @@ function syncOptions() {
     
     let stockNum = 0;
     let totalStock = 0;
-    let optionCount = $('.product-options').data('option-count');
+    optionCount = $('.product-options').data('option-count');
 
     if (optionCount === 2 && option2Val) {
         let selectedOption = $('#option2').find(':selected');
@@ -1300,7 +1318,7 @@ function syncOptions() {
 	    
 	    let stockNum = $('.product-options').data('stock-num');
 	    let qty = $('#quantity').val();
-	    let optionCount = $('.product-options').data('option-count');
+	    optionCount = $('.product-options').data('option-count');
 	    
 	    // 옵션이 있는 경우 선택 여부 확인
 	    if (optionCount > 0) {
@@ -1393,23 +1411,24 @@ function syncOptions() {
         // 옵션 변경 시 stockNum 업뎃
         $('.requiredOption, .requiredOption2').change(function() {
         	updateStockStatus();
-            updateStockNum();
-            
+            updateStockNum(); 
             //옵션 선택 상태에 따라 수량 조절 버튼의 활성화/비활성화 
             updateQuantityButtons();
             //옵션이 변경될 때마다 수량을 초기값(보통 1)으로 재설정함ㅁ
             resetQuantity();
         });
         
+        
         function updateQuantityButtons() {
-            let isOptionSelected = ($('.product-options').data('option-count') == 0) || 
+            let isOptionSelected = (optionCount === 0) || 
                                    ($('#option1').val() && 
-                                   ($('.product-options').data('option-count') == 1 || $('#option2').val()));
+                                   (optionCount === 1 || $('#option2').val()));
 
             $('#decreaseQuantity, #increaseQuantity').prop('disabled', !isOptionSelected);
             $('#scrollDecreaseQuantity, #scrollIncreaseQuantity').prop('disabled', !isOptionSelected);
         }
 
+        
         function resetQuantity() {
             $('#quantity, #scrollQuantity').val(1);
             updatePrice(1);
@@ -1418,7 +1437,7 @@ function syncOptions() {
         function updateStockNum() {
             let option1 = $('#option1').val();
             let option2 = $('#option2').val();
-            let optionCount = $('.product-options').data('option-count');
+            optionCount = $('.product-options').data('option-count');
             
             if (optionCount > 0) {
                 if (optionCount == 1 && option1) {
