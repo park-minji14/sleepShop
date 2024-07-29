@@ -277,56 +277,59 @@ public class MyPageController {
 	}
 	
 	// 프로파일변경
-	@ResponseBody
-	@PostMapping("profileChange")
-	public Map<String, Object> profileChange(Member dto,
-			HttpSession session
-			) {
-		SessionInfo info = (SessionInfo) session.getAttribute("member");
-		String root = session.getServletContext().getRealPath("/");
-		String path = root + "uploads" + File.separator + "profile";
-		
-		dto.setUserId(info.getUserId());
-		String profile = null;
-		String state = "false";
-		try {
-			profile = service.updateProFile(dto, path);
-			if(profile != null && profile.length() != 0) {
-				state = "true";
-			}
-		} catch (Exception e) {
-		}
-		
-		Map<String, Object> model = new HashMap<String, Object>();
-		
-		model.put("state", state);
-		model.put("profile", profile);
-		
-		return model;
-	}
-	
-	@ResponseBody
-	@PostMapping("profileRemove")
-	public Map<String, Object> profileRemove(
-			@RequestParam String profile,
-			HttpSession session
-			) {
-		SessionInfo info = (SessionInfo) session.getAttribute("member");
-		String root = session.getServletContext().getRealPath("/");
-		String path = root + "uploads" + File.separator + "profile";
-		
-		String state = "true";
-		try {
-			service.removeProFile(info.getUserId(), path, profile);
-		} catch (Exception e) {
-			state = "false";
-		}
-		
-		Map<String, Object> model = new HashMap<String, Object>();
-		
-		model.put("state", state);
-		
-		return model;
-	}
+    @ResponseBody
+    @PostMapping("profileChange")
+    public Map<String, Object> profileChange(Member dto, HttpSession session) {
+        SessionInfo info = (SessionInfo) session.getAttribute("member");
+        String root = session.getServletContext().getRealPath("/");
+        String path = root + "uploads" + File.separator + "profile";
+        
+        dto.setUserId(info.getUserId());
+        String profile = null;
+        String state = "false";
+        try {
+            profile = service.updateProFile(dto, path);
+            if(profile != null && profile.length() != 0) {
+                state = "true";
+                
+                // 세션 정보 업데이트
+                info.setProfile(profile);
+                session.setAttribute("member", info);
+            }
+        } catch (Exception e) {
+        }
+        
+        Map<String, Object> model = new HashMap<String, Object>();
+        
+        model.put("state", state);
+        model.put("profile", profile);
+        
+        return model;
+    }
+    
+    @ResponseBody
+    @PostMapping("profileRemove")
+    public Map<String, Object> profileRemove(@RequestParam String profile, HttpSession session) {
+        SessionInfo info = (SessionInfo) session.getAttribute("member");
+        String root = session.getServletContext().getRealPath("/");
+        String path = root + "uploads" + File.separator + "profile";
+        
+        String state = "true";
+        try {
+            service.removeProFile(info.getUserId(), path, profile);
+            
+            // 세션에서 프로필 정보 제거
+            info.setProfile(null);
+            session.setAttribute("member", info);
+        } catch (Exception e) {
+            state = "false";
+        }
+        
+        Map<String, Object> model = new HashMap<String, Object>();
+        
+        model.put("state", state);
+        
+        return model;
+    }
 
 }

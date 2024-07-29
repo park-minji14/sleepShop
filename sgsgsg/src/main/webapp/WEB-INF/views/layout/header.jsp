@@ -25,9 +25,9 @@
                 src="https://img.icons8.com/fluent-systems-regular/60/000000/appointment-reminders.png"
                 alt="알림" /></span> 
             <span class="me-4">
-                <a href="${pageContext.request.contextPath}/cart/list"></a><img
+                <a href="${pageContext.request.contextPath}/cart/list"><img
                     src="https://img.icons8.com/fluent-systems-regular/60/000000/shopping-cart.png"
-                    alt="장바구니" /></span>
+                    alt="장바구니" /></a></span>
             <c:choose>
                 <c:when test="${not empty sessionScope.member}">
                     <div class="user-profile">
@@ -35,13 +35,13 @@
 							<c:choose>
 								<c:when test="${not empty sessionScope.member.profile}">
 									<img
-										src="${pageContext.request.contextPath}/uploads/profiles/${sessionScope.member.profile}"
+										src="${pageContext.request.contextPath}/uploads/profile/${sessionScope.member.profile}"
 										alt="Profile" class="profile-img"
 										style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
 								</c:when>
 								<c:otherwise>
 									<img
-										src="${pageContext.request.contextPath}/uploads/profiles/super-mario.png"
+										src="${pageContext.request.contextPath}/resources/images/person.png"
 										alt="Default Profile" class="profile-img"
 										style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
 								</c:otherwise>
@@ -55,7 +55,7 @@
                                     style="width: 24px; height: 24px;">
                             </div>
                             <c:choose>
-                                <c:when test="${sessionScope.member.membership >= 51}">
+                                <c:when test="${sessionScope.member.membership >= 70}">
                                     <ul class="menu-list">
                                         <li><a href="${pageContext.request.contextPath}/admin"
                                             style="text-decoration: none; color: inherit;"> 
@@ -76,7 +76,6 @@
                                 </c:when>
                                 <c:otherwise>
                                     <div class="user-stats">
-                                        <span>쿠폰 <strong></strong>개</span> 
                                         <span>포인트 <strong></strong>원</span>
                                     </div>
                                     <ul class="menu-list">
