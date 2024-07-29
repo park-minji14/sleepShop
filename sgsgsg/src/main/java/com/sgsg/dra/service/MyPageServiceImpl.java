@@ -165,9 +165,21 @@ public class MyPageServiceImpl implements MyPageService {
 			mapper.updateProFile(dto);
 			
 		} catch (Exception e) {
-			
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public Map<String, Object> userOrderState(String userId) {
+		Map<String, Object> map = null;
+		
+		try {
+			map = mapper.userOrderState(userId);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
+		return map;
 	}
 	
 }

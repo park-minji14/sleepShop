@@ -162,11 +162,11 @@ a{
   							</div>
 	  						<div class="review-container" >			
 							    <c:if test="${not empty dto.fileName}">
-							    	<div style="margin-bottom: 30px;">
+							    	<div style="margin-bottom: 30px; margin-top: 15px;">
 							            <img src="${pageContext.request.contextPath}/uploads/review/${dto.fileName}">
 								    </div>
 							    </c:if>
-						    <div >
+						    <div style="color: gray; margin-top: 15px;">
 							        ${dto.review}
 							    </div>
 							</div>

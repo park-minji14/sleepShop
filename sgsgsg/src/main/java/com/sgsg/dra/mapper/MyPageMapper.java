@@ -30,5 +30,6 @@ public interface MyPageMapper {
 	
 	public void updateProFile(Member dto) throws SQLException;
 	
+	public Map<String, Object> userOrderState(String userId);
 	
 }

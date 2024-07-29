@@ -63,9 +63,11 @@ public class MyPageController {
 		
 		List<Review> savedList = service.listReview(map);
 		MyPoint point = service.readPoint(map);
+		Map<String, Object> orderState = service.userOrderState(info.getUserId());
 		
 		model.addAttribute("savedList", savedList);
 		model.addAttribute("point", point);
+		model.addAttribute("orderState", orderState);
 		
 		return "mypage/myshop";
 	}
@@ -327,16 +329,4 @@ public class MyPageController {
 		return model;
 	}
 
-	
-	@ResponseBody
-	@PostMapping("OrderState")
-	public Map<String, Object> OrderState(
-				@RequestParam String profile,
-				HttpSession session
-			) {
-		SessionInfo info = (SessionInfo) session.getAttribute("");
-		
-		return null;
-	}
-	
 }

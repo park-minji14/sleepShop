@@ -22,4 +22,7 @@ public interface MyPageService {
 	
 	public String updateProFile(Member dto, String pathname) throws Exception;	
 	public void removeProFile(String userId, String path, String profile);
+	
+
+	public Map<String, Object> userOrderState(String userId);
 }

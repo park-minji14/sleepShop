@@ -31,8 +31,8 @@
 			</div>
 
 			<!-- 주문 진행 현황 -->
-			<div class="card mb-4">
-				<div class="card-body">
+			<div class="card mb-4" >
+				<div class="card-body" >
 					<h5 class="card-title">주문 진행 현황</h5>
 					<div class="d-flex justify-content-between mt-3">
 						<div class="text-center">
@@ -40,28 +40,28 @@
 								src="https://img.icons8.com/color/48/000000/payment-history.png"
 								alt="입금대기" class="mb-2" />
 							<p>입금대기</p>
-							<span class="badge bg-primary">0</span>
+							<span class="badge bg-primary">${orderState.ORDER1}</span>
 						</div>
 						<div class="text-center">
 							<img
 								src="https://img.icons8.com/color/48/000000/checked--v1.png"
 								alt="결제완료" class="mb-2" />
 							<p>결제완료</p>
-							<span class="badge bg-primary">0</span>
+							<span class="badge bg-primary">${orderState.ORDER1}</span>
 						</div>
 						<div class="text-center">
 							<img
 								src="https://img.icons8.com/color/48/000000/box-important--v1.png"
 								alt="배송준비" class="mb-2" />
 							<p>배송준비</p>
-							<span class="badge bg-primary">0</span>
+							<span class="badge bg-primary">${orderState.ORDER3}</span>
 						</div>
 						<div class="text-center">
 							<img
 								src="https://img.icons8.com/color/48/000000/in-transit--v1.png"
 								alt="배송중" class="mb-2" />
 							<p>배송중</p>
-							<span class="badge bg-primary">0</span>
+							<span class="badge bg-primary">${orderState.ORDER4}</span>
 						</div>
 						<div class="text-center">
 							<img
@@ -69,36 +69,20 @@
 								width="38"
 								alt="배송완료" class="mb-2" />
 							<p>배송완료</p>
-							<span class="badge bg-primary">0</span>
+							<span class="badge bg-primary">${orderState.ORDER5}</span>
 						</div>
 						<div class="text-center">
 							<img
 								src="https://img.icons8.com/color/48/000000/thumb-up--v1.png"
 								alt="구매확정" class="mb-2" />
 							<p>구매확정</p>
-							<span class="badge bg-primary">0</span>
+							<span class="badge bg-primary">${orderState.ORDER8}</span>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<!-- 주문 조회 필터 -->
-			<div class="row mb-4">
-				<div class="col-md-6">
-					<select class="form-select">
-						<option>3개월</option>
-						<option>6개월</option>
-						<option>1년</option>
-					</select>
-				</div>
-				<div class="col-md-6">
-					<select class="form-select">
-						<option>전체</option>
-						<option>배송완료</option>
-						<option>구매확정</option>
-					</select>
-				</div>
-			</div>
+			
 
 
 			<!-- 주문 내역이 없을 때 표시 -->
@@ -121,10 +105,7 @@
 		                        <a href="${pageContext.request.contextPath}/product/details?productNum=${dto.productNum}" ><p style="color: darkgray; margin-bottom: 0">구매한 상품</p><h5>${dto.productName}</h5></a>
 				              <p class="text-muted">구매일: ${dto.orderDate}</p>
 				            </div>
-				            <div class="col-md-3 text-end">
-			                	<button class="btn ${dto.reviewWrite == 1 ? 'btn-success':'btn-write-review' }" data-orderDetailNum="${dto.orderDetailNum}" data-reviewWrite="${dto.reviewWrite}"
-			                		data-bs-toggle="collapse" data-bs-target="#collapseExample${status.index}" aria-expanded="false" aria-controls="collapseExample">${dto.reviewWrite == 1 ? "리뷰 보기" : "리뷰 작성"}</button>
-				            </div>
+				            
 				         </div>
 				            
 			            <c:if test="${dto.reviewWrite==1}">

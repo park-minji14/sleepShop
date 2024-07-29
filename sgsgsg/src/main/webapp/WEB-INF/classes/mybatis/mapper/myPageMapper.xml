@@ -137,13 +137,17 @@
 		WHERE userId = #{userId}
 	</update>
 	
-	
-	
-	<select id="userOrderState">
-		SELECT COUNT(*) cnt, ORDERSTATE
+	<select id="userOrderState" parameterType="String" resultType="map">
+ 		SELECT COUNT(DECODE(orderState, 1, 1)) order1,
+            COUNT(DECODE(orderState, 2, 1)) order2,
+            COUNT(DECODE(orderState, 3, 1)) order3,
+            COUNT(DECODE(orderState, 4, 1)) order4,
+            COUNT(DECODE(orderState, 5, 1)) order5,
+            COUNT(DECODE(orderState, 6, 1)) order6,
+            COUNT(DECODE(orderState, 7, 1)) order7,
+            COUNT(DECODE(orderState, 8, 1)) order8
         FROM PRODUCTOrDer
-        WHERE UserId = #{userId}
-        GROUP bY OrderState
+        WHERE userId = #{userId}
 	</select>
 	
 	

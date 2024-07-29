@@ -2,13 +2,46 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<style>
+
+.thisCategory {
+    margin-left: 0;
+    position: relative;
+    z-index: 1;
+}
+
+
+.thisCategory:after {
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 11px;
+    background: #81DAF5;
+    content: '';
+    z-index: -1;
+}
+
+
+.navi{
+	margin-bottom: 80px;
+}
+
+
+</style>
+
+
+
+
+
 <div class="tab-pane fade show active" id="recent">
-    <h4 class="mb-4" style="text-align: center; font-size: 40px; margin: 50px;">찜한 상품</h4>
+    <h4 class="mb-4" style="text-align: center;   font-size: 33px;  font-weight: 600; margin: 90px;">찜한 상품</h4>
     <dl>
         <div class="navi" style="text-align: center;">
-            <a href="${pageContext.request.contextPath}">홈 &gt;</a>
-            <a href="${pageContext.request.contextPath}/mypage/main">마이페이지 &gt;</a>
-            <a style="font: light-gray;">찜한 상품</a>
+            <a href="${pageContext.request.contextPath}" style="color: gray;">홈 &gt;</a>
+            <a href="${pageContext.request.contextPath}/mypage/main" style="color: gray;">마이페이지 &gt;</a>
+            <a style="font: #888;" class="thisCategory">찜한 상품</a>
         </div>
     </dl>
     <div class="col-md-6">

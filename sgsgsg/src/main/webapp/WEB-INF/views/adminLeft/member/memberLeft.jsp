@@ -7,14 +7,7 @@
     	<li class="nav-item" >
             <a class="nav-link active">회원 관리</a>
         </li>
-        <li id="tab-state" class="nav-item" data-category="state">
-            <a class="nav-link " >회원 상태 관리</a>
-        </li>
-		
-        <li id="tab-all" class="nav-item" data-category="all">
-            <a class="nav-link " >회원관리</a>
-        </li>
-		
+        
 		
     </ul>
 </nav>

@@ -306,23 +306,20 @@ element.style {
 .hover { cursor: pointer; }
 .hover: hover {	color: #0d6efd; }
 
-.btnReviewSend {
-	background-color: #35c5f0;
-}
 
 .profile-form .img-viewer, .img-profile {
 	cursor: pointer;
 	border: 1px solid #ccc;
-	width: 150px;
-	height: 150px;
+	width: 250px;
+	height: 250px;
 	border-radius: 100px;
 	background-image: url("${pageContext.request.contextPath}/resources/images/add_photo.png");
 	position: relative;
 	z-index: 9999;
 	background-repeat : no-repeat;
 	background-size : cover;
-	margin-left: 25px;
-	margin-bottom: 35px;
+	margin-left: 100px;
+	margin-bottom: 15px;
 }
 
 
@@ -428,7 +425,7 @@ element.style {
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="profileDialogModalLabel">이미지변경</h5>
+				<h5 class="modal-title" id="profileDialogModalLabel" >이미지 변경</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -439,9 +436,9 @@ element.style {
 								<div class="col-auto">
 										<div class="img-viewer"></div>
 								</div>
-								<div class="col-auto align-self-center">
-									<button type="button" class="btn btn-light btn-profile-changeOk">이미지 변경</button>
-								</div>
+							</div>
+							<div class="col-auto align-self-center">
+								<button type="button" class="btn btn-light btn-profile-changeOk" style="margin-bottom: 40px;">이미지 변경</button>
 							</div>
 
 							<input type="file" name="selectFile" accept="image/*" multiple class="form-control"  style="display: none;">

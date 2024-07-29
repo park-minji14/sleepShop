@@ -49,6 +49,7 @@
 						<a href="${pageContext.request.contextPath}/mypage/main" style="color: gray;">마이페이지 &gt; </a>
 					<a style="color: black;" class="thisCategory">최근 본 상품</a></div>
 				</dl>
+			</div>
 			
 	
 			
