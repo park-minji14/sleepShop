@@ -21,7 +21,13 @@
     margin: 30px 0; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
     background-color: #fff;
-    height: 130px; 
+   /*  height: 130px;  */
+}
+.table{
+	margin-bottom: 0;
+}
+.table td{
+	border: 0px solid #000;
 }
 
 
