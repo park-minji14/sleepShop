@@ -31,7 +31,7 @@ document.getElementById('infoUpdateBtn').addEventListener('click', function() {
 
 .nick, .birth {
 	color: gray;
-	margin-top: 20px;
+	margin-top: 10px;
 }
 
 .profileData {
