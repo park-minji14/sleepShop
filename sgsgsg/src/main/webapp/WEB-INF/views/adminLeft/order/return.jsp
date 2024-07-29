@@ -127,7 +127,7 @@
 						<input name="inspection_result" type="text" class="form-control" placeholder="메모 입력">
 					</div>
 					<div class="col-auto p-1">
-						<input type="hidden" name="orderdetailnum">
+						<input type="hidden" name="orderDetailNum">
 						<input type="hidden" name="return_exchange_num">
 						<button type="button" class="btn btnReturnOk">처리완료</button>
 					</div>
@@ -192,7 +192,7 @@ $(function(){
 		sbox.add(new Option("요청취소", 16));
 		
 		
-		f.orderdetailnum.value = orderdetailnum;
+		f.orderDetailNum.value = orderdetailnum;
 		f.return_exchange_num.value = returnExchangeNum;
 		
 		

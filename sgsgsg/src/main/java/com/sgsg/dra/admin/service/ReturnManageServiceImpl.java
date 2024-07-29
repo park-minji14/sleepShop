@@ -60,7 +60,9 @@ public class ReturnManageServiceImpl implements ReturnManageService{
 				Return returnRequest = mapper.findReturnNum(map);
 				map.put("refund_amount", returnRequest.getRefund_amount());
 			}
-			mapper.cancelProductStock(map);
+			if(! status.equals("16")) {
+				mapper.cancelProductStock(map);
+			}
 			mapper.updateRetrunRequest(map);
 		} catch (Exception e) {
 			throw e;

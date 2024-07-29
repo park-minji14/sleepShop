@@ -108,8 +108,6 @@ public class ReturnManageController {
 		String state = "false";
 		
 		try {
-			String s = paramMap.get("detail_status").toString();
-			System.out.println("detail_status tostring"+s);
 			service.updateRetrunRequest(paramMap);
 			state = "true";
 		} catch (Exception e) {
