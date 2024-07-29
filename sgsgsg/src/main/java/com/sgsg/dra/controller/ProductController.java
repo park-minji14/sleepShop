@@ -13,10 +13,12 @@ import com.sgsg.dra.service.ProductService;
 import com.sgsg.dra.service.ReviewService;
 import com.sgsg.dra.service.WishlistService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
@@ -154,7 +156,8 @@ public class ProductController {
 	@ResponseBody
 	public Map<String, Object> getReviews(
 	        @RequestParam Long productNum,
-	        @RequestParam(value = "pageNo", defaultValue = "1") int current_page) {
+	        @RequestParam(value = "pageNo", defaultValue = "1") int current_page,
+	        HttpServletRequest request) {
 	    Map<String, Object> result = new HashMap<>();
 	    try {
 	        int size = 5;
@@ -167,15 +170,27 @@ public class ProductController {
 	        map.put("size", size);
 
 	        List<Review> reviewList = reviewService.listReviews(map);
-	        int dataCount = reviewService.countReviews(productNum);
-	        double avgScore = reviewService.getAvgScore(productNum);  // 평균 평점 추가
 
+	        // 이미지 URL 설정
+	        String contextPath = request.getContextPath();
+	        for (Review review : reviewList) {
+	            if (review.getFileName() != null && !review.getFileName().isEmpty()) {
+	                String imageUrl = contextPath + "/uploads/review/" + review.getFileName();
+	                if (review.getImageUrls() == null) {
+	                    review.setImageUrls(new ArrayList<>());
+	                }
+	                review.getImageUrls().add(imageUrl);
+	            }
+	        }
+
+	        int dataCount = reviewService.countReviews(productNum);
+	        double avgScore = reviewService.getAvgScore(productNum);
 	        int total_page = myUtil.pageCount(dataCount, size);
 	        String paging = myUtil.pagingMethod(current_page, total_page, "loadReviews");
 
 	        result.put("reviewList", reviewList);
 	        result.put("dataCount", dataCount);
-	        result.put("avgScore", avgScore);  // 평균 평점 추가
+	        result.put("avgScore", avgScore);
 	        result.put("total_page", total_page);
 	        result.put("pageNo", current_page);
 	        result.put("paging", paging);

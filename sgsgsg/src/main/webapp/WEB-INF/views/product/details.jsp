@@ -846,11 +846,10 @@ function updateReviewSection(data) {
             }
             reviewHtml += '</p>';
             reviewHtml += '<div class="review-content"><p>' + (review.review || 'No review content') + '</p></div>';
-            if (review.imageUrls && review.imageUrls.length > 0) {
+            if (review.fileName) {
                 reviewHtml += '<div class="review-images mb-2">';
-                for (let imageUrl of review.imageUrls) {
-                    reviewHtml += '<img src="' + imageUrl + '" alt="Review Image" class="img-thumbnail me-2" style="width: 100px; height: 100px; object-fit: cover;">';
-                }
+                let imageUrl = '${pageContext.request.contextPath}/uploads/review/' + review.fileName;
+                reviewHtml += '<img src="' + imageUrl + '" alt="Review Image" class="img-thumbnail me-2" style="width: 100px; height: 100px; object-fit: cover;">';
                 reviewHtml += '</div>';
             }
             reviewHtml += '<div style="text-align: right;">';
