@@ -219,7 +219,6 @@ window.addEventListener("load", function() {
             </table>
         </div>
         
-    </div>
     
 <!-- 재고 상세보기 대화상자 -->
 <div class="modal fade" id="productStockDialogModal" tabindex="-1" aria-labelledby="productStockDialogModalLabel" aria-hidden="true">
