@@ -7,19 +7,19 @@
         <li class="nav-item" >
             <a class="nav-link active">프로모션 및 이벤트 관리</a>
         </li>
-		<li id="tab-all" class="nav-item" data-category="all">
+		<li id="tab-all" class="nav-item" data-category="all" style="cursor: pointer;">
             <a class="nav-link">전체 이벤트</a>
         </li> 
-        <li id="tab-progress" class="nav-item" data-category="progress">
+        <li id="tab-progress" class="nav-item" data-category="progress" style="cursor: pointer;">
             <a class="nav-link">진행중인 이벤트</a>
         </li>
-		<li id="tab-winner" class="nav-item" data-category="winner">
+		<li id="tab-winner" class="nav-item" data-category="winner" style="cursor: pointer;">
             <a class="nav-link">당첨자 발표</a>
         </li>
-        <li id="tab-ended" class="nav-item" data-category="ended">
+        <li id="tab-ended" class="nav-item" data-category="ended" style="cursor: pointer;">
             <a class="nav-link">종료된 이벤트</a>
         </li>
-        <li id="tab-upcoming" class="nav-item" data-category="upcoming">
+        <li id="tab-upcoming" class="nav-item" data-category="upcoming" style="cursor: pointer;">
             <a class="nav-link">진행 예정인 이벤트</a>
         </li>
     </ul>
