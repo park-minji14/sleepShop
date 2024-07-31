@@ -240,16 +240,10 @@
 					<div class="container my-5 px-0">
 						<div class="row">
 							<div class="col-12 px-0">
-								<img src="https://via.placeholder.com/1200x600" alt="상품 상세 이미지"
-									class="img-fluid w-100 mb-4">
 								<div class="container">
 									<h3>상품 설명</h3>
-									<p>오마이갓 오마이갓 오마이갓</p>
-									<h3>주요 특징</h3>
 									<div>${dto.content}</div>
 								</div>
-								<img src="https://via.placeholder.com/1200x800" alt="제품 상세 설명"
-									class="img-fluid w-100 mt-4">
 							</div>
 						</div>
 					</div>
