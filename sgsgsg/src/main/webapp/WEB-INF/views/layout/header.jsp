@@ -96,11 +96,13 @@
         </div>
     </div>
 
-    <nav class="fixed-nav">
+     <nav class="fixed-nav">
         <div class="inner submenu-wrap">
             <ul class="sub-menu" id="subMenu">
-                <!--서브메뉴 자바스크립트로 동적 생성 -->
+               <!--  서브메뉴 자바스크립트로 동적 생성-->
             </ul>
+            
+            
             <div class="popular-search-container" style="position: relative;">
                 <div class="popular-search">
                     <span id="popularSearchText"></span>
@@ -179,12 +181,12 @@ function updateSubMenu(category, activeSubmenu = null) {
  // 서브메뉴 아이템 정의
  const subMenuItems = {
      '쇼핑': [
-         {text: '쇼핑홈', url: '${pageContext.request.contextPath}/'}, 
-         {text: '카테고리', url: '${pageContext.request.contextPath}/'}, 
-         {text: '베스트', url: '${pageContext.request.contextPath}/'},
-         {text: '오늘의딜', url: '${pageContext.request.contextPath}/'}, 
-         {text: '빠른배송', url: '${pageContext.request.contextPath}/'}, 
-         {text: '기획전', url: '${pageContext.request.contextPath}/'}
+         {text: '쇼핑홈', url: '${pageContext.request.contextPath}/ '}, 
+         {text: '카테고리', url: '${pageContext.request.contextPath}/product/category?categoryNum=1'}, 
+         {text: '베스트', url: '${pageContext.request.contextPath}/product/soon'},
+         {text: '오늘의딜', url: '${pageContext.request.contextPath}/product/soon'}, 
+         {text: '빠른배송', url: '${pageContext.request.contextPath}/product/soon'}, 
+         {text: '기획전', url: '${pageContext.request.contextPath}/product/soon'}
      ],
      '커뮤니티': [
          {text: '홈', url: '${pageContext.request.contextPath}/'}, 

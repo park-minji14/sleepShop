@@ -298,4 +298,9 @@ public class ProductController {
 
 	    return response;
 	}
+	
+	@RequestMapping("soon")
+	public String comingSoon() {
+		return ".product.soon";
+	}
 }
