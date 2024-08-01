@@ -203,31 +203,37 @@ public class ProductController {
 
 	@GetMapping("category")
 	public String categoryView(@RequestParam Long categoryNum, @RequestParam(required = false) Long subCategoryNum,
-			Model model) {
-		// 현재 카테고리 정보 가져오기
-		Product category = service.getCategoryById(categoryNum);
+	        Model model) {
+	    // 현재 카테고리 정보 가져오기
+	    Product category = service.getCategoryById(categoryNum);
+	    if (category == null) {
+	        // 카테고리가 존재하지 않을 경우 에러 페이지로 리다이렉트
+	        return "redirect:/error/noAccess";
+	    }
 
-		// 메인 카테고리 목록 가져오기
-		List<Product> mainCategories = service.selectCategoryList();
+	    // 메인 카테고리 목록 가져오기
+	    List<Product> mainCategories = service.selectCategoryList();
+	    // 서브 카테고리 목록 가져오기
+	    List<Product> subCategories = service.listSubCategory(categoryNum);
 
-		// 서브 카테고리 목록 가져오기
-		List<Product> subCategories = service.listSubCategory(categoryNum);
+	    // 해당 카테고리의 상품 목록 가져오기
+	    List<Product> products;
+	    if (subCategoryNum != null) {
+	        Product subCategory = service.getCategoryById(subCategoryNum);
+	        if (subCategory == null) {
+	            return "redirect:/error/categoryNotFound";
+	        }
+	        products = service.getProductsByCategory(subCategoryNum);
+	    } else {
+	        products = service.getProductsByCategory(categoryNum);
+	    }
 
-		// 해당 카테고리의 상품 목록 가져오기
-		List<Product> products;
-		if (subCategoryNum != null) {
-			products = service.getProductsByCategory(subCategoryNum);
-		} else {
-			products = service.getProductsByCategory(categoryNum);
-		}
-
-		model.addAttribute("category", category);
-		model.addAttribute("mainCategories", mainCategories);
-		model.addAttribute("subCategories", subCategories);
-		model.addAttribute("subCategoryNum", subCategoryNum);
-		model.addAttribute("products", products);
-
-		return ".product.category";
+	    model.addAttribute("category", category);
+	    model.addAttribute("mainCategories", mainCategories);
+	    model.addAttribute("subCategories", subCategories);
+	    model.addAttribute("subCategoryNum", subCategoryNum);
+	    model.addAttribute("products", products);
+	    return ".product.category";
 	}
 
 	@GetMapping("search")

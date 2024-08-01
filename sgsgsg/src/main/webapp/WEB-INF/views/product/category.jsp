@@ -345,8 +345,6 @@ a:hover {
 				<div class="swiper-slide">
 					<div class="card">
 						<div class="card-body">
-							<img src="https://via.placeholder.com/80x80" alt="프로필 이미지"
-								class="profile-img">
 							<h5 class="card-title">최고의 베개!</h5>
 							<p class="card-text">이 메모리폼 베개를 사용한 후로 목 통증이 사라졌어요. 정말 추천합니다!</p>
 							<div class="text-warning">
@@ -361,8 +359,6 @@ a:hover {
 				<div class="swiper-slide">
 					<div class="card">
 						<div class="card-body">
-							<img src="https://via.placeholder.com/80x80" alt="프로필 이미지"
-								class="profile-img">
 							<h5 class="card-title">편안한 이불</h5>
 							<p class="card-text">가볍고 따뜻해서 좋아요. 세탁도 편리하고 건조도 빨라요.</p>
 							<div class="text-warning">
@@ -377,8 +373,6 @@ a:hover {
 				<div class="swiper-slide">
 					<div class="card">
 						<div class="card-body">
-							<img src="https://via.placeholder.com/80x80" alt="프로필 이미지"
-								class="profile-img">
 							<h5 class="card-title">수면 안대 최고</h5>
 							<p class="card-text">빛 차단이 완벽해요. 여행갈 때도 항상 가지고 다녀요.</p>
 							<div class="text-warning">

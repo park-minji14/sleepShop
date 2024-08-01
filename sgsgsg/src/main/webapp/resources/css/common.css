@@ -608,7 +608,9 @@ input[type=number] {
 .notification {
   position: relative;
 }
-.notification::after {
+
+/*알림 숫자표시*/
+/* .notification::after {
   content: attr(data-count);
   position: absolute;
   top: -10px;
@@ -618,13 +620,15 @@ input[type=number] {
   border-radius: 50%;
   padding: 0.2em 0.4em;
   font-size: 12px;
-}
+} */
 
 .notification {
   position: relative;
   display: inline-block;
 }
-.notification::after {
+
+/*알림 숫자 표시*/
+/* .notification::after {
   content: attr(data-count);
   position: absolute;
   top: -10px;
@@ -637,7 +641,7 @@ input[type=number] {
   line-height: 1;
   min-width: 18px;
   text-align: center;
-}
+} */
 
 /*a태그 밑줄 제거*/
 a{

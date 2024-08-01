@@ -19,7 +19,6 @@
             background-color: white;
             padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
         }
         .error-icon {

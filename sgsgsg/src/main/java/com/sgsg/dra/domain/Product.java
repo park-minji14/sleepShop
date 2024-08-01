@@ -25,18 +25,6 @@ public class Product {
 	private String content;
 	private String thumbnail;
 	
-	@Override
-	public String toString() {
-	    return "ProductDTO{" +
-	           "productNum=" + productNum +
-	           ", productName='" + productName + '\'' +
-	           ", optionCount=" + optionCount +
-	           ", stockNum=" + stockNum +
-	           ", totalStock=" + totalStock +
-	           '}';
-	}
-
-	
 	public String getThumbnail() {
 		return thumbnail;
 	}

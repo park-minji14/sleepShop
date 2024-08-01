@@ -18,10 +18,10 @@
             <div class="col-lg-4 mb-3">
                 <h5>고객 지원</h5>
                 <ul class="saegun-footer-list">
-                    <li><i class="fas fa-question-circle"></i> <a href="#">자주 묻는 질문</a></li>
-                    <li><i class="fas fa-truck"></i> <a href="#">배송 정보</a></li>
-                    <li><i class="fas fa-exchange-alt"></i> <a href="#">반품 및 교환</a></li>
-                    <li><i class="fas fa-shield-alt"></i> <a href="#">개인정보처리방침</a></li>
+                    <li><i class="fas fa-shield-alt"></i> <a href="${pageContext.request.contextPath}/notice/userNotice">공지사항</a></li>
+                    <li><i class="fas fa-question-circle"></i> <a href="${pageContext.request.contextPath}/faq/list">자주 묻는 질문</a></li>
+                    <li><i class="fas fa-truck"></i> 배송 정보</li>
+                    <li><i class="fas fa-exchange-alt"></i> 반품 및 교환</li>
                 </ul>
                 <div class="saegun-footer-contact">
                     <h6>고객센터</h6>
