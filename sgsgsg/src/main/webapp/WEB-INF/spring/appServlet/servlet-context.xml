@@ -75,4 +75,17 @@
     </beans:bean>
 -->
 
+	<!-- sgsg프로젝트 용도의 예외처리  -->
+    <beans:bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <beans:property name="order" value="1" />
+        <beans:property name="exceptionMappings">
+            <beans:props>
+                <beans:prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">.main.loading</beans:prop>
+                <beans:prop key="org.springframework.dao.DataAccessException">.main.loading</beans:prop>
+				<beans:prop key="java.lang.Exception">.main.loading</beans:prop>
+            </beans:props>
+        </beans:property>
+        <beans:property name="defaultErrorView" value=".main.loading"/>
+    </beans:bean>
+    
 </beans:beans>
