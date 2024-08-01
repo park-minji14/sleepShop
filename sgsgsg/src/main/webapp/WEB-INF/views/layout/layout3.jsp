@@ -33,7 +33,7 @@
 	<!-- JS: custom -->
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/menu.js"></script> 
 	<!-- JS: 북마크 -->
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/bookmark.js"></script> 
+	<script type="text/javascript"  charset="utf-8" src="${pageContext.request.contextPath}/resources/js/bookmark.js"></script> 
 	<!-- JS: swiper -->
 	 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 	

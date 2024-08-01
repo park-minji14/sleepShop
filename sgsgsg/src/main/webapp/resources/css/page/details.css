@@ -554,12 +554,12 @@
     }
 }
 
-.btn-gift::before {
+/* .btn-gift::before {
     content: "마음을 선물하세요!";
     background-color: #00C0D2;
     color: #fff;
     padding: 5px 10px;
-    border-radius: 50px; /* 동그란 효과 */
+    border-radius: 50px; 동그란 효과
     font-size: 0.8rem;
     position: absolute;
     top: -40px;
@@ -568,7 +568,7 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     animation: float 2s ease-in-out infinite;
     z-index: 1;
-}
+} */
 
 .btn-cart {
     background-color: #fff;
@@ -662,4 +662,6 @@ color: #008080 !important;
 	background-color: #e8f0f8;
 }
 
-.container img{width: 100%;}
+.container img{
+/* 	width: 100%; */
+}
