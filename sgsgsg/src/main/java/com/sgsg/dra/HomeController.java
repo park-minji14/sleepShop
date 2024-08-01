@@ -55,13 +55,13 @@ public class HomeController {
     @RequestMapping(value = "/error/error404")
     public String errorPage404() {
     	
-    	return ".error.loading";
+    	return ".error.noAccess";
     }
     
     @RequestMapping(value = "/error/error400")
     public String errorPage400() {
     	
-    	return ".error.loading";
+    	return ".error.systemError";
     }
     
 }
