@@ -47,7 +47,7 @@
                 <h1 class="mb-4">서비스 준비 중입니다</h1>
                 <p class="mb-4">안녕하세요. 새근새근 서비스는 현재 준비 중에 있습니다.<br>더 나은 서비스로 곧 찾아뵙겠습니다!</p>
                 <p class="mb-4">서비스 오픈 일정: 2024년 9월 예정</p>
-                <button class="btn btn-redirect btn-lg" onclick="window.location.href='/'">
+                <button class="btn btn-redirect btn-lg" onclick="window.location.href='${pageContext.request.contextPath}/';">
                     홈페이지로 돌아가기
                 </button>
             </div>

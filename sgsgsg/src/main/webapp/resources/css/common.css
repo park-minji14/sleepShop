@@ -40,6 +40,7 @@ body {
 	font-size: 50px;
 	max-height: 64px;
 	font-family: GmarketSansMedium;
+  cursor: pointer;
 }
 
 .main-menu {

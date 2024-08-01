@@ -34,7 +34,7 @@
                 <h5>개발자 정보</h5>
                 <ul class="saegun-footer-list">
                     <li><i class="fas fa-users"></i> <a href="#">팀원 소개</a></li>
-                    <li><i class="fab fa-github"></i> <a href="#">GitHub 저장소</a></li>
+                    <li><i class="fab fa-github"></i> <a href="https://github.com/BluePigKYUN/sgsg">GitHub 저장소</a></li>
                     <li><i class="fas fa-code"></i> <a href="#">사용 기술</a></li>
                 </ul>
             </div>

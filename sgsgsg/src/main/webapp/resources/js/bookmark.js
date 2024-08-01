@@ -1,4 +1,4 @@
-// bookmark.js
+﻿// bookmark.js
 
 $(document).ready(function() {
     initBookmarkStatus();
