@@ -50,7 +50,7 @@
                 <div class="error-icon">⚠️</div>
                 <h1 class="mb-4">잘못된 접근입니다</h1>
                 <p class="mb-4">죄송합니다. 요청하신 페이지에 접근할 수 없습니다.</p>
-                <button class="btn btn-redirect btn-lg" onclick="window.location.href='/'">
+                <button class="btn btn-redirect btn-lg"  onclick="location.href='${pageContext.request.contextPath}/';">
                     메인 페이지로 돌아가기
                 </button>
             </div>
