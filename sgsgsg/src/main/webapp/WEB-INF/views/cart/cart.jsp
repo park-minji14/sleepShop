@@ -313,11 +313,11 @@ $('.cart-list').on('click', function(e) {
 		return;
 	}
 	let $box = $(e.target).closest('.option-box');
-	let qty = $($box).find('input[name="qty"]').val();
-	let stockNum = $box.find('input[data-stock-num]').attr('data-stock-num');
-	let totalStock = $box.find('button[data-totalstock]').attr('data-totalstock');
+	let qty = parseInt($($box).find('input[name="qty"]').val());
+	let stockNum = parseInt($box.find('input[data-stock-num]').attr('data-stock-num'));
+	let totalStock = parseInt($box.find('button[data-totalstock]').attr('data-totalstock'));
 	
-	if(qty === "0"){
+	if(qty === 0){
 		alert("품절된 상품입니다.");
 		return;
 	}
