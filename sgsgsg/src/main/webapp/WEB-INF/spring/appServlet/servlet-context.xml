@@ -60,7 +60,7 @@
     </beans:bean>
 
 
-    <!-- 예외처리 -->
+    <!-- 예외처리, 500 에러(service, controller, mapper 등등) -->
 <!-- 
     <beans:bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <beans:property name="order" value="1" />
@@ -80,12 +80,12 @@
         <beans:property name="order" value="1" />
         <beans:property name="exceptionMappings">
             <beans:props>
-                <beans:prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">.main.loading</beans:prop>
-                <beans:prop key="org.springframework.dao.DataAccessException">.main.loading</beans:prop>
-				<beans:prop key="java.lang.Exception">.main.loading</beans:prop>
+                <beans:prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">.error.loading</beans:prop>
+                <beans:prop key="org.springframework.dao.DataAccessException">.error.loading</beans:prop>
+				<beans:prop key="java.lang.Exception">.error.loading</beans:prop>
             </beans:props>
         </beans:property>
-        <beans:property name="defaultErrorView" value=".main.loading"/>
+        <beans:property name="defaultErrorView" value=".error.loading"/>
     </beans:bean>
     
 </beans:beans>

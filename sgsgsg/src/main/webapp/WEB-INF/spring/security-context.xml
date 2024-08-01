@@ -49,6 +49,9 @@
 		<intercept-url pattern="/promotion/ended/list" access="permitAll" />
 		<intercept-url pattern="/promotion/ended/article" access="permitAll" />
 		
+		<!-- error 페이지 권한 허용 -->
+		<intercept-url pattern="/error/**" access="permitAll" />
+		
 		<!-- 이미지, javascript, css등 -->
 		<intercept-url pattern="/resources/**" access="permitAll" />
 		<intercept-url pattern="/uploads/**" access="permitAll" />

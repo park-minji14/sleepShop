@@ -51,4 +51,17 @@ public class HomeController {
         }
         return ".home";
     }
+    
+    @RequestMapping(value = "/error/error404")
+    public String errorPage404() {
+    	
+    	return ".error.loading";
+    }
+    
+    @RequestMapping(value = "/error/error400")
+    public String errorPage400() {
+    	
+    	return ".error.loading";
+    }
+    
 }
