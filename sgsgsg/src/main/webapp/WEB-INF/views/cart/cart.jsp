@@ -27,14 +27,7 @@
 				</span>
 				<input type="hidden" name="mode" value="cart">
 			</div>
-			<div class="top-notification">
-				<div class="ms-3">쿠폰 적용된 가격은 결제할 때 확인 가능</div>
-				<button type="button" aria-label="삭제" class="notification_delete">
-					<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" preserveAspectRatio="xMidYMid meet">
-						<path fill-rule="nonzero" d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"/>
-					</svg>
-				</button>
-			</div>
+			
 			<div class="cart-list">
 				<!-- 상품 시작 -->
 				<c:forEach var="dto" items="${list}">
