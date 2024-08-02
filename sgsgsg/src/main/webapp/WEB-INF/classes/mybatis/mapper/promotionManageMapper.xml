@@ -101,7 +101,7 @@
 				AND <include refid="where-list"/>
 			</if>
 		</where>
-		ORDER BY endDate DESC
+		ORDER BY event_num DESC
 		OFFSET #{offset} ROWS FETCH FIRST #{size} ROWS ONLY
 	</select>
 	
@@ -134,7 +134,7 @@
 			</if>
 			AND (event_num &gt; #{event_num})
 		</where>
-		ORDER BY endDate ASC
+		ORDER BY event_num ASC
 		FETCH FIRST 1 ROWS ONLY
 	</select>
 	
@@ -155,7 +155,7 @@
 			</if>
 			AND (event_num &lt; #{event_num})
 		</where>
-		ORDER BY endDate DESC
+		ORDER BY event_num DESC
 		FETCH FIRST 1 ROWS ONLY
 	</select>
 	

@@ -130,10 +130,6 @@ public class PromotionController {
 			return "redirect:/promotion/" + category + "/list?" + query;
 		}
 		
-		
-		
-		
-		
 		// 이전 글, 다음 글
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("category", category);
@@ -145,11 +141,15 @@ public class PromotionController {
 		Promotion prevDto = service.findByPrev(map);
 		Promotion nextDto = service.findByNext(map);
 		
-		// 진행 이벤트(progress) 탭 : 이벤트 참여 여부
-		boolean userEventTakers = false;
-		if(category.equals("progress")) {
-			map.put("userId", info.getUserId());
-			userEventTakers = service.userEventTakers(map);
+		if(info != null) {
+			// 진행 이벤트(progress) 탭 : 이벤트 참여 여부
+			boolean userEventTakers = false;
+			if(category.equals("progress")) {
+				map.put("userId", info.getUserId());
+				userEventTakers = service.userEventTakers(map);
+			}
+			
+			model.addAttribute("userEventTakers", userEventTakers);
 		}
 		
 		// 당첨자 발표(winner) 탭 : 이벤트 당첨자
@@ -157,9 +157,8 @@ public class PromotionController {
 		Promotion userWinner =  null; // 로그인 유저 당첨 유무
 		if(category.equals("winner") || category.equals("ended")) {
 			listEventWinner = service.listEventWinner(num);
-			
 			for(Promotion vo : listEventWinner) {
-				if(vo.getUserId().equals(info.getUserId())) {
+				if(info!=null && vo.getUserId().equals(info.getUserId())) {
 					userWinner = vo;
 				}
 				
@@ -191,7 +190,7 @@ public class PromotionController {
 		model.addAttribute("prevDto", prevDto);
 		model.addAttribute("nextDto", nextDto);
 
-		model.addAttribute("userEventTakers", userEventTakers);
+		
 		model.addAttribute("listEventWinner", listEventWinner);
 		model.addAttribute("userWinner", userWinner); 
 		
