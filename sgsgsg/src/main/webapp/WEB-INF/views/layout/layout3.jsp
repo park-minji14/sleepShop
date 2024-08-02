@@ -36,7 +36,10 @@
 	<script type="text/javascript"  charset="utf-8" src="${pageContext.request.contextPath}/resources/js/bookmark.js"></script> 
 	<!-- JS: swiper -->
 	 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-	
+	 
+	<link type="image/png" sizes="16x16" rel="icon" href="${pageContext.request.contextPath}/uploads/etc/icons8-cart-16.png">
+	<link type="image/png" sizes="32x32" rel="icon" href="${pageContext.request.contextPath}/uploads/etc/icons8-cart-32.png">
+	 
 </head>
 
 <body>

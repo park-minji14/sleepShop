@@ -40,7 +40,7 @@
 								src="https://img.icons8.com/color/48/000000/payment-history.png"
 								alt="입금대기" class="mb-2" />
 							<p>입금대기</p>
-							<span class="badge bg-primary">${orderState.ORDER1}</span>
+							<span class="badge bg-primary">0</span>
 						</div>
 						<div class="text-center">
 							<img
