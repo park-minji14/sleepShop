@@ -116,7 +116,7 @@
 	            </c:forEach>
 	            <div class="row d-flex">
        	    	    <div class="page-navigation text-center mt-3">
-	       				${dataCount == 0 ? "등록된 상품이 없습니다." : paging}
+	       				${dataCount == 0 ? "등록된 공지사항이 없습니다." : paging}
 	    			</div>
 	            </div>
 	        </div>
