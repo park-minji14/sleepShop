@@ -183,10 +183,10 @@ function updateSubMenu(category, activeSubmenu = null) {
      '쇼핑': [
          {text: '쇼핑홈', url: '${pageContext.request.contextPath}/ '}, 
          {text: '카테고리', url: '${pageContext.request.contextPath}/product/category?categoryNum=1'}, 
+         {text: '기획전', url: '${pageContext.request.contextPath}/specialEvent/list'},
          {text: '베스트', url: '${pageContext.request.contextPath}/product/soon'},
          {text: '오늘의딜', url: '${pageContext.request.contextPath}/product/soon'}, 
-         {text: '빠른배송', url: '${pageContext.request.contextPath}/product/soon'}, 
-         {text: '기획전', url: '${pageContext.request.contextPath}/product/soon'}
+         {text: '빠른배송', url: '${pageContext.request.contextPath}/product/soon'} 
      ],
      '커뮤니티': [
          {text: '홈', url: '${pageContext.request.contextPath}/'}, 
