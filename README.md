@@ -1,4 +1,12 @@
-# 새근새근 - 수면 용품 쇼핑과 전문가 상담의 원스톱 솔루션 쇼핑몰
+# 🌙✨ 새근새근
+
+### 수면 용품 쇼핑 & 전문가 상담의 원스톱 솔루션
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Sleep-Solutions-blueviolet?style=for-the-badge" alt="Sleep Solutions">
+  <img src="https://img.shields.io/badge/Expert-Consultations-orange?style=for-the-badge" alt="Expert Consultations">
+  <img src="https://img.shields.io/badge/One--Stop-Platform-blue?style=for-the-badge" alt="One-Stop Platform">
+</p>
 
 ## 목차
 1. [프로젝트 소개](#-프로젝트-소개)
